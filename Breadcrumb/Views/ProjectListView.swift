@@ -50,14 +50,6 @@ struct ProjectListView: View {
 
 // MARK: - Stubs (replaced in later tasks)
 
-struct ProjectFormView: View {
-    @Environment(\.dismiss) private var dismiss
-    var body: some View {
-        Text("TODO: Project Form")
-            .frame(width: 300, height: 200)
-    }
-}
-
 struct FooterView: View {
     var body: some View {
         HStack {
