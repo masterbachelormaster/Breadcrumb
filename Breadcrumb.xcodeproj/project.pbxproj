@@ -8,8 +8,10 @@
 
 /* Begin PBXBuildFile section */
 		1D05386095241293CA4DE03A /* BreadcrumbTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FE203A2FC256662ACD1B3C9 /* BreadcrumbTests.swift */; };
+		50B42669968E80BF62C3DEB4 /* StatusEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF0C4FAC9B8A87BEA26FBC8B /* StatusEntry.swift */; };
 		5DF5DEF623DC6B10A0DB7163 /* BreadcrumbApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CF076CD3A0FE1874732FFD3 /* BreadcrumbApp.swift */; };
 		9BFD8EC86A0C17852AD2B57A /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FA0A334AD3755400D2E4FB6 /* ContentView.swift */; };
+		CF4074B7669439CA1E033539 /* Project.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1245F6E8248E227CA507BF8E /* Project.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -24,11 +26,13 @@
 
 /* Begin PBXFileReference section */
 		0FE203A2FC256662ACD1B3C9 /* BreadcrumbTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreadcrumbTests.swift; sourceTree = "<group>"; };
+		1245F6E8248E227CA507BF8E /* Project.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Project.swift; sourceTree = "<group>"; };
 		270530DCEC9B4626EE2AABF0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		333198756E01368320CCC0C9 /* BreadcrumbTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BreadcrumbTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		5CF076CD3A0FE1874732FFD3 /* BreadcrumbApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreadcrumbApp.swift; sourceTree = "<group>"; };
 		5FA0A334AD3755400D2E4FB6 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		A087345042FE6C30EF157282 /* Breadcrumb.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Breadcrumb.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		AF0C4FAC9B8A87BEA26FBC8B /* StatusEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusEntry.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
@@ -71,9 +75,19 @@
 			children = (
 				5CF076CD3A0FE1874732FFD3 /* BreadcrumbApp.swift */,
 				270530DCEC9B4626EE2AABF0 /* Info.plist */,
+				F3EE0C38617C660C76A24166 /* Models */,
 				1B859FA9C922001C26C1EEDE /* Views */,
 			);
 			path = Breadcrumb;
+			sourceTree = "<group>";
+		};
+		F3EE0C38617C660C76A24166 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				1245F6E8248E227CA507BF8E /* Project.swift */,
+				AF0C4FAC9B8A87BEA26FBC8B /* StatusEntry.swift */,
+			);
+			path = Models;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -152,6 +166,8 @@
 			files = (
 				5DF5DEF623DC6B10A0DB7163 /* BreadcrumbApp.swift in Sources */,
 				9BFD8EC86A0C17852AD2B57A /* ContentView.swift in Sources */,
+				CF4074B7669439CA1E033539 /* Project.swift in Sources */,
+				50B42669968E80BF62C3DEB4 /* StatusEntry.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -252,6 +268,7 @@
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COMBINE_HIDPI_IMAGES = YES;
+				GENERATE_INFOPLIST_FILE = YES;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
@@ -285,6 +302,7 @@
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COMBINE_HIDPI_IMAGES = YES;
+				GENERATE_INFOPLIST_FILE = YES;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
