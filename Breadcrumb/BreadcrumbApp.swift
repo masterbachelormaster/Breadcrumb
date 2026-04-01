@@ -1,4 +1,5 @@
 import SwiftUI
+import SwiftData
 
 @main
 struct BreadcrumbApp: App {
@@ -7,5 +8,6 @@ struct BreadcrumbApp: App {
             ContentView()
         }
         .menuBarExtraStyle(.window)
+        .modelContainer(for: Project.self)
     }
 }
