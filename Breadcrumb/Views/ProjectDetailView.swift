@@ -110,15 +110,6 @@ struct ProjectDetailView: View {
 
 // MARK: - Stubs (replaced in later tasks)
 
-struct StatusEntryForm: View {
-    let project: Project
-    @Environment(\.dismiss) private var dismiss
-    var body: some View {
-        Text("TODO: Status Entry Form")
-            .frame(width: 300, height: 300)
-    }
-}
-
 struct HistoryView: View {
     let project: Project
     var body: some View {
