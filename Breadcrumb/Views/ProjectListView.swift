@@ -48,14 +48,37 @@ struct ProjectListView: View {
     }
 }
 
-// MARK: - Stubs (replaced in later tasks)
-
 struct FooterView: View {
     var body: some View {
         HStack {
+            NavigationLink {
+                ArchivedProjectsView()
+            } label: {
+                Image(systemName: "archivebox")
+                    .font(.caption)
+            }
+            .buttonStyle(.plain)
+
             Spacer()
+
+            NavigationLink {
+                SettingsView()
+            } label: {
+                Image(systemName: "gear")
+                    .font(.caption)
+            }
+            .buttonStyle(.plain)
+
+            Spacer()
+
+            Button("Beenden") {
+                NSApplication.shared.terminate(nil)
+            }
+            .font(.caption)
+            .buttonStyle(.plain)
         }
         .padding(.horizontal)
         .padding(.vertical, 8)
+        .background(.bar)
     }
 }
