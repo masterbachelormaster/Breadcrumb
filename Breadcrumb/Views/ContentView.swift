@@ -11,12 +11,3 @@ struct ContentView: View {
         .frame(width: 350, height: 450)
     }
 }
-
-// MARK: - Stub (replaced in Task 5)
-
-struct ProjectDetailView: View {
-    let project: Project
-    var body: some View {
-        Text("Detail: \(project.name)")
-    }
-}
