@@ -107,12 +107,3 @@ struct ProjectDetailView: View {
         }
     }
 }
-
-// MARK: - Stubs (replaced in later tasks)
-
-struct HistoryView: View {
-    let project: Project
-    var body: some View {
-        Text("TODO: History")
-    }
-}
