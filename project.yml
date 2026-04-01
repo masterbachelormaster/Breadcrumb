@@ -1,0 +1,30 @@
+name: Breadcrumb
+options:
+  bundleIdPrefix: com.roger
+  deploymentTarget:
+    macOS: "14.0"
+  xcodeVersion: "16.0"
+settings:
+  SWIFT_VERSION: "6.0"
+targets:
+  Breadcrumb:
+    type: application
+    platform: macOS
+    sources: [Breadcrumb]
+    info:
+      path: Breadcrumb/Info.plist
+      properties:
+        LSUIElement: true
+        CFBundleDisplayName: Breadcrumb
+    settings:
+      PRODUCT_BUNDLE_IDENTIFIER: com.roger.breadcrumb
+      MARKETING_VERSION: "1.0.0"
+      CURRENT_PROJECT_VERSION: "1"
+  BreadcrumbTests:
+    type: bundle.unit-test
+    platform: macOS
+    sources: [BreadcrumbTests]
+    dependencies:
+      - target: Breadcrumb
+    settings:
+      PRODUCT_BUNDLE_IDENTIFIER: com.roger.breadcrumb-tests
