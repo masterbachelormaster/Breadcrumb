@@ -40,3 +40,15 @@ final class Project {
             .reduce(0, +)
     }
 }
+
+extension Project {
+    var formattedFocusTime: String {
+        let totalMinutes = Int(totalFocusTime) / 60
+        let hours = totalMinutes / 60
+        let minutes = totalMinutes % 60
+        if hours > 0 {
+            return "\(hours) Std. \(minutes) Min."
+        }
+        return "\(minutes) Min."
+    }
+}

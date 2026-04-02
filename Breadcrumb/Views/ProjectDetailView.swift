@@ -211,7 +211,7 @@ struct ProjectDetailView: View {
                         .font(.caption)
                         .foregroundStyle(.secondary)
                         .textCase(.uppercase)
-                    Text(formattedFocusTime)
+                    Text(project.formattedFocusTime)
                         .font(.title2)
                         .fontWeight(.medium)
                 }
@@ -223,13 +223,4 @@ struct ProjectDetailView: View {
         }
     }
 
-    private var formattedFocusTime: String {
-        let totalMinutes = Int(project.totalFocusTime) / 60
-        let hours = totalMinutes / 60
-        let minutes = totalMinutes % 60
-        if hours > 0 {
-            return "\(hours) Std. \(minutes) Min."
-        }
-        return "\(minutes) Min."
-    }
 }

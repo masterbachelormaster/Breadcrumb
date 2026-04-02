@@ -21,7 +21,7 @@ struct StatsContentView: View {
                 }
 
                 VStack(spacing: 4) {
-                    Text(formattedFocusTime)
+                    Text(project.formattedFocusTime)
                         .font(.system(size: 48, weight: .medium))
                     Text("Fokuszeit")
                         .font(.caption)
@@ -34,15 +34,4 @@ struct StatsContentView: View {
         .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
 
-    // MARK: - Private Methods
-
-    private var formattedFocusTime: String {
-        let totalMinutes = Int(project.totalFocusTime) / 60
-        let hours = totalMinutes / 60
-        let minutes = totalMinutes % 60
-        if hours > 0 {
-            return "\(hours) Std. \(minutes) Min."
-        }
-        return "\(minutes) Min."
-    }
 }
