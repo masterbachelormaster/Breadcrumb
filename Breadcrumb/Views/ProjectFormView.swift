@@ -3,12 +3,11 @@ import SwiftData
 
 struct ProjectFormView: View {
     @Environment(\.modelContext) private var modelContext
-    @Environment(\.dismiss) private var dismiss
 
     var editingProject: Project?
-
-    @State private var name: String = ""
-    @State private var selectedIcon: String = "doc.text"
+    @Binding var name: String
+    @Binding var selectedIcon: String
+    var onDismiss: () -> Void = {}
 
     private let availableIcons = [
         "doc.text", "briefcase", "laptopcomputer", "book",
@@ -50,7 +49,7 @@ struct ProjectFormView: View {
             }
 
             HStack {
-                Button("Abbrechen") { dismiss() }
+                Button("Abbrechen") { onDismiss() }
                     .keyboardShortcut(.cancelAction)
                 Spacer()
                 Button(isEditing ? "Speichern" : "Erstellen") { save() }
@@ -60,12 +59,9 @@ struct ProjectFormView: View {
         }
         .padding()
         .frame(width: 300)
-        .onAppear {
-            if let project = editingProject {
-                name = project.name
-                selectedIcon = project.icon
-            }
-        }
+        .background(Color(nsColor: .windowBackgroundColor))
+        .clipShape(RoundedRectangle(cornerRadius: 10))
+        .shadow(radius: 10)
     }
 
     private func save() {
@@ -79,6 +75,11 @@ struct ProjectFormView: View {
             let project = Project(name: trimmedName, icon: selectedIcon)
             modelContext.insert(project)
         }
-        dismiss()
+
+        // Clear draft
+        name = ""
+        selectedIcon = "doc.text"
+
+        onDismiss()
     }
 }
