@@ -77,6 +77,9 @@ struct ProjectListView: View {
 }
 
 struct FooterView: View {
+    @Environment(WindowManager.self) private var windowManager
+    @Environment(\.openWindow) private var openWindow
+
     var onNavigate: (ContentView.Screen) -> Void
     var onStartStandalonePomodoro: () -> Void
 
@@ -98,7 +101,10 @@ struct FooterView: View {
 
             Spacer()
 
-            Button(action: { onNavigate(.settings) }) {
+            Button(action: {
+                windowManager.open(.settings)
+                openWindow(id: "main")
+            }) {
                 Image(systemName: "gear")
                     .font(.callout)
             }
@@ -106,7 +112,10 @@ struct FooterView: View {
 
             Spacer()
 
-            Button(action: { onNavigate(.about) }) {
+            Button(action: {
+                windowManager.open(.about)
+                openWindow(id: "main")
+            }) {
                 Image(systemName: "info.circle")
                     .font(.callout)
             }

@@ -10,8 +10,6 @@ struct ContentView: View {
     enum Screen {
         case projectList
         case archivedProjects
-        case settings
-        case about
         case pomodoroRunning
         case projectPicker
     }
@@ -41,10 +39,6 @@ struct ContentView: View {
                     )
                 case .archivedProjects:
                     ArchivedProjectsView(onBack: { screen = .projectList })
-                case .settings:
-                    SettingsView(onBack: { screen = .projectList })
-                case .about:
-                    AboutView(onBack: { screen = .projectList })
                 case .projectPicker:
                     ProjectPickerView(
                         onSelect: { project in

@@ -5,13 +5,14 @@ struct ProjectDetailView: View {
     let project: Project
 
     @Environment(\.modelContext) private var modelContext
+    @Environment(WindowManager.self) private var windowManager
+    @Environment(\.openWindow) private var openWindow
 
     var onBack: () -> Void
     var onStartPomodoro: () -> Void
 
     @State private var showingStatusForm = false
     @State private var showingEditForm = false
-    @State private var showingHistory = false
 
     // Status form drafts
     @State private var draftFreeText = ""
@@ -25,99 +26,96 @@ struct ProjectDetailView: View {
 
     var body: some View {
         ZStack {
-            if showingHistory {
-                HistoryView(project: project, onBack: { showingHistory = false })
-            } else {
-                VStack(spacing: 0) {
-                    // Header
-                    HStack {
-                        Button(action: onBack) {
-                            HStack(spacing: 4) {
-                                Image(systemName: "chevron.left")
-                                Text("Zurück")
+            VStack(spacing: 0) {
+                // Header
+                HStack {
+                    Button(action: onBack) {
+                        HStack(spacing: 4) {
+                            Image(systemName: "chevron.left")
+                            Text("Zurück")
+                        }
+                        .font(.body)
+                    }
+                    .buttonStyle(.plain)
+
+                    Spacer()
+
+                    Text(project.name)
+                        .font(.headline)
+                        .lineLimit(1)
+
+                    Spacer()
+
+                    Menu {
+                        Button("Bearbeiten", systemImage: "pencil") {
+                            if editDraftName.isEmpty {
+                                editDraftName = project.name
+                                editDraftIcon = project.icon
                             }
+                            showingEditForm = true
+                        }
+                        Button("Archivieren", systemImage: "archivebox") {
+                            project.isActive = false
+                            onBack()
+                        }
+                        Divider()
+                        Button("Löschen", systemImage: "trash", role: .destructive) {
+                            modelContext.delete(project)
+                            onBack()
+                        }
+                    } label: {
+                        Image(systemName: "ellipsis.circle")
                             .font(.body)
-                        }
-                        .buttonStyle(.plain)
-
-                        Spacer()
-
-                        Text(project.name)
-                            .font(.headline)
-                            .lineLimit(1)
-
-                        Spacer()
-
-                        Menu {
-                            Button("Bearbeiten", systemImage: "pencil") {
-                                if editDraftName.isEmpty {
-                                    editDraftName = project.name
-                                    editDraftIcon = project.icon
-                                }
-                                showingEditForm = true
-                            }
-                            Button("Archivieren", systemImage: "archivebox") {
-                                project.isActive = false
-                                onBack()
-                            }
-                            Divider()
-                            Button("Löschen", systemImage: "trash", role: .destructive) {
-                                modelContext.delete(project)
-                                onBack()
-                            }
-                        } label: {
-                            Image(systemName: "ellipsis.circle")
-                                .font(.body)
-                        }
-                        .buttonStyle(.plain)
                     }
-                    .padding(.horizontal)
-                    .padding(.vertical, 8)
+                    .buttonStyle(.plain)
+                }
+                .padding(.horizontal)
+                .padding(.vertical, 8)
 
-                    // Content
-                    ScrollView {
-                        VStack(alignment: .leading, spacing: 16) {
-                            if let entry = project.latestEntry {
-                                latestEntrySection(entry)
-                            } else {
-                                ContentUnavailableView(
-                                    "Noch kein Status erfasst",
-                                    systemImage: "text.badge.plus",
-                                    description: Text("Halte fest, wo du gerade stehst")
-                                )
-                            }
-
-                            if project.completedPomodoroCount > 0 {
-                                pomodoroStatsSection
-                            }
+                // Content
+                ScrollView {
+                    VStack(alignment: .leading, spacing: 16) {
+                        if let entry = project.latestEntry {
+                            latestEntrySection(entry)
+                        } else {
+                            ContentUnavailableView(
+                                "Noch kein Status erfasst",
+                                systemImage: "text.badge.plus",
+                                description: Text("Halte fest, wo du gerade stehst")
+                            )
                         }
-                        .padding()
-                        .textSelection(.enabled)
-                    }
 
-                    // Footer
-                    HStack {
-                        Button {
-                            onStartPomodoro()
-                        } label: {
-                            Label("Pomodoro", systemImage: "timer")
-                        }
-                        .buttonStyle(.bordered)
-                        .tint(.red)
-
-                        Button("Status aktualisieren") {
-                            showingStatusForm = true
-                        }
-                        .buttonStyle(.borderedProminent)
-
-                        Spacer()
-
-                        Button("Historie") {
-                            showingHistory = true
+                        if project.completedPomodoroCount > 0 {
+                            pomodoroStatsSection
                         }
                     }
                     .padding()
+                    .textSelection(.enabled)
                 }
+
+                // Footer
+                HStack {
+                    Button {
+                        onStartPomodoro()
+                    } label: {
+                        Label("Pomodoro", systemImage: "timer")
+                    }
+                    .buttonStyle(.bordered)
+                    .tint(.red)
+
+                    Button("Status aktualisieren") {
+                        showingStatusForm = true
+                    }
+                    .buttonStyle(.borderedProminent)
+
+                    Spacer()
+
+                    Button("Historie") {
+                        windowManager.open(.history(project))
+                        openWindow(id: "main")
+                    }
+                }
+                .padding()
             }
 
             // Inline overlay for status form
@@ -218,6 +216,10 @@ struct ProjectDetailView: View {
                         .fontWeight(.medium)
                 }
             }
+        }
+        .onTapGesture {
+            windowManager.open(.stats(project))
+            openWindow(id: "main")
         }
     }
 
