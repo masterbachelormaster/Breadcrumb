@@ -7,7 +7,7 @@ import FoundationModels
 
 // MARK: - Error Types
 
-enum AIServiceError: LocalizedError {
+enum AIServiceError: LocalizedError, Sendable {
     case notAvailable(String)
     case contextWindowExceeded
     case unsupportedLanguage
@@ -130,20 +130,21 @@ final class AIService {
             return AsyncThrowingStream { $0.finish(throwing: AIServiceError.notAvailable(unavailableReason)) }
         }
 
-        return AsyncThrowingStream { [weak self] continuation in
+        return AsyncThrowingStream { continuation in
             let task = Task {
-                await self?.setGenerating(true)
-                defer { Task { await self?.setGenerating(false) } }
+                self.isGenerating = true
+                defer { self.isGenerating = false }
 
                 do {
                     let session = LanguageModelSession(instructions: Instructions(instructions))
                     let stream = session.streamResponse(to: prompt)
                     for try await partial in stream {
+                        try Task.checkCancellation()
                         continuation.yield(partial.content)
                     }
                     continuation.finish()
                 } catch {
-                    continuation.finish(throwing: self?.mapError(error) ?? error)
+                    continuation.finish(throwing: self.mapError(error))
                 }
             }
             continuation.onTermination = { _ in task.cancel() }
@@ -164,36 +165,24 @@ final class AIService {
             return AsyncThrowingStream { $0.finish(throwing: AIServiceError.notAvailable(unavailableReason)) }
         }
 
-        return AsyncThrowingStream { [weak self] continuation in
+        return AsyncThrowingStream { continuation in
             let task = Task {
-                await self?.setGenerating(true)
-                defer { Task { await self?.setGenerating(false) } }
+                self.isGenerating = true
+                defer { self.isGenerating = false }
 
                 do {
                     let session = LanguageModelSession(instructions: Instructions(instructions))
                     let stream = session.streamResponse(to: prompt, generating: type)
                     for try await partial in stream {
+                        try Task.checkCancellation()
                         continuation.yield(partial.content)
                     }
                     continuation.finish()
                 } catch {
-                    continuation.finish(throwing: self?.mapError(error) ?? error)
+                    continuation.finish(throwing: self.mapError(error))
                 }
             }
             continuation.onTermination = { _ in task.cancel() }
-        }
-    }
-    #endif
-
-    // MARK: - Prewarming
-
-    #if canImport(FoundationModels)
-    @available(macOS 26, *)
-    func prewarm() {
-        guard isAvailable else { return }
-        Task {
-            let session = LanguageModelSession()
-            session.prewarm()
         }
     }
     #endif
@@ -226,7 +215,4 @@ final class AIService {
     }
     #endif
 
-    private func setGenerating(_ value: Bool) {
-        isGenerating = value
-    }
 }
