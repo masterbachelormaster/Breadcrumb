@@ -7,6 +7,7 @@ struct ProjectListView: View {
 
     var onSelectProject: (Project) -> Void
     var onNavigate: (ContentView.Screen) -> Void
+    var onStartStandalonePomodoro: () -> Void
 
     @State private var showingNewProject = false
 
@@ -57,7 +58,7 @@ struct ProjectListView: View {
                 }
 
                 // Footer
-                FooterView(onNavigate: onNavigate)
+                FooterView(onNavigate: onNavigate, onStartStandalonePomodoro: onStartStandalonePomodoro)
             }
 
             // Inline overlay for new project form
@@ -77,11 +78,20 @@ struct ProjectListView: View {
 
 struct FooterView: View {
     var onNavigate: (ContentView.Screen) -> Void
+    var onStartStandalonePomodoro: () -> Void
 
     var body: some View {
         HStack {
             Button(action: { onNavigate(.archivedProjects) }) {
                 Image(systemName: "archivebox")
+                    .font(.callout)
+            }
+            .buttonStyle(.plain)
+
+            Spacer()
+
+            Button(action: onStartStandalonePomodoro) {
+                Text("🍅")
                     .font(.callout)
             }
             .buttonStyle(.plain)
