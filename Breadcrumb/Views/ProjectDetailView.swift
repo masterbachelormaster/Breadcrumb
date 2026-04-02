@@ -190,8 +190,19 @@ struct ProjectDetailView: View {
     private var pomodoroStatsSection: some View {
         Divider()
         VStack(alignment: .leading, spacing: 8) {
-            Text("Pomodoro")
-                .font(.headline)
+            HStack {
+                Text("Pomodoro")
+                    .font(.headline)
+                Spacer()
+                HStack(spacing: 2) {
+                    Text("Details")
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                    Image(systemName: "chevron.right")
+                        .font(.caption)
+                        .foregroundStyle(.tertiary)
+                }
+            }
 
             HStack {
                 VStack(alignment: .leading, spacing: 2) {

@@ -34,17 +34,28 @@ struct BreadcrumbApp: App {
         .modelContainer(for: [Project.self, PomodoroSession.self])
         .defaultSize(width: 500, height: 400)
         .commands {
-            CommandGroup(replacing: .appInfo) {
-                Button("\u{00DC}ber Breadcrumb") {
-                    windowManager.open(.about)
-                }
+            BreadcrumbCommands(windowManager: windowManager)
+        }
+    }
+}
+
+struct BreadcrumbCommands: Commands {
+    @Environment(\.openWindow) private var openWindow
+    let windowManager: WindowManager
+
+    var body: some Commands {
+        CommandGroup(replacing: .appInfo) {
+            Button("Über Breadcrumb") {
+                windowManager.open(.about)
+                openWindow(id: "main")
             }
-            CommandGroup(replacing: .appSettings) {
-                Button("Einstellungen...") {
-                    windowManager.open(.settings)
-                }
-                .keyboardShortcut(",", modifiers: .command)
+        }
+        CommandGroup(replacing: .appSettings) {
+            Button("Einstellungen...") {
+                windowManager.open(.settings)
+                openWindow(id: "main")
             }
+            .keyboardShortcut(",", modifiers: .command)
         }
     }
 }
