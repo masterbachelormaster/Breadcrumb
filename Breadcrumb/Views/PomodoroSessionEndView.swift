@@ -98,7 +98,7 @@ struct PomodoroSessionEndView: View {
         HStack {
             Button("Speichern & Pause") { saveAndBreak() }
                 .buttonStyle(.borderedProminent)
-                .disabled(freeText.trimmingCharacters(in: .whitespaces).isEmpty && selectedProject != nil)
+                .disabled(selectedProject == nil && timer.boundProject == nil)
             Button("Weiterarbeiten") { onContinueWorking() }
                 .buttonStyle(.bordered)
         }
