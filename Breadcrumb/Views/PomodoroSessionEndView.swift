@@ -102,10 +102,13 @@ struct PomodoroSessionEndView: View {
             Button("Weiterarbeiten") { onContinueWorking() }
                 .buttonStyle(.bordered)
         }
-        Button("Überspringen") { onSkip() }
-            .font(.caption)
-            .foregroundStyle(.secondary)
-            .buttonStyle(.plain)
+        HStack(spacing: 16) {
+            Button("Überspringen") { onSkip() }
+            Button("Aufhören") { onStopCompletely() }
+        }
+        .font(.caption)
+        .foregroundStyle(.secondary)
+        .buttonStyle(.plain)
     }
 
     private func optionalField(label: String, text: Binding<String>) -> some View {
