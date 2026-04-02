@@ -20,6 +20,7 @@ final class PomodoroTimer {
     var currentPhase: TimerPhase = .idle
     var currentSessionNumber: Int = 1
     var boundProject: Project?
+    var originalDurationSeconds: Int = 0
 
     private var timerTask: Task<Void, Never>?
 
@@ -50,21 +51,11 @@ final class PomodoroTimer {
         }
     }
 
-    var menuBarIcon: String {
-        switch currentPhase {
-        case .idle:
-            return "bookmark.fill"
-        case .work, .sessionEnded:
-            return "timer"
-        case .shortBreak, .longBreak:
-            return "cup.and.saucer.fill"
-        }
-    }
-
     // MARK: - Methods
 
     func startWork(project: Project?, durationMinutes: Int) {
         boundProject = project
+        originalDurationSeconds = durationMinutes * 60
         remainingSeconds = durationMinutes * 60
         isRunning = true
         isPaused = false
@@ -126,6 +117,7 @@ final class PomodoroTimer {
         isPaused = false
         isOvertime = false
         overtimeSeconds = 0
+        originalDurationSeconds = 0
         currentPhase = .idle
         currentSessionNumber = 1
         boundProject = nil

@@ -117,6 +117,15 @@ struct PomodoroTimerTests {
         #expect(timer.menuBarLabel == "🍅 Fertig!")
     }
 
+    @Test("Original duration is tracked")
+    func originalDuration() {
+        let timer = PomodoroTimer()
+        timer.startWork(project: nil, durationMinutes: 25)
+        #expect(timer.originalDurationSeconds == 1500)
+        timer.stop()
+        #expect(timer.originalDurationSeconds == 0)
+    }
+
     @Test("Formatted time displays correctly")
     func formattedTime() {
         let timer = PomodoroTimer()

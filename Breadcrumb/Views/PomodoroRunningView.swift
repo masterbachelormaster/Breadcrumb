@@ -115,6 +115,18 @@ struct PomodoroRunningView: View {
                         timer.enterOvertime()
                     },
                     onSkip: {
+                        // Record the session even when skipping status entry
+                        let session = PomodoroSession(
+                            plannedDuration: TimeInterval(timer.originalDurationSeconds),
+                            sessionType: .work,
+                            sessionNumber: timer.currentSessionNumber
+                        )
+                        session.completed = true
+                        session.endedAt = Date()
+                        session.actualDuration = TimeInterval(timer.originalDurationSeconds + timer.overtimeSeconds)
+                        session.project = timer.boundProject
+                        modelContext.insert(session)
+
                         showingSessionEnd = false
                         timer.startBreak(
                             shortMinutes: shortBreakMinutes,
@@ -127,6 +139,18 @@ struct PomodoroRunningView: View {
                         timer.startNextWorkSession(durationMinutes: workMinutes, sessionsBeforeLong: sessionsBeforeLong)
                     },
                     onStopCompletely: {
+                        // Record incomplete session
+                        let session = PomodoroSession(
+                            plannedDuration: TimeInterval(timer.originalDurationSeconds),
+                            sessionType: .work,
+                            sessionNumber: timer.currentSessionNumber
+                        )
+                        session.completed = false
+                        session.endedAt = Date()
+                        session.actualDuration = TimeInterval(timer.originalDurationSeconds - timer.remainingSeconds)
+                        session.project = timer.boundProject
+                        modelContext.insert(session)
+
                         showingSessionEnd = false
                         timer.stop()
                         onFinished()
