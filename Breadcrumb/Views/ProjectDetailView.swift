@@ -7,6 +7,7 @@ struct ProjectDetailView: View {
     @Environment(\.modelContext) private var modelContext
 
     var onBack: () -> Void
+    var onStartPomodoro: () -> Void
 
     @State private var showingStatusForm = false
     @State private var showingEditForm = false
@@ -85,6 +86,10 @@ struct ProjectDetailView: View {
                                     description: Text("Halte fest, wo du gerade stehst")
                                 )
                             }
+
+                            if project.completedPomodoroCount > 0 {
+                                pomodoroStatsSection
+                            }
                         }
                         .padding()
                         .textSelection(.enabled)
@@ -92,6 +97,14 @@ struct ProjectDetailView: View {
 
                     // Footer
                     HStack {
+                        Button {
+                            onStartPomodoro()
+                        } label: {
+                            Label("Pomodoro", systemImage: "timer")
+                        }
+                        .buttonStyle(.bordered)
+                        .tint(.red)
+
                         Button("Status aktualisieren") {
                             showingStatusForm = true
                         }
@@ -173,5 +186,48 @@ struct ProjectDetailView: View {
             Text(value)
                 .font(.callout)
         }
+    }
+
+    @ViewBuilder
+    private var pomodoroStatsSection: some View {
+        Divider()
+        VStack(alignment: .leading, spacing: 8) {
+            Text("Pomodoro")
+                .font(.headline)
+
+            HStack {
+                VStack(alignment: .leading, spacing: 2) {
+                    Text("Abgeschlossen")
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                        .textCase(.uppercase)
+                    Text("\(project.completedPomodoroCount)")
+                        .font(.title2)
+                        .fontWeight(.medium)
+                }
+
+                Spacer()
+
+                VStack(alignment: .leading, spacing: 2) {
+                    Text("Fokuszeit")
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                        .textCase(.uppercase)
+                    Text(formattedFocusTime)
+                        .font(.title2)
+                        .fontWeight(.medium)
+                }
+            }
+        }
+    }
+
+    private var formattedFocusTime: String {
+        let totalMinutes = Int(project.totalFocusTime) / 60
+        let hours = totalMinutes / 60
+        let minutes = totalMinutes % 60
+        if hours > 0 {
+            return "\(hours) Std. \(minutes) Min."
+        }
+        return "\(minutes) Min."
     }
 }
