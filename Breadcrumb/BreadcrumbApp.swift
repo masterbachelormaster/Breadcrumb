@@ -7,6 +7,7 @@ struct BreadcrumbApp: App {
     @NSApplicationDelegateAdaptor(AppDelegate.self) private var appDelegate
     @State private var pomodoroTimer = PomodoroTimer()
     @State private var windowManager = WindowManager()
+    @State private var aiService = AIService()
 
     init() {
         UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound]) { _, _ in }
@@ -17,6 +18,7 @@ struct BreadcrumbApp: App {
             ContentView()
                 .environment(pomodoroTimer)
                 .environment(windowManager)
+                .environment(aiService)
         } label: {
             Text(pomodoroTimer.menuBarLabel)
         }
@@ -27,6 +29,7 @@ struct BreadcrumbApp: App {
             BreakoutWindowView()
                 .environment(pomodoroTimer)
                 .environment(windowManager)
+                .environment(aiService)
         }
         .modelContainer(for: [Project.self, PomodoroSession.self])
         .defaultSize(width: 500, height: 400)
