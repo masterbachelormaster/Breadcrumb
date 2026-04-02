@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		1D05386095241293CA4DE03A /* BreadcrumbTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FE203A2FC256662ACD1B3C9 /* BreadcrumbTests.swift */; };
+		403EFFDCD1BFA9E3FB455EE7 /* PomodoroSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4996D796E28BEF485ED0F8D0 /* PomodoroSession.swift */; };
 		50B42669968E80BF62C3DEB4 /* StatusEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF0C4FAC9B8A87BEA26FBC8B /* StatusEntry.swift */; };
 		5DF5DEF623DC6B10A0DB7163 /* BreadcrumbApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CF076CD3A0FE1874732FFD3 /* BreadcrumbApp.swift */; };
 		750DDDBE8BEBB05A74A6681F /* StatusEntryForm.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9BFECE00BAB70889C1C40B4 /* StatusEntryForm.swift */; };
@@ -18,6 +19,7 @@
 		D3D2E68C0A5910AFFDAFDF12 /* ProjectDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AB137DC9044186B8877D8CD /* ProjectDetailView.swift */; };
 		D9DA16D240E3D429351FAB57 /* ProjectRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47DF5F532D7705CA6E56446A /* ProjectRowView.swift */; };
 		DF61036FEAC7FB1050A1DE23 /* ArchivedProjectsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7CE7354CA860BF1B53435E6 /* ArchivedProjectsView.swift */; };
+		EDDBEC957A06EFB95B9B47DC /* PomodoroSessionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 724DF0D9521A50E754FB21F1 /* PomodoroSessionTests.swift */; };
 		F3CA383D086855E95F01B254 /* ProjectListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47078C1986E00D73E6A06727 /* ProjectListView.swift */; };
 		FA03D196F0BF672CC3D62165 /* HistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8C5CE9442C811F8DCF196BD /* HistoryView.swift */; };
 /* End PBXBuildFile section */
@@ -39,9 +41,11 @@
 		333198756E01368320CCC0C9 /* BreadcrumbTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BreadcrumbTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		47078C1986E00D73E6A06727 /* ProjectListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectListView.swift; sourceTree = "<group>"; };
 		47DF5F532D7705CA6E56446A /* ProjectRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectRowView.swift; sourceTree = "<group>"; };
+		4996D796E28BEF485ED0F8D0 /* PomodoroSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PomodoroSession.swift; sourceTree = "<group>"; };
 		5CF076CD3A0FE1874732FFD3 /* BreadcrumbApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreadcrumbApp.swift; sourceTree = "<group>"; };
 		5FA0A334AD3755400D2E4FB6 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		6AB137DC9044186B8877D8CD /* ProjectDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectDetailView.swift; sourceTree = "<group>"; };
+		724DF0D9521A50E754FB21F1 /* PomodoroSessionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PomodoroSessionTests.swift; sourceTree = "<group>"; };
 		A087345042FE6C30EF157282 /* Breadcrumb.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Breadcrumb.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A9BFECE00BAB70889C1C40B4 /* StatusEntryForm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusEntryForm.swift; sourceTree = "<group>"; };
 		AF0C4FAC9B8A87BEA26FBC8B /* StatusEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusEntry.swift; sourceTree = "<group>"; };
@@ -72,6 +76,7 @@
 			isa = PBXGroup;
 			children = (
 				0FE203A2FC256662ACD1B3C9 /* BreadcrumbTests.swift */,
+				724DF0D9521A50E754FB21F1 /* PomodoroSessionTests.swift */,
 			);
 			path = BreadcrumbTests;
 			sourceTree = "<group>";
@@ -108,6 +113,7 @@
 		F3EE0C38617C660C76A24166 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				4996D796E28BEF485ED0F8D0 /* PomodoroSession.swift */,
 				1245F6E8248E227CA507BF8E /* Project.swift */,
 				AF0C4FAC9B8A87BEA26FBC8B /* StatusEntry.swift */,
 			);
@@ -192,6 +198,7 @@
 				5DF5DEF623DC6B10A0DB7163 /* BreadcrumbApp.swift in Sources */,
 				9BFD8EC86A0C17852AD2B57A /* ContentView.swift in Sources */,
 				FA03D196F0BF672CC3D62165 /* HistoryView.swift in Sources */,
+				403EFFDCD1BFA9E3FB455EE7 /* PomodoroSession.swift in Sources */,
 				CF4074B7669439CA1E033539 /* Project.swift in Sources */,
 				D3D2E68C0A5910AFFDAFDF12 /* ProjectDetailView.swift in Sources */,
 				CA24E531052945BC800D6D9C /* ProjectFormView.swift in Sources */,
@@ -208,6 +215,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				1D05386095241293CA4DE03A /* BreadcrumbTests.swift in Sources */,
+				EDDBEC957A06EFB95B9B47DC /* PomodoroSessionTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

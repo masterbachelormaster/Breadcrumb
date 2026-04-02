@@ -10,6 +10,7 @@ final class StatusEntry {
     var nextStep: String?
     var openQuestions: String?
     var project: Project?
+    var pomodoroSession: PomodoroSession?
 
     init(
         freeText: String,
