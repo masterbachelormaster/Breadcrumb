@@ -36,22 +36,20 @@ final class WindowManager {
     // MARK: - Properties
 
     private(set) var currentContent: BreakoutContent?
-    var isWindowOpen: Bool = false
 
     // MARK: - Public Methods
 
     func open(_ content: BreakoutContent) {
         currentContent = content
-        isWindowOpen = true
         NSApp.setActivationPolicy(.regular)
+        // Brief delay for activation policy to take effect before bringing app forward
         Task {
             try? await Task.sleep(for: .milliseconds(100))
-            NSApp.activate(ignoringOtherApps: true)
+            NSApp.activate()
         }
     }
 
     func windowClosed() {
-        isWindowOpen = false
         currentContent = nil
         NSApp.setActivationPolicy(.accessory)
     }

@@ -6,7 +6,9 @@ struct BreakoutWindowView: View {
     var body: some View {
         Group {
             if let content = windowManager.currentContent {
-                contentView(for: content)
+                NavigationStack {
+                    contentView(for: content)
+                }
             } else {
                 Color.clear
             }
@@ -17,9 +19,7 @@ struct BreakoutWindowView: View {
             minHeight: minSize.height,
             idealHeight: idealSize.height
         )
-        .onReceive(NotificationCenter.default.publisher(for: NSWindow.willCloseNotification)) { notification in
-            guard let window = notification.object as? NSWindow,
-                  window.title == (windowManager.currentContent?.windowTitle ?? "") else { return }
+        .onDisappear {
             windowManager.windowClosed()
         }
     }
