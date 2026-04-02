@@ -12,6 +12,7 @@
 		50B42669968E80BF62C3DEB4 /* StatusEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF0C4FAC9B8A87BEA26FBC8B /* StatusEntry.swift */; };
 		5DF5DEF623DC6B10A0DB7163 /* BreadcrumbApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CF076CD3A0FE1874732FFD3 /* BreadcrumbApp.swift */; };
 		750DDDBE8BEBB05A74A6681F /* StatusEntryForm.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9BFECE00BAB70889C1C40B4 /* StatusEntryForm.swift */; };
+		8C122A7AB70310BCF81D2061 /* PomodoroSessionEndView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F5D21B8446DBC5F11312384 /* PomodoroSessionEndView.swift */; };
 		9BFD8EC86A0C17852AD2B57A /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FA0A334AD3755400D2E4FB6 /* ContentView.swift */; };
 		B949DE8B498359E91079E6D7 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E97F9AD204BAC7BB0A7E5D92 /* SettingsView.swift */; };
 		C0556C526B6E95E3EAC49CFE /* PomodoroTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0A23CE8D0C3663CAF21F178 /* PomodoroTimer.swift */; };
@@ -44,6 +45,7 @@
 		47078C1986E00D73E6A06727 /* ProjectListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectListView.swift; sourceTree = "<group>"; };
 		47DF5F532D7705CA6E56446A /* ProjectRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectRowView.swift; sourceTree = "<group>"; };
 		4996D796E28BEF485ED0F8D0 /* PomodoroSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PomodoroSession.swift; sourceTree = "<group>"; };
+		4F5D21B8446DBC5F11312384 /* PomodoroSessionEndView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PomodoroSessionEndView.swift; sourceTree = "<group>"; };
 		5CF076CD3A0FE1874732FFD3 /* BreadcrumbApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreadcrumbApp.swift; sourceTree = "<group>"; };
 		5FA0A334AD3755400D2E4FB6 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		6AB137DC9044186B8877D8CD /* ProjectDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectDetailView.swift; sourceTree = "<group>"; };
@@ -66,6 +68,7 @@
 				E7CE7354CA860BF1B53435E6 /* ArchivedProjectsView.swift */,
 				5FA0A334AD3755400D2E4FB6 /* ContentView.swift */,
 				B8C5CE9442C811F8DCF196BD /* HistoryView.swift */,
+				4F5D21B8446DBC5F11312384 /* PomodoroSessionEndView.swift */,
 				6AB137DC9044186B8877D8CD /* ProjectDetailView.swift */,
 				D9DBEBA30993B89A48537DA5 /* ProjectFormView.swift */,
 				47078C1986E00D73E6A06727 /* ProjectListView.swift */,
@@ -205,6 +208,7 @@
 				9BFD8EC86A0C17852AD2B57A /* ContentView.swift in Sources */,
 				FA03D196F0BF672CC3D62165 /* HistoryView.swift in Sources */,
 				403EFFDCD1BFA9E3FB455EE7 /* PomodoroSession.swift in Sources */,
+				8C122A7AB70310BCF81D2061 /* PomodoroSessionEndView.swift in Sources */,
 				C0556C526B6E95E3EAC49CFE /* PomodoroTimer.swift in Sources */,
 				CF4074B7669439CA1E033539 /* Project.swift in Sources */,
 				D3D2E68C0A5910AFFDAFDF12 /* ProjectDetailView.swift in Sources */,
