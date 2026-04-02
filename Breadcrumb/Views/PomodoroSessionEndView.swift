@@ -123,12 +123,13 @@ struct PomodoroSessionEndView: View {
 
         // Create PomodoroSession record
         let session = PomodoroSession(
-            plannedDuration: TimeInterval(timer.remainingSeconds),
+            plannedDuration: TimeInterval(timer.originalDurationSeconds),
             sessionType: .work,
             sessionNumber: timer.currentSessionNumber
         )
         session.completed = true
         session.endedAt = Date()
+        session.actualDuration = TimeInterval(timer.originalDurationSeconds + timer.overtimeSeconds)
         session.project = project
 
         // Create status entry if text provided
