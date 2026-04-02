@@ -5,7 +5,14 @@ struct ProjectListView: View {
     @Query(filter: #Predicate<Project> { $0.isActive })
     private var activeProjects: [Project]
 
+    var onSelectProject: (Project) -> Void
+    var onNavigate: (ContentView.Screen) -> Void
+
     @State private var showingNewProject = false
+
+    // New project form drafts
+    @State private var draftProjectName = ""
+    @State private var draftProjectIcon = "doc.text"
 
     private var sortedProjects: [Project] {
         activeProjects.sorted { p1, p2 in
@@ -16,56 +23,74 @@ struct ProjectListView: View {
     }
 
     var body: some View {
-        Group {
-            if activeProjects.isEmpty {
-                ContentUnavailableView(
-                    "Keine Projekte",
-                    systemImage: "bookmark",
-                    description: Text("Erstelle dein erstes Projekt mit dem + Button")
-                )
-            } else {
-                List(sortedProjects) { project in
-                    NavigationLink(value: project) {
-                        ProjectRowView(project: project)
+        ZStack {
+            VStack(spacing: 0) {
+                // Header
+                HStack {
+                    Text("Breadcrumb")
+                        .font(.headline)
+                    Spacer()
+                    Button(action: { showingNewProject = true }) {
+                        Image(systemName: "plus")
+                            .font(.body)
+                    }
+                    .buttonStyle(.plain)
+                }
+                .padding(.horizontal)
+                .padding(.vertical, 8)
+
+                // Content
+                if activeProjects.isEmpty {
+                    ContentUnavailableView(
+                        "Keine Projekte",
+                        systemImage: "bookmark",
+                        description: Text("Erstelle dein erstes Projekt mit dem + Button")
+                    )
+                    .frame(maxHeight: .infinity)
+                } else {
+                    List(sortedProjects) { project in
+                        Button(action: { onSelectProject(project) }) {
+                            ProjectRowView(project: project)
+                        }
+                        .buttonStyle(.plain)
                     }
                 }
+
+                // Footer
+                FooterView(onNavigate: onNavigate)
             }
-        }
-        .navigationTitle("Breadcrumb")
-        .toolbar {
-            ToolbarItem(placement: .primaryAction) {
-                Button(action: { showingNewProject = true }) {
-                    Image(systemName: "plus")
-                }
+
+            // Inline overlay for new project form
+            if showingNewProject {
+                Color.black.opacity(0.3)
+                    .ignoresSafeArea()
+                    .onTapGesture { showingNewProject = false }
+                ProjectFormView(
+                    name: $draftProjectName,
+                    selectedIcon: $draftProjectIcon,
+                    onDismiss: { showingNewProject = false }
+                )
             }
-        }
-        .sheet(isPresented: $showingNewProject) {
-            ProjectFormView()
-        }
-        .safeAreaInset(edge: .bottom) {
-            FooterView()
         }
     }
 }
 
 struct FooterView: View {
+    var onNavigate: (ContentView.Screen) -> Void
+
     var body: some View {
         HStack {
-            NavigationLink {
-                ArchivedProjectsView()
-            } label: {
+            Button(action: { onNavigate(.archivedProjects) }) {
                 Image(systemName: "archivebox")
-                    .font(.caption)
+                    .font(.callout)
             }
             .buttonStyle(.plain)
 
             Spacer()
 
-            NavigationLink {
-                SettingsView()
-            } label: {
+            Button(action: { onNavigate(.settings) }) {
                 Image(systemName: "gear")
-                    .font(.caption)
+                    .font(.callout)
             }
             .buttonStyle(.plain)
 
@@ -74,11 +99,11 @@ struct FooterView: View {
             Button("Beenden") {
                 NSApplication.shared.terminate(nil)
             }
-            .font(.caption)
+            .font(.callout)
             .buttonStyle(.plain)
         }
         .padding(.horizontal)
-        .padding(.vertical, 8)
+        .padding(.vertical, 10)
         .background(.bar)
     }
 }

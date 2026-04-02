@@ -5,12 +5,12 @@ struct StatusEntryForm: View {
     let project: Project
 
     @Environment(\.modelContext) private var modelContext
-    @Environment(\.dismiss) private var dismiss
 
-    @State private var freeText = ""
-    @State private var lastAction = ""
-    @State private var nextStep = ""
-    @State private var openQuestions = ""
+    @Binding var freeText: String
+    @Binding var lastAction: String
+    @Binding var nextStep: String
+    @Binding var openQuestions: String
+    var onDismiss: () -> Void = {}
     @State private var showOptionalFields = false
 
     var body: some View {
@@ -41,7 +41,7 @@ struct StatusEntryForm: View {
             }
 
             HStack {
-                Button("Abbrechen") { dismiss() }
+                Button("Abbrechen") { onDismiss() }
                     .keyboardShortcut(.cancelAction)
                 Spacer()
                 Button("Speichern") { save() }
@@ -51,6 +51,9 @@ struct StatusEntryForm: View {
         }
         .padding()
         .frame(width: 320)
+        .background(Color(nsColor: .windowBackgroundColor))
+        .clipShape(RoundedRectangle(cornerRadius: 10))
+        .shadow(radius: 10)
     }
 
     private func optionalField(label: String, text: Binding<String>) -> some View {
@@ -75,6 +78,13 @@ struct StatusEntryForm: View {
         )
         entry.project = project
         project.entries.append(entry)
-        dismiss()
+
+        // Clear draft
+        freeText = ""
+        lastAction = ""
+        nextStep = ""
+        openQuestions = ""
+
+        onDismiss()
     }
 }

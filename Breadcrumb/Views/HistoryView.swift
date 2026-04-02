@@ -6,18 +6,45 @@ struct HistoryView: View {
 
     @Environment(\.modelContext) private var modelContext
 
+    var onBack: () -> Void
+
     private var sortedEntries: [StatusEntry] {
         project.entries.sorted { $0.timestamp > $1.timestamp }
     }
 
     var body: some View {
-        Group {
+        VStack(spacing: 0) {
+            // Header
+            HStack {
+                Button(action: onBack) {
+                    HStack(spacing: 4) {
+                        Image(systemName: "chevron.left")
+                        Text("Zurück")
+                    }
+                    .font(.body)
+                }
+                .buttonStyle(.plain)
+
+                Spacer()
+
+                Text("Historie")
+                    .font(.headline)
+
+                Spacer()
+
+                Color.clear.frame(width: 60, height: 1)
+            }
+            .padding(.horizontal)
+            .padding(.vertical, 8)
+
+            // Content
             if sortedEntries.isEmpty {
                 ContentUnavailableView(
                     "Keine Einträge",
                     systemImage: "clock",
                     description: Text("Noch keine Status-Einträge vorhanden")
                 )
+                .frame(maxHeight: .infinity)
             } else {
                 List {
                     ForEach(sortedEntries) { entry in
@@ -27,7 +54,6 @@ struct HistoryView: View {
                 }
             }
         }
-        .navigationTitle("Historie")
     }
 
     private func deleteEntries(at offsets: IndexSet) {
@@ -59,6 +85,7 @@ struct HistoryEntryRow: View {
                 }
             }
             .padding(.vertical, 4)
+            .textSelection(.enabled)
         } label: {
             HStack {
                 VStack(alignment: .leading, spacing: 2) {
