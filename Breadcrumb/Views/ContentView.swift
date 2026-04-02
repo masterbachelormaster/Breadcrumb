@@ -5,17 +5,22 @@ struct ContentView: View {
     @State private var selectedProject: Project?
     @State private var screen: Screen = .projectList
 
+    @AppStorage("hasSeenWelcome") private var hasSeenWelcome = false
+
     enum Screen {
         case projectList
         case archivedProjects
         case settings
+        case about
         case pomodoroRunning
         case projectPicker
     }
 
     var body: some View {
         Group {
-            if pomodoroTimer.currentPhase != .idle {
+            if !hasSeenWelcome {
+                WelcomeView(onDismiss: { hasSeenWelcome = true })
+            } else if pomodoroTimer.currentPhase != .idle {
                 PomodoroRunningView(onFinished: {
                     screen = .projectList
                     selectedProject = nil
@@ -38,6 +43,8 @@ struct ContentView: View {
                     ArchivedProjectsView(onBack: { screen = .projectList })
                 case .settings:
                     SettingsView(onBack: { screen = .projectList })
+                case .about:
+                    AboutView(onBack: { screen = .projectList })
                 case .projectPicker:
                     ProjectPickerView(
                         onSelect: { project in

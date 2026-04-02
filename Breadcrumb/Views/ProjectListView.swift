@@ -106,6 +106,14 @@ struct FooterView: View {
 
             Spacer()
 
+            Button(action: { onNavigate(.about) }) {
+                Image(systemName: "info.circle")
+                    .font(.callout)
+            }
+            .buttonStyle(.plain)
+
+            Spacer()
+
             Button("Beenden") {
                 NSApplication.shared.terminate(nil)
             }
