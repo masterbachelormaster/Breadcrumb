@@ -6,7 +6,7 @@ struct HistoryView: View {
 
     @Environment(\.modelContext) private var modelContext
 
-    var onBack: () -> Void
+    var onBack: (() -> Void)? = nil
 
     private var sortedEntries: [StatusEntry] {
         project.entries.sorted { $0.timestamp > $1.timestamp }
@@ -15,27 +15,29 @@ struct HistoryView: View {
     var body: some View {
         VStack(spacing: 0) {
             // Header
-            HStack {
-                Button(action: onBack) {
-                    HStack(spacing: 4) {
-                        Image(systemName: "chevron.left")
-                        Text("Zurück")
+            if let onBack {
+                HStack {
+                    Button(action: onBack) {
+                        HStack(spacing: 4) {
+                            Image(systemName: "chevron.left")
+                            Text("Zurück")
+                        }
+                        .font(.body)
                     }
-                    .font(.body)
+                    .buttonStyle(.plain)
+
+                    Spacer()
+
+                    Text("Historie")
+                        .font(.headline)
+
+                    Spacer()
+
+                    Color.clear.frame(width: 60, height: 1)
                 }
-                .buttonStyle(.plain)
-
-                Spacer()
-
-                Text("Historie")
-                    .font(.headline)
-
-                Spacer()
-
-                Color.clear.frame(width: 60, height: 1)
+                .padding(.horizontal)
+                .padding(.vertical, 8)
             }
-            .padding(.horizontal)
-            .padding(.vertical, 8)
 
             // Content
             if sortedEntries.isEmpty {

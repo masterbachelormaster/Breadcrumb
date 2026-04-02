@@ -1,32 +1,34 @@
 import SwiftUI
 
 struct AboutView: View {
-    var onBack: () -> Void
+    var onBack: (() -> Void)? = nil
 
     var body: some View {
         VStack(spacing: 0) {
             // Header
-            HStack {
-                Button(action: onBack) {
-                    HStack(spacing: 4) {
-                        Image(systemName: "chevron.left")
-                        Text("Zurück")
+            if let onBack {
+                HStack {
+                    Button(action: onBack) {
+                        HStack(spacing: 4) {
+                            Image(systemName: "chevron.left")
+                            Text("Zurück")
+                        }
+                        .font(.body)
                     }
-                    .font(.body)
+                    .buttonStyle(.plain)
+
+                    Spacer()
+
+                    Text("Über Breadcrumb")
+                        .font(.headline)
+
+                    Spacer()
+
+                    Color.clear.frame(width: 60, height: 1)
                 }
-                .buttonStyle(.plain)
-
-                Spacer()
-
-                Text("Über Breadcrumb")
-                    .font(.headline)
-
-                Spacer()
-
-                Color.clear.frame(width: 60, height: 1)
+                .padding(.horizontal)
+                .padding(.vertical, 8)
             }
-            .padding(.horizontal)
-            .padding(.vertical, 8)
 
             Spacer()
 
