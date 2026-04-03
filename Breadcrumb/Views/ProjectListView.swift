@@ -9,6 +9,8 @@ struct ProjectListView: View {
     var onNavigate: (ContentView.Screen) -> Void
     var onStartStandalonePomodoro: () -> Void
 
+    @Environment(LanguageManager.self) private var languageManager
+
     @State private var showingNewProject = false
 
     // New project form drafts
@@ -35,7 +37,7 @@ struct ProjectListView: View {
                         Image(systemName: "plus")
                             .font(.body)
                     }
-                    .buttonStyle(.plain)
+                    .buttonStyle(ToolbarButtonStyle())
                 }
                 .padding(.horizontal)
                 .padding(.vertical, 8)
@@ -43,9 +45,9 @@ struct ProjectListView: View {
                 // Content
                 if activeProjects.isEmpty {
                     ContentUnavailableView(
-                        "Keine Projekte",
+                        Strings.Projects.noProjects(languageManager.language),
                         systemImage: "bookmark",
-                        description: Text("Erstelle dein erstes Projekt mit dem + Button")
+                        description: Text(Strings.Projects.noProjectsDescription(languageManager.language))
                     )
                     .frame(maxHeight: .infinity)
                 } else {
@@ -53,7 +55,7 @@ struct ProjectListView: View {
                         Button(action: { onSelectProject(project) }) {
                             ProjectRowView(project: project)
                         }
-                        .buttonStyle(.plain)
+                        .buttonStyle(ListRowButtonStyle())
                     }
                 }
 
@@ -77,60 +79,27 @@ struct ProjectListView: View {
 }
 
 struct FooterView: View {
-    @Environment(WindowManager.self) private var windowManager
-    @Environment(\.openWindow) private var openWindow
-
     var onNavigate: (ContentView.Screen) -> Void
     var onStartStandalonePomodoro: () -> Void
 
     var body: some View {
-        HStack {
+        HStack(spacing: 0) {
             Button(action: { onNavigate(.archivedProjects) }) {
                 Image(systemName: "archivebox")
                     .font(.callout)
+                    .frame(maxWidth: .infinity)
             }
-            .buttonStyle(.plain)
-
-            Spacer()
+            .buttonStyle(ToolbarButtonStyle())
 
             Button(action: onStartStandalonePomodoro) {
                 Text("🍅")
                     .font(.callout)
+                    .frame(maxWidth: .infinity)
             }
-            .buttonStyle(.plain)
-
-            Spacer()
-
-            Button(action: {
-                windowManager.open(.settings)
-                openWindow(id: "main")
-            }) {
-                Image(systemName: "gear")
-                    .font(.callout)
-            }
-            .buttonStyle(.plain)
-
-            Spacer()
-
-            Button(action: {
-                windowManager.open(.about)
-                openWindow(id: "main")
-            }) {
-                Image(systemName: "info.circle")
-                    .font(.callout)
-            }
-            .buttonStyle(.plain)
-
-            Spacer()
-
-            Button("Beenden") {
-                NSApplication.shared.terminate(nil)
-            }
-            .font(.callout)
-            .buttonStyle(.plain)
+            .buttonStyle(ToolbarButtonStyle())
         }
-        .padding(.horizontal)
-        .padding(.vertical, 10)
+        .padding(.horizontal, 4)
+        .padding(.vertical, 4)
         .background(.bar)
     }
 }

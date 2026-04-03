@@ -2,6 +2,7 @@ import SwiftUI
 import SwiftData
 
 struct ProjectPickerView: View {
+    @Environment(LanguageManager.self) private var languageManager
     @Query(filter: #Predicate<Project> { $0.isActive })
     private var activeProjects: [Project]
 
@@ -15,15 +16,15 @@ struct ProjectPickerView: View {
                 Button(action: onBack) {
                     HStack(spacing: 4) {
                         Image(systemName: "chevron.left")
-                        Text("Zurück")
+                        Text(Strings.General.back(languageManager.language))
                     }
                     .font(.body)
                 }
-                .buttonStyle(.plain)
+                .buttonStyle(ToolbarButtonStyle())
 
                 Spacer()
 
-                Text("Projekt wählen")
+                Text(Strings.Projects.chooseProject(languageManager.language))
                     .font(.headline)
 
                 Spacer()
@@ -41,18 +42,18 @@ struct ProjectPickerView: View {
                             .font(.title3)
                             .foregroundStyle(.secondary)
                             .frame(width: 24)
-                        Text("Ohne Projekt")
+                        Text(Strings.Projects.withoutProject(languageManager.language))
                             .font(.headline)
                     }
                     .padding(.vertical, 2)
                 }
-                .buttonStyle(.plain)
+                .buttonStyle(ListRowButtonStyle())
 
                 ForEach(activeProjects) { project in
                     Button(action: { onSelect(project) }) {
                         ProjectRowView(project: project)
                     }
-                    .buttonStyle(.plain)
+                    .buttonStyle(ListRowButtonStyle())
                 }
             }
         }

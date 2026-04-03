@@ -2,6 +2,7 @@ import SwiftUI
 import SwiftData
 
 struct ArchivedProjectsView: View {
+    @Environment(LanguageManager.self) private var languageManager
     @Query(filter: #Predicate<Project> { !$0.isActive })
     private var archivedProjects: [Project]
 
@@ -16,15 +17,15 @@ struct ArchivedProjectsView: View {
                 Button(action: onBack) {
                     HStack(spacing: 4) {
                         Image(systemName: "chevron.left")
-                        Text("Zurück")
+                        Text(Strings.General.back(languageManager.language))
                     }
                     .font(.body)
                 }
-                .buttonStyle(.plain)
+                .buttonStyle(ToolbarButtonStyle())
 
                 Spacer()
 
-                Text("Archiv")
+                Text(Strings.Projects.archiveTitle(languageManager.language))
                     .font(.headline)
 
                 Spacer()
@@ -38,9 +39,9 @@ struct ArchivedProjectsView: View {
             // Content
             if archivedProjects.isEmpty {
                 ContentUnavailableView(
-                    "Keine archivierten Projekte",
+                    Strings.Projects.noArchivedProjects(languageManager.language),
                     systemImage: "archivebox",
-                    description: Text("Archivierte Projekte erscheinen hier")
+                    description: Text(Strings.Projects.archivedProjectsDescription(languageManager.language))
                 )
                 .frame(maxHeight: .infinity)
             } else {
@@ -52,11 +53,11 @@ struct ArchivedProjectsView: View {
                         Spacer()
                     }
                     .contextMenu {
-                        Button("Reaktivieren", systemImage: "arrow.uturn.left") {
+                        Button(Strings.Projects.reactivate(languageManager.language), systemImage: "arrow.uturn.left") {
                             project.isActive = true
                         }
                         Divider()
-                        Button("Endgültig löschen", systemImage: "trash", role: .destructive) {
+                        Button(Strings.Projects.permanentlyDelete(languageManager.language), systemImage: "trash", role: .destructive) {
                             modelContext.delete(project)
                         }
                     }
