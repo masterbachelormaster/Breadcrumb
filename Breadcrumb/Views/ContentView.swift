@@ -2,6 +2,8 @@ import SwiftUI
 
 struct ContentView: View {
     @Environment(PomodoroTimer.self) private var pomodoroTimer
+    @Environment(WindowManager.self) private var windowManager
+    @Environment(\.openWindow) private var openWindow
     @State private var selectedProject: Project?
     @State private var screen: Screen = .projectList
 
@@ -55,6 +57,14 @@ struct ContentView: View {
             }
         }
         .frame(width: 350, height: 450)
+        .onReceive(NotificationCenter.default.publisher(for: .openSettings)) { _ in
+            windowManager.open(.settings)
+            openWindow(id: "main")
+        }
+        .onReceive(NotificationCenter.default.publisher(for: .openAbout)) { _ in
+            windowManager.open(.about)
+            openWindow(id: "main")
+        }
     }
 
     @AppStorage("pomodoro.workMinutes") private var workMinutes = 25
