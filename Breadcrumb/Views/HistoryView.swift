@@ -2,6 +2,7 @@ import SwiftUI
 import SwiftData
 
 struct HistoryView: View {
+    @Environment(LanguageManager.self) private var languageManager
     let project: Project
 
     @Environment(\.modelContext) private var modelContext
@@ -20,15 +21,15 @@ struct HistoryView: View {
                     Button(action: onBack) {
                         HStack(spacing: 4) {
                             Image(systemName: "chevron.left")
-                            Text("Zurück")
+                            Text(Strings.General.back(languageManager.language))
                         }
                         .font(.body)
                     }
-                    .buttonStyle(.plain)
+                    .buttonStyle(ToolbarButtonStyle())
 
                     Spacer()
 
-                    Text("Historie")
+                    Text(Strings.Status.history(languageManager.language))
                         .font(.headline)
 
                     Spacer()
@@ -42,9 +43,9 @@ struct HistoryView: View {
             // Content
             if sortedEntries.isEmpty {
                 ContentUnavailableView(
-                    "Keine Einträge",
+                    Strings.Status.noEntries(languageManager.language),
                     systemImage: "clock",
-                    description: Text("Noch keine Status-Einträge vorhanden")
+                    description: Text(Strings.Status.noEntriesDescription(languageManager.language))
                 )
                 .frame(maxHeight: .infinity)
             } else {
@@ -67,6 +68,7 @@ struct HistoryView: View {
 }
 
 struct HistoryEntryRow: View {
+    @Environment(LanguageManager.self) private var languageManager
     let entry: StatusEntry
     @State private var isExpanded = false
 
@@ -77,13 +79,13 @@ struct HistoryEntryRow: View {
                     .font(.body)
 
                 if let lastAction = entry.lastAction, !lastAction.isEmpty {
-                    detailField(label: "Letzter Schritt", value: lastAction)
+                    detailField(label: Strings.Status.lastStep(languageManager.language), value: lastAction)
                 }
                 if let nextStep = entry.nextStep, !nextStep.isEmpty {
-                    detailField(label: "Nächster Schritt", value: nextStep)
+                    detailField(label: Strings.Status.nextStep(languageManager.language), value: nextStep)
                 }
                 if let openQuestions = entry.openQuestions, !openQuestions.isEmpty {
-                    detailField(label: "Offene Fragen", value: openQuestions)
+                    detailField(label: Strings.Status.openQuestions(languageManager.language), value: openQuestions)
                 }
             }
             .padding(.vertical, 4)
