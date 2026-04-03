@@ -2,6 +2,7 @@ import SwiftUI
 import ServiceManagement
 
 struct SettingsView: View {
+    @Environment(LanguageManager.self) private var languageManager
     @State private var launchAtLogin = SMAppService.mainApp.status == .enabled
 
     @AppStorage("pomodoro.workMinutes") private var workMinutes = 25
@@ -14,6 +15,9 @@ struct SettingsView: View {
     var onBack: (() -> Void)? = nil
 
     var body: some View {
+        @Bindable var languageManager = languageManager
+        let l = languageManager.language
+
         VStack(spacing: 0) {
             // Header
             if let onBack {
@@ -21,15 +25,15 @@ struct SettingsView: View {
                     Button(action: onBack) {
                         HStack(spacing: 4) {
                             Image(systemName: "chevron.left")
-                            Text("Zurück")
+                            Text(Strings.General.back(l))
                         }
                         .font(.body)
                     }
-                    .buttonStyle(.plain)
+                    .buttonStyle(ToolbarButtonStyle())
 
                     Spacer()
 
-                    Text("Einstellungen")
+                    Text(Strings.General.settings(l))
                         .font(.headline)
 
                     Spacer()
@@ -42,8 +46,17 @@ struct SettingsView: View {
 
             // Content
             Form {
-                Section("Allgemein") {
-                    Toggle("Beim Login starten", isOn: $launchAtLogin)
+                Section(Strings.Settings.language(l)) {
+                    Picker(Strings.Settings.language(l), selection: $languageManager.language) {
+                        ForEach(AppLanguage.allCases, id: \.self) { lang in
+                            Text(lang.displayName).tag(lang)
+                        }
+                    }
+                    .labelsHidden()
+                }
+
+                Section(Strings.Settings.general(l)) {
+                    Toggle(Strings.Settings.launchAtLogin(l), isOn: $launchAtLogin)
                         .onChange(of: launchAtLogin) { _, newValue in
                             do {
                                 if newValue {
@@ -58,15 +71,15 @@ struct SettingsView: View {
                 }
 
                 Section("Pomodoro") {
-                    Stepper("Fokuszeit: \(workMinutes) Min.", value: $workMinutes, in: 5...60)
-                    Stepper("Kurze Pause: \(shortBreakMinutes) Min.", value: $shortBreakMinutes, in: 1...15)
-                    Stepper("Lange Pause: \(longBreakMinutes) Min.", value: $longBreakMinutes, in: 5...30)
-                    Stepper("Sitzungen bis lange Pause: \(sessionsBeforeLongBreak)", value: $sessionsBeforeLongBreak, in: 2...8)
+                    Stepper(Strings.Pomodoro.focusTimeLabel(l, minutes: workMinutes), value: $workMinutes, in: 5...60)
+                    Stepper(Strings.Pomodoro.shortBreakLabel(l, minutes: shortBreakMinutes), value: $shortBreakMinutes, in: 1...15)
+                    Stepper(Strings.Pomodoro.longBreakLabel(l, minutes: longBreakMinutes), value: $longBreakMinutes, in: 5...30)
+                    Stepper(Strings.Pomodoro.sessionsBeforeLongBreak(l, count: sessionsBeforeLongBreak), value: $sessionsBeforeLongBreak, in: 2...8)
                 }
 
-                Section("Benachrichtigungen") {
-                    Toggle("Ton abspielen", isOn: $playSound)
-                    Toggle("Systembenachrichtigung", isOn: $showNotification)
+                Section(Strings.Settings.notifications(l)) {
+                    Toggle(Strings.Settings.playSound(l), isOn: $playSound)
+                    Toggle(Strings.Settings.systemNotification(l), isOn: $showNotification)
                 }
             }
             .formStyle(.grouped)

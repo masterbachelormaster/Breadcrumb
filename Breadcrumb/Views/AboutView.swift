@@ -1,9 +1,12 @@
 import SwiftUI
 
 struct AboutView: View {
+    @Environment(LanguageManager.self) private var languageManager
     var onBack: (() -> Void)? = nil
 
     var body: some View {
+        let l = languageManager.language
+
         VStack(spacing: 0) {
             // Header
             if let onBack {
@@ -11,15 +14,15 @@ struct AboutView: View {
                     Button(action: onBack) {
                         HStack(spacing: 4) {
                             Image(systemName: "chevron.left")
-                            Text("Zurück")
+                            Text(Strings.General.back(l))
                         }
                         .font(.body)
                     }
-                    .buttonStyle(.plain)
+                    .buttonStyle(ToolbarButtonStyle())
 
                     Spacer()
 
-                    Text("Über Breadcrumb")
+                    Text(Strings.General.about(l))
                         .font(.headline)
 
                     Spacer()
@@ -49,7 +52,7 @@ struct AboutView: View {
                     .font(.caption)
                     .foregroundStyle(.secondary)
 
-                Text("Behalte den Überblick über deine Projekte.\nFokussiere dich mit dem Pomodoro-Timer.")
+                Text(Strings.About.tagline(l))
                     .font(.subheadline)
                     .foregroundStyle(.secondary)
                     .multilineTextAlignment(.center)

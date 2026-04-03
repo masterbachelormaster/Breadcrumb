@@ -1,9 +1,12 @@
 import SwiftUI
 
 struct WelcomeView: View {
+    @Environment(LanguageManager.self) private var languageManager
     var onDismiss: () -> Void
 
     var body: some View {
+        let l = languageManager.language
+
         VStack(spacing: 20) {
             Spacer()
 
@@ -14,32 +17,32 @@ struct WelcomeView: View {
                 .clipShape(RoundedRectangle(cornerRadius: 24))
                 .shadow(radius: 6)
 
-            Text("Willkommen bei Breadcrumb")
+            Text(Strings.Welcome.title(l))
                 .font(.title2)
                 .fontWeight(.semibold)
 
             VStack(alignment: .leading, spacing: 12) {
                 featureRow(
                     icon: "bookmark.fill",
-                    title: "Projekte verfolgen",
-                    description: "Halte fest, wo du bei jedem Projekt stehst"
+                    title: Strings.Welcome.trackProjects(l),
+                    description: Strings.Welcome.trackProjectsDescription(l)
                 )
                 featureRow(
                     icon: "timer",
-                    title: "Pomodoro-Timer",
-                    description: "Fokussierte Arbeitssitzungen mit Pausen"
+                    title: Strings.Welcome.pomodoroTimer(l),
+                    description: Strings.Welcome.pomodoroTimerDescription(l)
                 )
                 featureRow(
                     icon: "clock",
-                    title: "Status-Historie",
-                    description: "Sieh dir an, was du wann gemacht hast"
+                    title: Strings.Welcome.statusHistory(l),
+                    description: Strings.Welcome.statusHistoryDescription(l)
                 )
             }
             .padding(.horizontal, 24)
 
             Spacer()
 
-            Button("Los geht's!") {
+            Button(Strings.Welcome.letsGo(l)) {
                 onDismiss()
             }
             .buttonStyle(.borderedProminent)
