@@ -15,17 +15,21 @@ enum AIServiceError: LocalizedError, Sendable {
     case generationFailed(String)
 
     var errorDescription: String? {
+        description(for: .german)
+    }
+
+    func description(for language: AppLanguage) -> String {
         switch self {
         case .notAvailable(let reason):
             return reason
         case .contextWindowExceeded:
-            return "Der Text ist zu lang für die Verarbeitung"
+            return Strings.Errors.textTooLong(language)
         case .unsupportedLanguage:
-            return "Diese Sprache wird nicht unterstützt"
+            return Strings.Errors.unsupportedLanguage(language)
         case .guardrailViolation:
-            return "Der Inhalt konnte nicht verarbeitet werden"
+            return Strings.Errors.contentNotProcessed(language)
         case .generationFailed(let message):
-            return "Fehler bei der Textgenerierung: \(message)"
+            return Strings.Errors.generationFailed(language, message: message)
         }
     }
 }
@@ -50,21 +54,21 @@ final class AIService {
             case .available:
                 return .available
             case .unavailable(.deviceNotEligible):
-                return .unavailable("Dieses Gerät unterstützt Apple Intelligence nicht")
+                return .unavailable("deviceNotEligible")
             case .unavailable(.appleIntelligenceNotEnabled):
-                return .unavailable("Bitte aktiviere Apple Intelligence in den Systemeinstellungen")
+                return .unavailable("appleIntelligenceNotEnabled")
             case .unavailable(.modelNotReady):
-                return .unavailable("Das KI-Modell wird noch geladen")
+                return .unavailable("modelNotReady")
             case .unavailable:
-                return .unavailable("Apple Intelligence ist nicht verfügbar")
+                return .unavailable("unavailable")
             @unknown default:
-                return .unavailable("Apple Intelligence ist nicht verfügbar")
+                return .unavailable("unavailable")
             }
         } else {
-            return .unavailable("Erfordert macOS 26 oder neuer")
+            return .unavailable("requiresMacOS26")
         }
         #else
-        return .unavailable("Apple Intelligence wird in dieser App-Version nicht unterstützt")
+        return .unavailable("notSupportedInVersion")
         #endif
     }
 
@@ -193,7 +197,21 @@ final class AIService {
         if case .unavailable(let reason) = availability {
             return reason
         }
-        return "Apple Intelligence ist nicht verfügbar"
+        return "unavailable"
+    }
+
+    func localizedUnavailableReason(for language: AppLanguage) -> String {
+        if case .unavailable(let key) = availability {
+            switch key {
+            case "deviceNotEligible": return Strings.Errors.deviceNotSupported(language)
+            case "appleIntelligenceNotEnabled": return Strings.Errors.enableAppleIntelligence(language)
+            case "modelNotReady": return Strings.Errors.modelLoading(language)
+            case "requiresMacOS26": return Strings.Errors.requiresMacOS26(language)
+            case "notSupportedInVersion": return Strings.Errors.notSupportedInVersion(language)
+            default: return Strings.Errors.notAvailable(language)
+            }
+        }
+        return Strings.Errors.notAvailable(language)
     }
 
     #if canImport(FoundationModels)
