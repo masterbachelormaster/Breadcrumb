@@ -4,6 +4,15 @@ A macOS menu bar app for tracking what you're working on across projects, with a
 
 Breadcrumb lives in your menu bar and lets you quickly log status updates — what you just did, what's next, and open questions — so you never lose track of where you left off.
 
+## Screenshots
+
+<p align="center">
+  <img src="screenshots/project-list.png" width="220" alt="Project list">
+  <img src="screenshots/new-project.png" width="220" alt="New project form">
+  <img src="screenshots/status-entry.png" width="220" alt="Status entry form">
+  <img src="screenshots/pomodoro-timer.png" width="220" alt="Pomodoro timer">
+</p>
+
 ## Features
 
 - **Menu bar popover** — quick access without leaving your current workflow
