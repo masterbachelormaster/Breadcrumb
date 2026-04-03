@@ -2,6 +2,7 @@ import SwiftUI
 
 struct BreakoutWindowView: View {
     @Environment(WindowManager.self) private var windowManager
+    @Environment(LanguageManager.self) private var languageManager
 
     var body: some View {
         Group {
@@ -28,19 +29,20 @@ struct BreakoutWindowView: View {
 
     @ViewBuilder
     private func contentView(for content: BreakoutContent) -> some View {
+        let l = languageManager.language
         switch content {
         case .settings:
             SettingsView()
-                .navigationTitle("Einstellungen")
+                .navigationTitle(Strings.General.settings(l))
         case .about:
             AboutView()
-                .navigationTitle("\u{00DC}ber Breadcrumb")
+                .navigationTitle(Strings.General.about(l))
         case .history(let project):
             HistoryView(project: project)
-                .navigationTitle("Historie — \(project.name)")
+                .navigationTitle(Strings.BreakoutWindows.historyTitle(l, projectName: project.name))
         case .stats(let project):
             StatsContentView(project: project)
-                .navigationTitle("Statistiken — \(project.name)")
+                .navigationTitle(Strings.BreakoutWindows.statsTitle(l, projectName: project.name))
         }
     }
 
