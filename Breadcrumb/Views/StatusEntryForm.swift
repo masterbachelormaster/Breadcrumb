@@ -2,6 +2,7 @@ import SwiftUI
 import SwiftData
 
 struct StatusEntryForm: View {
+    @Environment(LanguageManager.self) private var languageManager
     let project: Project
 
     @Environment(\.modelContext) private var modelContext
@@ -15,11 +16,11 @@ struct StatusEntryForm: View {
 
     var body: some View {
         VStack(spacing: 16) {
-            Text("Status aktualisieren")
+            Text(Strings.Status.updateStatus(languageManager.language))
                 .font(.headline)
 
             VStack(alignment: .leading, spacing: 4) {
-                Text("Wo stehst du gerade?")
+                Text(Strings.Status.whereAreYou(languageManager.language))
                     .font(.subheadline)
                     .foregroundStyle(.secondary)
                 TextEditor(text: $freeText)
@@ -31,20 +32,28 @@ struct StatusEntryForm: View {
                     )
             }
 
-            DisclosureGroup("Optionale Felder", isExpanded: $showOptionalFields) {
+            AIExtractButton(
+                freeText: $freeText,
+                lastAction: $lastAction,
+                nextStep: $nextStep,
+                openQuestions: $openQuestions,
+                showOptionalFields: $showOptionalFields
+            )
+
+            DisclosureGroup(Strings.Status.optionalFields(languageManager.language), isExpanded: $showOptionalFields) {
                 VStack(spacing: 12) {
-                    optionalField(label: "Letzter Schritt", text: $lastAction)
-                    optionalField(label: "Nächster Schritt", text: $nextStep)
-                    optionalField(label: "Offene Fragen", text: $openQuestions)
+                    optionalField(label: Strings.Status.lastStep(languageManager.language), text: $lastAction)
+                    optionalField(label: Strings.Status.nextStep(languageManager.language), text: $nextStep)
+                    optionalField(label: Strings.Status.openQuestions(languageManager.language), text: $openQuestions)
                 }
                 .padding(.top, 8)
             }
 
             HStack {
-                Button("Abbrechen") { onDismiss() }
+                Button(Strings.General.cancel(languageManager.language)) { onDismiss() }
                     .keyboardShortcut(.cancelAction)
                 Spacer()
-                Button("Speichern") { save() }
+                Button(Strings.General.save(languageManager.language)) { save() }
                     .keyboardShortcut(.defaultAction)
                     .disabled(freeText.trimmingCharacters(in: .whitespaces).isEmpty)
             }

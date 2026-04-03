@@ -1,6 +1,7 @@
 import SwiftUI
 
 struct StatsContentView: View {
+    @Environment(LanguageManager.self) private var languageManager
     let project: Project
 
     var body: some View {
@@ -15,7 +16,7 @@ struct StatsContentView: View {
                 VStack(spacing: 4) {
                     Text("\(project.completedPomodoroCount)")
                         .font(.system(size: 48, weight: .medium))
-                    Text("Abgeschlossene Sitzungen")
+                    Text(Strings.Pomodoro.completedSessions(languageManager.language))
                         .font(.caption)
                         .foregroundStyle(.secondary)
                 }
@@ -23,7 +24,7 @@ struct StatsContentView: View {
                 VStack(spacing: 4) {
                     Text(project.formattedFocusTime)
                         .font(.system(size: 48, weight: .medium))
-                    Text("Fokuszeit")
+                    Text(Strings.Pomodoro.focusTime(languageManager.language))
                         .font(.caption)
                         .foregroundStyle(.secondary)
                 }
