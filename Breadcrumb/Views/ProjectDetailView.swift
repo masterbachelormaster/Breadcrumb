@@ -7,6 +7,7 @@ struct ProjectDetailView: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(WindowManager.self) private var windowManager
     @Environment(\.openWindow) private var openWindow
+    @Environment(LanguageManager.self) private var languageManager
 
     var onBack: () -> Void
     var onStartPomodoro: () -> Void
@@ -32,11 +33,11 @@ struct ProjectDetailView: View {
                     Button(action: onBack) {
                         HStack(spacing: 4) {
                             Image(systemName: "chevron.left")
-                            Text("Zurück")
+                            Text(Strings.General.back(languageManager.language))
                         }
                         .font(.body)
                     }
-                    .buttonStyle(.plain)
+                    .buttonStyle(ToolbarButtonStyle())
 
                     Spacer()
 
@@ -47,19 +48,19 @@ struct ProjectDetailView: View {
                     Spacer()
 
                     Menu {
-                        Button("Bearbeiten", systemImage: "pencil") {
+                        Button(Strings.General.edit(languageManager.language), systemImage: "pencil") {
                             if editDraftName.isEmpty {
                                 editDraftName = project.name
                                 editDraftIcon = project.icon
                             }
                             showingEditForm = true
                         }
-                        Button("Archivieren", systemImage: "archivebox") {
+                        Button(Strings.Projects.archive(languageManager.language), systemImage: "archivebox") {
                             project.isActive = false
                             onBack()
                         }
                         Divider()
-                        Button("Löschen", systemImage: "trash", role: .destructive) {
+                        Button(Strings.General.delete(languageManager.language), systemImage: "trash", role: .destructive) {
                             modelContext.delete(project)
                             onBack()
                         }
@@ -67,7 +68,7 @@ struct ProjectDetailView: View {
                         Image(systemName: "ellipsis.circle")
                             .font(.body)
                     }
-                    .buttonStyle(.plain)
+                    .buttonStyle(ToolbarButtonStyle())
                 }
                 .padding(.horizontal)
                 .padding(.vertical, 8)
@@ -79,9 +80,9 @@ struct ProjectDetailView: View {
                             latestEntrySection(entry)
                         } else {
                             ContentUnavailableView(
-                                "Noch kein Status erfasst",
+                                Strings.Status.noStatusYet(languageManager.language),
                                 systemImage: "text.badge.plus",
-                                description: Text("Halte fest, wo du gerade stehst")
+                                description: Text(Strings.Status.noStatusYetDescription(languageManager.language))
                             )
                         }
 
@@ -98,22 +99,23 @@ struct ProjectDetailView: View {
                     Button {
                         onStartPomodoro()
                     } label: {
-                        Label("Pomodoro", systemImage: "timer")
+                        Label(Strings.Pomodoro.pomodoro(languageManager.language), systemImage: "timer")
                     }
                     .buttonStyle(.bordered)
                     .tint(.red)
 
-                    Button("Status aktualisieren") {
+                    Button(Strings.Status.updateStatus(languageManager.language)) {
                         showingStatusForm = true
                     }
                     .buttonStyle(.borderedProminent)
 
                     Spacer()
 
-                    Button("Historie") {
+                    Button(Strings.Status.history(languageManager.language)) {
                         windowManager.open(.history(project))
                         openWindow(id: "main")
                     }
+                    .buttonStyle(.bordered)
                 }
                 .padding()
             }
@@ -152,7 +154,7 @@ struct ProjectDetailView: View {
     private func latestEntrySection(_ entry: StatusEntry) -> some View {
         VStack(alignment: .leading, spacing: 12) {
             HStack {
-                Text("Aktueller Stand")
+                Text(Strings.Status.currentStatus(languageManager.language))
                     .font(.headline)
                 Spacer()
                 Text(entry.timestamp, style: .relative)
@@ -164,13 +166,13 @@ struct ProjectDetailView: View {
                 .font(.body)
 
             if let lastAction = entry.lastAction, !lastAction.isEmpty {
-                fieldRow(label: "Letzter Schritt", value: lastAction)
+                fieldRow(label: Strings.Status.lastStep(languageManager.language), value: lastAction)
             }
             if let nextStep = entry.nextStep, !nextStep.isEmpty {
-                fieldRow(label: "Nächster Schritt", value: nextStep)
+                fieldRow(label: Strings.Status.nextStep(languageManager.language), value: nextStep)
             }
             if let openQuestions = entry.openQuestions, !openQuestions.isEmpty {
-                fieldRow(label: "Offene Fragen", value: openQuestions)
+                fieldRow(label: Strings.Status.openQuestions(languageManager.language), value: openQuestions)
             }
         }
     }
@@ -189,49 +191,51 @@ struct ProjectDetailView: View {
     @ViewBuilder
     private var pomodoroStatsSection: some View {
         Divider()
-        VStack(alignment: .leading, spacing: 8) {
-            HStack {
-                Text("Pomodoro")
-                    .font(.headline)
-                Spacer()
-                HStack(spacing: 2) {
-                    Text("Details")
-                        .font(.caption)
-                        .foregroundStyle(.secondary)
-                    Image(systemName: "chevron.right")
-                        .font(.caption)
-                        .foregroundStyle(.tertiary)
-                }
-            }
-
-            HStack {
-                VStack(alignment: .leading, spacing: 2) {
-                    Text("Abgeschlossen")
-                        .font(.caption)
-                        .foregroundStyle(.secondary)
-                        .textCase(.uppercase)
-                    Text("\(project.completedPomodoroCount)")
-                        .font(.title2)
-                        .fontWeight(.medium)
-                }
-
-                Spacer()
-
-                VStack(alignment: .leading, spacing: 2) {
-                    Text("Fokuszeit")
-                        .font(.caption)
-                        .foregroundStyle(.secondary)
-                        .textCase(.uppercase)
-                    Text(project.formattedFocusTime)
-                        .font(.title2)
-                        .fontWeight(.medium)
-                }
-            }
-        }
-        .onTapGesture {
+        Button {
             windowManager.open(.stats(project))
             openWindow(id: "main")
+        } label: {
+            VStack(alignment: .leading, spacing: 8) {
+                HStack {
+                    Text(Strings.Pomodoro.pomodoro(languageManager.language))
+                        .font(.headline)
+                    Spacer()
+                    HStack(spacing: 2) {
+                        Text(Strings.Pomodoro.details(languageManager.language))
+                            .font(.caption)
+                            .foregroundStyle(.secondary)
+                        Image(systemName: "chevron.right")
+                            .font(.caption)
+                            .foregroundStyle(.tertiary)
+                    }
+                }
+
+                HStack {
+                    VStack(alignment: .leading, spacing: 2) {
+                        Text(Strings.Pomodoro.completed(languageManager.language))
+                            .font(.caption)
+                            .foregroundStyle(.secondary)
+                            .textCase(.uppercase)
+                        Text("\(project.completedPomodoroCount)")
+                            .font(.title2)
+                            .fontWeight(.medium)
+                    }
+
+                    Spacer()
+
+                    VStack(alignment: .leading, spacing: 2) {
+                        Text(Strings.Pomodoro.focusTime(languageManager.language))
+                            .font(.caption)
+                            .foregroundStyle(.secondary)
+                            .textCase(.uppercase)
+                        Text(project.formattedFocusTime)
+                            .font(.title2)
+                            .fontWeight(.medium)
+                    }
+                }
+            }
         }
+        .buttonStyle(ToolbarButtonStyle())
     }
 
 }

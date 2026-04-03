@@ -1,6 +1,7 @@
 import SwiftUI
 
 struct ProjectRowView: View {
+    @Environment(LanguageManager.self) private var languageManager
     let project: Project
 
     var body: some View {
@@ -21,7 +22,7 @@ struct ProjectRowView: View {
                         .foregroundStyle(.secondary)
                         .lineLimit(1)
                 } else {
-                    Text("Noch kein Status")
+                    Text(Strings.Status.noStatus(languageManager.language))
                         .font(.subheadline)
                         .foregroundStyle(.tertiary)
                         .italic()

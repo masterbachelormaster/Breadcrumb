@@ -2,6 +2,7 @@ import SwiftUI
 import SwiftData
 
 struct ProjectFormView: View {
+    @Environment(LanguageManager.self) private var languageManager
     @Environment(\.modelContext) private var modelContext
 
     var editingProject: Project?
@@ -19,14 +20,14 @@ struct ProjectFormView: View {
 
     var body: some View {
         VStack(spacing: 16) {
-            Text(isEditing ? "Projekt bearbeiten" : "Neues Projekt")
+            Text(isEditing ? Strings.Projects.editProject(languageManager.language) : Strings.Projects.newProject(languageManager.language))
                 .font(.headline)
 
-            TextField("Projektname", text: $name)
+            TextField(Strings.Projects.projectName(languageManager.language), text: $name)
                 .textFieldStyle(.roundedBorder)
 
             VStack(alignment: .leading, spacing: 8) {
-                Text("Icon")
+                Text(Strings.Projects.icon(languageManager.language))
                     .font(.subheadline)
                     .foregroundStyle(.secondary)
 
@@ -49,10 +50,10 @@ struct ProjectFormView: View {
             }
 
             HStack {
-                Button("Abbrechen") { onDismiss() }
+                Button(Strings.General.cancel(languageManager.language)) { onDismiss() }
                     .keyboardShortcut(.cancelAction)
                 Spacer()
-                Button(isEditing ? "Speichern" : "Erstellen") { save() }
+                Button(isEditing ? Strings.General.save(languageManager.language) : Strings.General.create(languageManager.language)) { save() }
                     .keyboardShortcut(.defaultAction)
                     .disabled(name.trimmingCharacters(in: .whitespaces).isEmpty)
             }
