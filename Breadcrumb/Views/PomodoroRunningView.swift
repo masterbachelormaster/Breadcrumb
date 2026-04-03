@@ -4,6 +4,7 @@ import UserNotifications
 
 struct PomodoroRunningView: View {
     @Environment(PomodoroTimer.self) private var timer
+    @Environment(LanguageManager.self) private var languageManager
     @Environment(\.modelContext) private var modelContext
 
     @AppStorage("pomodoro.workMinutes") private var workMinutes = 25
@@ -58,18 +59,18 @@ struct PomodoroRunningView: View {
                 switch timer.currentPhase {
                 case .work:
                     if timer.isPaused {
-                        Button("Fortsetzen") { timer.resume() }
+                        Button(Strings.Pomodoro.resume(languageManager.language)) { timer.resume() }
                             .buttonStyle(.borderedProminent)
                     } else {
-                        Button("Pause") { timer.pause() }
+                        Button(Strings.Pomodoro.pause(languageManager.language)) { timer.pause() }
                             .buttonStyle(.bordered)
                     }
-                    Button("Stopp") { stopSession() }
+                    Button(Strings.Pomodoro.stop(languageManager.language)) { stopSession() }
                         .buttonStyle(.bordered)
                         .tint(.red)
 
                 case .shortBreak, .longBreak:
-                    Button("Überspringen") { skipBreak() }
+                    Button(Strings.Pomodoro.skip(languageManager.language)) { skipBreak() }
                         .buttonStyle(.bordered)
 
                 case .sessionEnded:
@@ -87,11 +88,11 @@ struct PomodoroRunningView: View {
                 if oldPhase == .work {
                     wasBreakEnd = false
                     showingSessionEnd = true
-                    sendNotification(title: "Pomodoro beendet!", body: "Zeit für eine Pause.")
+                    sendNotification(title: Strings.Notifications.pomodoroFinishedTitle(languageManager.language), body: Strings.Notifications.pomodoroFinishedBody(languageManager.language))
                 } else if oldPhase == .shortBreak || oldPhase == .longBreak {
                     wasBreakEnd = true
                     showingSessionEnd = true
-                    sendNotification(title: "Pause vorbei!", body: "Bereit für die nächste Sitzung?")
+                    sendNotification(title: Strings.Notifications.breakOverTitle(languageManager.language), body: Strings.Notifications.breakOverBody(languageManager.language))
                 }
             }
         }
@@ -169,16 +170,17 @@ struct PomodoroRunningView: View {
     }
 
     private var phaseLabel: String {
+        let l = languageManager.language
         switch timer.currentPhase {
         case .idle: return ""
         case .work:
             if timer.isOvertime {
-                return "Überstunden · Sitzung \(timer.currentSessionNumber)"
+                return Strings.Pomodoro.overtimeSession(l, number: timer.currentSessionNumber)
             }
-            return "Fokuszeit · Sitzung \(timer.currentSessionNumber) von \(sessionsBeforeLong)"
-        case .shortBreak: return "Kurze Pause"
-        case .longBreak: return "Lange Pause"
-        case .sessionEnded: return "Sitzung beendet"
+            return Strings.Pomodoro.focusTimeSession(l, number: timer.currentSessionNumber, total: sessionsBeforeLong)
+        case .shortBreak: return Strings.Pomodoro.shortBreak(l)
+        case .longBreak: return Strings.Pomodoro.longBreak(l)
+        case .sessionEnded: return Strings.Pomodoro.sessionEnded(l)
         }
     }
 

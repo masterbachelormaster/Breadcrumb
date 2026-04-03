@@ -3,6 +3,7 @@ import SwiftData
 
 struct PomodoroSessionEndView: View {
     @Environment(PomodoroTimer.self) private var timer
+    @Environment(LanguageManager.self) private var languageManager
     @Environment(\.modelContext) private var modelContext
 
     let wasBreak: Bool
@@ -42,29 +43,31 @@ struct PomodoroSessionEndView: View {
 
     @ViewBuilder
     private var breakEndContent: some View {
-        Text("☕ Pause vorbei!")
+        let l = languageManager.language
+        Text(Strings.Pomodoro.breakOver(l))
             .font(.headline)
-        Text("Bereit für die nächste Sitzung?")
+        Text(Strings.Pomodoro.readyForNext(l))
             .font(.subheadline)
             .foregroundStyle(.secondary)
 
         HStack {
-            Button("Nächste Sitzung") { onStartNextSession() }
+            Button(Strings.Pomodoro.nextSession(l)) { onStartNextSession() }
                 .buttonStyle(.borderedProminent)
-            Button("Aufhören") { onStopCompletely() }
+            Button(Strings.Pomodoro.stopCompletely(l)) { onStopCompletely() }
                 .buttonStyle(.bordered)
         }
     }
 
     @ViewBuilder
     private var workEndContent: some View {
-        Text("✅ Sitzung beendet!")
+        let l = languageManager.language
+        Text(Strings.Pomodoro.sessionFinished(l))
             .font(.headline)
 
         // Project picker for standalone sessions
         if timer.boundProject == nil {
-            Picker("Projekt", selection: $selectedProject) {
-                Text("Ohne Projekt").tag(nil as Project?)
+            Picker(Strings.Projects.project(l), selection: $selectedProject) {
+                Text(Strings.Projects.withoutProject(l)).tag(nil as Project?)
                 ForEach(activeProjects) { project in
                     Label(project.name, systemImage: project.icon)
                         .tag(project as Project?)
@@ -74,7 +77,7 @@ struct PomodoroSessionEndView: View {
 
         // Status entry form
         VStack(alignment: .leading, spacing: 4) {
-            Text("Wo stehst du gerade?")
+            Text(Strings.Status.whereAreYou(l))
                 .font(.subheadline)
                 .foregroundStyle(.secondary)
             TextEditor(text: $freeText)
@@ -86,29 +89,37 @@ struct PomodoroSessionEndView: View {
                 )
         }
 
-        DisclosureGroup("Optionale Felder", isExpanded: $showOptionalFields) {
+        AIExtractButton(
+            freeText: $freeText,
+            lastAction: $lastAction,
+            nextStep: $nextStep,
+            openQuestions: $openQuestions,
+            showOptionalFields: $showOptionalFields
+        )
+
+        DisclosureGroup(Strings.Status.optionalFields(l), isExpanded: $showOptionalFields) {
             VStack(spacing: 8) {
-                optionalField(label: "Letzter Schritt", text: $lastAction)
-                optionalField(label: "Nächster Schritt", text: $nextStep)
-                optionalField(label: "Offene Fragen", text: $openQuestions)
+                optionalField(label: Strings.Status.lastStep(l), text: $lastAction)
+                optionalField(label: Strings.Status.nextStep(l), text: $nextStep)
+                optionalField(label: Strings.Status.openQuestions(l), text: $openQuestions)
             }
             .padding(.top, 4)
         }
 
         HStack {
-            Button("Speichern & Pause") { saveAndBreak() }
+            Button(Strings.Pomodoro.saveAndBreak(l)) { saveAndBreak() }
                 .buttonStyle(.borderedProminent)
                 .disabled(selectedProject == nil && timer.boundProject == nil)
-            Button("Weiterarbeiten") { onContinueWorking() }
+            Button(Strings.Pomodoro.continueWorking(l)) { onContinueWorking() }
                 .buttonStyle(.bordered)
         }
         HStack(spacing: 16) {
-            Button("Überspringen") { onSkip() }
-            Button("Aufhören") { onStopCompletely() }
+            Button(Strings.Pomodoro.skip(l)) { onSkip() }
+            Button(Strings.Pomodoro.stopCompletely(l)) { onStopCompletely() }
         }
         .font(.caption)
         .foregroundStyle(.secondary)
-        .buttonStyle(.plain)
+        .buttonStyle(ToolbarButtonStyle())
     }
 
     private func optionalField(label: String, text: Binding<String>) -> some View {
