@@ -1,8 +1,71 @@
 import AppKit
 
+extension Notification.Name {
+    static let openSettings = Notification.Name("Breadcrumb.openSettings")
+    static let openAbout = Notification.Name("Breadcrumb.openAbout")
+}
+
 @MainActor
 final class AppDelegate: NSObject, NSApplicationDelegate {
+    private var eventMonitor: Any?
+
+    func applicationDidFinishLaunching(_ notification: Notification) {
+        eventMonitor = NSEvent.addLocalMonitorForEvents(matching: .rightMouseDown) { event in
+            guard let window = event.window,
+                  String(describing: type(of: window)).contains("StatusBar") else {
+                return event
+            }
+
+            MainActor.assumeIsolated {
+                let menu = NSMenu()
+
+                let stored = UserDefaults.standard.string(forKey: "app.language") ?? "de"
+                let language = AppLanguage(rawValue: stored) ?? .german
+
+                let settingsItem = NSMenuItem(
+                    title: Strings.General.settingsEllipsis(language),
+                    action: #selector(AppDelegate.openSettings),
+                    keyEquivalent: ","
+                )
+                settingsItem.target = NSApp.delegate
+                menu.addItem(settingsItem)
+
+                let aboutItem = NSMenuItem(
+                    title: Strings.General.about(language),
+                    action: #selector(AppDelegate.openAbout),
+                    keyEquivalent: ""
+                )
+                aboutItem.target = NSApp.delegate
+                aboutItem.image = NSImage(systemSymbolName: "info.circle", accessibilityDescription: nil)
+                menu.addItem(aboutItem)
+
+                menu.addItem(NSMenuItem.separator())
+
+                let quitItem = NSMenuItem(
+                    title: Strings.General.quit(language),
+                    action: #selector(NSApplication.terminate(_:)),
+                    keyEquivalent: "q"
+                )
+                menu.addItem(quitItem)
+
+                if let view = window.contentView {
+                    NSMenu.popUpContextMenu(menu, with: event, for: view)
+                }
+            }
+
+            return nil
+        }
+    }
+
     func applicationShouldTerminateAfterLastWindowClosed(_ sender: NSApplication) -> Bool {
         false
+    }
+
+    @objc private func openSettings() {
+        NotificationCenter.default.post(name: .openSettings, object: nil)
+    }
+
+    @objc private func openAbout() {
+        NotificationCenter.default.post(name: .openAbout, object: nil)
     }
 }

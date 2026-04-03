@@ -8,6 +8,7 @@ struct BreadcrumbApp: App {
     @State private var pomodoroTimer = PomodoroTimer()
     @State private var windowManager = WindowManager()
     @State private var aiService = AIService()
+    @State private var languageManager = LanguageManager()
 
     init() {
         UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound]) { _, _ in }
@@ -19,8 +20,13 @@ struct BreadcrumbApp: App {
                 .environment(pomodoroTimer)
                 .environment(windowManager)
                 .environment(aiService)
+                .environment(languageManager)
         } label: {
-            Text(pomodoroTimer.menuBarLabel)
+            if pomodoroTimer.currentPhase == .idle {
+                Image(systemName: "bookmark.fill")
+            } else {
+                Text(pomodoroTimer.menuBarLabel)
+            }
         }
         .menuBarExtraStyle(.window)
         .modelContainer(for: [Project.self, PomodoroSession.self])
@@ -30,11 +36,12 @@ struct BreadcrumbApp: App {
                 .environment(pomodoroTimer)
                 .environment(windowManager)
                 .environment(aiService)
+                .environment(languageManager)
         }
         .modelContainer(for: [Project.self, PomodoroSession.self])
         .defaultSize(width: 500, height: 400)
         .commands {
-            BreadcrumbCommands(windowManager: windowManager)
+            BreadcrumbCommands(windowManager: windowManager, languageManager: languageManager)
         }
     }
 }
@@ -42,16 +49,17 @@ struct BreadcrumbApp: App {
 struct BreadcrumbCommands: Commands {
     @Environment(\.openWindow) private var openWindow
     let windowManager: WindowManager
+    let languageManager: LanguageManager
 
     var body: some Commands {
         CommandGroup(replacing: .appInfo) {
-            Button("Über Breadcrumb") {
+            Button(Strings.General.about(languageManager.language)) {
                 windowManager.open(.about)
                 openWindow(id: "main")
             }
         }
         CommandGroup(replacing: .appSettings) {
-            Button("Einstellungen...") {
+            Button(Strings.General.settingsEllipsis(languageManager.language)) {
                 windowManager.open(.settings)
                 openWindow(id: "main")
             }

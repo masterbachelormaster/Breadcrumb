@@ -20,12 +20,12 @@ enum BreakoutContent: Equatable {
         }
     }
 
-    var windowTitle: String {
+    func windowTitle(for language: AppLanguage) -> String {
         switch self {
-        case .settings: return "Einstellungen"
-        case .about: return "Über Breadcrumb"
-        case .history: return "Historie"
-        case .stats: return "Pomodoro-Statistiken"
+        case .settings: return Strings.General.settings(language)
+        case .about: return Strings.General.about(language)
+        case .history: return Strings.Status.history(language)
+        case .stats: return Strings.Pomodoro.pomodoroStatistics(language)
         }
     }
 }
