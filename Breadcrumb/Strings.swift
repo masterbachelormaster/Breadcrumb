@@ -34,6 +34,9 @@ enum Strings {
         static func settingsEllipsis(_ l: AppLanguage) -> String {
             l == .german ? "Einstellungen..." : "Settings..."
         }
+        static func today(_ l: AppLanguage) -> String {
+            l == .german ? "Heute" : "Today"
+        }
     }
 
     // MARK: - Projects
@@ -389,6 +392,32 @@ enum Strings {
         }
         static func notSupportedInVersion(_ l: AppLanguage) -> String {
             l == .german ? "Apple Intelligence wird in dieser App-Version nicht unterstützt" : "Apple Intelligence is not supported in this app version"
+        }
+    }
+
+    // MARK: - Documents
+
+    enum Documents {
+        static func documents(_ l: AppLanguage) -> String {
+            l == .german ? "Dokumente" : "Documents"
+        }
+        static func addFile(_ l: AppLanguage) -> String {
+            l == .german ? "Datei hinzufügen…" : "Add File…"
+        }
+        static func addURL(_ l: AppLanguage) -> String {
+            l == .german ? "Link hinzufügen…" : "Add URL…"
+        }
+        static func fileNotFound(_ l: AppLanguage) -> String {
+            l == .german ? "Datei nicht gefunden" : "File not found"
+        }
+        static func editLabel(_ l: AppLanguage) -> String {
+            l == .german ? "Bezeichnung bearbeiten" : "Edit Label"
+        }
+        static func urlPlaceholder(_ l: AppLanguage) -> String {
+            l == .german ? "URL eingeben" : "Enter URL"
+        }
+        static func labelPlaceholder(_ l: AppLanguage) -> String {
+            l == .german ? "Bezeichnung (optional)" : "Label (optional)"
         }
     }
 }
