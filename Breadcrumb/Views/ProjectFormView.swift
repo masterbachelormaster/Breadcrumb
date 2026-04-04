@@ -2,6 +2,7 @@ import SwiftUI
 import SwiftData
 
 struct ProjectFormView: View {
+    @Environment(LanguageManager.self) private var languageManager
     @Environment(\.modelContext) private var modelContext
 
     var editingProject: Project?
@@ -16,17 +17,19 @@ struct ProjectFormView: View {
     ]
 
     private var isEditing: Bool { editingProject != nil }
+    @FocusState private var isNameFocused: Bool
 
     var body: some View {
         VStack(spacing: 16) {
-            Text(isEditing ? "Projekt bearbeiten" : "Neues Projekt")
+            Text(isEditing ? Strings.Projects.editProject(languageManager.language) : Strings.Projects.newProject(languageManager.language))
                 .font(.headline)
 
-            TextField("Projektname", text: $name)
+            TextField(Strings.Projects.projectName(languageManager.language), text: $name)
                 .textFieldStyle(.roundedBorder)
+                .focused($isNameFocused)
 
             VStack(alignment: .leading, spacing: 8) {
-                Text("Icon")
+                Text(Strings.Projects.icon(languageManager.language))
                     .font(.subheadline)
                     .foregroundStyle(.secondary)
 
@@ -36,32 +39,32 @@ struct ProjectFormView: View {
                             Image(systemName: icon)
                                 .font(.title3)
                                 .frame(width: 36, height: 36)
-                                .background(
-                                    selectedIcon == icon
-                                        ? Color.accentColor.opacity(0.2)
-                                        : Color.clear
-                                )
-                                .clipShape(RoundedRectangle(cornerRadius: 6))
                         }
-                        .buttonStyle(.plain)
+                        .buttonStyle(IconPickerButtonStyle(isSelected: selectedIcon == icon))
                     }
                 }
             }
 
             HStack {
-                Button("Abbrechen") { onDismiss() }
+                Button(Strings.General.cancel(languageManager.language)) { onDismiss() }
+                    .buttonStyle(.bordered)
                     .keyboardShortcut(.cancelAction)
                 Spacer()
-                Button(isEditing ? "Speichern" : "Erstellen") { save() }
+                Button(isEditing ? Strings.General.save(languageManager.language) : Strings.General.create(languageManager.language)) { save() }
+                    .buttonStyle(.borderedProminent)
                     .keyboardShortcut(.defaultAction)
                     .disabled(name.trimmingCharacters(in: .whitespaces).isEmpty)
             }
         }
         .padding()
-        .frame(width: 300)
+        .frame(width: 320)
         .background(Color(nsColor: .windowBackgroundColor))
-        .clipShape(RoundedRectangle(cornerRadius: 10))
+        .clipShape(.rect(cornerRadius: 10))
         .shadow(radius: 10)
+        .task {
+            try? await Task.sleep(for: .milliseconds(300))
+            isNameFocused = true
+        }
     }
 
     private func save() {
@@ -75,6 +78,7 @@ struct ProjectFormView: View {
             let project = Project(name: trimmedName, icon: selectedIcon)
             modelContext.insert(project)
         }
+        modelContext.saveWithLogging()
 
         // Clear draft
         name = ""

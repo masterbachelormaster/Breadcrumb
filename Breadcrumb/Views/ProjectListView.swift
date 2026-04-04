@@ -7,6 +7,9 @@ struct ProjectListView: View {
 
     var onSelectProject: (Project) -> Void
     var onNavigate: (ContentView.Screen) -> Void
+    var onStartStandalonePomodoro: () -> Void
+
+    @Environment(LanguageManager.self) private var languageManager
 
     @State private var showingNewProject = false
 
@@ -30,11 +33,14 @@ struct ProjectListView: View {
                     Text("Breadcrumb")
                         .font(.headline)
                     Spacer()
-                    Button(action: { showingNewProject = true }) {
-                        Image(systemName: "plus")
-                            .font(.body)
+                    Button(Strings.Projects.newProject(languageManager.language), systemImage: "plus") {
+                        draftProjectName = ""
+                        draftProjectIcon = "doc.text"
+                        showingNewProject = true
                     }
-                    .buttonStyle(.plain)
+                    .labelStyle(.iconOnly)
+                    .font(.body)
+                    .buttonStyle(ToolbarButtonStyle())
                 }
                 .padding(.horizontal)
                 .padding(.vertical, 8)
@@ -42,9 +48,9 @@ struct ProjectListView: View {
                 // Content
                 if activeProjects.isEmpty {
                     ContentUnavailableView(
-                        "Keine Projekte",
+                        Strings.Projects.noProjects(languageManager.language),
                         systemImage: "bookmark",
-                        description: Text("Erstelle dein erstes Projekt mit dem + Button")
+                        description: Text(Strings.Projects.noProjectsDescription(languageManager.language))
                     )
                     .frame(maxHeight: .infinity)
                 } else {
@@ -52,19 +58,21 @@ struct ProjectListView: View {
                         Button(action: { onSelectProject(project) }) {
                             ProjectRowView(project: project)
                         }
-                        .buttonStyle(.plain)
+                        .buttonStyle(ListRowButtonStyle())
                     }
                 }
 
                 // Footer
-                FooterView(onNavigate: onNavigate)
+                FooterView(onNavigate: onNavigate, onStartStandalonePomodoro: onStartStandalonePomodoro)
             }
 
             // Inline overlay for new project form
             if showingNewProject {
-                Color.black.opacity(0.3)
-                    .ignoresSafeArea()
-                    .onTapGesture { showingNewProject = false }
+                Button { showingNewProject = false } label: {
+                    Color.black.opacity(0.3)
+                        .ignoresSafeArea()
+                }
+                .buttonStyle(.plain)
                 ProjectFormView(
                     name: $draftProjectName,
                     selectedIcon: $draftProjectIcon,
@@ -72,38 +80,5 @@ struct ProjectListView: View {
                 )
             }
         }
-    }
-}
-
-struct FooterView: View {
-    var onNavigate: (ContentView.Screen) -> Void
-
-    var body: some View {
-        HStack {
-            Button(action: { onNavigate(.archivedProjects) }) {
-                Image(systemName: "archivebox")
-                    .font(.callout)
-            }
-            .buttonStyle(.plain)
-
-            Spacer()
-
-            Button(action: { onNavigate(.settings) }) {
-                Image(systemName: "gear")
-                    .font(.callout)
-            }
-            .buttonStyle(.plain)
-
-            Spacer()
-
-            Button("Beenden") {
-                NSApplication.shared.terminate(nil)
-            }
-            .font(.callout)
-            .buttonStyle(.plain)
-        }
-        .padding(.horizontal)
-        .padding(.vertical, 10)
-        .background(.bar)
     }
 }

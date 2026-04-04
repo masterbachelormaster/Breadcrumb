@@ -10,6 +10,8 @@ final class StatusEntry {
     var nextStep: String?
     var openQuestions: String?
     var project: Project?
+    @Relationship(inverse: \PomodoroSession.statusEntry)
+    var pomodoroSession: PomodoroSession?
 
     init(
         freeText: String,
@@ -18,7 +20,7 @@ final class StatusEntry {
         openQuestions: String? = nil
     ) {
         self.id = UUID()
-        self.timestamp = Date()
+        self.timestamp = .now
         self.freeText = freeText
         self.lastAction = lastAction
         self.nextStep = nextStep

@@ -3,3 +3,8 @@ build/
 *.xcodeproj/xcuserdata/
 *.xcodeproj/project.xcworkspace/xcuserdata/
 DerivedData/
+.superpowers/
+CLAUDE.md
+docs/superpowers/
+.claude/
+prompt-lab/
