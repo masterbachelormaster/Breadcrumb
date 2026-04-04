@@ -64,11 +64,13 @@ struct ProjectDetailView: View {
                         }
                         Button(Strings.Projects.archive(languageManager.language), systemImage: "archivebox") {
                             project.isActive = false
+                            try? modelContext.save()
                             onBack()
                         }
                         Divider()
                         Button(Strings.General.delete(languageManager.language), systemImage: "trash", role: .destructive) {
                             modelContext.delete(project)
+                            try? modelContext.save()
                             onBack()
                         }
                     } label: {

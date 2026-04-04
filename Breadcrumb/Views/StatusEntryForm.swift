@@ -87,6 +87,7 @@ struct StatusEntryForm: View {
         )
         entry.project = project
         project.entries.append(entry)
+        try? modelContext.save()
 
         // Clear draft
         freeText = ""
