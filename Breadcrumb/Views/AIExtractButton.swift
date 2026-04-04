@@ -11,11 +11,17 @@ struct AIExtractButton: View {
     @Binding var showOptionalFields: Bool
 
     @State private var errorMessage: String?
+    @State private var extractionTask: Task<Void, Never>?
+    @State private var errorDismissTask: Task<Void, Never>?
 
     var body: some View {
         #if canImport(FoundationModels)
         if #available(macOS 26, *) {
             extractionContent
+                .onDisappear {
+                    extractionTask?.cancel()
+                    errorDismissTask?.cancel()
+                }
         }
         #endif
     }
@@ -28,7 +34,7 @@ struct AIExtractButton: View {
         if aiService.isAvailable && !freeText.trimmingCharacters(in: .whitespaces).isEmpty {
             VStack(spacing: 4) {
                 Button {
-                    Task { await extract() }
+                    extractionTask = Task { await extract() }
                 } label: {
                     if aiService.isGenerating {
                         HStack(spacing: 6) {
@@ -82,7 +88,7 @@ struct AIExtractButton: View {
             // Normal lifecycle event (view disappeared, task cancelled) — ignore.
         } catch {
             errorMessage = error.localizedDescription
-            Task {
+            errorDismissTask = Task {
                 try? await Task.sleep(for: .seconds(4))
                 errorMessage = nil
             }

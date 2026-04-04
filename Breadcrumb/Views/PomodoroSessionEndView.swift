@@ -150,8 +150,11 @@ struct PomodoroSessionEndView: View {
             entry.project = project
             entry.pomodoroSession = session
             project.entries.append(entry)
+            modelContext.insert(entry)
         }
 
+        modelContext.insert(session)
+        modelContext.saveWithLogging()
         onSaveAndBreak(session)
     }
 }

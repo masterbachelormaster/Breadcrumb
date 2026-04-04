@@ -76,6 +76,7 @@ struct StatusEntryForm: View {
         )
         entry.project = project
         project.entries.append(entry)
+        modelContext.insert(entry)
         modelContext.saveWithLogging()
 
         // Clear draft

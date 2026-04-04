@@ -1,3 +1,4 @@
+import AppKit
 import Foundation
 import Observation
 
@@ -32,6 +33,18 @@ final class PomodoroTimer {
     var phaseStartDate: Date?
     var phaseDurationSeconds: Int = 0
     var elapsedBeforePause: Int = 0
+
+    init() {
+        NSWorkspace.shared.notificationCenter.addObserver(
+            forName: NSWorkspace.didWakeNotification,
+            object: nil,
+            queue: .main
+        ) { [weak self] _ in
+            MainActor.assumeIsolated {
+                self?.tick()
+            }
+        }
+    }
 
     // MARK: - Computed Properties
 
