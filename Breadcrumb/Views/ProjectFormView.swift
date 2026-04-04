@@ -76,6 +76,7 @@ struct ProjectFormView: View {
             let project = Project(name: trimmedName, icon: selectedIcon)
             modelContext.insert(project)
         }
+        try? modelContext.save()
 
         // Clear draft
         name = ""

@@ -127,6 +127,7 @@ struct PomodoroRunningView: View {
                         session.actualDuration = TimeInterval(timer.originalDurationSeconds + timer.overtimeSeconds)
                         session.project = timer.boundProject
                         modelContext.insert(session)
+                        try? modelContext.save()
 
                         showingSessionEnd = false
                         timer.startBreak(
@@ -151,6 +152,7 @@ struct PomodoroRunningView: View {
                         session.actualDuration = TimeInterval(timer.originalDurationSeconds - timer.remainingSeconds)
                         session.project = timer.boundProject
                         modelContext.insert(session)
+                        try? modelContext.save()
 
                         showingSessionEnd = false
                         timer.stop()
@@ -197,6 +199,7 @@ struct PomodoroRunningView: View {
 
     private func saveSession(_ session: PomodoroSession) {
         modelContext.insert(session)
+        try? modelContext.save()
     }
 
     private func sendNotification(title: String, body: String) {
