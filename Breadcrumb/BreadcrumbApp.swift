@@ -15,7 +15,7 @@ struct BreadcrumbApp: App {
 
     init() {
         sharedModelContainer = Self.createModelContainer()
-        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound]) { _, _ in }
+        Task { try? await UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound]) }
     }
 
     var body: some Scene {
