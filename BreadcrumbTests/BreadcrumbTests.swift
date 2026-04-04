@@ -93,6 +93,13 @@ struct LinkedDocumentTests {
         #expect(doc.displayName == "Project Brief")
     }
 
+    @Test("LinkedDocument displayName falls back when label is empty string")
+    func displayNameEmptyLabel() {
+        let doc = LinkedDocument(type: .file, originalFilename: "report.docx", bookmarkData: Data())
+        doc.label = ""
+        #expect(doc.displayName == "report.docx")
+    }
+
     @Test("Project linkedDocuments defaults to empty")
     func projectLinkedDocumentsEmpty() {
         let project = Project(name: "Test")
