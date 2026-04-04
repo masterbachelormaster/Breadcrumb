@@ -80,7 +80,7 @@ struct DocumentListView: View {
                 onAddURL()
             }
         } label: {
-            Image(systemName: "plus.circle")
+            Label(Strings.Documents.documents(l), systemImage: "plus.circle")
                 .font(.body)
         }
         .buttonStyle(.plain)
@@ -137,26 +137,24 @@ struct DocumentListView: View {
         let container = modelContext.container
         let projectID = project.persistentModelID
 
-        let panel = NSOpenPanel()
-        panel.allowsMultipleSelection = false
-        panel.canChooseDirectories = false
+        Task { @MainActor in
+            let panel = NSOpenPanel()
+            panel.allowsMultipleSelection = false
+            panel.canChooseDirectories = false
 
-        panel.begin { response in
+            let response = await panel.begin()
             guard response == .OK, let url = panel.url else { return }
 
             let newContext = ModelContext(container)
             guard let projectInContext = newContext.model(for: projectID) as? Project else { return }
-
             guard let bookmarkData = try? url.bookmarkData() else { return }
-            let filename = url.lastPathComponent
 
             let doc = LinkedDocument(
                 type: .file,
-                originalFilename: filename,
+                originalFilename: url.lastPathComponent,
                 bookmarkData: bookmarkData
             )
             doc.project = projectInContext
-
             newContext.insert(doc)
             try? newContext.save()
         }

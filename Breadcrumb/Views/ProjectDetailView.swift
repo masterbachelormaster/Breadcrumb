@@ -25,6 +25,13 @@ struct ProjectDetailView: View {
     @State private var editDraftName = ""
     @State private var editDraftIcon = "doc.text"
 
+    // Document form state
+    @State private var showingURLForm = false
+    @State private var showingEditLabel = false
+    @State private var editingDocument: LinkedDocument?
+    @State private var draftURL = ""
+    @State private var draftLabel = ""
+
     var body: some View {
         ZStack {
             VStack(spacing: 0) {
@@ -78,8 +85,16 @@ struct ProjectDetailView: View {
                     VStack(alignment: .leading, spacing: 16) {
                         DocumentListView(
                             project: project,
-                            onAddURL: { },
-                            onEditLabel: { _ in }
+                            onAddURL: {
+                                draftURL = ""
+                                draftLabel = ""
+                                showingURLForm = true
+                            },
+                            onEditLabel: { doc in
+                                editingDocument = doc
+                                draftLabel = doc.label ?? doc.originalFilename
+                                showingEditLabel = true
+                            }
                         )
 
                         if let entry = project.latestEntry {
@@ -151,6 +166,35 @@ struct ProjectDetailView: View {
                     name: $editDraftName,
                     selectedIcon: $editDraftIcon,
                     onDismiss: { showingEditForm = false }
+                )
+            }
+
+            // Inline overlay for URL form
+            if showingURLForm {
+                Button { showingURLForm = false } label: {
+                    Color.black.opacity(0.3)
+                        .ignoresSafeArea()
+                }
+                .buttonStyle(.plain)
+                AddURLFormView(
+                    project: project,
+                    draftURL: $draftURL,
+                    draftLabel: $draftLabel,
+                    onDismiss: { showingURLForm = false }
+                )
+            }
+
+            // Inline overlay for edit label
+            if showingEditLabel {
+                Button { showingEditLabel = false; editingDocument = nil } label: {
+                    Color.black.opacity(0.3)
+                        .ignoresSafeArea()
+                }
+                .buttonStyle(.plain)
+                EditLabelFormView(
+                    editingDocument: editingDocument,
+                    draftLabel: $draftLabel,
+                    onDismiss: { showingEditLabel = false; editingDocument = nil }
                 )
             }
         }
