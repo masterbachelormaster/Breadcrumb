@@ -78,6 +78,8 @@ struct AIExtractButton: View {
                 applyResult(lastAction: result.lastAction, nextStep: result.nextStep, openQuestions: result.openQuestions)
             }
             showOptionalFields = true
+        } catch is CancellationError {
+            // Normal lifecycle event (view disappeared, task cancelled) — ignore.
         } catch {
             errorMessage = error.localizedDescription
             Task {
