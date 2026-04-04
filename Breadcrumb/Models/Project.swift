@@ -15,6 +15,9 @@ final class Project {
     @Relationship(deleteRule: .cascade, inverse: \PomodoroSession.project)
     var pomodoroSessions: [PomodoroSession]
 
+    @Relationship(deleteRule: .cascade, inverse: \LinkedDocument.project)
+    var linkedDocuments: [LinkedDocument] = []
+
     init(name: String, icon: String = "doc.text") {
         self.id = UUID()
         self.name = name
@@ -23,6 +26,7 @@ final class Project {
         self.createdAt = Date()
         self.entries = []
         self.pomodoroSessions = []
+        self.linkedDocuments = []
     }
 
     var latestEntry: StatusEntry? {

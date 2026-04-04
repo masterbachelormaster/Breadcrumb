@@ -1,6 +1,7 @@
 import SwiftUI
 import SwiftData
 import UserNotifications
+import SQLite3
 
 @main
 struct BreadcrumbApp: App {
@@ -59,13 +60,13 @@ struct BreadcrumbApp: App {
 
         let config = ModelConfiguration(
             "Breadcrumb",
-            schema: Schema([Project.self, StatusEntry.self, PomodoroSession.self]),
+            schema: Schema([Project.self, StatusEntry.self, PomodoroSession.self, LinkedDocument.self]),
             url: storeURL
         )
 
         do {
             return try ModelContainer(
-                for: Project.self, StatusEntry.self, PomodoroSession.self,
+                for: Project.self, StatusEntry.self, PomodoroSession.self, LinkedDocument.self,
                 configurations: config
             )
         } catch {
@@ -75,11 +76,20 @@ struct BreadcrumbApp: App {
 
     private static func migrateStoreIfNeeded(to newURL: URL) {
         let fileManager = FileManager.default
-        let oldURL = URL.applicationSupportDirectory.appending(path: "default.store")
+        let oldPath = URL.applicationSupportDirectory
+            .appending(path: "default.store")
+            .path(percentEncoded: false)
 
-        guard fileManager.fileExists(atPath: oldURL.path(percentEncoded: false)),
+        guard fileManager.fileExists(atPath: oldPath),
               !fileManager.fileExists(atPath: newURL.path(percentEncoded: false)) else {
             return
+        }
+
+        // Checkpoint the WAL so all data is flushed into the main store file
+        var db: OpaquePointer?
+        if sqlite3_open(oldPath, &db) == SQLITE_OK {
+            sqlite3_wal_checkpoint_v2(db, nil, SQLITE_CHECKPOINT_FULL, nil, nil)
+            sqlite3_close(db)
         }
 
         let directory = newURL.deletingLastPathComponent()
@@ -89,6 +99,7 @@ struct BreadcrumbApp: App {
             return
         }
 
+        // Move all SQLite files (store, wal, shm)
         let suffixes = ["", "-wal", "-shm"]
         for suffix in suffixes {
             let source = URL.applicationSupportDirectory.appending(path: "default.store\(suffix)")

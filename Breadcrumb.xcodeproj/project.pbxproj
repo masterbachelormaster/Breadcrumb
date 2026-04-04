@@ -14,6 +14,7 @@
 		332BF2812B86C21141AF9D88 /* AppLanguage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70969E1971A3847B517389ED /* AppLanguage.swift */; };
 		3FCED5650F54A93C7D58D4F4 /* AboutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B5EF89CD286DC72F7290682 /* AboutView.swift */; };
 		403EFFDCD1BFA9E3FB455EE7 /* PomodoroSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4996D796E28BEF485ED0F8D0 /* PomodoroSession.swift */; };
+		497D467A820A0F052FBA9DE7 /* LinkedDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = A127F7644F13CEEF6190F80B /* LinkedDocument.swift */; };
 		50B42669968E80BF62C3DEB4 /* StatusEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF0C4FAC9B8A87BEA26FBC8B /* StatusEntry.swift */; };
 		5DF5DEF623DC6B10A0DB7163 /* BreadcrumbApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CF076CD3A0FE1874732FFD3 /* BreadcrumbApp.swift */; };
 		5EBB63AA57EA3CE9486915B7 /* AIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C6CE12769F9856FAC17C75D /* AIService.swift */; };
@@ -42,6 +43,7 @@
 		E81E8CD4BE3E29931E40C14D /* PomodoroTimerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F02E4F9B768BF31589ED8D8C /* PomodoroTimerTests.swift */; };
 		EDDBEC957A06EFB95B9B47DC /* PomodoroSessionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 724DF0D9521A50E754FB21F1 /* PomodoroSessionTests.swift */; };
 		F3CA383D086855E95F01B254 /* ProjectListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47078C1986E00D73E6A06727 /* ProjectListView.swift */; };
+		F8D0888E96F2ED902AF2E686 /* SmartTimestampView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65312D00F423DD42BAB0C2FD /* SmartTimestampView.swift */; };
 		FA03D196F0BF672CC3D62165 /* HistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8C5CE9442C811F8DCF196BD /* HistoryView.swift */; };
 /* End PBXBuildFile section */
 
@@ -70,6 +72,7 @@
 		5B61E0FC8ED8FA3607CA8E73 /* StringsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringsTests.swift; sourceTree = "<group>"; };
 		5CF076CD3A0FE1874732FFD3 /* BreadcrumbApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreadcrumbApp.swift; sourceTree = "<group>"; };
 		5FA0A334AD3755400D2E4FB6 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		65312D00F423DD42BAB0C2FD /* SmartTimestampView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SmartTimestampView.swift; sourceTree = "<group>"; };
 		6AB137DC9044186B8877D8CD /* ProjectDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectDetailView.swift; sourceTree = "<group>"; };
 		70969E1971A3847B517389ED /* AppLanguage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppLanguage.swift; sourceTree = "<group>"; };
 		724DF0D9521A50E754FB21F1 /* PomodoroSessionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PomodoroSessionTests.swift; sourceTree = "<group>"; };
@@ -79,6 +82,7 @@
 		94F7E31FC30CBABB8C95F10A /* LanguageManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LanguageManager.swift; sourceTree = "<group>"; };
 		9E21EBC79DC6B3D44E36AD65 /* ProjectPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectPickerView.swift; sourceTree = "<group>"; };
 		A087345042FE6C30EF157282 /* Breadcrumb.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Breadcrumb.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		A127F7644F13CEEF6190F80B /* LinkedDocument.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkedDocument.swift; sourceTree = "<group>"; };
 		A7CB153CC772B449C4EFD304 /* AIExtractButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AIExtractButton.swift; sourceTree = "<group>"; };
 		A9BFECE00BAB70889C1C40B4 /* StatusEntryForm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusEntryForm.swift; sourceTree = "<group>"; };
 		AF0C4FAC9B8A87BEA26FBC8B /* StatusEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusEntry.swift; sourceTree = "<group>"; };
@@ -116,6 +120,7 @@
 				9E21EBC79DC6B3D44E36AD65 /* ProjectPickerView.swift */,
 				47DF5F532D7705CA6E56446A /* ProjectRowView.swift */,
 				E97F9AD204BAC7BB0A7E5D92 /* SettingsView.swift */,
+				65312D00F423DD42BAB0C2FD /* SmartTimestampView.swift */,
 				D73B1C28DFFA54E78F9CA4D7 /* StatsContentView.swift */,
 				A9BFECE00BAB70889C1C40B4 /* StatusEntryForm.swift */,
 				FBC8EB9F931D9DE70D2806CE /* WelcomeView.swift */,
@@ -184,6 +189,7 @@
 			children = (
 				70969E1971A3847B517389ED /* AppLanguage.swift */,
 				C4538B21914489F24883231D /* ExtractedStatus.swift */,
+				A127F7644F13CEEF6190F80B /* LinkedDocument.swift */,
 				4996D796E28BEF485ED0F8D0 /* PomodoroSession.swift */,
 				1245F6E8248E227CA507BF8E /* Project.swift */,
 				AF0C4FAC9B8A87BEA26FBC8B /* StatusEntry.swift */,
@@ -290,6 +296,7 @@
 				8BC4923EE801C29764E7E500 /* ExtractedStatus.swift in Sources */,
 				FA03D196F0BF672CC3D62165 /* HistoryView.swift in Sources */,
 				674F307AC2D1DD30DDBA74DE /* LanguageManager.swift in Sources */,
+				497D467A820A0F052FBA9DE7 /* LinkedDocument.swift in Sources */,
 				6864E481C9B390FF7CFB8D7C /* PomodoroRunningView.swift in Sources */,
 				403EFFDCD1BFA9E3FB455EE7 /* PomodoroSession.swift in Sources */,
 				8C122A7AB70310BCF81D2061 /* PomodoroSessionEndView.swift in Sources */,
@@ -301,6 +308,7 @@
 				0F8F9143B46A16257511C6B5 /* ProjectPickerView.swift in Sources */,
 				D9DA16D240E3D429351FAB57 /* ProjectRowView.swift in Sources */,
 				B949DE8B498359E91079E6D7 /* SettingsView.swift in Sources */,
+				F8D0888E96F2ED902AF2E686 /* SmartTimestampView.swift in Sources */,
 				11DA5E14F4E1F0B2D81BBB89 /* StatsContentView.swift in Sources */,
 				50B42669968E80BF62C3DEB4 /* StatusEntry.swift in Sources */,
 				750DDDBE8BEBB05A74A6681F /* StatusEntryForm.swift in Sources */,
