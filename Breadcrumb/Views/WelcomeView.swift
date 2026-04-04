@@ -14,7 +14,7 @@ struct WelcomeView: View {
                 .resizable()
                 .aspectRatio(contentMode: .fit)
                 .frame(width: 120, height: 120)
-                .clipShape(RoundedRectangle(cornerRadius: 24))
+                .clipShape(.rect(cornerRadius: 24))
                 .shadow(radius: 6)
 
             Text(Strings.Welcome.title(l))

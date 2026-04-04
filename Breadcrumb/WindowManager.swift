@@ -37,9 +37,15 @@ final class WindowManager {
 
     private(set) var currentContent: BreakoutContent?
 
+    /// Incremented on each `open()`. A stale `windowClosed()` (e.g. from an
+    /// `onDisappear` that fires after a content swap) checks this to avoid
+    /// undoing a newer `open()`.
+    private var openGeneration: Int = 0
+
     // MARK: - Public Methods
 
     func open(_ content: BreakoutContent) {
+        openGeneration += 1
         currentContent = content
         NSApp.setActivationPolicy(.regular)
         // Brief delay for activation policy to take effect before bringing app forward
@@ -50,7 +56,15 @@ final class WindowManager {
     }
 
     func windowClosed() {
-        currentContent = nil
-        NSApp.setActivationPolicy(.accessory)
+        let generation = openGeneration
+        // Short delay so a rapid open() that fires right after (e.g. content
+        // swap causing onDisappear followed by a new open()) bumps the
+        // generation before we act.
+        Task {
+            try? await Task.sleep(for: .milliseconds(50))
+            guard self.openGeneration == generation else { return }
+            self.currentContent = nil
+            NSApp.setActivationPolicy(.accessory)
+        }
     }
 }

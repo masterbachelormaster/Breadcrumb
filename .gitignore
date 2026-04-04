@@ -6,3 +6,5 @@ DerivedData/
 .superpowers/
 CLAUDE.md
 docs/superpowers/
+.claude/
+prompt-lab/

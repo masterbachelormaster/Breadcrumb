@@ -33,10 +33,13 @@ struct ProjectListView: View {
                     Text("Breadcrumb")
                         .font(.headline)
                     Spacer()
-                    Button(action: { showingNewProject = true }) {
-                        Image(systemName: "plus")
-                            .font(.body)
+                    Button(Strings.Projects.newProject(languageManager.language), systemImage: "plus") {
+                        draftProjectName = ""
+                        draftProjectIcon = "doc.text"
+                        showingNewProject = true
                     }
+                    .labelStyle(.iconOnly)
+                    .font(.body)
                     .buttonStyle(ToolbarButtonStyle())
                 }
                 .padding(.horizontal)
@@ -65,9 +68,11 @@ struct ProjectListView: View {
 
             // Inline overlay for new project form
             if showingNewProject {
-                Color.black.opacity(0.3)
-                    .ignoresSafeArea()
-                    .onTapGesture { showingNewProject = false }
+                Button { showingNewProject = false } label: {
+                    Color.black.opacity(0.3)
+                        .ignoresSafeArea()
+                }
+                .buttonStyle(.plain)
                 ProjectFormView(
                     name: $draftProjectName,
                     selectedIcon: $draftProjectIcon,
@@ -75,31 +80,5 @@ struct ProjectListView: View {
                 )
             }
         }
-    }
-}
-
-struct FooterView: View {
-    var onNavigate: (ContentView.Screen) -> Void
-    var onStartStandalonePomodoro: () -> Void
-
-    var body: some View {
-        HStack(spacing: 0) {
-            Button(action: { onNavigate(.archivedProjects) }) {
-                Image(systemName: "archivebox")
-                    .font(.callout)
-                    .frame(maxWidth: .infinity)
-            }
-            .buttonStyle(ToolbarButtonStyle())
-
-            Button(action: onStartStandalonePomodoro) {
-                Text("🍅")
-                    .font(.callout)
-                    .frame(maxWidth: .infinity)
-            }
-            .buttonStyle(ToolbarButtonStyle())
-        }
-        .padding(.horizontal, 4)
-        .padding(.vertical, 4)
-        .background(.bar)
     }
 }

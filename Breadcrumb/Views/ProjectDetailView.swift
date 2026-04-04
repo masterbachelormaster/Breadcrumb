@@ -14,6 +14,8 @@ struct ProjectDetailView: View {
 
     @State private var showingStatusForm = false
     @State private var showingEditForm = false
+    @State private var showDeleteConfirmation = false
+    @State private var isStatsExpanded = false
 
     // Status form drafts
     @State private var draftFreeText = ""
@@ -56,25 +58,22 @@ struct ProjectDetailView: View {
 
                     Menu {
                         Button(Strings.General.edit(languageManager.language), systemImage: "pencil") {
-                            if editDraftName.isEmpty {
-                                editDraftName = project.name
-                                editDraftIcon = project.icon
-                            }
+                            editDraftName = project.name
+                            editDraftIcon = project.icon
                             showingEditForm = true
                         }
                         Button(Strings.Projects.archive(languageManager.language), systemImage: "archivebox") {
                             project.isActive = false
-                            try? modelContext.save()
+                            modelContext.saveWithLogging()
                             onBack()
                         }
                         Divider()
                         Button(Strings.General.delete(languageManager.language), systemImage: "trash", role: .destructive) {
-                            modelContext.delete(project)
-                            try? modelContext.save()
-                            onBack()
+                            showDeleteConfirmation = true
                         }
                     } label: {
-                        Image(systemName: "ellipsis.circle")
+                        Label(Strings.General.moreOptions(languageManager.language), systemImage: "ellipsis.circle")
+                            .labelStyle(.iconOnly)
                             .font(.body)
                     }
                     .buttonStyle(ToolbarButtonStyle())
@@ -142,12 +141,27 @@ struct ProjectDetailView: View {
                 }
                 .padding()
             }
+            .confirmationDialog(
+                Strings.Confirm.deleteProjectTitle(languageManager.language),
+                isPresented: $showDeleteConfirmation,
+                titleVisibility: .visible
+            ) {
+                Button(Strings.General.delete(languageManager.language), role: .destructive) {
+                    modelContext.delete(project)
+                    modelContext.saveWithLogging()
+                    onBack()
+                }
+            } message: {
+                Text(Strings.Confirm.deleteProjectMessage(languageManager.language, name: project.name))
+            }
 
             // Inline overlay for status form
             if showingStatusForm {
-                Color.black.opacity(0.3)
-                    .ignoresSafeArea()
-                    .onTapGesture { showingStatusForm = false }
+                Button { showingStatusForm = false } label: {
+                    Color.black.opacity(0.3)
+                        .ignoresSafeArea()
+                }
+                .buttonStyle(.plain)
                 StatusEntryForm(
                     project: project,
                     freeText: $draftFreeText,
@@ -160,9 +174,11 @@ struct ProjectDetailView: View {
 
             // Inline overlay for edit form
             if showingEditForm {
-                Color.black.opacity(0.3)
-                    .ignoresSafeArea()
-                    .onTapGesture { showingEditForm = false }
+                Button { showingEditForm = false } label: {
+                    Color.black.opacity(0.3)
+                        .ignoresSafeArea()
+                }
+                .buttonStyle(.plain)
                 ProjectFormView(
                     editingProject: project,
                     name: $editDraftName,
@@ -216,50 +232,48 @@ struct ProjectDetailView: View {
                 .font(.body)
 
             if let lastAction = entry.lastAction, !lastAction.isEmpty {
-                fieldRow(label: Strings.Status.lastStep(languageManager.language), value: lastAction)
+                DetailFieldView(label: Strings.Status.lastStep(languageManager.language), value: lastAction)
             }
             if let nextStep = entry.nextStep, !nextStep.isEmpty {
-                fieldRow(label: Strings.Status.nextStep(languageManager.language), value: nextStep)
+                DetailFieldView(label: Strings.Status.nextStep(languageManager.language), value: nextStep)
             }
             if let openQuestions = entry.openQuestions, !openQuestions.isEmpty {
-                fieldRow(label: Strings.Status.openQuestions(languageManager.language), value: openQuestions)
+                DetailFieldView(label: Strings.Status.openQuestions(languageManager.language), value: openQuestions)
             }
-        }
-    }
-
-    private func fieldRow(label: String, value: String) -> some View {
-        VStack(alignment: .leading, spacing: 2) {
-            Text(label)
-                .font(.caption)
-                .foregroundStyle(.secondary)
-                .textCase(.uppercase)
-            Text(value)
-                .font(.callout)
         }
     }
 
     @ViewBuilder
     private var pomodoroStatsSection: some View {
         Divider()
-        Button {
-            windowManager.open(.stats(project))
-            openWindow(id: "main")
-        } label: {
-            VStack(alignment: .leading, spacing: 8) {
-                HStack {
-                    Text(Strings.Pomodoro.pomodoro(languageManager.language))
-                        .font(.headline)
-                    Spacer()
-                    HStack(spacing: 2) {
-                        Text(Strings.Pomodoro.details(languageManager.language))
-                            .font(.caption)
-                            .foregroundStyle(.secondary)
-                        Image(systemName: "chevron.right")
-                            .font(.caption)
-                            .foregroundStyle(.tertiary)
-                    }
-                }
 
+        // Collapsible header
+        Button {
+            withAnimation(.easeInOut(duration: 0.2)) {
+                isStatsExpanded.toggle()
+            }
+        } label: {
+            HStack {
+                Text(Strings.Pomodoro.pomodoro(languageManager.language))
+                    .font(.headline)
+                Text("\(project.completedPomodoroCount)")
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+                    .padding(.horizontal, 6)
+                    .padding(.vertical, 2)
+                    .background(.quaternary, in: Capsule())
+                Spacer()
+                Image(systemName: "chevron.right")
+                    .font(.caption)
+                    .foregroundStyle(.tertiary)
+                    .rotationEffect(.degrees(isStatsExpanded ? 90 : 0))
+            }
+        }
+        .buttonStyle(ToolbarButtonStyle())
+
+        // Expandable content
+        if isStatsExpanded {
+            VStack(alignment: .leading, spacing: 8) {
                 HStack {
                     VStack(alignment: .leading, spacing: 2) {
                         Text(Strings.Pomodoro.completed(languageManager.language))
@@ -278,14 +292,30 @@ struct ProjectDetailView: View {
                             .font(.caption)
                             .foregroundStyle(.secondary)
                             .textCase(.uppercase)
-                        Text(project.formattedFocusTime)
+                        Text(project.formattedFocusTime(languageManager.language))
                             .font(.title2)
                             .fontWeight(.medium)
                     }
                 }
+
+                Button {
+                    windowManager.open(.stats(project))
+                    openWindow(id: "main")
+                } label: {
+                    HStack(spacing: 2) {
+                        Spacer()
+                        Text(Strings.Pomodoro.details(languageManager.language))
+                            .font(.caption)
+                            .foregroundStyle(.secondary)
+                        Image(systemName: "chevron.right")
+                            .font(.caption)
+                            .foregroundStyle(.tertiary)
+                    }
+                }
+                .buttonStyle(ToolbarButtonStyle())
             }
+            .transition(.opacity.combined(with: .move(edge: .top)))
         }
-        .buttonStyle(ToolbarButtonStyle())
     }
 
 }

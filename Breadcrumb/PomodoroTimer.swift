@@ -22,7 +22,16 @@ final class PomodoroTimer {
     var boundProject: Project?
     var originalDurationSeconds: Int = 0
 
+    // Per-session settings (set at start, read during cycle)
+    var sessionWorkMinutes: Int = 25
+    var sessionShortBreakMinutes: Int = 5
+    var sessionLongBreakMinutes: Int = 15
+    var sessionSessionsBeforeLong: Int = 4
+
     private var timerTask: Task<Void, Never>?
+    var phaseStartDate: Date?
+    var phaseDurationSeconds: Int = 0
+    var elapsedBeforePause: Int = 0
 
     // MARK: - Computed Properties
 
@@ -30,15 +39,15 @@ final class PomodoroTimer {
         if isOvertime {
             let minutes = overtimeSeconds / 60
             let seconds = overtimeSeconds % 60
-            return "+\(minutes):\(String(format: "%02d", seconds))"
+            return "+\(minutes):\(seconds.formatted(.number.precision(.integerLength(2))))"
         } else {
             let minutes = remainingSeconds / 60
             let seconds = remainingSeconds % 60
-            return "\(minutes):\(String(format: "%02d", seconds))"
+            return "\(minutes):\(seconds.formatted(.number.precision(.integerLength(2))))"
         }
     }
 
-    var menuBarLabel: String {
+    func menuBarLabel(_ l: AppLanguage) -> String {
         switch currentPhase {
         case .idle:
             return "Breadcrumb"
@@ -47,16 +56,22 @@ final class PomodoroTimer {
         case .shortBreak, .longBreak:
             return "☕ \(formattedTime)"
         case .sessionEnded:
-            return "🍅 Fertig!"
+            return "🍅 \(Strings.Pomodoro.done(l))"
         }
     }
 
     // MARK: - Methods
 
-    func startWork(project: Project?, durationMinutes: Int) {
+    func startWork(project: Project?, durationMinutes: Int, shortBreakMinutes: Int, longBreakMinutes: Int, sessionsBeforeLong: Int) {
         boundProject = project
+        sessionWorkMinutes = durationMinutes
+        sessionShortBreakMinutes = shortBreakMinutes
+        sessionLongBreakMinutes = longBreakMinutes
+        sessionSessionsBeforeLong = sessionsBeforeLong
         originalDurationSeconds = durationMinutes * 60
+        phaseDurationSeconds = durationMinutes * 60
         remainingSeconds = durationMinutes * 60
+        elapsedBeforePause = 0
         isRunning = true
         isPaused = false
         isOvertime = false
@@ -65,16 +80,19 @@ final class PomodoroTimer {
         startTicking()
     }
 
-    func startBreak(shortMinutes: Int, longMinutes: Int, sessionsBeforeLong: Int) {
+    func startBreak() {
         isOvertime = false
         overtimeSeconds = 0
+        elapsedBeforePause = 0
 
-        if currentSessionNumber >= sessionsBeforeLong {
+        if currentSessionNumber >= sessionSessionsBeforeLong {
             currentPhase = .longBreak
-            remainingSeconds = longMinutes * 60
+            remainingSeconds = sessionLongBreakMinutes * 60
+            phaseDurationSeconds = sessionLongBreakMinutes * 60
         } else {
             currentPhase = .shortBreak
-            remainingSeconds = shortMinutes * 60
+            remainingSeconds = sessionShortBreakMinutes * 60
+            phaseDurationSeconds = sessionShortBreakMinutes * 60
         }
 
         isRunning = true
@@ -82,24 +100,30 @@ final class PomodoroTimer {
         startTicking()
     }
 
-    func startNextWorkSession(durationMinutes: Int, sessionsBeforeLong: Int) {
-        if currentSessionNumber >= sessionsBeforeLong {
+    func startNextWorkSession() {
+        if currentSessionNumber >= sessionSessionsBeforeLong {
             currentSessionNumber = 1
         } else {
             currentSessionNumber += 1
         }
-        startWork(project: boundProject, durationMinutes: durationMinutes)
+        startWork(project: boundProject, durationMinutes: sessionWorkMinutes, shortBreakMinutes: sessionShortBreakMinutes, longBreakMinutes: sessionLongBreakMinutes, sessionsBeforeLong: sessionSessionsBeforeLong)
     }
 
     func enterOvertime() {
         isOvertime = true
+        isRunning = true
         overtimeSeconds = 0
+        elapsedBeforePause = 0
         currentPhase = .work
         startTicking()
     }
 
     func pause() {
         isPaused = true
+        if let start = phaseStartDate {
+            elapsedBeforePause += Int(Date.now.timeIntervalSince(start))
+        }
+        phaseStartDate = nil
         timerTask?.cancel()
         timerTask = nil
     }
@@ -118,18 +142,29 @@ final class PomodoroTimer {
         isOvertime = false
         overtimeSeconds = 0
         originalDurationSeconds = 0
+        phaseDurationSeconds = 0
+        elapsedBeforePause = 0
+        phaseStartDate = nil
         currentPhase = .idle
         currentSessionNumber = 1
         boundProject = nil
+        sessionWorkMinutes = 25
+        sessionShortBreakMinutes = 5
+        sessionLongBreakMinutes = 15
+        sessionSessionsBeforeLong = 4
     }
 
     func tick() {
+        guard let start = phaseStartDate else { return }
+        let elapsed = elapsedBeforePause + Int(Date.now.timeIntervalSince(start))
+
         if isOvertime {
-            overtimeSeconds += 1
+            overtimeSeconds = elapsed
         } else {
-            remainingSeconds -= 1
+            remainingSeconds = max(0, phaseDurationSeconds - elapsed)
             if remainingSeconds <= 0 {
                 remainingSeconds = 0
+                isRunning = false
                 currentPhase = .sessionEnded
                 timerTask?.cancel()
                 timerTask = nil
@@ -141,6 +176,7 @@ final class PomodoroTimer {
 
     private func startTicking() {
         timerTask?.cancel()
+        phaseStartDate = Date.now
         timerTask = Task { [weak self] in
             while !Task.isCancelled {
                 try? await Task.sleep(for: .seconds(1))

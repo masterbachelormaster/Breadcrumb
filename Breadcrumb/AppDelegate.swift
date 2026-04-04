@@ -12,7 +12,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     func applicationDidFinishLaunching(_ notification: Notification) {
         eventMonitor = NSEvent.addLocalMonitorForEvents(matching: .rightMouseDown) { event in
             guard let window = event.window,
-                  String(describing: type(of: window)).contains("StatusBar") else {
+                  window.level == .statusBar else {
                 return event
             }
 

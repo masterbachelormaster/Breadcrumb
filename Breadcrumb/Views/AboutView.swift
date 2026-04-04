@@ -41,14 +41,14 @@ struct AboutView: View {
                     .resizable()
                     .aspectRatio(contentMode: .fit)
                     .frame(width: 100, height: 100)
-                    .clipShape(RoundedRectangle(cornerRadius: 20))
+                    .clipShape(.rect(cornerRadius: 20))
                     .shadow(radius: 4)
 
                 Text("Breadcrumb")
                     .font(.title2)
                     .fontWeight(.semibold)
 
-                Text("Version \(Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "1.0")")
+                Text("\(Strings.About.version(l)) \(Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "1.0")")
                     .font(.caption)
                     .foregroundStyle(.secondary)
 

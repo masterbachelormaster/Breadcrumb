@@ -17,6 +17,7 @@ struct ProjectFormView: View {
     ]
 
     private var isEditing: Bool { editingProject != nil }
+    @FocusState private var isNameFocused: Bool
 
     var body: some View {
         VStack(spacing: 16) {
@@ -25,6 +26,7 @@ struct ProjectFormView: View {
 
             TextField(Strings.Projects.projectName(languageManager.language), text: $name)
                 .textFieldStyle(.roundedBorder)
+                .focused($isNameFocused)
 
             VStack(alignment: .leading, spacing: 8) {
                 Text(Strings.Projects.icon(languageManager.language))
@@ -37,32 +39,32 @@ struct ProjectFormView: View {
                             Image(systemName: icon)
                                 .font(.title3)
                                 .frame(width: 36, height: 36)
-                                .background(
-                                    selectedIcon == icon
-                                        ? Color.accentColor.opacity(0.2)
-                                        : Color.clear
-                                )
-                                .clipShape(RoundedRectangle(cornerRadius: 6))
                         }
-                        .buttonStyle(.plain)
+                        .buttonStyle(IconPickerButtonStyle(isSelected: selectedIcon == icon))
                     }
                 }
             }
 
             HStack {
                 Button(Strings.General.cancel(languageManager.language)) { onDismiss() }
+                    .buttonStyle(.bordered)
                     .keyboardShortcut(.cancelAction)
                 Spacer()
                 Button(isEditing ? Strings.General.save(languageManager.language) : Strings.General.create(languageManager.language)) { save() }
+                    .buttonStyle(.borderedProminent)
                     .keyboardShortcut(.defaultAction)
                     .disabled(name.trimmingCharacters(in: .whitespaces).isEmpty)
             }
         }
         .padding()
-        .frame(width: 300)
+        .frame(width: 320)
         .background(Color(nsColor: .windowBackgroundColor))
-        .clipShape(RoundedRectangle(cornerRadius: 10))
+        .clipShape(.rect(cornerRadius: 10))
         .shadow(radius: 10)
+        .task {
+            try? await Task.sleep(for: .milliseconds(300))
+            isNameFocused = true
+        }
     }
 
     private func save() {
@@ -76,7 +78,7 @@ struct ProjectFormView: View {
             let project = Project(name: trimmedName, icon: selectedIcon)
             modelContext.insert(project)
         }
-        try? modelContext.save()
+        modelContext.saveWithLogging()
 
         // Clear draft
         name = ""

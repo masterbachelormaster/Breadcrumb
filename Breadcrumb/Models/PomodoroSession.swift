@@ -26,7 +26,7 @@ final class PomodoroSession {
         sessionNumber: Int
     ) {
         self.id = UUID()
-        self.startedAt = Date()
+        self.startedAt = .now
         self.endedAt = nil
         self.plannedDuration = plannedDuration
         self.actualDuration = nil

@@ -15,13 +15,35 @@ Breadcrumb lives in your menu bar and lets you quickly log status updates — wh
 
 ## Features
 
-- **Menu bar popover** — quick access without leaving your current workflow
-- **Project management** — organize work by project with custom icons
-- **Status entries** — log free-text updates with optional structured fields (last action, next step, open questions)
-- **Pomodoro timer** — configurable work/break cycles with notifications
-- **History & stats** — review past entries and focus time per project
-- **Breakout windows** — settings, history, and stats open in their own window when needed
-- **Bilingual UI** — German and English
+### Project Management
+- Create projects with custom names and SF Symbol icons
+- Archive and restore projects
+- Link files and URLs to projects with custom labels
+
+### Status Tracking
+- Log free-text status updates per project
+- Optional structured fields: last action, next step, open questions
+- Full history of all entries with timestamps
+- AI-powered field extraction from free text (macOS 26+, Apple Intelligence)
+
+### Pomodoro Timer
+- Configurable work sessions (5-60 min), short breaks (1-15 min), and long breaks (5-30 min)
+- Automatic long break after a configurable number of sessions
+- Start a timer for a specific project or standalone
+- Live countdown in the menu bar with phase indicators
+- Pause, resume, skip breaks, or continue into overtime
+- Log a status entry at the end of each session
+- Desktop notifications and optional sound alerts
+
+### Stats & History
+- View total completed sessions and focus time per project
+- Browse and search past status entries across all projects
+- Dedicated breakout windows for history and stats
+
+### Settings
+- Switch between German and English
+- Launch at login
+- Customize all Pomodoro durations and notification preferences
 
 ## Requirements
 
@@ -36,11 +58,21 @@ Breadcrumb lives in your menu bar and lets you quickly log status updates — wh
 xcodegen generate
 
 # Build
-xcodebuild -project Breadcrumb.xcodeproj -scheme Breadcrumb -configuration Debug build
+xcodebuild -project Breadcrumb.xcodeproj -scheme Breadcrumb -configuration Release build
 
 # Run tests
 xcodebuild test -project Breadcrumb.xcodeproj -scheme Breadcrumb
+
+# Install
+cp -R ~/Library/Developer/Xcode/DerivedData/Breadcrumb-*/Build/Products/Release/Breadcrumb.app /Applications/
+open /Applications/Breadcrumb.app
 ```
+
+## How It Works
+
+Breadcrumb runs as a menu bar app (no dock icon). Click the bookmark icon to open the popover where you can manage projects, log status updates, and start Pomodoro sessions. Settings, history, and stats open in their own window when needed.
+
+All data is stored locally using SwiftData. No account or internet connection required.
 
 ## Tech Stack
 
@@ -49,3 +81,7 @@ xcodebuild test -project Breadcrumb.xcodeproj -scheme Breadcrumb
 - SwiftData for persistence
 - xcodegen for project generation
 - No external dependencies
+
+## Version
+
+0.1.0

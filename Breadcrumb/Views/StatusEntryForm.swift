@@ -13,24 +13,17 @@ struct StatusEntryForm: View {
     @Binding var openQuestions: String
     var onDismiss: () -> Void = {}
     @State private var showOptionalFields = false
+    @FocusState private var isFreeTextFocused: Bool
 
     var body: some View {
         VStack(spacing: 16) {
             Text(Strings.Status.updateStatus(languageManager.language))
                 .font(.headline)
 
-            VStack(alignment: .leading, spacing: 4) {
-                Text(Strings.Status.whereAreYou(languageManager.language))
-                    .font(.subheadline)
-                    .foregroundStyle(.secondary)
-                TextEditor(text: $freeText)
-                    .font(.body)
-                    .frame(minHeight: 80)
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 6)
-                            .stroke(Color.secondary.opacity(0.3))
-                    )
-            }
+            TextField(Strings.Status.whereAreYou(languageManager.language), text: $freeText, axis: .vertical)
+                .lineLimit(4...)
+                .textFieldStyle(.roundedBorder)
+                .focused($isFreeTextFocused)
 
             AIExtractButton(
                 freeText: $freeText,
@@ -42,18 +35,20 @@ struct StatusEntryForm: View {
 
             DisclosureGroup(Strings.Status.optionalFields(languageManager.language), isExpanded: $showOptionalFields) {
                 VStack(spacing: 12) {
-                    optionalField(label: Strings.Status.lastStep(languageManager.language), text: $lastAction)
-                    optionalField(label: Strings.Status.nextStep(languageManager.language), text: $nextStep)
-                    optionalField(label: Strings.Status.openQuestions(languageManager.language), text: $openQuestions)
+                    OptionalFieldView(label: Strings.Status.lastStep(languageManager.language), text: $lastAction)
+                    OptionalFieldView(label: Strings.Status.nextStep(languageManager.language), text: $nextStep)
+                    OptionalFieldView(label: Strings.Status.openQuestions(languageManager.language), text: $openQuestions)
                 }
                 .padding(.top, 8)
             }
 
             HStack {
                 Button(Strings.General.cancel(languageManager.language)) { onDismiss() }
+                    .buttonStyle(.bordered)
                     .keyboardShortcut(.cancelAction)
                 Spacer()
                 Button(Strings.General.save(languageManager.language)) { save() }
+                    .buttonStyle(.borderedProminent)
                     .keyboardShortcut(.defaultAction)
                     .disabled(freeText.trimmingCharacters(in: .whitespaces).isEmpty)
             }
@@ -61,17 +56,11 @@ struct StatusEntryForm: View {
         .padding()
         .frame(width: 320)
         .background(Color(nsColor: .windowBackgroundColor))
-        .clipShape(RoundedRectangle(cornerRadius: 10))
+        .clipShape(.rect(cornerRadius: 10))
         .shadow(radius: 10)
-    }
-
-    private func optionalField(label: String, text: Binding<String>) -> some View {
-        VStack(alignment: .leading, spacing: 2) {
-            Text(label)
-                .font(.caption)
-                .foregroundStyle(.secondary)
-            TextField(label, text: text)
-                .textFieldStyle(.roundedBorder)
+        .task {
+            try? await Task.sleep(for: .milliseconds(300))
+            isFreeTextFocused = true
         }
     }
 
@@ -87,7 +76,7 @@ struct StatusEntryForm: View {
         )
         entry.project = project
         project.entries.append(entry)
-        try? modelContext.save()
+        modelContext.saveWithLogging()
 
         // Clear draft
         freeText = ""

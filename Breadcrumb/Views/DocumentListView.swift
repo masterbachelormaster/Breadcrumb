@@ -1,6 +1,5 @@
 import SwiftUI
 import SwiftData
-import AppKit
 
 struct DocumentListView: View {
     let project: Project
@@ -10,6 +9,8 @@ struct DocumentListView: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(LanguageManager.self) private var languageManager
 
+    @State private var documentToDelete: LinkedDocument?
+
     private var sortedDocuments: [LinkedDocument] {
         project.linkedDocuments.sorted { $0.createdAt < $1.createdAt }
     }
@@ -17,21 +18,40 @@ struct DocumentListView: View {
     var body: some View {
         let l = languageManager.language
 
-        if sortedDocuments.isEmpty {
-            addMenu(language: l)
-        } else {
-            VStack(alignment: .leading, spacing: 8) {
-                HStack {
-                    Text(Strings.Documents.documents(l))
-                        .font(.headline)
-                    Spacer()
-                    addMenu(language: l)
-                }
+        Group {
+            if sortedDocuments.isEmpty {
+                addMenu(language: l)
+            } else {
+                VStack(alignment: .leading, spacing: 8) {
+                    HStack {
+                        Text(Strings.Documents.documents(l))
+                            .font(.headline)
+                        Spacer()
+                        addMenu(language: l)
+                    }
 
-                ForEach(sortedDocuments) { doc in
-                    documentRow(doc, language: l)
+                    ForEach(sortedDocuments) { doc in
+                        documentRow(doc, language: l)
+                    }
                 }
             }
+        }
+        .confirmationDialog(
+            Strings.Confirm.deleteDocumentTitle(l),
+            isPresented: .init(
+                get: { documentToDelete != nil },
+                set: { if !$0 { documentToDelete = nil } }
+            ),
+            titleVisibility: .visible
+        ) {
+            Button(Strings.General.delete(l), role: .destructive) {
+                if let doc = documentToDelete {
+                    modelContext.delete(doc)
+                    modelContext.saveWithLogging()
+                }
+            }
+        } message: {
+            Text(Strings.Confirm.deleteDocumentMessage(l))
         }
     }
 
@@ -58,14 +78,13 @@ struct DocumentListView: View {
             .frame(maxWidth: .infinity, alignment: .leading)
             .contentShape(Rectangle())
         }
-        .buttonStyle(.plain)
+        .buttonStyle(ListRowButtonStyle())
         .contextMenu {
             Button(Strings.Documents.editLabel(l)) {
                 onEditLabel(doc)
             }
             Button(Strings.General.delete(l), role: .destructive) {
-                modelContext.delete(doc)
-                try? modelContext.save()
+                documentToDelete = doc
             }
         }
     }
@@ -73,18 +92,7 @@ struct DocumentListView: View {
     // MARK: - Add Menu
 
     private func addMenu(language l: AppLanguage) -> some View {
-        Menu {
-            Button(Strings.Documents.addFile(l)) {
-                addFileViaPanel()
-            }
-            Button(Strings.Documents.addURL(l)) {
-                onAddURL()
-            }
-        } label: {
-            Label(Strings.Documents.documents(l), systemImage: "plus.circle")
-                .font(.body)
-        }
-        .buttonStyle(.plain)
+        AddDocumentMenu(language: l, onAddFile: { addFileViaPanel() }, onAddURL: onAddURL)
     }
 
     // MARK: - Bookmark Resolution
@@ -123,12 +131,13 @@ struct DocumentListView: View {
 
             if isStale {
                 doc.bookmarkData = try? url.bookmarkData()
-                try? modelContext.save()
+                modelContext.saveWithLogging()
             }
             NSWorkspace.shared.open(url)
         case .url:
-            guard let urlString = doc.urlString,
-                  let url = URL(string: urlString) else { return }
+            guard let urlString = doc.urlString else { return }
+            let normalized = urlString.contains("://") ? urlString : "https://\(urlString)"
+            guard let url = URL(string: normalized) else { return }
             NSWorkspace.shared.open(url)
         }
     }
@@ -136,29 +145,54 @@ struct DocumentListView: View {
     // MARK: - Add File via NSOpenPanel
 
     private func addFileViaPanel() {
-        let container = modelContext.container
-        let projectID = project.persistentModelID
+        let panel = NSOpenPanel()
+        panel.allowsMultipleSelection = false
+        panel.canChooseDirectories = false
 
-        Task {
-            let panel = NSOpenPanel()
-            panel.allowsMultipleSelection = false
-            panel.canChooseDirectories = false
+        NSApp.keyWindow?.orderOut(nil)
+        NSApp.activate()
+        let response = panel.runModal()
+        guard response == .OK, let url = panel.url else { return }
 
-            let response = await panel.begin()
-            guard response == .OK, let url = panel.url else { return }
+        guard let bookmarkData = try? url.bookmarkData() else { return }
 
-            let newContext = ModelContext(container)
-            guard let projectInContext = newContext.model(for: projectID) as? Project else { return }
-            guard let bookmarkData = try? url.bookmarkData() else { return }
+        let doc = LinkedDocument(
+            type: .file,
+            originalFilename: url.lastPathComponent,
+            bookmarkData: bookmarkData
+        )
+        doc.project = project
+        modelContext.insert(doc)
+        modelContext.saveWithLogging()
+    }
+}
 
-            let doc = LinkedDocument(
-                type: .file,
-                originalFilename: url.lastPathComponent,
-                bookmarkData: bookmarkData
-            )
-            doc.project = projectInContext
-            newContext.insert(doc)
-            try? newContext.save()
+// MARK: - Add Document Menu
+
+private struct AddDocumentMenu: View {
+    let language: AppLanguage
+    var onAddFile: () -> Void
+    var onAddURL: () -> Void
+
+    @State private var isHovered = false
+
+    var body: some View {
+        Menu {
+            Button(Strings.Documents.addFile(language)) { onAddFile() }
+            Button(Strings.Documents.addURL(language)) { onAddURL() }
+        } label: {
+            Label(Strings.Documents.documents(language), systemImage: "plus.circle")
+                .font(.body)
+                .padding(.horizontal, 8)
+                .padding(.vertical, 6)
+                .frame(minWidth: 28, minHeight: 28)
+                .contentShape(Rectangle())
         }
+        .menuStyle(.borderlessButton)
+        .background(
+            RoundedRectangle(cornerRadius: 5)
+                .fill(isHovered ? Color.primary.opacity(0.06) : .clear)
+        )
+        .onHover { isHovered = $0 }
     }
 }

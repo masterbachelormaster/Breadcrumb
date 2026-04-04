@@ -8,6 +8,7 @@ struct EditLabelFormView: View {
 
     @Environment(\.modelContext) private var modelContext
     @Environment(LanguageManager.self) private var languageManager
+    @FocusState private var isLabelFocused: Bool
 
     var body: some View {
         let l = languageManager.language
@@ -18,11 +19,13 @@ struct EditLabelFormView: View {
 
             TextField(Strings.Documents.labelPlaceholder(l), text: $draftLabel)
                 .textFieldStyle(.roundedBorder)
+                .focused($isLabelFocused)
 
             HStack {
                 Button(Strings.General.cancel(l)) {
                     onDismiss()
                 }
+                .buttonStyle(.bordered)
                 .keyboardShortcut(.cancelAction)
 
                 Spacer()
@@ -30,9 +33,10 @@ struct EditLabelFormView: View {
                 Button(Strings.General.save(l)) {
                     let trimmedLabel = draftLabel.trimmingCharacters(in: .whitespaces)
                     editingDocument?.label = trimmedLabel.isEmpty ? nil : trimmedLabel
-                    try? modelContext.save()
+                    modelContext.saveWithLogging()
                     onDismiss()
                 }
+                .buttonStyle(.borderedProminent)
                 .keyboardShortcut(.defaultAction)
             }
         }
@@ -41,5 +45,9 @@ struct EditLabelFormView: View {
         .background(Color(nsColor: .windowBackgroundColor))
         .clipShape(.rect(cornerRadius: 10))
         .shadow(radius: 10)
+        .task {
+            try? await Task.sleep(for: .milliseconds(300))
+            isLabelFocused = true
+        }
     }
 }

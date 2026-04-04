@@ -20,7 +20,7 @@ final class StatusEntry {
         openQuestions: String? = nil
     ) {
         self.id = UUID()
-        self.timestamp = Date()
+        self.timestamp = .now
         self.freeText = freeText
         self.lastAction = lastAction
         self.nextStep = nextStep
