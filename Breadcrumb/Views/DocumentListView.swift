@@ -137,7 +137,7 @@ struct DocumentListView: View {
         let container = modelContext.container
         let projectID = project.persistentModelID
 
-        Task { @MainActor in
+        Task {
             let panel = NSOpenPanel()
             panel.allowsMultipleSelection = false
             panel.canChooseDirectories = false
