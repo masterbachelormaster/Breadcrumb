@@ -76,6 +76,12 @@ struct ProjectDetailView: View {
                 // Content
                 ScrollView {
                     VStack(alignment: .leading, spacing: 16) {
+                        DocumentListView(
+                            project: project,
+                            onAddURL: { },
+                            onEditLabel: { _ in }
+                        )
+
                         if let entry = project.latestEntry {
                             latestEntrySection(entry)
                         } else {
@@ -157,9 +163,7 @@ struct ProjectDetailView: View {
                 Text(Strings.Status.currentStatus(languageManager.language))
                     .font(.headline)
                 Spacer()
-                Text(entry.timestamp, style: .relative)
-                    .font(.caption)
-                    .foregroundStyle(.tertiary)
+                SmartTimestampView(date: entry.timestamp, color: AnyShapeStyle(.tertiary))
             }
 
             Text(entry.freeText)

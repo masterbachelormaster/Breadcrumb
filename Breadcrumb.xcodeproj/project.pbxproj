@@ -30,6 +30,7 @@
 		A2C0BB75C7ED0551645F313F /* StringsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B61E0FC8ED8FA3607CA8E73 /* StringsTests.swift */; };
 		A6FFEDB76C2BCB80A916020A /* BreakoutWindowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E9AB4FB8217059480EEA8FA /* BreakoutWindowView.swift */; };
 		B005E744F06D3ED2FA9DB897 /* WindowManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B73A74DE75279264943C5462 /* WindowManager.swift */; };
+		B57B25265EE67B1DEF64A0CC /* DocumentListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9BEAAE0D129FC67EB414904 /* DocumentListView.swift */; };
 		B949DE8B498359E91079E6D7 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E97F9AD204BAC7BB0A7E5D92 /* SettingsView.swift */; };
 		BD2C646162A7B7A7AF1E68BB /* Strings.swift in Sources */ = {isa = PBXBuildFile; fileRef = E13AD7C73B76D6EAB8CF5D8E /* Strings.swift */; };
 		C0556C526B6E95E3EAC49CFE /* PomodoroTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0A23CE8D0C3663CAF21F178 /* PomodoroTimer.swift */; };
@@ -91,6 +92,7 @@
 		B8C5CE9442C811F8DCF196BD /* HistoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryView.swift; sourceTree = "<group>"; };
 		C4538B21914489F24883231D /* ExtractedStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtractedStatus.swift; sourceTree = "<group>"; };
 		D73B1C28DFFA54E78F9CA4D7 /* StatsContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsContentView.swift; sourceTree = "<group>"; };
+		D9BEAAE0D129FC67EB414904 /* DocumentListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentListView.swift; sourceTree = "<group>"; };
 		D9DBEBA30993B89A48537DA5 /* ProjectFormView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectFormView.swift; sourceTree = "<group>"; };
 		E04EB91901CE48B7E52558F1 /* ButtonStyles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonStyles.swift; sourceTree = "<group>"; };
 		E0A23CE8D0C3663CAF21F178 /* PomodoroTimer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PomodoroTimer.swift; sourceTree = "<group>"; };
@@ -111,6 +113,7 @@
 				7E9AB4FB8217059480EEA8FA /* BreakoutWindowView.swift */,
 				E04EB91901CE48B7E52558F1 /* ButtonStyles.swift */,
 				5FA0A334AD3755400D2E4FB6 /* ContentView.swift */,
+				D9BEAAE0D129FC67EB414904 /* DocumentListView.swift */,
 				B8C5CE9442C811F8DCF196BD /* HistoryView.swift */,
 				AF7604A00FB4C888AA719B6C /* PomodoroRunningView.swift */,
 				4F5D21B8446DBC5F11312384 /* PomodoroSessionEndView.swift */,
@@ -293,6 +296,7 @@
 				A6FFEDB76C2BCB80A916020A /* BreakoutWindowView.swift in Sources */,
 				E7C936BB8D7DBB7C39A6A16A /* ButtonStyles.swift in Sources */,
 				9BFD8EC86A0C17852AD2B57A /* ContentView.swift in Sources */,
+				B57B25265EE67B1DEF64A0CC /* DocumentListView.swift in Sources */,
 				8BC4923EE801C29764E7E500 /* ExtractedStatus.swift in Sources */,
 				FA03D196F0BF672CC3D62165 /* HistoryView.swift in Sources */,
 				674F307AC2D1DD30DDBA74DE /* LanguageManager.swift in Sources */,
