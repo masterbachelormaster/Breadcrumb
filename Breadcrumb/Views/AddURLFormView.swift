@@ -60,6 +60,7 @@ struct AddURLFormView: View {
         )
         doc.project = project
         modelContext.insert(doc)
+        try? modelContext.save()
 
         onDismiss()
     }

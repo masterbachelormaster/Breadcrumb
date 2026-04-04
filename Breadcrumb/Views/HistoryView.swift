@@ -64,6 +64,7 @@ struct HistoryView: View {
             let entry = sortedEntries[index]
             modelContext.delete(entry)
         }
+        try? modelContext.save()
     }
 }
 
@@ -93,9 +94,7 @@ struct HistoryEntryRow: View {
         } label: {
             HStack {
                 VStack(alignment: .leading, spacing: 2) {
-                    Text(entry.timestamp, format: .dateTime.day().month().year().hour().minute())
-                        .font(.caption)
-                        .foregroundStyle(.secondary)
+                    SmartTimestampView(date: entry.timestamp)
                     Text(entry.freeText)
                         .font(.subheadline)
                         .lineLimit(1)

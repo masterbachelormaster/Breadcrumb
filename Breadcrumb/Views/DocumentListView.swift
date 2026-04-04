@@ -65,6 +65,7 @@ struct DocumentListView: View {
             }
             Button(Strings.General.delete(l), role: .destructive) {
                 modelContext.delete(doc)
+                try? modelContext.save()
             }
         }
     }
@@ -122,6 +123,7 @@ struct DocumentListView: View {
 
             if isStale {
                 doc.bookmarkData = try? url.bookmarkData()
+                try? modelContext.save()
             }
             NSWorkspace.shared.open(url)
         case .url:
