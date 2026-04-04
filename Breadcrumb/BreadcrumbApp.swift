@@ -67,6 +67,7 @@ struct BreadcrumbApp: App {
         do {
             return try ModelContainer(
                 for: Project.self, StatusEntry.self, PomodoroSession.self, LinkedDocument.self,
+                migrationPlan: BreadcrumbMigrationPlan.self,
                 configurations: config
             )
         } catch {
