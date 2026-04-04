@@ -144,8 +144,8 @@ final class PomodoroTimer {
         timerTask = Task { [weak self] in
             while !Task.isCancelled {
                 try? await Task.sleep(for: .seconds(1))
-                guard !Task.isCancelled else { break }
-                self?.tick()
+                guard !Task.isCancelled, let self else { break }
+                self.tick()
             }
         }
     }
