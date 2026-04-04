@@ -37,4 +37,22 @@ struct StringsTests {
         #expect(de.contains("extrahierst"))
         #expect(en.contains("extract"))
     }
+
+    @Test("Documents strings return correct translations")
+    func documentsStrings() {
+        #expect(Strings.Documents.documents(.german) == "Dokumente")
+        #expect(Strings.Documents.documents(.english) == "Documents")
+        #expect(Strings.Documents.addFile(.german) == "Datei hinzufügen…")
+        #expect(Strings.Documents.addFile(.english) == "Add File…")
+        #expect(Strings.Documents.addURL(.german) == "Link hinzufügen…")
+        #expect(Strings.Documents.addURL(.english) == "Add URL…")
+        #expect(Strings.Documents.fileNotFound(.german) == "Datei nicht gefunden")
+        #expect(Strings.Documents.fileNotFound(.english) == "File not found")
+        #expect(Strings.Documents.editLabel(.german) == "Bezeichnung bearbeiten")
+        #expect(Strings.Documents.editLabel(.english) == "Edit Label")
+        #expect(Strings.Documents.urlPlaceholder(.german) == "URL eingeben")
+        #expect(Strings.Documents.urlPlaceholder(.english) == "Enter URL")
+        #expect(Strings.Documents.labelPlaceholder(.german) == "Bezeichnung (optional)")
+        #expect(Strings.Documents.labelPlaceholder(.english) == "Label (optional)")
+    }
 }
