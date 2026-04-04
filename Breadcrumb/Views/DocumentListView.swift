@@ -36,55 +36,64 @@ struct DocumentListView: View {
                 }
             }
         }
-        .confirmationDialog(
-            Strings.Confirm.deleteDocumentTitle(l),
-            isPresented: .init(
-                get: { documentToDelete != nil },
-                set: { if !$0 { documentToDelete = nil } }
-            ),
-            titleVisibility: .visible
-        ) {
-            Button(Strings.General.delete(l), role: .destructive) {
-                if let doc = documentToDelete {
-                    modelContext.delete(doc)
-                    modelContext.saveWithLogging()
-                }
-            }
-        } message: {
-            Text(Strings.Confirm.deleteDocumentMessage(l))
-        }
+
     }
 
     // MARK: - Document Row
 
     @ViewBuilder
     private func documentRow(_ doc: LinkedDocument, language l: AppLanguage) -> some View {
-        Button {
-            openDocument(doc)
-        } label: {
+        if documentToDelete == doc {
             HStack(spacing: 6) {
-                Image(systemName: doc.type == .file ? "doc.fill" : "link")
+                Image(systemName: "trash")
+                    .foregroundStyle(.red)
+                Text(doc.displayName)
+                    .lineLimit(1)
                     .foregroundStyle(.secondary)
-
-                if doc.type == .file && resolveBookmark(doc) == nil {
-                    Text(Strings.Documents.fileNotFound(l))
-                        .foregroundStyle(.red)
-                        .lineLimit(1)
-                } else {
-                    Text(doc.displayName)
-                        .lineLimit(1)
+                Spacer()
+                Button(Strings.General.cancel(l)) {
+                    documentToDelete = nil
                 }
+                .buttonStyle(.bordered)
+                .controlSize(.small)
+                Button(Strings.General.delete(l)) {
+                    modelContext.delete(doc)
+                    modelContext.saveWithLogging()
+                    documentToDelete = nil
+                }
+                .buttonStyle(.borderedProminent)
+                .tint(.red)
+                .controlSize(.small)
             }
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .contentShape(Rectangle())
-        }
-        .buttonStyle(ListRowButtonStyle())
-        .contextMenu {
-            Button(Strings.Documents.editLabel(l)) {
-                onEditLabel(doc)
+            .padding(.vertical, 2)
+        } else {
+            Button {
+                openDocument(doc)
+            } label: {
+                HStack(spacing: 6) {
+                    Image(systemName: doc.type == .file ? "doc.fill" : "link")
+                        .foregroundStyle(.secondary)
+
+                    if doc.type == .file && resolveBookmark(doc) == nil {
+                        Text(Strings.Documents.fileNotFound(l))
+                            .foregroundStyle(.red)
+                            .lineLimit(1)
+                    } else {
+                        Text(doc.displayName)
+                            .lineLimit(1)
+                    }
+                }
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .contentShape(Rectangle())
             }
-            Button(Strings.General.delete(l), role: .destructive) {
-                documentToDelete = doc
+            .buttonStyle(ListRowButtonStyle())
+            .contextMenu {
+                Button(Strings.Documents.editLabel(l)) {
+                    onEditLabel(doc)
+                }
+                Button(Strings.General.delete(l), role: .destructive) {
+                    documentToDelete = doc
+                }
             }
         }
     }

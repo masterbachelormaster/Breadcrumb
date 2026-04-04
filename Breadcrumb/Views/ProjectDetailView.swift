@@ -215,6 +215,7 @@ struct ProjectDetailView: View {
                     onDismiss: { showingEditLabel = false; editingDocument = nil }
                 )
             }
+
         }
     }
 
