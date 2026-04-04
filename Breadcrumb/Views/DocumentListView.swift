@@ -28,7 +28,7 @@ struct DocumentListView: View {
                     addMenu(language: l)
                 }
 
-                ForEach(sortedDocuments, id: \.id) { doc in
+                ForEach(sortedDocuments) { doc in
                     documentRow(doc, language: l)
                 }
             }
@@ -39,16 +39,14 @@ struct DocumentListView: View {
 
     @ViewBuilder
     private func documentRow(_ doc: LinkedDocument, language l: AppLanguage) -> some View {
-        let resolved = resolveDocument(doc)
-
         Button {
-            openDocument(doc, resolvedURL: resolved)
+            openDocument(doc)
         } label: {
             HStack(spacing: 6) {
                 Image(systemName: doc.type == .file ? "doc.fill" : "link")
                     .foregroundStyle(.secondary)
 
-                if doc.type == .file && resolved == nil {
+                if doc.type == .file && resolveBookmark(doc) == nil {
                     Text(Strings.Documents.fileNotFound(l))
                         .foregroundStyle(.red)
                         .lineLimit(1)
@@ -90,7 +88,7 @@ struct DocumentListView: View {
 
     // MARK: - Bookmark Resolution
 
-    private func resolveDocument(_ doc: LinkedDocument) -> URL? {
+    private func resolveBookmark(_ doc: LinkedDocument) -> URL? {
         guard doc.type == .file, let bookmarkData = doc.bookmarkData else {
             return nil
         }
@@ -105,19 +103,26 @@ struct DocumentListView: View {
             return nil
         }
 
-        if isStale {
-            doc.bookmarkData = try? url.bookmarkData()
-        }
-
         return url
     }
 
     // MARK: - Open Document
 
-    private func openDocument(_ doc: LinkedDocument, resolvedURL: URL?) {
+    private func openDocument(_ doc: LinkedDocument) {
         switch doc.type {
         case .file:
-            guard let url = resolvedURL else { return }
+            guard let data = doc.bookmarkData else { return }
+            var isStale = false
+            guard let url = try? URL(
+                resolvingBookmarkData: data,
+                options: [],
+                relativeTo: nil,
+                bookmarkDataIsStale: &isStale
+            ) else { return }
+
+            if isStale {
+                doc.bookmarkData = try? url.bookmarkData()
+            }
             NSWorkspace.shared.open(url)
         case .url:
             guard let urlString = doc.urlString,
