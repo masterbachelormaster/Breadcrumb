@@ -134,25 +134,25 @@ final class AIService {
             return AsyncThrowingStream { $0.finish(throwing: AIServiceError.notAvailable(unavailableReason)) }
         }
 
-        return AsyncThrowingStream { continuation in
-            let task = Task {
-                self.isGenerating = true
-                defer { self.isGenerating = false }
+        let (stream, continuation) = AsyncThrowingStream.makeStream(of: String.self)
+        let task = Task {
+            self.isGenerating = true
+            defer { self.isGenerating = false }
 
-                do {
-                    let session = LanguageModelSession(instructions: Instructions(instructions))
-                    let stream = session.streamResponse(to: prompt)
-                    for try await partial in stream {
-                        try Task.checkCancellation()
-                        continuation.yield(partial.content)
-                    }
-                    continuation.finish()
-                } catch {
-                    continuation.finish(throwing: self.mapError(error))
+            do {
+                let session = LanguageModelSession(instructions: Instructions(instructions))
+                let response = session.streamResponse(to: prompt)
+                for try await partial in response {
+                    try Task.checkCancellation()
+                    continuation.yield(partial.content)
                 }
+                continuation.finish()
+            } catch {
+                continuation.finish(throwing: self.mapError(error))
             }
-            continuation.onTermination = { _ in task.cancel() }
         }
+        continuation.onTermination = { _ in task.cancel() }
+        return stream
     }
     #endif
 
@@ -169,25 +169,26 @@ final class AIService {
             return AsyncThrowingStream { $0.finish(throwing: AIServiceError.notAvailable(unavailableReason)) }
         }
 
-        return AsyncThrowingStream { continuation in
-            let task = Task {
-                self.isGenerating = true
-                defer { self.isGenerating = false }
+        typealias Element = T.PartiallyGenerated
+        let (stream, continuation) = AsyncThrowingStream.makeStream(of: Element.self)
+        let task = Task {
+            self.isGenerating = true
+            defer { self.isGenerating = false }
 
-                do {
-                    let session = LanguageModelSession(instructions: Instructions(instructions))
-                    let stream = session.streamResponse(to: prompt, generating: type)
-                    for try await partial in stream {
-                        try Task.checkCancellation()
-                        continuation.yield(partial.content)
-                    }
-                    continuation.finish()
-                } catch {
-                    continuation.finish(throwing: self.mapError(error))
+            do {
+                let session = LanguageModelSession(instructions: Instructions(instructions))
+                let response = session.streamResponse(to: prompt, generating: type)
+                for try await partial in response {
+                    try Task.checkCancellation()
+                    continuation.yield(partial.content)
                 }
+                continuation.finish()
+            } catch {
+                continuation.finish(throwing: self.mapError(error))
             }
-            continuation.onTermination = { _ in task.cancel() }
         }
+        continuation.onTermination = { (_: AsyncThrowingStream<Element, Error>.Continuation.Termination) in task.cancel() }
+        return stream
     }
     #endif
 
