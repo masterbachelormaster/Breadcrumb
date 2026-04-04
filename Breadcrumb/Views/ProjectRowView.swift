@@ -29,12 +29,19 @@ struct ProjectRowView: View {
                 }
             }
 
+            if !project.linkedDocuments.isEmpty {
+                HStack(spacing: 2) {
+                    Image(systemName: "paperclip")
+                    Text("\(project.linkedDocuments.count)")
+                }
+                .font(.caption2)
+                .foregroundStyle(.tertiary)
+            }
+
             Spacer()
 
             if let entry = project.latestEntry {
-                Text(entry.timestamp, style: .relative)
-                    .font(.caption)
-                    .foregroundStyle(.tertiary)
+                SmartTimestampView(date: entry.timestamp, color: AnyShapeStyle(.tertiary))
             }
         }
         .padding(.vertical, 2)
