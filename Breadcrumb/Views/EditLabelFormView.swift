@@ -1,10 +1,12 @@
 import SwiftUI
+import SwiftData
 
 struct EditLabelFormView: View {
     let editingDocument: LinkedDocument?
     @Binding var draftLabel: String
     var onDismiss: () -> Void
 
+    @Environment(\.modelContext) private var modelContext
     @Environment(LanguageManager.self) private var languageManager
 
     var body: some View {
@@ -28,6 +30,7 @@ struct EditLabelFormView: View {
                 Button(Strings.General.save(l)) {
                     let trimmedLabel = draftLabel.trimmingCharacters(in: .whitespaces)
                     editingDocument?.label = trimmedLabel.isEmpty ? nil : trimmedLabel
+                    try? modelContext.save()
                     onDismiss()
                 }
                 .keyboardShortcut(.defaultAction)

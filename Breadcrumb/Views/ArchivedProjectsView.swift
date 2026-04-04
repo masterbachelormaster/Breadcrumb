@@ -55,10 +55,12 @@ struct ArchivedProjectsView: View {
                     .contextMenu {
                         Button(Strings.Projects.reactivate(languageManager.language), systemImage: "arrow.uturn.left") {
                             project.isActive = true
+                            try? modelContext.save()
                         }
                         Divider()
                         Button(Strings.Projects.permanentlyDelete(languageManager.language), systemImage: "trash", role: .destructive) {
                             modelContext.delete(project)
+                            try? modelContext.save()
                         }
                     }
                 }
