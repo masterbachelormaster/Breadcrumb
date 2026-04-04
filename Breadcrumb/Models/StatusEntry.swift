@@ -10,6 +10,7 @@ final class StatusEntry {
     var nextStep: String?
     var openQuestions: String?
     var project: Project?
+    @Relationship(inverse: \PomodoroSession.statusEntry)
     var pomodoroSession: PomodoroSession?
 
     init(

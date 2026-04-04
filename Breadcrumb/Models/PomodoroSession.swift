@@ -18,6 +18,7 @@ final class PomodoroSession {
     var sessionNumber: Int
     var completed: Bool
     var project: Project?
+    var statusEntry: StatusEntry?
 
     init(
         plannedDuration: TimeInterval,
