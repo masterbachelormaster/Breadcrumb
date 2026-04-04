@@ -48,3 +48,54 @@ struct ModelTests {
         #expect(project.latestEntry?.freeText == "new")
     }
 }
+
+@Suite("LinkedDocument Tests")
+struct LinkedDocumentTests {
+
+    @Test("LinkedDocument file initializes with correct defaults")
+    func fileDefaults() {
+        let doc = LinkedDocument(
+            type: .file,
+            originalFilename: "report.docx",
+            bookmarkData: Data([0x01, 0x02])
+        )
+        #expect(doc.type == .file)
+        #expect(doc.originalFilename == "report.docx")
+        #expect(doc.bookmarkData == Data([0x01, 0x02]))
+        #expect(doc.urlString == nil)
+        #expect(doc.label == nil)
+        #expect(doc.project == nil)
+    }
+
+    @Test("LinkedDocument URL initializes with correct defaults")
+    func urlDefaults() {
+        let doc = LinkedDocument(
+            type: .url,
+            originalFilename: "example.com",
+            urlString: "https://example.com/doc"
+        )
+        #expect(doc.type == .url)
+        #expect(doc.originalFilename == "example.com")
+        #expect(doc.urlString == "https://example.com/doc")
+        #expect(doc.bookmarkData == nil)
+        #expect(doc.label == nil)
+    }
+
+    @Test("LinkedDocument displayName prefers label over filename")
+    func displayName() {
+        let doc = LinkedDocument(
+            type: .file,
+            originalFilename: "report_v3_final.docx",
+            bookmarkData: Data()
+        )
+        #expect(doc.displayName == "report_v3_final.docx")
+        doc.label = "Project Brief"
+        #expect(doc.displayName == "Project Brief")
+    }
+
+    @Test("Project linkedDocuments defaults to empty")
+    func projectLinkedDocumentsEmpty() {
+        let project = Project(name: "Test")
+        #expect(project.linkedDocuments.isEmpty)
+    }
+}
