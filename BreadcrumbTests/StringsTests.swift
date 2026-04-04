@@ -28,6 +28,10 @@ struct StringsTests {
         #expect(Strings.Pomodoro.focusTime(.english) == "Focus Time")
         #expect(Strings.Pomodoro.shortBreak(.german) == "Kurze Pause")
         #expect(Strings.Pomodoro.shortBreak(.english) == "Short Break")
+        #expect(Strings.Pomodoro.configureSession(.german) == "Sitzung konfigurieren")
+        #expect(Strings.Pomodoro.configureSession(.english) == "Configure Session")
+        #expect(Strings.Pomodoro.startSession(.german) == "Sitzung starten")
+        #expect(Strings.Pomodoro.startSession(.english) == "Start Session")
     }
 
     @Test("AI extraction instructions exist for both languages")

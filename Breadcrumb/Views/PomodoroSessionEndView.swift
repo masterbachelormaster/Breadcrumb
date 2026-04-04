@@ -19,25 +19,35 @@ struct PomodoroSessionEndView: View {
     @State private var openQuestions = ""
     @State private var showOptionalFields = false
     @State private var selectedProject: Project?
+    @FocusState private var isFreeTextFocused: Bool
 
     @Query(filter: #Predicate<Project> { $0.isActive })
     private var activeProjects: [Project]
 
     var body: some View {
-        VStack(spacing: 16) {
-            if wasBreak {
-                breakEndContent
-            } else {
-                workEndContent
+        ScrollView {
+            VStack(spacing: 16) {
+                if wasBreak {
+                    breakEndContent
+                } else {
+                    workEndContent
+                }
             }
+            .padding()
         }
-        .padding()
         .frame(width: 320)
+        .frame(maxHeight: 400)
         .background(Color(nsColor: .windowBackgroundColor))
-        .clipShape(RoundedRectangle(cornerRadius: 10))
+        .clipShape(.rect(cornerRadius: 10))
         .shadow(radius: 10)
         .onAppear {
             selectedProject = timer.boundProject
+        }
+        .task {
+            if !wasBreak {
+                try? await Task.sleep(for: .milliseconds(300))
+                isFreeTextFocused = true
+            }
         }
     }
 
@@ -76,18 +86,10 @@ struct PomodoroSessionEndView: View {
         }
 
         // Status entry form
-        VStack(alignment: .leading, spacing: 4) {
-            Text(Strings.Status.whereAreYou(l))
-                .font(.subheadline)
-                .foregroundStyle(.secondary)
-            TextEditor(text: $freeText)
-                .font(.body)
-                .frame(minHeight: 60)
-                .overlay(
-                    RoundedRectangle(cornerRadius: 6)
-                        .stroke(Color.secondary.opacity(0.3))
-                )
-        }
+        TextField(Strings.Status.whereAreYou(l), text: $freeText, axis: .vertical)
+            .lineLimit(3...)
+            .textFieldStyle(.roundedBorder)
+            .focused($isFreeTextFocused)
 
         AIExtractButton(
             freeText: $freeText,
@@ -99,9 +101,9 @@ struct PomodoroSessionEndView: View {
 
         DisclosureGroup(Strings.Status.optionalFields(l), isExpanded: $showOptionalFields) {
             VStack(spacing: 8) {
-                optionalField(label: Strings.Status.lastStep(l), text: $lastAction)
-                optionalField(label: Strings.Status.nextStep(l), text: $nextStep)
-                optionalField(label: Strings.Status.openQuestions(l), text: $openQuestions)
+                OptionalFieldView(label: Strings.Status.lastStep(l), text: $lastAction)
+                OptionalFieldView(label: Strings.Status.nextStep(l), text: $nextStep)
+                OptionalFieldView(label: Strings.Status.openQuestions(l), text: $openQuestions)
             }
             .padding(.top, 4)
         }
@@ -122,16 +124,6 @@ struct PomodoroSessionEndView: View {
         .buttonStyle(ToolbarButtonStyle())
     }
 
-    private func optionalField(label: String, text: Binding<String>) -> some View {
-        VStack(alignment: .leading, spacing: 2) {
-            Text(label)
-                .font(.caption)
-                .foregroundStyle(.secondary)
-            TextField(label, text: text)
-                .textFieldStyle(.roundedBorder)
-        }
-    }
-
     private func saveAndBreak() {
         let project = selectedProject ?? timer.boundProject
 
@@ -142,7 +134,7 @@ struct PomodoroSessionEndView: View {
             sessionNumber: timer.currentSessionNumber
         )
         session.completed = true
-        session.endedAt = Date()
+        session.endedAt = .now
         session.actualDuration = TimeInterval(timer.originalDurationSeconds + timer.overtimeSeconds)
         session.project = project
 

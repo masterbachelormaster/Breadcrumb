@@ -70,7 +70,7 @@ struct SettingsView: View {
                         }
                 }
 
-                Section("Pomodoro") {
+                Section(Strings.Pomodoro.pomodoro(l)) {
                     Stepper(Strings.Pomodoro.focusTimeLabel(l, minutes: workMinutes), value: $workMinutes, in: 5...60)
                     Stepper(Strings.Pomodoro.shortBreakLabel(l, minutes: shortBreakMinutes), value: $shortBreakMinutes, in: 1...15)
                     Stepper(Strings.Pomodoro.longBreakLabel(l, minutes: longBreakMinutes), value: $longBreakMinutes, in: 5...30)

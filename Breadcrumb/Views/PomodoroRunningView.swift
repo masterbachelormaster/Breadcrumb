@@ -7,10 +7,6 @@ struct PomodoroRunningView: View {
     @Environment(LanguageManager.self) private var languageManager
     @Environment(\.modelContext) private var modelContext
 
-    @AppStorage("pomodoro.workMinutes") private var workMinutes = 25
-    @AppStorage("pomodoro.shortBreakMinutes") private var shortBreakMinutes = 5
-    @AppStorage("pomodoro.longBreakMinutes") private var longBreakMinutes = 15
-    @AppStorage("pomodoro.sessionsBeforeLongBreak") private var sessionsBeforeLong = 4
     @AppStorage("pomodoro.playSound") private var playSound = true
     @AppStorage("pomodoro.showNotification") private var showNotification = true
 
@@ -105,11 +101,7 @@ struct PomodoroRunningView: View {
                     onSaveAndBreak: { session in
                         saveSession(session)
                         showingSessionEnd = false
-                        timer.startBreak(
-                            shortMinutes: shortBreakMinutes,
-                            longMinutes: longBreakMinutes,
-                            sessionsBeforeLong: sessionsBeforeLong
-                        )
+                        timer.startBreak()
                     },
                     onContinueWorking: {
                         showingSessionEnd = false
@@ -123,22 +115,18 @@ struct PomodoroRunningView: View {
                             sessionNumber: timer.currentSessionNumber
                         )
                         session.completed = true
-                        session.endedAt = Date()
+                        session.endedAt = .now
                         session.actualDuration = TimeInterval(timer.originalDurationSeconds + timer.overtimeSeconds)
                         session.project = timer.boundProject
                         modelContext.insert(session)
-                        try? modelContext.save()
+                        modelContext.saveWithLogging()
 
                         showingSessionEnd = false
-                        timer.startBreak(
-                            shortMinutes: shortBreakMinutes,
-                            longMinutes: longBreakMinutes,
-                            sessionsBeforeLong: sessionsBeforeLong
-                        )
+                        timer.startBreak()
                     },
                     onStartNextSession: {
                         showingSessionEnd = false
-                        timer.startNextWorkSession(durationMinutes: workMinutes, sessionsBeforeLong: sessionsBeforeLong)
+                        timer.startNextWorkSession()
                     },
                     onStopCompletely: {
                         // Record incomplete session
@@ -148,11 +136,11 @@ struct PomodoroRunningView: View {
                             sessionNumber: timer.currentSessionNumber
                         )
                         session.completed = false
-                        session.endedAt = Date()
+                        session.endedAt = .now
                         session.actualDuration = TimeInterval(timer.originalDurationSeconds - timer.remainingSeconds)
                         session.project = timer.boundProject
                         modelContext.insert(session)
-                        try? modelContext.save()
+                        modelContext.saveWithLogging()
 
                         showingSessionEnd = false
                         timer.stop()
@@ -179,7 +167,7 @@ struct PomodoroRunningView: View {
             if timer.isOvertime {
                 return Strings.Pomodoro.overtimeSession(l, number: timer.currentSessionNumber)
             }
-            return Strings.Pomodoro.focusTimeSession(l, number: timer.currentSessionNumber, total: sessionsBeforeLong)
+            return Strings.Pomodoro.focusTimeSession(l, number: timer.currentSessionNumber, total: timer.sessionSessionsBeforeLong)
         case .shortBreak: return Strings.Pomodoro.shortBreak(l)
         case .longBreak: return Strings.Pomodoro.longBreak(l)
         case .sessionEnded: return Strings.Pomodoro.sessionEnded(l)
@@ -194,12 +182,12 @@ struct PomodoroRunningView: View {
 
     private func skipBreak() {
         showingSessionEnd = false
-        timer.startNextWorkSession(durationMinutes: workMinutes, sessionsBeforeLong: sessionsBeforeLong)
+        timer.startNextWorkSession()
     }
 
     private func saveSession(_ session: PomodoroSession) {
         modelContext.insert(session)
-        try? modelContext.save()
+        modelContext.saveWithLogging()
     }
 
     private func sendNotification(title: String, body: String) {

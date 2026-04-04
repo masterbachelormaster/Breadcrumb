@@ -10,6 +10,8 @@ struct ArchivedProjectsView: View {
 
     var onBack: () -> Void
 
+    @State private var projectToDelete: Project?
+
     var body: some View {
         VStack(spacing: 0) {
             // Header
@@ -55,16 +57,31 @@ struct ArchivedProjectsView: View {
                     .contextMenu {
                         Button(Strings.Projects.reactivate(languageManager.language), systemImage: "arrow.uturn.left") {
                             project.isActive = true
-                            try? modelContext.save()
+                            modelContext.saveWithLogging()
                         }
                         Divider()
                         Button(Strings.Projects.permanentlyDelete(languageManager.language), systemImage: "trash", role: .destructive) {
-                            modelContext.delete(project)
-                            try? modelContext.save()
+                            projectToDelete = project
                         }
                     }
                 }
             }
+        }
+        .confirmationDialog(
+            Strings.Confirm.deleteProjectTitle(languageManager.language),
+            isPresented: .init(
+                get: { projectToDelete != nil },
+                set: { if !$0 { projectToDelete = nil } }
+            ),
+            titleVisibility: .visible,
+            presenting: projectToDelete
+        ) { project in
+            Button(Strings.General.delete(languageManager.language), role: .destructive) {
+                modelContext.delete(project)
+                modelContext.saveWithLogging()
+            }
+        } message: { project in
+            Text(Strings.Confirm.deleteProjectMessage(languageManager.language, name: project.name))
         }
     }
 }

@@ -47,7 +47,7 @@ struct AIExtractButton: View {
 
                 if let errorMessage {
                     Text(errorMessage)
-                        .font(.caption2)
+                        .font(.caption)
                         .foregroundStyle(.red)
                 }
             }

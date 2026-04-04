@@ -15,7 +15,9 @@ enum AIServiceError: LocalizedError, Sendable {
     case generationFailed(String)
 
     var errorDescription: String? {
-        description(for: .german)
+        let stored = UserDefaults.standard.string(forKey: "app.language") ?? "de"
+        let language = AppLanguage(rawValue: stored) ?? .german
+        return description(for: language)
     }
 
     func description(for language: AppLanguage) -> String {
@@ -134,9 +136,9 @@ final class AIService {
             return AsyncThrowingStream { $0.finish(throwing: AIServiceError.notAvailable(unavailableReason)) }
         }
 
+        isGenerating = true
         let (stream, continuation) = AsyncThrowingStream.makeStream(of: String.self)
         let task = Task {
-            self.isGenerating = true
             defer { self.isGenerating = false }
 
             do {
@@ -169,10 +171,10 @@ final class AIService {
             return AsyncThrowingStream { $0.finish(throwing: AIServiceError.notAvailable(unavailableReason)) }
         }
 
+        isGenerating = true
         typealias Element = T.PartiallyGenerated
         let (stream, continuation) = AsyncThrowingStream.makeStream(of: Element.self)
         let task = Task {
-            self.isGenerating = true
             defer { self.isGenerating = false }
 
             do {

@@ -23,7 +23,7 @@ final class Project {
         self.name = name
         self.icon = icon
         self.isActive = true
-        self.createdAt = Date()
+        self.createdAt = .now
         self.entries = []
         self.pomodoroSessions = []
         self.linkedDocuments = []
@@ -34,7 +34,7 @@ final class Project {
     }
 
     var completedPomodoroCount: Int {
-        pomodoroSessions.filter { $0.sessionType == .work && $0.completed }.count
+        pomodoroSessions.count(where: { $0.sessionType == .work && $0.completed })
     }
 
     var totalFocusTime: TimeInterval {
@@ -46,13 +46,13 @@ final class Project {
 }
 
 extension Project {
-    var formattedFocusTime: String {
+    func formattedFocusTime(_ l: AppLanguage) -> String {
         let totalMinutes = Int(totalFocusTime) / 60
         let hours = totalMinutes / 60
         let minutes = totalMinutes % 60
         if hours > 0 {
-            return "\(hours) Std. \(minutes) Min."
+            return "\(hours) \(Strings.General.hoursAbbrev(l)) \(minutes) \(Strings.General.minutesAbbrev(l))"
         }
-        return "\(minutes) Min."
+        return "\(minutes) \(Strings.General.minutesAbbrev(l))"
     }
 }

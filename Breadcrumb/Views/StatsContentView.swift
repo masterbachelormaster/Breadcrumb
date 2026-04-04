@@ -22,7 +22,7 @@ struct StatsContentView: View {
                 }
 
                 VStack(spacing: 4) {
-                    Text(project.formattedFocusTime)
+                    Text(project.formattedFocusTime(languageManager.language))
                         .font(.system(size: 48, weight: .medium))
                     Text(Strings.Pomodoro.focusTime(languageManager.language))
                         .font(.caption)

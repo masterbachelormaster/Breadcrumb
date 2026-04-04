@@ -29,7 +29,7 @@ struct BreadcrumbApp: App {
             if pomodoroTimer.currentPhase == .idle {
                 Image(systemName: "bookmark.fill")
             } else {
-                Text(pomodoroTimer.menuBarLabel)
+                Text(pomodoroTimer.menuBarLabel(languageManager.language))
             }
         }
         .menuBarExtraStyle(.window)
@@ -58,15 +58,19 @@ struct BreadcrumbApp: App {
 
         migrateStoreIfNeeded(to: storeURL)
 
+        let schema = Schema([
+            Project.self, StatusEntry.self, PomodoroSession.self, LinkedDocument.self
+        ])
+
         let config = ModelConfiguration(
             "Breadcrumb",
-            schema: Schema([Project.self, StatusEntry.self, PomodoroSession.self, LinkedDocument.self]),
+            schema: schema,
             url: storeURL
         )
 
         do {
             return try ModelContainer(
-                for: Project.self, StatusEntry.self, PomodoroSession.self, LinkedDocument.self,
+                for: schema,
                 migrationPlan: BreadcrumbMigrationPlan.self,
                 configurations: config
             )
@@ -100,45 +104,38 @@ struct BreadcrumbApp: App {
             return
         }
 
-        // Move all SQLite files (store, wal, shm)
+        // Copy all SQLite files (store, wal, shm), then delete sources
         let suffixes = ["", "-wal", "-shm"]
-        for suffix in suffixes {
-            let source = URL.applicationSupportDirectory.appending(path: "default.store\(suffix)")
-            let destination = directory.appending(path: "Breadcrumb.store\(suffix)")
+        var copiedSuffixes: [String] = []
 
-            if fileManager.fileExists(atPath: source.path(percentEncoded: false)) {
-                do {
-                    try fileManager.moveItem(at: source, to: destination)
-                } catch {
-                    for cleanSuffix in suffixes {
-                        let cleanDest = directory.appending(path: "Breadcrumb.store\(cleanSuffix)")
-                        try? fileManager.removeItem(at: cleanDest)
-                    }
-                    return
+        do {
+            for suffix in suffixes {
+                let source = URL.applicationSupportDirectory.appending(path: "default.store\(suffix)")
+                let destination = directory.appending(path: "Breadcrumb.store\(suffix)")
+
+                if fileManager.fileExists(atPath: source.path(percentEncoded: false)) {
+                    try fileManager.copyItem(at: source, to: destination)
+                    copiedSuffixes.append(suffix)
                 }
             }
-        }
-    }
-}
-
-struct BreadcrumbCommands: Commands {
-    @Environment(\.openWindow) private var openWindow
-    let windowManager: WindowManager
-    let languageManager: LanguageManager
-
-    var body: some Commands {
-        CommandGroup(replacing: .appInfo) {
-            Button(Strings.General.about(languageManager.language)) {
-                windowManager.open(.about)
-                openWindow(id: "main")
+        } catch {
+            // Copy failed — clean up only destination copies, source files remain intact
+            print("[Breadcrumb] Store migration copy failed: \(error)")
+            for suffix in copiedSuffixes {
+                let destination = directory.appending(path: "Breadcrumb.store\(suffix)")
+                try? fileManager.removeItem(at: destination)
             }
+            return
         }
-        CommandGroup(replacing: .appSettings) {
-            Button(Strings.General.settingsEllipsis(languageManager.language)) {
-                windowManager.open(.settings)
-                openWindow(id: "main")
+
+        // All copies succeeded — safe to delete source files
+        for suffix in copiedSuffixes {
+            let source = URL.applicationSupportDirectory.appending(path: "default.store\(suffix)")
+            do {
+                try fileManager.removeItem(at: source)
+            } catch {
+                print("[Breadcrumb] Failed to remove old store file 'default.store\(suffix)': \(error)")
             }
-            .keyboardShortcut(",", modifiers: .command)
         }
     }
 }

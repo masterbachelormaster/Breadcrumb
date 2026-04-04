@@ -37,6 +37,15 @@ enum Strings {
         static func today(_ l: AppLanguage) -> String {
             l == .german ? "Heute" : "Today"
         }
+        static func moreOptions(_ l: AppLanguage) -> String {
+            l == .german ? "Weitere Optionen" : "More Options"
+        }
+        static func hoursAbbrev(_ l: AppLanguage) -> String {
+            l == .german ? "Std." : "hrs"
+        }
+        static func minutesAbbrev(_ l: AppLanguage) -> String {
+            l == .german ? "Min." : "min"
+        }
     }
 
     // MARK: - Projects
@@ -217,6 +226,15 @@ enum Strings {
         static func focusTimeSession(_ l: AppLanguage, number: Int, total: Int) -> String {
             l == .german ? "Fokuszeit · Sitzung \(number) von \(total)" : "Focus Time · Session \(number) of \(total)"
         }
+        static func done(_ l: AppLanguage) -> String {
+            l == .german ? "Fertig!" : "Done!"
+        }
+        static func configureSession(_ l: AppLanguage) -> String {
+            l == .german ? "Sitzung konfigurieren" : "Configure Session"
+        }
+        static func startSession(_ l: AppLanguage) -> String {
+            l == .german ? "Sitzung starten" : "Start Session"
+        }
     }
 
     // MARK: - Notifications
@@ -291,6 +309,9 @@ enum Strings {
     // MARK: - About
 
     enum About {
+        static func version(_ l: AppLanguage) -> String {
+            "Version"
+        }
         static func tagline(_ l: AppLanguage) -> String {
             l == .german
                 ? "Behalte den Überblick über deine Projekte.\nFokussiere dich mit dem Pomodoro-Timer."
@@ -395,6 +416,35 @@ enum Strings {
         }
     }
 
+    // MARK: - Confirmation Dialogs
+
+    enum Confirm {
+        static func deleteProjectTitle(_ l: AppLanguage) -> String {
+            l == .german ? "Projekt löschen?" : "Delete Project?"
+        }
+        static func deleteProjectMessage(_ l: AppLanguage, name: String) -> String {
+            l == .german
+                ? "\u{201E}\(name)\u{201C} und alle zugehörigen Einträge und Sitzungen werden unwiderruflich gelöscht."
+                : "\u{201C}\(name)\u{201D} and all its entries and sessions will be permanently deleted."
+        }
+        static func deleteEntryTitle(_ l: AppLanguage) -> String {
+            l == .german ? "Eintrag löschen?" : "Delete Entry?"
+        }
+        static func deleteEntryMessage(_ l: AppLanguage) -> String {
+            l == .german
+                ? "Dieser Status-Eintrag wird unwiderruflich gelöscht."
+                : "This status entry will be permanently deleted."
+        }
+        static func deleteDocumentTitle(_ l: AppLanguage) -> String {
+            l == .german ? "Dokument entfernen?" : "Remove Document?"
+        }
+        static func deleteDocumentMessage(_ l: AppLanguage) -> String {
+            l == .german
+                ? "Das verknüpfte Dokument wird entfernt."
+                : "The linked document will be removed."
+        }
+    }
+
     // MARK: - Documents
 
     enum Documents {
@@ -418,6 +468,9 @@ enum Strings {
         }
         static func labelPlaceholder(_ l: AppLanguage) -> String {
             l == .german ? "Bezeichnung (optional)" : "Label (optional)"
+        }
+        static func invalidURL(_ l: AppLanguage) -> String {
+            l == .german ? "Bitte eine gültige URL eingeben (z. B. example.com)" : "Please enter a valid URL (e.g. example.com)"
         }
     }
 }

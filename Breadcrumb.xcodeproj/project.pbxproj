@@ -7,20 +7,24 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		043A15563757C2E509CB275D /* ModelContext+SaveWithLogging.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3909410FC96455280C214468 /* ModelContext+SaveWithLogging.swift */; };
 		0F8F9143B46A16257511C6B5 /* ProjectPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E21EBC79DC6B3D44E36AD65 /* ProjectPickerView.swift */; };
 		11DA5E14F4E1F0B2D81BBB89 /* StatsContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D73B1C28DFFA54E78F9CA4D7 /* StatsContentView.swift */; };
 		1D05386095241293CA4DE03A /* BreadcrumbTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FE203A2FC256662ACD1B3C9 /* BreadcrumbTests.swift */; };
 		26BE57BD5EF31441DDE3F3E9 /* WelcomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBC8EB9F931D9DE70D2806CE /* WelcomeView.swift */; };
 		332BF2812B86C21141AF9D88 /* AppLanguage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70969E1971A3847B517389ED /* AppLanguage.swift */; };
+		3B8E91E329DF6960817BF4E7 /* PomodoroConfigView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3F1C79AA5792B6763AB7DF4 /* PomodoroConfigView.swift */; };
 		3FCED5650F54A93C7D58D4F4 /* AboutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B5EF89CD286DC72F7290682 /* AboutView.swift */; };
 		403EFFDCD1BFA9E3FB455EE7 /* PomodoroSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4996D796E28BEF485ED0F8D0 /* PomodoroSession.swift */; };
 		497D467A820A0F052FBA9DE7 /* LinkedDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = A127F7644F13CEEF6190F80B /* LinkedDocument.swift */; };
+		4B7239E38F057E021A7D6948 /* HistoryEntryRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C88E592971DB2AB4E478DA7 /* HistoryEntryRow.swift */; };
 		50B42669968E80BF62C3DEB4 /* StatusEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF0C4FAC9B8A87BEA26FBC8B /* StatusEntry.swift */; };
 		5DF5DEF623DC6B10A0DB7163 /* BreadcrumbApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CF076CD3A0FE1874732FFD3 /* BreadcrumbApp.swift */; };
 		5EBB63AA57EA3CE9486915B7 /* AIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C6CE12769F9856FAC17C75D /* AIService.swift */; };
 		674F307AC2D1DD30DDBA74DE /* LanguageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94F7E31FC30CBABB8C95F10A /* LanguageManager.swift */; };
 		67C037357112A0C1D1E8A599 /* AIExtractButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7CB153CC772B449C4EFD304 /* AIExtractButton.swift */; };
 		6864E481C9B390FF7CFB8D7C /* PomodoroRunningView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF7604A00FB4C888AA719B6C /* PomodoroRunningView.swift */; };
+		72339BF4A0E3ACDC31DC98A0 /* FooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F506B326CA6737B42BEF9F99 /* FooterView.swift */; };
 		750DDDBE8BEBB05A74A6681F /* StatusEntryForm.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9BFECE00BAB70889C1C40B4 /* StatusEntryForm.swift */; };
 		7952B45A0B64DDDFA48149C3 /* EditLabelFormView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6B294E9E641FE8862731EEA /* EditLabelFormView.swift */; };
 		7A9DF4EB4DEA7C643635E72F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DE07044651329554A55EEDB /* AppDelegate.swift */; };
@@ -29,6 +33,8 @@
 		9B619503406331710EB35740 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 777246810162C2507E304C44 /* Assets.xcassets */; };
 		9BFD8EC86A0C17852AD2B57A /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FA0A334AD3755400D2E4FB6 /* ContentView.swift */; };
 		A2C0BB75C7ED0551645F313F /* StringsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B61E0FC8ED8FA3607CA8E73 /* StringsTests.swift */; };
+		A43D3BC9876E52C897785532 /* OptionalFieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E0C91DB4484A3A2E81E81C8 /* OptionalFieldView.swift */; };
+		A4DB57D56F6945FE42C210FF /* BreadcrumbCommands.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDF418F050E4F08EE71C99E8 /* BreadcrumbCommands.swift */; };
 		A6FFEDB76C2BCB80A916020A /* BreakoutWindowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E9AB4FB8217059480EEA8FA /* BreakoutWindowView.swift */; };
 		B005E744F06D3ED2FA9DB897 /* WindowManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B73A74DE75279264943C5462 /* WindowManager.swift */; };
 		B57B25265EE67B1DEF64A0CC /* DocumentListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9BEAAE0D129FC67EB414904 /* DocumentListView.swift */; };
@@ -44,8 +50,10 @@
 		DF61036FEAC7FB1050A1DE23 /* ArchivedProjectsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7CE7354CA860BF1B53435E6 /* ArchivedProjectsView.swift */; };
 		E7C936BB8D7DBB7C39A6A16A /* ButtonStyles.swift in Sources */ = {isa = PBXBuildFile; fileRef = E04EB91901CE48B7E52558F1 /* ButtonStyles.swift */; };
 		E81E8CD4BE3E29931E40C14D /* PomodoroTimerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F02E4F9B768BF31589ED8D8C /* PomodoroTimerTests.swift */; };
+		EB5BC1C5D771918616ECFE20 /* BreadcrumbSchema.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4615582F09AD75B7047439D1 /* BreadcrumbSchema.swift */; };
 		EDDBEC957A06EFB95B9B47DC /* PomodoroSessionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 724DF0D9521A50E754FB21F1 /* PomodoroSessionTests.swift */; };
 		F3CA383D086855E95F01B254 /* ProjectListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47078C1986E00D73E6A06727 /* ProjectListView.swift */; };
+		F6B086E1F9125AFECE18688A /* DetailFieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D560B5D8D1FB681EFF1D4E9E /* DetailFieldView.swift */; };
 		F8D0888E96F2ED902AF2E686 /* SmartTimestampView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65312D00F423DD42BAB0C2FD /* SmartTimestampView.swift */; };
 		FA03D196F0BF672CC3D62165 /* HistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8C5CE9442C811F8DCF196BD /* HistoryView.swift */; };
 /* End PBXBuildFile section */
@@ -66,7 +74,9 @@
 		270530DCEC9B4626EE2AABF0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		2DE07044651329554A55EEDB /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		333198756E01368320CCC0C9 /* BreadcrumbTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BreadcrumbTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		3909410FC96455280C214468 /* ModelContext+SaveWithLogging.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ModelContext+SaveWithLogging.swift"; sourceTree = "<group>"; };
 		3B5EF89CD286DC72F7290682 /* AboutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutView.swift; sourceTree = "<group>"; };
+		4615582F09AD75B7047439D1 /* BreadcrumbSchema.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreadcrumbSchema.swift; sourceTree = "<group>"; };
 		47078C1986E00D73E6A06727 /* ProjectListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectListView.swift; sourceTree = "<group>"; };
 		47DF5F532D7705CA6E56446A /* ProjectRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectRowView.swift; sourceTree = "<group>"; };
 		4996D796E28BEF485ED0F8D0 /* PomodoroSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PomodoroSession.swift; sourceTree = "<group>"; };
@@ -80,10 +90,12 @@
 		70969E1971A3847B517389ED /* AppLanguage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppLanguage.swift; sourceTree = "<group>"; };
 		724DF0D9521A50E754FB21F1 /* PomodoroSessionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PomodoroSessionTests.swift; sourceTree = "<group>"; };
 		777246810162C2507E304C44 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		7E0C91DB4484A3A2E81E81C8 /* OptionalFieldView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionalFieldView.swift; sourceTree = "<group>"; };
 		7E9AB4FB8217059480EEA8FA /* BreakoutWindowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreakoutWindowView.swift; sourceTree = "<group>"; };
 		85B023F7702442C9E73AD7FF /* LanguageManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LanguageManagerTests.swift; sourceTree = "<group>"; };
 		9492B635806349A2C9556E20 /* AddURLFormView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddURLFormView.swift; sourceTree = "<group>"; };
 		94F7E31FC30CBABB8C95F10A /* LanguageManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LanguageManager.swift; sourceTree = "<group>"; };
+		9C88E592971DB2AB4E478DA7 /* HistoryEntryRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryEntryRow.swift; sourceTree = "<group>"; };
 		9E21EBC79DC6B3D44E36AD65 /* ProjectPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectPickerView.swift; sourceTree = "<group>"; };
 		A087345042FE6C30EF157282 /* Breadcrumb.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Breadcrumb.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A127F7644F13CEEF6190F80B /* LinkedDocument.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkedDocument.swift; sourceTree = "<group>"; };
@@ -93,7 +105,10 @@
 		AF7604A00FB4C888AA719B6C /* PomodoroRunningView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PomodoroRunningView.swift; sourceTree = "<group>"; };
 		B73A74DE75279264943C5462 /* WindowManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WindowManager.swift; sourceTree = "<group>"; };
 		B8C5CE9442C811F8DCF196BD /* HistoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryView.swift; sourceTree = "<group>"; };
+		BDF418F050E4F08EE71C99E8 /* BreadcrumbCommands.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreadcrumbCommands.swift; sourceTree = "<group>"; };
+		C3F1C79AA5792B6763AB7DF4 /* PomodoroConfigView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PomodoroConfigView.swift; sourceTree = "<group>"; };
 		C4538B21914489F24883231D /* ExtractedStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtractedStatus.swift; sourceTree = "<group>"; };
+		D560B5D8D1FB681EFF1D4E9E /* DetailFieldView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailFieldView.swift; sourceTree = "<group>"; };
 		D73B1C28DFFA54E78F9CA4D7 /* StatsContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsContentView.swift; sourceTree = "<group>"; };
 		D9BEAAE0D129FC67EB414904 /* DocumentListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentListView.swift; sourceTree = "<group>"; };
 		D9DBEBA30993B89A48537DA5 /* ProjectFormView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectFormView.swift; sourceTree = "<group>"; };
@@ -103,6 +118,7 @@
 		E7CE7354CA860BF1B53435E6 /* ArchivedProjectsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArchivedProjectsView.swift; sourceTree = "<group>"; };
 		E97F9AD204BAC7BB0A7E5D92 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		F02E4F9B768BF31589ED8D8C /* PomodoroTimerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PomodoroTimerTests.swift; sourceTree = "<group>"; };
+		F506B326CA6737B42BEF9F99 /* FooterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FooterView.swift; sourceTree = "<group>"; };
 		F6B294E9E641FE8862731EEA /* EditLabelFormView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditLabelFormView.swift; sourceTree = "<group>"; };
 		FBC8EB9F931D9DE70D2806CE /* WelcomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -118,9 +134,14 @@
 				7E9AB4FB8217059480EEA8FA /* BreakoutWindowView.swift */,
 				E04EB91901CE48B7E52558F1 /* ButtonStyles.swift */,
 				5FA0A334AD3755400D2E4FB6 /* ContentView.swift */,
+				D560B5D8D1FB681EFF1D4E9E /* DetailFieldView.swift */,
 				D9BEAAE0D129FC67EB414904 /* DocumentListView.swift */,
 				F6B294E9E641FE8862731EEA /* EditLabelFormView.swift */,
+				F506B326CA6737B42BEF9F99 /* FooterView.swift */,
+				9C88E592971DB2AB4E478DA7 /* HistoryEntryRow.swift */,
 				B8C5CE9442C811F8DCF196BD /* HistoryView.swift */,
+				7E0C91DB4484A3A2E81E81C8 /* OptionalFieldView.swift */,
+				C3F1C79AA5792B6763AB7DF4 /* PomodoroConfigView.swift */,
 				AF7604A00FB4C888AA719B6C /* PomodoroRunningView.swift */,
 				4F5D21B8446DBC5F11312384 /* PomodoroSessionEndView.swift */,
 				6AB137DC9044186B8877D8CD /* ProjectDetailView.swift */,
@@ -182,7 +203,9 @@
 				2DE07044651329554A55EEDB /* AppDelegate.swift */,
 				777246810162C2507E304C44 /* Assets.xcassets */,
 				5CF076CD3A0FE1874732FFD3 /* BreadcrumbApp.swift */,
+				BDF418F050E4F08EE71C99E8 /* BreadcrumbCommands.swift */,
 				270530DCEC9B4626EE2AABF0 /* Info.plist */,
+				3909410FC96455280C214468 /* ModelContext+SaveWithLogging.swift */,
 				E0A23CE8D0C3663CAF21F178 /* PomodoroTimer.swift */,
 				E13AD7C73B76D6EAB8CF5D8E /* Strings.swift */,
 				B73A74DE75279264943C5462 /* WindowManager.swift */,
@@ -197,6 +220,7 @@
 			isa = PBXGroup;
 			children = (
 				70969E1971A3847B517389ED /* AppLanguage.swift */,
+				4615582F09AD75B7047439D1 /* BreadcrumbSchema.swift */,
 				C4538B21914489F24883231D /* ExtractedStatus.swift */,
 				A127F7644F13CEEF6190F80B /* LinkedDocument.swift */,
 				4996D796E28BEF485ED0F8D0 /* PomodoroSession.swift */,
@@ -300,15 +324,23 @@
 				332BF2812B86C21141AF9D88 /* AppLanguage.swift in Sources */,
 				DF61036FEAC7FB1050A1DE23 /* ArchivedProjectsView.swift in Sources */,
 				5DF5DEF623DC6B10A0DB7163 /* BreadcrumbApp.swift in Sources */,
+				A4DB57D56F6945FE42C210FF /* BreadcrumbCommands.swift in Sources */,
+				EB5BC1C5D771918616ECFE20 /* BreadcrumbSchema.swift in Sources */,
 				A6FFEDB76C2BCB80A916020A /* BreakoutWindowView.swift in Sources */,
 				E7C936BB8D7DBB7C39A6A16A /* ButtonStyles.swift in Sources */,
 				9BFD8EC86A0C17852AD2B57A /* ContentView.swift in Sources */,
+				F6B086E1F9125AFECE18688A /* DetailFieldView.swift in Sources */,
 				B57B25265EE67B1DEF64A0CC /* DocumentListView.swift in Sources */,
 				7952B45A0B64DDDFA48149C3 /* EditLabelFormView.swift in Sources */,
 				8BC4923EE801C29764E7E500 /* ExtractedStatus.swift in Sources */,
+				72339BF4A0E3ACDC31DC98A0 /* FooterView.swift in Sources */,
+				4B7239E38F057E021A7D6948 /* HistoryEntryRow.swift in Sources */,
 				FA03D196F0BF672CC3D62165 /* HistoryView.swift in Sources */,
 				674F307AC2D1DD30DDBA74DE /* LanguageManager.swift in Sources */,
 				497D467A820A0F052FBA9DE7 /* LinkedDocument.swift in Sources */,
+				043A15563757C2E509CB275D /* ModelContext+SaveWithLogging.swift in Sources */,
+				A43D3BC9876E52C897785532 /* OptionalFieldView.swift in Sources */,
+				3B8E91E329DF6960817BF4E7 /* PomodoroConfigView.swift in Sources */,
 				6864E481C9B390FF7CFB8D7C /* PomodoroRunningView.swift in Sources */,
 				403EFFDCD1BFA9E3FB455EE7 /* PomodoroSession.swift in Sources */,
 				8C122A7AB70310BCF81D2061 /* PomodoroSessionEndView.swift in Sources */,
@@ -420,7 +452,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MARKETING_VERSION = 1.0.0;
+				MARKETING_VERSION = 0.1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.roger.breadcrumb;
 				SDKROOT = macosx;
 			};
@@ -454,7 +486,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MARKETING_VERSION = 1.0.0;
+				MARKETING_VERSION = 0.1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.roger.breadcrumb;
 				SDKROOT = macosx;
 			};

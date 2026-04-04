@@ -5,6 +5,7 @@ struct ProjectRowView: View {
     let project: Project
 
     var body: some View {
+        let latestEntry = project.latestEntry
         HStack(spacing: 10) {
             Image(systemName: project.icon)
                 .font(.title3)
@@ -16,7 +17,7 @@ struct ProjectRowView: View {
                     .font(.headline)
                     .lineLimit(1)
 
-                if let entry = project.latestEntry {
+                if let entry = latestEntry {
                     Text(entry.freeText)
                         .font(.subheadline)
                         .foregroundStyle(.secondary)
@@ -34,13 +35,13 @@ struct ProjectRowView: View {
                     Image(systemName: "paperclip")
                     Text("\(project.linkedDocuments.count)")
                 }
-                .font(.caption2)
+                .font(.caption)
                 .foregroundStyle(.tertiary)
             }
 
             Spacer()
 
-            if let entry = project.latestEntry {
+            if let entry = latestEntry {
                 SmartTimestampView(date: entry.timestamp, color: AnyShapeStyle(.tertiary))
             }
         }
