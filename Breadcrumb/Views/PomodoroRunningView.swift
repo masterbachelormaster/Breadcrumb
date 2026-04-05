@@ -1,14 +1,10 @@
 import SwiftUI
 import SwiftData
-import UserNotifications
 
 struct PomodoroRunningView: View {
     @Environment(PomodoroTimer.self) private var timer
     @Environment(LanguageManager.self) private var languageManager
     @Environment(\.modelContext) private var modelContext
-
-    @AppStorage("pomodoro.playSound") private var playSound = true
-    @AppStorage("pomodoro.showNotification") private var showNotification = true
 
     var onFinished: () -> Void
 
@@ -84,11 +80,9 @@ struct PomodoroRunningView: View {
                 if oldPhase == .work {
                     wasBreakEnd = false
                     showingSessionEnd = true
-                    sendNotification(title: Strings.Notifications.pomodoroFinishedTitle(languageManager.language), body: Strings.Notifications.pomodoroFinishedBody(languageManager.language))
                 } else if oldPhase == .shortBreak || oldPhase == .longBreak {
                     wasBreakEnd = true
                     showingSessionEnd = true
-                    sendNotification(title: Strings.Notifications.breakOverTitle(languageManager.language), body: Strings.Notifications.breakOverBody(languageManager.language))
                 }
             }
         }
@@ -98,6 +92,8 @@ struct PomodoroRunningView: View {
                     .ignoresSafeArea()
                 PomodoroSessionEndView(
                     wasBreak: wasBreakEnd,
+                    isCycleComplete: timer.isCycleComplete,
+                    isFocusMate: timer.isFocusMateSession,
                     onSaveAndBreak: { session in
                         saveSession(session)
                         showingSessionEnd = false
@@ -118,6 +114,7 @@ struct PomodoroRunningView: View {
                         session.endedAt = .now
                         session.actualDuration = TimeInterval(timer.originalDurationSeconds + timer.overtimeSeconds)
                         session.project = timer.boundProject
+                        session.isFocusMate = timer.isFocusMateSession
                         modelContext.insert(session)
                         modelContext.saveWithLogging()
 
@@ -129,16 +126,17 @@ struct PomodoroRunningView: View {
                         timer.startNextWorkSession()
                     },
                     onStopCompletely: {
-                        // Record incomplete session
+                        // Record session
                         let session = PomodoroSession(
                             plannedDuration: TimeInterval(timer.originalDurationSeconds),
                             sessionType: .work,
                             sessionNumber: timer.currentSessionNumber
                         )
-                        session.completed = false
+                        session.completed = timer.remainingSeconds <= 0
                         session.endedAt = .now
-                        session.actualDuration = TimeInterval(timer.originalDurationSeconds - timer.remainingSeconds)
+                        session.actualDuration = TimeInterval(timer.originalDurationSeconds - timer.remainingSeconds + timer.overtimeSeconds)
                         session.project = timer.boundProject
+                        session.isFocusMate = timer.isFocusMateSession
                         modelContext.insert(session)
                         modelContext.saveWithLogging()
 
@@ -152,6 +150,9 @@ struct PomodoroRunningView: View {
     }
 
     private var phaseEmoji: String {
+        if timer.isFocusMateSession {
+            return "👥"
+        }
         switch timer.currentPhase {
         case .work, .sessionEnded: return "🍅"
         case .shortBreak, .longBreak: return "☕"
@@ -164,10 +165,16 @@ struct PomodoroRunningView: View {
         switch timer.currentPhase {
         case .idle: return ""
         case .work:
+            if timer.isFocusMateSession {
+                if let endTime = timer.focusMateEndTime {
+                    return Strings.Pomodoro.focusMatePhaseLabel(l, time: endTime.formatted(date: .omitted, time: .shortened))
+                }
+                return Strings.Pomodoro.focusMateMode(l)
+            }
             if timer.isOvertime {
                 return Strings.Pomodoro.overtimeSession(l, number: timer.currentSessionNumber)
             }
-            return Strings.Pomodoro.focusTimeSession(l, number: timer.currentSessionNumber, total: timer.sessionSessionsBeforeLong)
+            return Strings.Pomodoro.focusTimeSession(l, number: timer.currentSessionNumber, total: timer.sessionTotalSessions)
         case .shortBreak: return Strings.Pomodoro.shortBreak(l)
         case .longBreak: return Strings.Pomodoro.longBreak(l)
         case .sessionEnded: return Strings.Pomodoro.sessionEnded(l)
@@ -182,7 +189,12 @@ struct PomodoroRunningView: View {
 
     private func skipBreak() {
         showingSessionEnd = false
-        timer.startNextWorkSession()
+        if timer.isCycleComplete {
+            timer.stop()
+            onFinished()
+        } else {
+            timer.startNextWorkSession()
+        }
     }
 
     private func saveSession(_ session: PomodoroSession) {
@@ -190,19 +202,4 @@ struct PomodoroRunningView: View {
         modelContext.saveWithLogging()
     }
 
-    private func sendNotification(title: String, body: String) {
-        guard showNotification else { return }
-        let content = UNMutableNotificationContent()
-        content.title = title
-        content.body = body
-        if playSound {
-            content.sound = .default
-        }
-        let request = UNNotificationRequest(
-            identifier: UUID().uuidString,
-            content: content,
-            trigger: nil
-        )
-        UNUserNotificationCenter.current().add(request)
-    }
 }
