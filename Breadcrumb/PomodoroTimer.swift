@@ -28,6 +28,8 @@ final class PomodoroTimer {
     var isFocusMateSession: Bool = false
     var focusMateEndTime: Date?
 
+    var notificationService: NotificationService?
+
     // Per-session settings (set at start, read during cycle)
     var sessionWorkMinutes: Int = 25
     var sessionShortBreakMinutes: Int = 5
@@ -234,12 +236,23 @@ final class PomodoroTimer {
                     isOvertime = true
                     didCrossZero = true
                     overtimeSeconds = elapsed - phaseDurationSeconds
+                    let stored = UserDefaults.standard.string(forKey: "app.language") ?? "de"
+                    let language = AppLanguage(rawValue: stored) ?? .german
+                    notificationService?.notifyOvertime(language: language)
                 } else {
                     // Breaks and FocusMate sessions stop at zero
                     isRunning = false
+                    let wasBreak = currentPhase == .shortBreak || currentPhase == .longBreak
                     currentPhase = .sessionEnded
                     timerTask?.cancel()
                     timerTask = nil
+                    let stored = UserDefaults.standard.string(forKey: "app.language") ?? "de"
+                    let language = AppLanguage(rawValue: stored) ?? .german
+                    if wasBreak {
+                        notificationService?.notifyBreakDone(language: language)
+                    } else {
+                        notificationService?.notifyWorkDone(language: language)
+                    }
                 }
             }
         }

@@ -1,6 +1,5 @@
 import SwiftUI
 import SwiftData
-import UserNotifications
 import SQLite3
 
 @main
@@ -12,15 +11,19 @@ struct BreadcrumbApp: App {
     @State private var windowManager = WindowManager()
     @State private var aiService = AIService()
     @State private var languageManager = LanguageManager()
+    @State private var notificationService = NotificationService()
 
     init() {
         sharedModelContainer = Self.createModelContainer()
-        Task { try? await UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound]) }
     }
 
     var body: some Scene {
         MenuBarExtra {
             ContentView()
+                .onAppear {
+                    pomodoroTimer.notificationService = notificationService
+                    notificationService.requestAuthorization()
+                }
                 .environment(pomodoroTimer)
                 .environment(windowManager)
                 .environment(aiService)
