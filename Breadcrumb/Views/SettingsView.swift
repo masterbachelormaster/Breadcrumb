@@ -9,8 +9,12 @@ struct SettingsView: View {
     @AppStorage("pomodoro.shortBreakMinutes") private var shortBreakMinutes = 5
     @AppStorage("pomodoro.longBreakMinutes") private var longBreakMinutes = 15
     @AppStorage("pomodoro.sessionsBeforeLongBreak") private var sessionsBeforeLongBreak = 4
-    @AppStorage("pomodoro.playSound") private var playSound = true
-    @AppStorage("pomodoro.showNotification") private var showNotification = true
+    @AppStorage("pomodoro.totalSessions") private var totalSessions = 4
+    @AppStorage("pomodoro.sound.workDone") private var soundWorkDone = "Glass"
+    @AppStorage("pomodoro.sound.breakDone") private var soundBreakDone = "Ping"
+    @AppStorage("pomodoro.sound.overtime") private var soundOvertime = "Tink"
+    @AppStorage("pomodoro.showBannerNotification") private var showBannerNotification = true
+    @AppStorage("pomodoro.autoOpenPopover") private var autoOpenPopover = true
 
     var onBack: (() -> Void)? = nil
 
@@ -71,6 +75,7 @@ struct SettingsView: View {
                 }
 
                 Section(Strings.Pomodoro.pomodoro(l)) {
+                    Stepper(Strings.Pomodoro.totalSessionsLabel(l, count: totalSessions), value: $totalSessions, in: 1...8)
                     Stepper(Strings.Pomodoro.focusTimeLabel(l, minutes: workMinutes), value: $workMinutes, in: 5...60)
                     Stepper(Strings.Pomodoro.shortBreakLabel(l, minutes: shortBreakMinutes), value: $shortBreakMinutes, in: 1...15)
                     Stepper(Strings.Pomodoro.longBreakLabel(l, minutes: longBreakMinutes), value: $longBreakMinutes, in: 5...30)
@@ -78,8 +83,11 @@ struct SettingsView: View {
                 }
 
                 Section(Strings.Settings.notifications(l)) {
-                    Toggle(Strings.Settings.playSound(l), isOn: $playSound)
-                    Toggle(Strings.Settings.systemNotification(l), isOn: $showNotification)
+                    SoundPicker(label: Strings.Settings.soundWorkDone(l), selection: $soundWorkDone)
+                    SoundPicker(label: Strings.Settings.soundBreakDone(l), selection: $soundBreakDone)
+                    SoundPicker(label: Strings.Settings.soundOvertime(l), selection: $soundOvertime)
+                    Toggle(Strings.Settings.showBannerNotification(l), isOn: $showBannerNotification)
+                    Toggle(Strings.Settings.autoOpenPopover(l), isOn: $autoOpenPopover)
                 }
             }
             .formStyle(.grouped)
