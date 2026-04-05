@@ -56,6 +56,22 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
 
             return nil
         }
+
+        NotificationCenter.default.addObserver(
+            forName: .openPopover,
+            object: nil,
+            queue: .main
+        ) { _ in
+            MainActor.assumeIsolated {
+                // Find the status bar window and simulate a click to open the MenuBarExtra popover
+                if let button = NSApp.windows
+                    .compactMap({ $0.contentView?.subviews })
+                    .flatMap({ $0 })
+                    .first(where: { $0 is NSStatusBarButton }) as? NSStatusBarButton {
+                    button.performClick(nil)
+                }
+            }
+        }
     }
 
     func applicationWillTerminate(_ notification: Notification) {
