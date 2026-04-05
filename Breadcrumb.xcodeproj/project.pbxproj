@@ -28,8 +28,10 @@
 		750DDDBE8BEBB05A74A6681F /* StatusEntryForm.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9BFECE00BAB70889C1C40B4 /* StatusEntryForm.swift */; };
 		7952B45A0B64DDDFA48149C3 /* EditLabelFormView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6B294E9E641FE8862731EEA /* EditLabelFormView.swift */; };
 		7A9DF4EB4DEA7C643635E72F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DE07044651329554A55EEDB /* AppDelegate.swift */; };
+		7FFA294677B1B83E4EE65977 /* NotificationServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 831984343AE49E818C7511B7 /* NotificationServiceTests.swift */; };
 		8BC4923EE801C29764E7E500 /* ExtractedStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4538B21914489F24883231D /* ExtractedStatus.swift */; };
 		8C122A7AB70310BCF81D2061 /* PomodoroSessionEndView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F5D21B8446DBC5F11312384 /* PomodoroSessionEndView.swift */; };
+		8E074923FEA5436E3AD06EB3 /* SoundPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75DE9B3987F1DA2381072E8E /* SoundPicker.swift */; };
 		9B619503406331710EB35740 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 777246810162C2507E304C44 /* Assets.xcassets */; };
 		9BFD8EC86A0C17852AD2B57A /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FA0A334AD3755400D2E4FB6 /* ContentView.swift */; };
 		A2C0BB75C7ED0551645F313F /* StringsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B61E0FC8ED8FA3607CA8E73 /* StringsTests.swift */; };
@@ -40,6 +42,7 @@
 		B57B25265EE67B1DEF64A0CC /* DocumentListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9BEAAE0D129FC67EB414904 /* DocumentListView.swift */; };
 		B949DE8B498359E91079E6D7 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E97F9AD204BAC7BB0A7E5D92 /* SettingsView.swift */; };
 		BD2C646162A7B7A7AF1E68BB /* Strings.swift in Sources */ = {isa = PBXBuildFile; fileRef = E13AD7C73B76D6EAB8CF5D8E /* Strings.swift */; };
+		BE6EE87AEF54FED09C1AB647 /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3C2BE7C0D1A3D1DC5DD8E35 /* NotificationService.swift */; };
 		C0556C526B6E95E3EAC49CFE /* PomodoroTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0A23CE8D0C3663CAF21F178 /* PomodoroTimer.swift */; };
 		CA24E531052945BC800D6D9C /* ProjectFormView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9DBEBA30993B89A48537DA5 /* ProjectFormView.swift */; };
 		CF4074B7669439CA1E033539 /* Project.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1245F6E8248E227CA507BF8E /* Project.swift */; };
@@ -89,9 +92,11 @@
 		6AB137DC9044186B8877D8CD /* ProjectDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectDetailView.swift; sourceTree = "<group>"; };
 		70969E1971A3847B517389ED /* AppLanguage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppLanguage.swift; sourceTree = "<group>"; };
 		724DF0D9521A50E754FB21F1 /* PomodoroSessionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PomodoroSessionTests.swift; sourceTree = "<group>"; };
+		75DE9B3987F1DA2381072E8E /* SoundPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundPicker.swift; sourceTree = "<group>"; };
 		777246810162C2507E304C44 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		7E0C91DB4484A3A2E81E81C8 /* OptionalFieldView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionalFieldView.swift; sourceTree = "<group>"; };
 		7E9AB4FB8217059480EEA8FA /* BreakoutWindowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreakoutWindowView.swift; sourceTree = "<group>"; };
+		831984343AE49E818C7511B7 /* NotificationServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationServiceTests.swift; sourceTree = "<group>"; };
 		85B023F7702442C9E73AD7FF /* LanguageManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LanguageManagerTests.swift; sourceTree = "<group>"; };
 		9492B635806349A2C9556E20 /* AddURLFormView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddURLFormView.swift; sourceTree = "<group>"; };
 		94F7E31FC30CBABB8C95F10A /* LanguageManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LanguageManager.swift; sourceTree = "<group>"; };
@@ -108,6 +113,7 @@
 		BDF418F050E4F08EE71C99E8 /* BreadcrumbCommands.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreadcrumbCommands.swift; sourceTree = "<group>"; };
 		C3F1C79AA5792B6763AB7DF4 /* PomodoroConfigView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PomodoroConfigView.swift; sourceTree = "<group>"; };
 		C4538B21914489F24883231D /* ExtractedStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtractedStatus.swift; sourceTree = "<group>"; };
+		D3C2BE7C0D1A3D1DC5DD8E35 /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
 		D560B5D8D1FB681EFF1D4E9E /* DetailFieldView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailFieldView.swift; sourceTree = "<group>"; };
 		D73B1C28DFFA54E78F9CA4D7 /* StatsContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsContentView.swift; sourceTree = "<group>"; };
 		D9BEAAE0D129FC67EB414904 /* DocumentListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentListView.swift; sourceTree = "<group>"; };
@@ -151,6 +157,7 @@
 				47DF5F532D7705CA6E56446A /* ProjectRowView.swift */,
 				E97F9AD204BAC7BB0A7E5D92 /* SettingsView.swift */,
 				65312D00F423DD42BAB0C2FD /* SmartTimestampView.swift */,
+				75DE9B3987F1DA2381072E8E /* SoundPicker.swift */,
 				D73B1C28DFFA54E78F9CA4D7 /* StatsContentView.swift */,
 				A9BFECE00BAB70889C1C40B4 /* StatusEntryForm.swift */,
 				FBC8EB9F931D9DE70D2806CE /* WelcomeView.swift */,
@@ -163,6 +170,7 @@
 			children = (
 				0FE203A2FC256662ACD1B3C9 /* BreadcrumbTests.swift */,
 				85B023F7702442C9E73AD7FF /* LanguageManagerTests.swift */,
+				831984343AE49E818C7511B7 /* NotificationServiceTests.swift */,
 				724DF0D9521A50E754FB21F1 /* PomodoroSessionTests.swift */,
 				F02E4F9B768BF31589ED8D8C /* PomodoroTimerTests.swift */,
 				5B61E0FC8ED8FA3607CA8E73 /* StringsTests.swift */,
@@ -193,6 +201,7 @@
 			children = (
 				4C6CE12769F9856FAC17C75D /* AIService.swift */,
 				94F7E31FC30CBABB8C95F10A /* LanguageManager.swift */,
+				D3C2BE7C0D1A3D1DC5DD8E35 /* NotificationService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -339,6 +348,7 @@
 				674F307AC2D1DD30DDBA74DE /* LanguageManager.swift in Sources */,
 				497D467A820A0F052FBA9DE7 /* LinkedDocument.swift in Sources */,
 				043A15563757C2E509CB275D /* ModelContext+SaveWithLogging.swift in Sources */,
+				BE6EE87AEF54FED09C1AB647 /* NotificationService.swift in Sources */,
 				A43D3BC9876E52C897785532 /* OptionalFieldView.swift in Sources */,
 				3B8E91E329DF6960817BF4E7 /* PomodoroConfigView.swift in Sources */,
 				6864E481C9B390FF7CFB8D7C /* PomodoroRunningView.swift in Sources */,
@@ -353,6 +363,7 @@
 				D9DA16D240E3D429351FAB57 /* ProjectRowView.swift in Sources */,
 				B949DE8B498359E91079E6D7 /* SettingsView.swift in Sources */,
 				F8D0888E96F2ED902AF2E686 /* SmartTimestampView.swift in Sources */,
+				8E074923FEA5436E3AD06EB3 /* SoundPicker.swift in Sources */,
 				11DA5E14F4E1F0B2D81BBB89 /* StatsContentView.swift in Sources */,
 				50B42669968E80BF62C3DEB4 /* StatusEntry.swift in Sources */,
 				750DDDBE8BEBB05A74A6681F /* StatusEntryForm.swift in Sources */,
@@ -368,6 +379,7 @@
 			files = (
 				1D05386095241293CA4DE03A /* BreadcrumbTests.swift in Sources */,
 				DCBDD5B7E686FFCEA004CABC /* LanguageManagerTests.swift in Sources */,
+				7FFA294677B1B83E4EE65977 /* NotificationServiceTests.swift in Sources */,
 				EDDBEC957A06EFB95B9B47DC /* PomodoroSessionTests.swift in Sources */,
 				E81E8CD4BE3E29931E40C14D /* PomodoroTimerTests.swift in Sources */,
 				A2C0BB75C7ED0551645F313F /* StringsTests.swift in Sources */,
@@ -452,7 +464,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MARKETING_VERSION = 0.1.0;
+				MARKETING_VERSION = 0.2.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.roger.breadcrumb;
 				SDKROOT = macosx;
 			};
@@ -486,7 +498,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MARKETING_VERSION = 0.1.0;
+				MARKETING_VERSION = 0.2.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.roger.breadcrumb;
 				SDKROOT = macosx;
 			};

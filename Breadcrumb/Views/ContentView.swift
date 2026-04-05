@@ -12,6 +12,10 @@ struct ContentView: View {
     @State private var configShortBreakMinutes: Int = 5
     @State private var configLongBreakMinutes: Int = 15
     @State private var configSessionsBeforeLong: Int = 4
+    @State private var configTotalSessions: Int = 4
+    @State private var configTimerMode: TimerMode = .pomodoro
+    @State private var configFocusMateMinutes: Int = 50
+    @State private var configFocusMateStartTime: Date = .now
 
     @AppStorage("hasSeenWelcome") private var hasSeenWelcome = false
 
@@ -71,6 +75,10 @@ struct ContentView: View {
                     shortBreakMinutes: $configShortBreakMinutes,
                     longBreakMinutes: $configLongBreakMinutes,
                     sessionsBeforeLong: $configSessionsBeforeLong,
+                    totalSessions: $configTotalSessions,
+                    timerMode: $configTimerMode,
+                    focusMateMinutes: $configFocusMateMinutes,
+                    focusMateStartTime: $configFocusMateStartTime,
                     onStart: { confirmStartPomodoro() },
                     onDismiss: { showingPomodoroConfig = false }
                 )
@@ -91,6 +99,7 @@ struct ContentView: View {
     @AppStorage("pomodoro.shortBreakMinutes") private var shortBreakMinutes = 5
     @AppStorage("pomodoro.longBreakMinutes") private var longBreakMinutes = 15
     @AppStorage("pomodoro.sessionsBeforeLongBreak") private var sessionsBeforeLong = 4
+    @AppStorage("pomodoro.totalSessions") private var totalSessions = 4
 
     private func startPomodoro(project: Project?) {
         pendingPomodoroProject = project
@@ -98,18 +107,30 @@ struct ContentView: View {
         configShortBreakMinutes = shortBreakMinutes
         configLongBreakMinutes = longBreakMinutes
         configSessionsBeforeLong = sessionsBeforeLong
+        configTotalSessions = totalSessions
         screen = .projectList
         showingPomodoroConfig = true
     }
 
     private func confirmStartPomodoro() {
-        pomodoroTimer.startWork(
-            project: pendingPomodoroProject,
-            durationMinutes: configWorkMinutes,
-            shortBreakMinutes: configShortBreakMinutes,
-            longBreakMinutes: configLongBreakMinutes,
-            sessionsBeforeLong: configSessionsBeforeLong
-        )
+        switch configTimerMode {
+        case .pomodoro:
+            pomodoroTimer.startWork(
+                project: pendingPomodoroProject,
+                durationMinutes: configWorkMinutes,
+                shortBreakMinutes: configShortBreakMinutes,
+                longBreakMinutes: configLongBreakMinutes,
+                sessionsBeforeLong: configSessionsBeforeLong,
+                totalSessions: configTotalSessions
+            )
+        case .focusMate:
+            let endTime = configFocusMateStartTime.addingTimeInterval(Double(configFocusMateMinutes) * 60)
+            pomodoroTimer.startFocusMate(
+                project: pendingPomodoroProject,
+                durationMinutes: configFocusMateMinutes,
+                endTime: endTime
+            )
+        }
         showingPomodoroConfig = false
     }
 }

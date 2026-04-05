@@ -17,6 +17,7 @@ final class PomodoroSession {
     var sessionType: SessionType
     var sessionNumber: Int
     var completed: Bool
+    var isFocusMate: Bool = false
     var project: Project?
     var statusEntry: StatusEntry?
 
