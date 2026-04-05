@@ -3,6 +3,7 @@ import AppKit
 extension Notification.Name {
     static let openSettings = Notification.Name("Breadcrumb.openSettings")
     static let openAbout = Notification.Name("Breadcrumb.openAbout")
+    static let openPopover = Notification.Name("Breadcrumb.openPopover")
 }
 
 @MainActor
