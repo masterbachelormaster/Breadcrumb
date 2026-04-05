@@ -42,6 +42,37 @@ struct StringsTests {
         #expect(en.contains("extract"))
     }
 
+    @Test("Total sessions strings")
+    func totalSessionsStrings() {
+        #expect(Strings.Pomodoro.totalSessionsLabel(.german, count: 4) == "Gesamtsitzungen: 4")
+        #expect(Strings.Pomodoro.totalSessionsLabel(.english, count: 4) == "Total Sessions: 4")
+        #expect(Strings.Pomodoro.allSessionsComplete(.german) == "Alle Sitzungen abgeschlossen!")
+        #expect(Strings.Pomodoro.allSessionsComplete(.english) == "All Sessions Complete!")
+    }
+
+    @Test("FocusMate strings")
+    func focusMateStrings() {
+        #expect(Strings.Pomodoro.pomodoroMode(.english) == "Pomodoro")
+        #expect(Strings.Pomodoro.focusMateMode(.english) == "FocusMate")
+        #expect(Strings.Pomodoro.focusMateLength(.german) == "Sitzungslänge")
+        #expect(Strings.Pomodoro.focusMateLength(.english) == "Session Length")
+        #expect(Strings.Pomodoro.focusMateMinutesOption(.german, minutes: 25) == "25 Min.")
+        #expect(Strings.Pomodoro.focusMateMinutesOption(.english, minutes: 25) == "25 min")
+        #expect(Strings.Pomodoro.focusMateSessionStart(.english) == "Session Start")
+        #expect(Strings.Pomodoro.focusMateSessionStart(.german) == "Sitzungsbeginn")
+        #expect(Strings.Pomodoro.focusMateEndsAt(.english, time: "11:05") == "Ends at 11:05")
+        #expect(Strings.Pomodoro.focusMateEndsAt(.german, time: "11:05") == "Endet um 11:05")
+        #expect(Strings.Pomodoro.focusMateComplete(.english).contains("FocusMate"))
+        #expect(Strings.Pomodoro.saveAndDone(.english) == "Save & Done")
+        #expect(Strings.Pomodoro.saveAndDone(.german) == "Speichern & Fertig")
+    }
+
+    @Test("Overtime notification strings")
+    func overtimeNotificationStrings() {
+        #expect(Strings.Notifications.overtimeNotificationBody(.english).contains("overtime"))
+        #expect(Strings.Notifications.overtimeNotificationBody(.german).contains("Überstunden"))
+    }
+
     @Test("Documents strings return correct translations")
     func documentsStrings() {
         #expect(Strings.Documents.documents(.german) == "Dokumente")
@@ -58,5 +89,31 @@ struct StringsTests {
         #expect(Strings.Documents.urlPlaceholder(.english) == "Enter URL")
         #expect(Strings.Documents.labelPlaceholder(.german) == "Bezeichnung (optional)")
         #expect(Strings.Documents.labelPlaceholder(.english) == "Label (optional)")
+    }
+
+    @Test("Notification settings strings")
+    func notificationSettingsStrings() {
+        #expect(Strings.Settings.soundWorkDone(.english) == "Work done sound")
+        #expect(Strings.Settings.soundWorkDone(.german) == "Ton bei Arbeitsende")
+        #expect(Strings.Settings.soundBreakDone(.english) == "Break done sound")
+        #expect(Strings.Settings.soundBreakDone(.german) == "Ton bei Pausenende")
+        #expect(Strings.Settings.soundOvertime(.english) == "Overtime sound")
+        #expect(Strings.Settings.soundOvertime(.german) == "Ton bei Überstunden")
+        #expect(Strings.Settings.showBannerNotification(.english) == "Show banner notification")
+        #expect(Strings.Settings.showBannerNotification(.german) == "Bannerbenachrichtigung anzeigen")
+        #expect(Strings.Settings.autoOpenPopover(.english) == "Auto-open popover")
+        #expect(Strings.Settings.autoOpenPopover(.german) == "Popover automatisch öffnen")
+        #expect(Strings.Settings.previewSound(.english) == "Preview")
+        #expect(Strings.Settings.previewSound(.german) == "Vorschau")
+        #expect(Strings.Settings.noSound(.english) == "None")
+        #expect(Strings.Settings.noSound(.german) == "Kein Ton")
+    }
+
+    @Test("Snooze strings")
+    func snoozeStrings() {
+        #expect(Strings.Pomodoro.snooze5(.english) == "+5 min")
+        #expect(Strings.Pomodoro.snooze5(.german) == "+5 Min.")
+        #expect(Strings.Pomodoro.snooze10(.english) == "+10 min")
+        #expect(Strings.Pomodoro.snooze10(.german) == "+10 Min.")
     }
 }

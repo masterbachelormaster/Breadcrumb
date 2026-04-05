@@ -235,6 +235,45 @@ enum Strings {
         static func startSession(_ l: AppLanguage) -> String {
             l == .german ? "Sitzung starten" : "Start Session"
         }
+        static func totalSessionsLabel(_ l: AppLanguage, count: Int) -> String {
+            l == .german ? "Gesamtsitzungen: \(count)" : "Total Sessions: \(count)"
+        }
+        static func allSessionsComplete(_ l: AppLanguage) -> String {
+            l == .german ? "Alle Sitzungen abgeschlossen!" : "All Sessions Complete!"
+        }
+        static func pomodoroMode(_ l: AppLanguage) -> String {
+            "Pomodoro"
+        }
+        static func focusMateMode(_ l: AppLanguage) -> String {
+            "FocusMate"
+        }
+        static func focusMateLength(_ l: AppLanguage) -> String {
+            l == .german ? "Sitzungslänge" : "Session Length"
+        }
+        static func focusMateMinutesOption(_ l: AppLanguage, minutes: Int) -> String {
+            l == .german ? "\(minutes) Min." : "\(minutes) min"
+        }
+        static func focusMateSessionStart(_ l: AppLanguage) -> String {
+            l == .german ? "Sitzungsbeginn" : "Session Start"
+        }
+        static func focusMateEndsAt(_ l: AppLanguage, time: String) -> String {
+            l == .german ? "Endet um \(time)" : "Ends at \(time)"
+        }
+        static func focusMatePhaseLabel(_ l: AppLanguage, time: String) -> String {
+            l == .german ? "FocusMate · endet um \(time)" : "FocusMate · ends at \(time)"
+        }
+        static func focusMateComplete(_ l: AppLanguage) -> String {
+            l == .german ? "👥 FocusMate-Sitzung beendet!" : "👥 FocusMate Session Complete!"
+        }
+        static func saveAndDone(_ l: AppLanguage) -> String {
+            l == .german ? "Speichern & Fertig" : "Save & Done"
+        }
+        static func snooze5(_ l: AppLanguage) -> String {
+            l == .german ? "+5 Min." : "+5 min"
+        }
+        static func snooze10(_ l: AppLanguage) -> String {
+            l == .german ? "+10 Min." : "+10 min"
+        }
     }
 
     // MARK: - Notifications
@@ -251,6 +290,9 @@ enum Strings {
         }
         static func breakOverBody(_ l: AppLanguage) -> String {
             l == .german ? "Bereit für die nächste Sitzung?" : "Ready for the next session?"
+        }
+        static func overtimeNotificationBody(_ l: AppLanguage) -> String {
+            l == .german ? "Timer abgelaufen — Überstunden gestartet" : "Timer complete — overtime started"
         }
     }
 
@@ -274,6 +316,27 @@ enum Strings {
         }
         static func systemNotification(_ l: AppLanguage) -> String {
             l == .german ? "Systembenachrichtigung" : "System Notification"
+        }
+        static func soundWorkDone(_ l: AppLanguage) -> String {
+            l == .german ? "Ton bei Arbeitsende" : "Work done sound"
+        }
+        static func soundBreakDone(_ l: AppLanguage) -> String {
+            l == .german ? "Ton bei Pausenende" : "Break done sound"
+        }
+        static func soundOvertime(_ l: AppLanguage) -> String {
+            l == .german ? "Ton bei Überstunden" : "Overtime sound"
+        }
+        static func showBannerNotification(_ l: AppLanguage) -> String {
+            l == .german ? "Bannerbenachrichtigung anzeigen" : "Show banner notification"
+        }
+        static func autoOpenPopover(_ l: AppLanguage) -> String {
+            l == .german ? "Popover automatisch öffnen" : "Auto-open popover"
+        }
+        static func previewSound(_ l: AppLanguage) -> String {
+            l == .german ? "Vorschau" : "Preview"
+        }
+        static func noSound(_ l: AppLanguage) -> String {
+            l == .german ? "Kein Ton" : "None"
         }
     }
 
@@ -343,39 +406,19 @@ enum Strings {
             switch l {
             case .german:
                 return """
-                    Du extrahierst aus gesprochenen Statusmeldungen drei Felder.
+                    Du bist ein Experte fuer Projekt-Status-Analyse. Extrahiere aus der Statusmeldung was erledigt ist, was als naechstes geplant ist und was unklar ist.
 
-                    REGELN:
-                    - Bleib nah an den Originalworten. Nicht in Fachsprache umformulieren.
-                    - Mehrere Punkte pro Feld mit ". " trennen.
-                    - Kurze Stichpunkte ohne Pronomen. "UI verbessert" statt "Wir haben die UI verbessert".
-                    - lastAction: Was erledigt wurde. Nur Vergangenes.
-                    - nextStep: ALLES was geplant, gewünscht oder vorgeschlagen wird. Auch Ideen und Feature-Wünsche. Im Zweifel hierhin.
-                    - openQuestions: NUR wenn der User explizit unsicher ist oder eine Frage stellt ("weiß nicht", "bin unsicher", "ob wir X oder Y"). Leerer String wenn nichts unklar ist.
+                    Liste jeden genannten Punkt auf. Trenne mehrere Punkte mit ". ". Verwende kurze Stichpunkte ohne Pronomen. Bleib nah an den Originalworten.
 
-                    BEISPIEL:
-                    Input: "Login ist fertig. Als nächstes Dashboard bauen und API anbinden. Bin unsicher ob Redis oder Memcached."
-                    lastAction: "Login fertig"
-                    nextStep: "Dashboard bauen. API anbinden"
-                    openQuestions: "Redis oder Memcached – Entscheidung offen"
+                    Wenn nichts erledigt ist, lass lastAction leer. Wenn nichts unklar ist, lass openQuestions leer.
                     """
             case .english:
                 return """
-                    You extract three fields from spoken status updates.
+                    You are an expert project status parser. Extract what is done, what is planned next, and what is uncertain from the person's status update.
 
-                    RULES:
-                    - Stay close to the original words. Don't rephrase into jargon.
-                    - Separate multiple points per field with ". ".
-                    - Short bullet points without pronouns. "Improved UI" instead of "We improved the UI".
-                    - lastAction: What was completed. Past actions only.
-                    - nextStep: EVERYTHING planned, desired, or suggested. Including ideas and feature wishes. When in doubt, put it here.
-                    - openQuestions: ONLY when the user is explicitly uncertain or asks a question ("don't know", "unsure", "whether X or Y"). Empty string if nothing is unclear.
+                    List every item mentioned. Separate multiple items with ". ". Use short phrases without pronouns. Stay close to the original words.
 
-                    EXAMPLE:
-                    Input: "Login is done. Next up build the dashboard and connect the API. Not sure whether Redis or Memcached."
-                    lastAction: "Login done"
-                    nextStep: "Build dashboard. Connect API"
-                    openQuestions: "Redis or Memcached – decision pending"
+                    If nothing is done, leave lastAction empty. If nothing is uncertain, leave openQuestions empty.
                     """
             }
         }
