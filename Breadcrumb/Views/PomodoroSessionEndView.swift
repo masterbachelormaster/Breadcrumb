@@ -7,11 +7,14 @@ struct PomodoroSessionEndView: View {
     @Environment(\.modelContext) private var modelContext
 
     let wasBreak: Bool
+    var isCycleComplete: Bool = false
+    var isFocusMate: Bool = false
     var onSaveAndBreak: (PomodoroSession) -> Void
     var onContinueWorking: () -> Void
     var onSkip: () -> Void
     var onStartNextSession: () -> Void
     var onStopCompletely: () -> Void
+    var onSnooze: (Int) -> Void
 
     @State private var freeText = ""
     @State private var lastAction = ""
@@ -29,6 +32,8 @@ struct PomodoroSessionEndView: View {
             VStack(spacing: 16) {
                 if wasBreak {
                     breakEndContent
+                } else if isFocusMate {
+                    focusMateEndContent
                 } else {
                     workEndContent
                 }
@@ -54,16 +59,40 @@ struct PomodoroSessionEndView: View {
     @ViewBuilder
     private var breakEndContent: some View {
         let l = languageManager.language
-        Text(Strings.Pomodoro.breakOver(l))
+        if isCycleComplete {
+            Text(Strings.Pomodoro.allSessionsComplete(l))
+                .font(.headline)
+            Button(Strings.Pomodoro.stopCompletely(l)) { onStopCompletely() }
+                .buttonStyle(.borderedProminent)
+        } else {
+            Text(Strings.Pomodoro.breakOver(l))
+                .font(.headline)
+            Text(Strings.Pomodoro.readyForNext(l))
+                .font(.subheadline)
+                .foregroundStyle(.secondary)
+
+            HStack {
+                Button(Strings.Pomodoro.nextSession(l)) { onStartNextSession() }
+                    .buttonStyle(.borderedProminent)
+                Button(Strings.Pomodoro.stopCompletely(l)) { onStopCompletely() }
+                    .buttonStyle(.bordered)
+            }
+        }
+    }
+
+    @ViewBuilder
+    private var focusMateEndContent: some View {
+        let l = languageManager.language
+        Text(Strings.Pomodoro.focusMateComplete(l))
             .font(.headline)
-        Text(Strings.Pomodoro.readyForNext(l))
-            .font(.subheadline)
-            .foregroundStyle(.secondary)
+
+        statusEntryForm
 
         HStack {
-            Button(Strings.Pomodoro.nextSession(l)) { onStartNextSession() }
+            Button(Strings.Pomodoro.saveAndDone(l)) { saveAndDone() }
                 .buttonStyle(.borderedProminent)
-            Button(Strings.Pomodoro.stopCompletely(l)) { onStopCompletely() }
+                .disabled(selectedProject == nil && timer.boundProject == nil)
+            Button(Strings.Pomodoro.skip(l)) { onStopCompletely() }
                 .buttonStyle(.bordered)
         }
     }
@@ -73,6 +102,35 @@ struct PomodoroSessionEndView: View {
         let l = languageManager.language
         Text(Strings.Pomodoro.sessionFinished(l))
             .font(.headline)
+
+        HStack(spacing: 8) {
+            Button(Strings.Pomodoro.snooze5(l), action: { onSnooze(5) })
+                .buttonStyle(.bordered)
+            Button(Strings.Pomodoro.snooze10(l), action: { onSnooze(10) })
+                .buttonStyle(.bordered)
+        }
+
+        statusEntryForm
+
+        HStack {
+            Button(Strings.Pomodoro.saveAndBreak(l), action: saveAndBreak)
+                .buttonStyle(.borderedProminent)
+                .disabled(selectedProject == nil && timer.boundProject == nil)
+            Button(Strings.Pomodoro.continueWorking(l), action: { onContinueWorking() })
+                .buttonStyle(.bordered)
+        }
+        HStack(spacing: 16) {
+            Button(Strings.Pomodoro.skip(l), action: { onSkip() })
+            Button(Strings.Pomodoro.stopCompletely(l), action: { onStopCompletely() })
+        }
+        .font(.caption)
+        .foregroundStyle(.secondary)
+        .buttonStyle(ToolbarButtonStyle())
+    }
+
+    @ViewBuilder
+    private var statusEntryForm: some View {
+        let l = languageManager.language
 
         // Project picker for standalone sessions
         if timer.boundProject == nil {
@@ -107,21 +165,6 @@ struct PomodoroSessionEndView: View {
             }
             .padding(.top, 4)
         }
-
-        HStack {
-            Button(Strings.Pomodoro.saveAndBreak(l)) { saveAndBreak() }
-                .buttonStyle(.borderedProminent)
-                .disabled(selectedProject == nil && timer.boundProject == nil)
-            Button(Strings.Pomodoro.continueWorking(l)) { onContinueWorking() }
-                .buttonStyle(.bordered)
-        }
-        HStack(spacing: 16) {
-            Button(Strings.Pomodoro.skip(l)) { onSkip() }
-            Button(Strings.Pomodoro.stopCompletely(l)) { onStopCompletely() }
-        }
-        .font(.caption)
-        .foregroundStyle(.secondary)
-        .buttonStyle(ToolbarButtonStyle())
     }
 
     private func saveAndBreak() {
@@ -150,11 +193,41 @@ struct PomodoroSessionEndView: View {
             entry.project = project
             entry.pomodoroSession = session
             project.entries.append(entry)
+        }
+
+        onSaveAndBreak(session)
+    }
+
+    private func saveAndDone() {
+        let project = selectedProject ?? timer.boundProject
+
+        let session = PomodoroSession(
+            plannedDuration: TimeInterval(timer.originalDurationSeconds),
+            sessionType: .work,
+            sessionNumber: timer.currentSessionNumber
+        )
+        session.completed = true
+        session.endedAt = .now
+        session.actualDuration = TimeInterval(timer.originalDurationSeconds - timer.remainingSeconds)
+        session.project = project
+        session.isFocusMate = true
+
+        let trimmed = freeText.trimmingCharacters(in: .whitespaces)
+        if !trimmed.isEmpty, let project {
+            let entry = StatusEntry(
+                freeText: trimmed,
+                lastAction: lastAction.isEmpty ? nil : lastAction,
+                nextStep: nextStep.isEmpty ? nil : nextStep,
+                openQuestions: openQuestions.isEmpty ? nil : openQuestions
+            )
+            entry.project = project
+            entry.pomodoroSession = session
+            project.entries.append(entry)
             modelContext.insert(entry)
         }
 
         modelContext.insert(session)
         modelContext.saveWithLogging()
-        onSaveAndBreak(session)
+        onStopCompletely()
     }
 }

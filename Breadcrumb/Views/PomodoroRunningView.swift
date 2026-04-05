@@ -143,6 +143,10 @@ struct PomodoroRunningView: View {
                         showingSessionEnd = false
                         timer.stop()
                         onFinished()
+                    },
+                    onSnooze: { minutes in
+                        showingSessionEnd = false
+                        timer.snooze(minutes: minutes)
                     }
                 )
             }
