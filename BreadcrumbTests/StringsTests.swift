@@ -116,4 +116,40 @@ struct StringsTests {
         #expect(Strings.Pomodoro.snooze10(.english) == "+10 min")
         #expect(Strings.Pomodoro.snooze10(.german) == "+10 Min.")
     }
+
+    @Test("AI settings strings return correct translations")
+    func aiSettingsStrings() {
+        #expect(Strings.Settings.aiProvider(.german) == "KI-Anbieter")
+        #expect(Strings.Settings.aiProvider(.english) == "AI Provider")
+        #expect(Strings.Settings.aiProviderLocal(.german) == "Apple KI")
+        #expect(Strings.Settings.aiProviderLocal(.english) == "Apple AI")
+        #expect(Strings.Settings.aiProviderOpenRouter(.german) == "OpenRouter")
+        #expect(Strings.Settings.aiProviderOpenRouter(.english) == "OpenRouter")
+        #expect(Strings.Settings.apiKey(.german) == "API-Schlüssel")
+        #expect(Strings.Settings.apiKey(.english) == "API Key")
+        #expect(Strings.Settings.model(.german) == "Modell")
+        #expect(Strings.Settings.model(.english) == "Model")
+        #expect(Strings.Settings.apiKeyPlaceholder(.german) == "OpenRouter API-Schlüssel eingeben")
+        #expect(Strings.Settings.apiKeyPlaceholder(.english) == "Enter OpenRouter API key")
+        #expect(Strings.Settings.modelPlaceholder(.german) == "z. B. anthropic/claude-sonnet-4")
+        #expect(Strings.Settings.modelPlaceholder(.english) == "e.g. anthropic/claude-sonnet-4")
+        #expect(Strings.Settings.apiKeyHelp(.german).contains("openrouter.ai"))
+        #expect(Strings.Settings.apiKeyHelp(.english).contains("openrouter.ai"))
+        #expect(Strings.Settings.modelHelp(.german).contains("Modell-ID"))
+        #expect(Strings.Settings.modelHelp(.english).contains("model ID"))
+        #expect(Strings.Settings.aiReady(.german) == "Bereit")
+        #expect(Strings.Settings.aiReady(.english) == "Ready")
+        #expect(Strings.Settings.aiNotConfigured(.german) == "Nicht konfiguriert")
+        #expect(Strings.Settings.aiNotConfigured(.english) == "Not configured")
+    }
+
+    @Test("AI error strings for new error cases")
+    func aiErrorStrings() {
+        #expect(Strings.Errors.networkError(.german, message: "timeout").contains("Netzwerk"))
+        #expect(Strings.Errors.networkError(.english, message: "timeout").contains("Network"))
+        #expect(Strings.Errors.authenticationFailed(.german).contains("API"))
+        #expect(Strings.Errors.authenticationFailed(.english).contains("API"))
+        #expect(Strings.Errors.invalidResponse(.german).contains("Antwort"))
+        #expect(Strings.Errors.invalidResponse(.english).contains("response"))
+    }
 }

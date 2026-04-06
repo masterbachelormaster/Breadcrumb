@@ -12,6 +12,9 @@ enum AIServiceError: LocalizedError, Sendable {
     case contextWindowExceeded
     case unsupportedLanguage
     case guardrailViolation
+    case networkError(String)
+    case authenticationFailed
+    case invalidResponse
     case generationFailed(String)
 
     var errorDescription: String? {
@@ -30,6 +33,12 @@ enum AIServiceError: LocalizedError, Sendable {
             return Strings.Errors.unsupportedLanguage(language)
         case .guardrailViolation:
             return Strings.Errors.contentNotProcessed(language)
+        case .networkError(let message):
+            return Strings.Errors.networkError(language, message: message)
+        case .authenticationFailed:
+            return Strings.Errors.authenticationFailed(language)
+        case .invalidResponse:
+            return Strings.Errors.invalidResponse(language)
         case .generationFailed(let message):
             return Strings.Errors.generationFailed(language, message: message)
         }

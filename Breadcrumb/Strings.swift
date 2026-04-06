@@ -338,6 +338,39 @@ enum Strings {
         static func noSound(_ l: AppLanguage) -> String {
             l == .german ? "Kein Ton" : "None"
         }
+        static func aiProvider(_ l: AppLanguage) -> String {
+            l == .german ? "KI-Anbieter" : "AI Provider"
+        }
+        static func aiProviderLocal(_ l: AppLanguage) -> String {
+            l == .german ? "Apple KI" : "Apple AI"
+        }
+        static func aiProviderOpenRouter(_ l: AppLanguage) -> String {
+            "OpenRouter"
+        }
+        static func apiKey(_ l: AppLanguage) -> String {
+            l == .german ? "API-Schlüssel" : "API Key"
+        }
+        static func model(_ l: AppLanguage) -> String {
+            l == .german ? "Modell" : "Model"
+        }
+        static func apiKeyPlaceholder(_ l: AppLanguage) -> String {
+            l == .german ? "OpenRouter API-Schlüssel eingeben" : "Enter OpenRouter API key"
+        }
+        static func modelPlaceholder(_ l: AppLanguage) -> String {
+            l == .german ? "z. B. anthropic/claude-sonnet-4" : "e.g. anthropic/claude-sonnet-4"
+        }
+        static func apiKeyHelp(_ l: AppLanguage) -> String {
+            l == .german ? "API-Schlüssel von openrouter.ai" : "Get your API key at openrouter.ai"
+        }
+        static func modelHelp(_ l: AppLanguage) -> String {
+            l == .german ? "Beliebige OpenRouter Modell-ID eingeben" : "Enter any OpenRouter model ID"
+        }
+        static func aiReady(_ l: AppLanguage) -> String {
+            l == .german ? "Bereit" : "Ready"
+        }
+        static func aiNotConfigured(_ l: AppLanguage) -> String {
+            l == .german ? "Nicht konfiguriert" : "Not configured"
+        }
     }
 
     // MARK: - Welcome
@@ -456,6 +489,15 @@ enum Strings {
         }
         static func notSupportedInVersion(_ l: AppLanguage) -> String {
             l == .german ? "Apple Intelligence wird in dieser App-Version nicht unterstützt" : "Apple Intelligence is not supported in this app version"
+        }
+        static func networkError(_ l: AppLanguage, message: String) -> String {
+            l == .german ? "Netzwerkfehler: \(message)" : "Network error: \(message)"
+        }
+        static func authenticationFailed(_ l: AppLanguage) -> String {
+            l == .german ? "Ungültiger API-Schlüssel" : "Invalid API key"
+        }
+        static func invalidResponse(_ l: AppLanguage) -> String {
+            l == .german ? "Ungültige Antwort vom Modell" : "Invalid response from model"
         }
     }
 
