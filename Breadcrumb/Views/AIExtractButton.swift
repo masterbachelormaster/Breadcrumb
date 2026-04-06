@@ -15,19 +15,13 @@ struct AIExtractButton: View {
     @State private var errorDismissTask: Task<Void, Never>?
 
     var body: some View {
-        #if canImport(FoundationModels)
-        if #available(macOS 26, *) {
-            extractionContent
-                .onDisappear {
-                    extractionTask?.cancel()
-                    errorDismissTask?.cancel()
-                }
-        }
-        #endif
+        extractionContent
+            .onDisappear {
+                extractionTask?.cancel()
+                errorDismissTask?.cancel()
+            }
     }
 
-    #if canImport(FoundationModels)
-    @available(macOS 26, *)
     @ViewBuilder
     private var extractionContent: some View {
         let l = languageManager.language
@@ -60,29 +54,13 @@ struct AIExtractButton: View {
         }
     }
 
-    @available(macOS 26, *)
     private func extract() async {
         errorMessage = nil
         let language = languageManager.language
-        let instructions = Strings.AIExtraction.instructions(language)
 
         do {
-            switch language {
-            case .german:
-                let result: ExtractedStatusDE = try await aiService.generate(
-                    prompt: freeText,
-                    instructions: instructions,
-                    generating: ExtractedStatusDE.self
-                )
-                applyResult(lastAction: result.lastAction, nextStep: result.nextStep, openQuestions: result.openQuestions)
-            case .english:
-                let result: ExtractedStatusEN = try await aiService.generate(
-                    prompt: freeText,
-                    instructions: instructions,
-                    generating: ExtractedStatusEN.self
-                )
-                applyResult(lastAction: result.lastAction, nextStep: result.nextStep, openQuestions: result.openQuestions)
-            }
+            let result = try await aiService.extractStatus(from: freeText, language: language)
+            applyResult(lastAction: result.lastAction, nextStep: result.nextStep, openQuestions: result.openQuestions)
             showOptionalFields = true
         } catch is CancellationError {
             // Normal lifecycle event (view disappeared, task cancelled) — ignore.
@@ -107,7 +85,7 @@ struct AIExtractButton: View {
         }
     }
 
-    /// The on-device model sometimes generates filler text like "Leer" or "Nichts unklar"
+    /// The AI model sometimes generates filler text like "Leer" or "Nichts unklar"
     /// instead of an actual empty string. Strip these to prevent garbage in the UI.
     private func cleanFiller(_ text: String) -> String {
         let trimmed = text.trimmingCharacters(in: .whitespacesAndNewlines)
@@ -334,5 +312,4 @@ struct AIExtractButton: View {
 
         return trimmed
     }
-    #endif
 }
