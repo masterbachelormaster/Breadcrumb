@@ -57,8 +57,9 @@ final class AIService {
     }
 
     private(set) var isGenerating = false
+    private(set) var isAvailable = false
 
-    var availability: ServiceAvailability {
+    private var localAvailability: ServiceAvailability {
         #if canImport(FoundationModels)
         if #available(macOS 26, *) {
             switch SystemLanguageModel.default.availability {
@@ -83,8 +84,47 @@ final class AIService {
         #endif
     }
 
-    var isAvailable: Bool {
-        availability == .available
+    private var activeBackend: AIBackend {
+        let stored = UserDefaults.standard.string(forKey: "ai.provider") ?? "local"
+        return AIBackend(rawValue: stored) ?? .local
+    }
+
+    init() {
+        refreshAvailability()
+    }
+
+    func refreshAvailability() {
+        isAvailable = resolveProvider() != nil
+    }
+
+    private func resolveProvider() -> (any AIProvider)? {
+        switch activeBackend {
+        case .local:
+            #if canImport(FoundationModels)
+            if #available(macOS 26, *) {
+                if case .available = localAvailability {
+                    return LocalAIProvider()
+                }
+            }
+            #endif
+            return nil
+        case .openRouter:
+            guard let apiKey = KeychainHelper.read(key: "openrouter.apiKey"),
+                  let model = UserDefaults.standard.string(forKey: "ai.openrouter.model"),
+                  !apiKey.isEmpty, !model.isEmpty else { return nil }
+            return OpenRouterProvider(apiKey: apiKey, model: model)
+        }
+    }
+
+    // MARK: - Extraction
+
+    func extractStatus(from text: String, language: AppLanguage) async throws -> ExtractedStatus {
+        guard let provider = resolveProvider() else {
+            throw AIServiceError.notAvailable(unavailableReason)
+        }
+        isGenerating = true
+        defer { isGenerating = false }
+        return try await provider.extractStatus(from: text, language: language)
     }
 
     // MARK: - Text Generation
@@ -206,24 +246,34 @@ final class AIService {
     // MARK: - Private Helpers
 
     private var unavailableReason: String {
-        if case .unavailable(let reason) = availability {
-            return reason
+        switch activeBackend {
+        case .local:
+            if case .unavailable(let reason) = localAvailability {
+                return reason
+            }
+            return "unavailable"
+        case .openRouter:
+            return "notConfigured"
         }
-        return "unavailable"
     }
 
     func localizedUnavailableReason(for language: AppLanguage) -> String {
-        if case .unavailable(let key) = availability {
-            switch key {
-            case "deviceNotEligible": return Strings.Errors.deviceNotSupported(language)
-            case "appleIntelligenceNotEnabled": return Strings.Errors.enableAppleIntelligence(language)
-            case "modelNotReady": return Strings.Errors.modelLoading(language)
-            case "requiresMacOS26": return Strings.Errors.requiresMacOS26(language)
-            case "notSupportedInVersion": return Strings.Errors.notSupportedInVersion(language)
-            default: return Strings.Errors.notAvailable(language)
+        switch activeBackend {
+        case .local:
+            if case .unavailable(let key) = localAvailability {
+                switch key {
+                case "deviceNotEligible": return Strings.Errors.deviceNotSupported(language)
+                case "appleIntelligenceNotEnabled": return Strings.Errors.enableAppleIntelligence(language)
+                case "modelNotReady": return Strings.Errors.modelLoading(language)
+                case "requiresMacOS26": return Strings.Errors.requiresMacOS26(language)
+                case "notSupportedInVersion": return Strings.Errors.notSupportedInVersion(language)
+                default: return Strings.Errors.notAvailable(language)
+                }
             }
+            return Strings.Errors.notAvailable(language)
+        case .openRouter:
+            return Strings.Settings.aiNotConfigured(language)
         }
-        return Strings.Errors.notAvailable(language)
     }
 
     #if canImport(FoundationModels)
