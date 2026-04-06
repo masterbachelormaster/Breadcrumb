@@ -3,6 +3,7 @@ import ServiceManagement
 
 struct SettingsView: View {
     @Environment(LanguageManager.self) private var languageManager
+    @Environment(AIService.self) private var aiService
     @State private var launchAtLogin = SMAppService.mainApp.status == .enabled
 
     @AppStorage("pomodoro.workMinutes") private var workMinutes = 25
@@ -15,6 +16,7 @@ struct SettingsView: View {
     @AppStorage("pomodoro.sound.overtime") private var soundOvertime = "Tink"
     @AppStorage("pomodoro.showBannerNotification") private var showBannerNotification = true
     @AppStorage("pomodoro.autoOpenPopover") private var autoOpenPopover = true
+    @AppStorage("ai.provider") private var aiProvider = AIBackend.local.rawValue
 
     var onBack: (() -> Void)? = nil
 
@@ -57,6 +59,22 @@ struct SettingsView: View {
                         }
                     }
                     .labelsHidden()
+                }
+
+                Section(Strings.Settings.aiProvider(l)) {
+                    Picker(Strings.Settings.aiProvider(l), selection: $aiProvider) {
+                        Text(Strings.Settings.aiProviderLocal(l)).tag(AIBackend.local.rawValue)
+                        Text(Strings.Settings.aiProviderOpenRouter(l)).tag(AIBackend.openRouter.rawValue)
+                    }
+                    .pickerStyle(.segmented)
+                    .labelsHidden()
+                    .onChange(of: aiProvider) {
+                        aiService.refreshAvailability()
+                    }
+                }
+
+                if aiProvider == AIBackend.openRouter.rawValue {
+                    OpenRouterSettingsSection()
                 }
 
                 Section(Strings.Settings.general(l)) {
