@@ -38,8 +38,8 @@ struct StringsTests {
     func aiInstructions() {
         let de = Strings.AIExtraction.instructions(.german)
         let en = Strings.AIExtraction.instructions(.english)
-        #expect(de.contains("extrahierst"))
-        #expect(en.contains("extract"))
+        #expect(de.contains("Extrahiere"))
+        #expect(en.contains("Extract"))
     }
 
     @Test("Total sessions strings")
