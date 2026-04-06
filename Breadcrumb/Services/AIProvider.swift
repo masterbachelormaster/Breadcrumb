@@ -2,7 +2,7 @@ import Foundation
 
 // MARK: - Shared Output Type
 
-struct ExtractedStatus: Sendable {
+struct ExtractedStatus: Sendable, Codable {
     var lastAction: String
     var nextStep: String
     var openQuestions: String
