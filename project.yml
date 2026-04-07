@@ -2,7 +2,7 @@ name: Breadcrumb
 options:
   bundleIdPrefix: com.roger
   deploymentTarget:
-    macOS: "14.0"
+    macOS: "26.0"
   xcodeVersion: "16.0"
 settings:
   SWIFT_VERSION: "6.0"
