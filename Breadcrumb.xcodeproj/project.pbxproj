@@ -65,6 +65,7 @@
 		E5EC5D3EB88DE65DFD8560D9 /* AIFillerStripper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 591334A24A17942682F2A917 /* AIFillerStripper.swift */; };
 		E7C936BB8D7DBB7C39A6A16A /* ButtonStyles.swift in Sources */ = {isa = PBXBuildFile; fileRef = E04EB91901CE48B7E52558F1 /* ButtonStyles.swift */; };
 		E81E8CD4BE3E29931E40C14D /* PomodoroTimerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F02E4F9B768BF31589ED8D8C /* PomodoroTimerTests.swift */; };
+		EB4760D960D7F807807B4D50 /* BulletDetailField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26CAFA63995C532306BBE521 /* BulletDetailField.swift */; };
 		EB5BC1C5D771918616ECFE20 /* BreadcrumbSchema.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4615582F09AD75B7047439D1 /* BreadcrumbSchema.swift */; };
 		EDDBEC957A06EFB95B9B47DC /* PomodoroSessionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 724DF0D9521A50E754FB21F1 /* PomodoroSessionTests.swift */; };
 		F3CA383D086855E95F01B254 /* ProjectListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47078C1986E00D73E6A06727 /* ProjectListView.swift */; };
@@ -88,6 +89,7 @@
 		1245F6E8248E227CA507BF8E /* Project.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Project.swift; sourceTree = "<group>"; };
 		22C4476611D7A9F41AA244EA /* BulletText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BulletText.swift; sourceTree = "<group>"; };
 		22EB604EBEE6E40B6A21FFD2 /* AIFillerStripperTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AIFillerStripperTests.swift; sourceTree = "<group>"; };
+		26CAFA63995C532306BBE521 /* BulletDetailField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BulletDetailField.swift; sourceTree = "<group>"; };
 		270530DCEC9B4626EE2AABF0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		2DE07044651329554A55EEDB /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		2E6EEACEFC2209FA8283A175 /* KeychainHelperTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainHelperTests.swift; sourceTree = "<group>"; };
@@ -162,6 +164,7 @@
 				A7CB153CC772B449C4EFD304 /* AIExtractButton.swift */,
 				E7CE7354CA860BF1B53435E6 /* ArchivedProjectsView.swift */,
 				7E9AB4FB8217059480EEA8FA /* BreakoutWindowView.swift */,
+				26CAFA63995C532306BBE521 /* BulletDetailField.swift */,
 				E04EB91901CE48B7E52558F1 /* ButtonStyles.swift */,
 				5FA0A334AD3755400D2E4FB6 /* ContentView.swift */,
 				D560B5D8D1FB681EFF1D4E9E /* DetailFieldView.swift */,
@@ -382,6 +385,7 @@
 				A4DB57D56F6945FE42C210FF /* BreadcrumbCommands.swift in Sources */,
 				EB5BC1C5D771918616ECFE20 /* BreadcrumbSchema.swift in Sources */,
 				A6FFEDB76C2BCB80A916020A /* BreakoutWindowView.swift in Sources */,
+				EB4760D960D7F807807B4D50 /* BulletDetailField.swift in Sources */,
 				48B1A3D081CBCE1995DC5AEE /* BulletText.swift in Sources */,
 				E7C936BB8D7DBB7C39A6A16A /* ButtonStyles.swift in Sources */,
 				9BFD8EC86A0C17852AD2B57A /* ContentView.swift in Sources */,
