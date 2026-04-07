@@ -152,4 +152,10 @@ struct StringsTests {
         #expect(Strings.Errors.invalidResponse(.german).contains("Antwort"))
         #expect(Strings.Errors.invalidResponse(.english).contains("response"))
     }
+
+    @Test("Status.addBullet returns correct translations")
+    func statusAddBullet() {
+        #expect(Strings.Status.addBullet(.german) == "Aufzählungspunkt")
+        #expect(Strings.Status.addBullet(.english) == "Add bullet")
+    }
 }
