@@ -5,15 +5,25 @@ enum KeychainHelper {
 
     private static let service = "com.roger.breadcrumb"
 
+    /// Base attributes used by every query. `kSecUseDataProtectionKeychain`
+    /// switches us from the legacy file-based keychain (which gates access
+    /// by *code signature* and prompts the user every time the dev build is
+    /// re-signed) to the data protection keychain (which gates access by
+    /// *bundle identifier* and never prompts on rebuild).
+    private static func baseQuery(account: String) -> [String: Any] {
+        [
+            kSecClass as String: kSecClassGenericPassword,
+            kSecUseDataProtectionKeychain as String: true,
+            kSecAttrService as String: service,
+            kSecAttrAccount as String: account,
+        ]
+    }
+
     @discardableResult
     static func save(key: String, value: String) -> Bool {
         guard let data = value.data(using: .utf8) else { return false }
 
-        let query: [String: Any] = [
-            kSecClass as String: kSecClassGenericPassword,
-            kSecAttrService as String: service,
-            kSecAttrAccount as String: key,
-        ]
+        let query = baseQuery(account: key)
         let attributes: [String: Any] = [
             kSecValueData as String: data,
         ]
@@ -28,13 +38,9 @@ enum KeychainHelper {
     }
 
     static func read(key: String) -> String? {
-        let query: [String: Any] = [
-            kSecClass as String: kSecClassGenericPassword,
-            kSecAttrService as String: service,
-            kSecAttrAccount as String: key,
-            kSecReturnData as String: true,
-            kSecMatchLimit as String: kSecMatchLimitOne,
-        ]
+        var query = baseQuery(account: key)
+        query[kSecReturnData as String] = true
+        query[kSecMatchLimit as String] = kSecMatchLimitOne
 
         var result: AnyObject?
         let status = SecItemCopyMatching(query as CFDictionary, &result)
@@ -44,11 +50,6 @@ enum KeychainHelper {
 
     @discardableResult
     static func delete(key: String) -> Bool {
-        let query: [String: Any] = [
-            kSecClass as String: kSecClassGenericPassword,
-            kSecAttrService as String: service,
-            kSecAttrAccount as String: key,
-        ]
-        return SecItemDelete(query as CFDictionary) == errSecSuccess
+        return SecItemDelete(baseQuery(account: key) as CFDictionary) == errSecSuccess
     }
 }
