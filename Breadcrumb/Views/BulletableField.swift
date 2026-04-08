@@ -65,7 +65,7 @@ struct BulletableField: View {
                     Button {
                         removeBullet(at: index)
                     } label: {
-                        Image(systemName: "xmark")
+                        Image(systemName: "minus.circle")
                             .font(.caption)
                             .foregroundStyle(.secondary)
                     }
@@ -141,11 +141,16 @@ struct BulletableField: View {
         guard index < parsed.count else { return }
         parsed.remove(at: index)
         text = parsed.joined(separator: "\n")
-        // Move focus to the previous bullet, or the first if we removed
-        // the first one. If the array is now empty, the view re-renders
-        // in plain mode and focus naturally goes nowhere.
-        if !parsed.isEmpty {
+        if parsed.count >= 2 {
+            // Still in list mode — focus moves to the previous bullet.
             listFocused = max(0, index - 1)
+        } else {
+            // View will re-render in plain mode. Transfer focus there so
+            // the user can keep typing without losing it.
+            Task { @MainActor in
+                try? await Task.sleep(for: .milliseconds(300))
+                plainFocused = true
+            }
         }
     }
 }
