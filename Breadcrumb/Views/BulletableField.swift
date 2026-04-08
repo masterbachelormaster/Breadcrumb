@@ -117,7 +117,7 @@ struct BulletableField: View {
         // Focus the new bullet. We need to wait one render so the new
         // TextField exists in the focus map.
         Task { @MainActor in
-            try? await Task.sleep(for: .milliseconds(50))
+            try? await Task.sleep(for: .milliseconds(300))
             listFocused = parsed.count - 1
         }
     }
@@ -128,7 +128,7 @@ struct BulletableField: View {
         parsed.insert("", at: newIndex)
         text = parsed.joined(separator: "\n")
         Task { @MainActor in
-            try? await Task.sleep(for: .milliseconds(50))
+            try? await Task.sleep(for: .milliseconds(300))
             listFocused = newIndex
         }
     }
