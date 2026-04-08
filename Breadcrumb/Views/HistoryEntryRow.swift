@@ -12,13 +12,13 @@ struct HistoryEntryRow: View {
                     .font(.body)
 
                 if let lastAction = entry.lastAction, !lastAction.isEmpty {
-                    DetailFieldView(label: Strings.Status.lastStep(languageManager.language), value: lastAction)
+                    BulletDetailField(label: Strings.Status.lastStep(languageManager.language), value: lastAction)
                 }
                 if let nextStep = entry.nextStep, !nextStep.isEmpty {
-                    DetailFieldView(label: Strings.Status.nextStep(languageManager.language), value: nextStep)
+                    BulletDetailField(label: Strings.Status.nextStep(languageManager.language), value: nextStep)
                 }
                 if let openQuestions = entry.openQuestions, !openQuestions.isEmpty {
-                    DetailFieldView(label: Strings.Status.openQuestions(languageManager.language), value: openQuestions)
+                    BulletDetailField(label: Strings.Status.openQuestions(languageManager.language), value: openQuestions)
                 }
             }
             .padding(.vertical, 4)

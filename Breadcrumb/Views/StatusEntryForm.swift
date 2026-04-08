@@ -35,9 +35,9 @@ struct StatusEntryForm: View {
 
             DisclosureGroup(Strings.Status.optionalFields(languageManager.language), isExpanded: $showOptionalFields) {
                 VStack(spacing: 12) {
-                    OptionalFieldView(label: Strings.Status.lastStep(languageManager.language), text: $lastAction)
-                    OptionalFieldView(label: Strings.Status.nextStep(languageManager.language), text: $nextStep)
-                    OptionalFieldView(label: Strings.Status.openQuestions(languageManager.language), text: $openQuestions)
+                    BulletableField(label: Strings.Status.lastStep(languageManager.language), text: $lastAction)
+                    BulletableField(label: Strings.Status.nextStep(languageManager.language), text: $nextStep)
+                    BulletableField(label: Strings.Status.openQuestions(languageManager.language), text: $openQuestions)
                 }
                 .padding(.top, 8)
             }

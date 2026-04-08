@@ -45,7 +45,6 @@
 		9B619503406331710EB35740 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 777246810162C2507E304C44 /* Assets.xcassets */; };
 		9BFD8EC86A0C17852AD2B57A /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FA0A334AD3755400D2E4FB6 /* ContentView.swift */; };
 		A2C0BB75C7ED0551645F313F /* StringsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B61E0FC8ED8FA3607CA8E73 /* StringsTests.swift */; };
-		A43D3BC9876E52C897785532 /* OptionalFieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E0C91DB4484A3A2E81E81C8 /* OptionalFieldView.swift */; };
 		A4DB57D56F6945FE42C210FF /* BreadcrumbCommands.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDF418F050E4F08EE71C99E8 /* BreadcrumbCommands.swift */; };
 		A6FFEDB76C2BCB80A916020A /* BreakoutWindowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E9AB4FB8217059480EEA8FA /* BreakoutWindowView.swift */; };
 		B005E744F06D3ED2FA9DB897 /* WindowManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B73A74DE75279264943C5462 /* WindowManager.swift */; };
@@ -115,7 +114,6 @@
 		724DF0D9521A50E754FB21F1 /* PomodoroSessionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PomodoroSessionTests.swift; sourceTree = "<group>"; };
 		75DE9B3987F1DA2381072E8E /* SoundPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundPicker.swift; sourceTree = "<group>"; };
 		777246810162C2507E304C44 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		7E0C91DB4484A3A2E81E81C8 /* OptionalFieldView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionalFieldView.swift; sourceTree = "<group>"; };
 		7E9AB4FB8217059480EEA8FA /* BreakoutWindowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreakoutWindowView.swift; sourceTree = "<group>"; };
 		831984343AE49E818C7511B7 /* NotificationServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationServiceTests.swift; sourceTree = "<group>"; };
 		85B023F7702442C9E73AD7FF /* LanguageManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LanguageManagerTests.swift; sourceTree = "<group>"; };
@@ -176,7 +174,6 @@
 				F506B326CA6737B42BEF9F99 /* FooterView.swift */,
 				9C88E592971DB2AB4E478DA7 /* HistoryEntryRow.swift */,
 				B8C5CE9442C811F8DCF196BD /* HistoryView.swift */,
-				7E0C91DB4484A3A2E81E81C8 /* OptionalFieldView.swift */,
 				C3F1C79AA5792B6763AB7DF4 /* PomodoroConfigView.swift */,
 				AF7604A00FB4C888AA719B6C /* PomodoroRunningView.swift */,
 				4F5D21B8446DBC5F11312384 /* PomodoroSessionEndView.swift */,
@@ -408,7 +405,6 @@
 				BE6EE87AEF54FED09C1AB647 /* NotificationService.swift in Sources */,
 				0705F5EE8EF9C08EE07DDD18 /* OpenRouterProvider.swift in Sources */,
 				E5A0E84F6FCEE311E5A1BDC5 /* OpenRouterSettingsSection.swift in Sources */,
-				A43D3BC9876E52C897785532 /* OptionalFieldView.swift in Sources */,
 				3B8E91E329DF6960817BF4E7 /* PomodoroConfigView.swift in Sources */,
 				6864E481C9B390FF7CFB8D7C /* PomodoroRunningView.swift in Sources */,
 				403EFFDCD1BFA9E3FB455EE7 /* PomodoroSession.swift in Sources */,
