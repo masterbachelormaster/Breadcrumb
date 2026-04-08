@@ -47,11 +47,38 @@ final class WindowManager {
     func open(_ content: BreakoutContent) {
         openGeneration += 1
         currentContent = content
+
+        // Transition from menu-bar-only (.accessory) to a regular app so a
+        // Dock icon and a proper window can appear.
         NSApp.setActivationPolicy(.regular)
-        // Brief delay for activation policy to take effect before bringing app forward
-        Task {
+
+        // Force this process to become the frontmost app. We explicitly do
+        // NOT use cooperative `NSApp.activate()` here: on macOS 14+ the
+        // cooperative call silently no-ops once the MenuBarExtra popover has
+        // dismissed and transferred "user attention" back to whatever app was
+        // previously front. The policy change succeeds, the window orders
+        // forward, but the app itself never becomes frontmost — so the window
+        // stays visible with a grayed-out title bar until the user clicks the
+        // Dock icon. For a menu bar utility presenting its primary window in
+        // direct response to an explicit user action, that's the wrong model.
+        //
+        // `NSRunningApplication.current.activate(options:)` with
+        // `.activateAllWindows` is the modern, non-deprecated escape hatch:
+        // it bypasses cooperative activation and brings every window of this
+        // process to the front, which also makes the app frontmost.
+        NSRunningApplication.current.activate(options: [.activateAllWindows])
+
+        // The window itself doesn't exist yet — the caller is about to
+        // request it via `openWindow(id: "main")` right after this returns,
+        // and SwiftUI mounts it on the next run-loop tick. Wait a frame,
+        // then explicitly make it the key window so its title bar reflects
+        // the active state rather than the dimmed inactive state, and so
+        // keyboard focus actually lands inside our content.
+        Task { @MainActor in
             try? await Task.sleep(for: .milliseconds(100))
-            NSApp.activate()
+            if let window = NSApp.windows.first(where: { $0.identifier?.rawValue == "main" }) {
+                window.makeKeyAndOrderFront(nil)
+            }
         }
     }
 
