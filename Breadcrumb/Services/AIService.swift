@@ -14,7 +14,7 @@ enum AIServiceError: LocalizedError, Sendable {
     case guardrailViolation
     case networkError(String)
     case authenticationFailed
-    case invalidResponse
+    case invalidResponse(String)
     case generationFailed(String)
 
     var errorDescription: String? {
@@ -37,8 +37,8 @@ enum AIServiceError: LocalizedError, Sendable {
             return Strings.Errors.networkError(language, message: message)
         case .authenticationFailed:
             return Strings.Errors.authenticationFailed(language)
-        case .invalidResponse:
-            return Strings.Errors.invalidResponse(language)
+        case .invalidResponse(let detail):
+            return Strings.Errors.invalidResponse(language, detail: detail)
         case .generationFailed(let message):
             return Strings.Errors.generationFailed(language, message: message)
         }

@@ -149,8 +149,10 @@ struct StringsTests {
         #expect(Strings.Errors.networkError(.english, message: "timeout").contains("Network"))
         #expect(Strings.Errors.authenticationFailed(.german).contains("API"))
         #expect(Strings.Errors.authenticationFailed(.english).contains("API"))
-        #expect(Strings.Errors.invalidResponse(.german).contains("Antwort"))
-        #expect(Strings.Errors.invalidResponse(.english).contains("response"))
+        #expect(Strings.Errors.invalidResponse(.german, detail: "test detail").contains("Antwort"))
+        #expect(Strings.Errors.invalidResponse(.german, detail: "test detail").contains("test detail"))
+        #expect(Strings.Errors.invalidResponse(.english, detail: "test detail").contains("response"))
+        #expect(Strings.Errors.invalidResponse(.english, detail: "test detail").contains("test detail"))
     }
 
     @Test("Status.addBullet returns correct translations")

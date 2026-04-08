@@ -499,8 +499,8 @@ enum Strings {
         static func authenticationFailed(_ l: AppLanguage) -> String {
             l == .german ? "Ungültiger API-Schlüssel" : "Invalid API key"
         }
-        static func invalidResponse(_ l: AppLanguage) -> String {
-            l == .german ? "Ungültige Antwort vom Modell" : "Invalid response from model"
+        static func invalidResponse(_ l: AppLanguage, detail: String) -> String {
+            l == .german ? "Ungültige Antwort vom Modell: \(detail)" : "Invalid response from model: \(detail)"
         }
     }
 

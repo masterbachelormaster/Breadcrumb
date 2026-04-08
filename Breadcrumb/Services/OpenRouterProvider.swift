@@ -75,22 +75,55 @@ struct OpenRouterProvider: AIProvider {
         do {
             apiResponse = try JSONDecoder().decode(OpenRouterResponse.self, from: data)
         } catch {
-            throw AIServiceError.invalidResponse
+            throw AIServiceError.invalidResponse("Could not decode OpenRouter wrapper: \(error.localizedDescription)")
         }
 
         guard let content = apiResponse.choices.first?.message.content else {
-            throw AIServiceError.invalidResponse
+            throw AIServiceError.invalidResponse("No content in OpenRouter response")
         }
 
-        guard let contentData = content.data(using: .utf8) else {
-            throw AIServiceError.invalidResponse
+        let cleaned = Self.extractJSONObject(from: content)
+
+        guard let contentData = cleaned.data(using: .utf8) else {
+            throw AIServiceError.invalidResponse("Content not UTF-8")
         }
 
         do {
             return try JSONDecoder().decode(ExtractedStatus.self, from: contentData)
         } catch {
-            throw AIServiceError.invalidResponse
+            let snippet = String(content.prefix(200))
+            throw AIServiceError.invalidResponse("Could not parse JSON. Got: \(snippet)")
         }
+    }
+
+    /// Extracts a JSON object from an LLM response that may contain markdown
+    /// code fences or surrounding prose. Returns the cleaned string ready
+    /// for `JSONDecoder`.
+    static func extractJSONObject(from text: String) -> String {
+        var s = text.trimmingCharacters(in: .whitespacesAndNewlines)
+
+        // Strip leading ```json or ``` fence
+        if s.hasPrefix("```") {
+            if let firstNewline = s.firstIndex(of: "\n") {
+                s = String(s[s.index(after: firstNewline)...])
+            }
+        }
+
+        // Strip trailing ``` fence
+        if s.hasSuffix("```") {
+            s = String(s.dropLast(3))
+        }
+
+        s = s.trimmingCharacters(in: .whitespacesAndNewlines)
+
+        // If there's still prose around the JSON, extract from first { to matching last }
+        if let firstBrace = s.firstIndex(of: "{"), let lastBrace = s.lastIndex(of: "}") {
+            if firstBrace <= lastBrace {
+                s = String(s[firstBrace...lastBrace])
+            }
+        }
+
+        return s
     }
 
     private func jsonInstructions(_ language: AppLanguage) -> String {
