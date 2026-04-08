@@ -87,4 +87,66 @@ struct BulletTextTests {
         let input = "a\nb\nc"
         #expect(BulletText.serialize(BulletText.parse(input)) == "a\nb\nc")
     }
+
+    // MARK: - joinInline
+
+    @Test("joinInline: empty string yields empty string")
+    func joinInlineEmpty() {
+        #expect(BulletText.joinInline("") == "")
+    }
+
+    @Test("joinInline: single item without trailing punctuation is unchanged")
+    func joinInlineSingle() {
+        #expect(BulletText.joinInline("hello world") == "hello world")
+    }
+
+    @Test("joinInline: single item with trailing period is stripped")
+    func joinInlineSingleTrimsTrailingPeriod() {
+        #expect(BulletText.joinInline("hello.") == "hello")
+    }
+
+    @Test("joinInline: two clean items are joined with period-space")
+    func joinInlineTwoItems() {
+        #expect(BulletText.joinInline("first\nsecond") == "first. second")
+    }
+
+    @Test("joinInline: trailing periods are stripped before joining")
+    func joinInlineStripsTrailingPeriods() {
+        #expect(BulletText.joinInline("do A.\ndo B.") == "do A. do B")
+    }
+
+    @Test("joinInline: trailing exclamation and question marks are stripped")
+    func joinInlineStripsOtherTerminators() {
+        #expect(BulletText.joinInline("wow!\nreally?") == "wow. really")
+    }
+
+    @Test("joinInline: multiple trailing terminators are all stripped")
+    func joinInlineStripsRepeatedTerminators() {
+        #expect(BulletText.joinInline("wow!!!\nok") == "wow. ok")
+    }
+
+    @Test("joinInline: leading punctuation is preserved")
+    func joinInlinePreservesLeadingPunctuation() {
+        #expect(BulletText.joinInline(".NET\nRuby") == ".NET. Ruby")
+    }
+
+    @Test("joinInline: whitespace-only lines are filtered out")
+    func joinInlineFiltersBlankLines() {
+        #expect(BulletText.joinInline("a\n   \nb") == "a. b")
+    }
+
+    @Test("joinInline: items that become empty after stripping are filtered")
+    func joinInlineFiltersItemsEmptyAfterStrip() {
+        #expect(BulletText.joinInline("a\n...\nb") == "a. b")
+    }
+
+    @Test("joinInline: is lossy — parse(joinInline(x)) is not a round trip")
+    func joinInlineIsLossy() {
+        // Documenting the intended lossiness: the newline structure is
+        // collapsed into one item, not recovered.
+        let original = "do A.\ndo B."
+        let collapsed = BulletText.joinInline(original)
+        let reparsed = BulletText.parse(collapsed)
+        #expect(reparsed == ["do A. do B"])
+    }
 }

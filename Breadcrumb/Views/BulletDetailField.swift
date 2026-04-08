@@ -6,6 +6,8 @@ import SwiftUI
 /// `HistoryEntryRow` and `ProjectDetailView.latestEntrySection` for the
 /// three optional `StatusEntry` fields.
 struct BulletDetailField: View {
+    @AppStorage("feature.bulletListsEnabled") private var bulletListsEnabled = true
+
     let label: String
     let value: String
 
@@ -17,8 +19,8 @@ struct BulletDetailField: View {
                 .textCase(.uppercase)
 
             let items = BulletText.parse(value)
-            if items.count <= 1 {
-                Text(items.first ?? value)
+            if items.count <= 1 || !bulletListsEnabled {
+                Text(bulletListsEnabled ? (items.first ?? value) : BulletText.joinInline(value))
                     .font(.callout)
                     .fixedSize(horizontal: false, vertical: true)
             } else {

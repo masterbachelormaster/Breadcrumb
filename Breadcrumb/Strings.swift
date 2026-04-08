@@ -311,6 +311,9 @@ enum Strings {
         static func launchAtLogin(_ l: AppLanguage) -> String {
             l == .german ? "Beim Login starten" : "Launch at Login"
         }
+        static func bulletLists(_ l: AppLanguage) -> String {
+            l == .german ? "Aufzählungslisten verwenden" : "Use bullet lists"
+        }
         static func notifications(_ l: AppLanguage) -> String {
             l == .german ? "Benachrichtigungen" : "Notifications"
         }

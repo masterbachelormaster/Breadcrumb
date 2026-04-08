@@ -4,6 +4,8 @@ struct AIExtractButton: View {
     @Environment(AIService.self) private var aiService
     @Environment(LanguageManager.self) private var languageManager
 
+    @AppStorage("feature.bulletListsEnabled") private var bulletListsEnabled = true
+
     @Binding var freeText: String
     @Binding var lastAction: String
     @Binding var nextStep: String
@@ -74,14 +76,22 @@ struct AIExtractButton: View {
     }
 
     private func applyResult(lastAction: String, nextStep: String, openQuestions: String) {
+        // When bullet lists are disabled, collapse the AI's newline-separated
+        // output into ". "-joined inline text so the user sees plain sentences
+        // in the optional fields. Storage format is identical to manual entry.
+        let finalize: (String) -> String = { raw in
+            let cleaned = AIFillerStripper.cleanLines(raw)
+            return bulletListsEnabled ? cleaned : BulletText.joinInline(cleaned)
+        }
+
         if !lastAction.isEmpty {
-            self.lastAction = AIFillerStripper.cleanLines(lastAction)
+            self.lastAction = finalize(lastAction)
         }
         if !nextStep.isEmpty {
-            self.nextStep = AIFillerStripper.cleanLines(nextStep)
+            self.nextStep = finalize(nextStep)
         }
         if !openQuestions.isEmpty {
-            self.openQuestions = AIFillerStripper.cleanLines(openQuestions)
+            self.openQuestions = finalize(openQuestions)
         }
     }
 }

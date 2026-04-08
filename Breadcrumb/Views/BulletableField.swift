@@ -17,6 +17,8 @@ import SwiftUI
 struct BulletableField: View {
     @Environment(LanguageManager.self) private var languageManager
 
+    @AppStorage("feature.bulletListsEnabled") private var bulletListsEnabled = true
+
     let label: String
     @Binding var text: String
 
@@ -29,12 +31,14 @@ struct BulletableField: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 6) {
-            if items.count <= 1 {
+            if items.count <= 1 || !bulletListsEnabled {
                 plainModeField
             } else {
                 listModeField
             }
-            addBulletButton
+            if bulletListsEnabled {
+                addBulletButton
+            }
         }
     }
 
@@ -60,6 +64,7 @@ struct BulletableField: View {
                         .textFieldStyle(.roundedBorder)
                         .focused($listFocused, equals: index)
                         .onSubmit {
+                            guard bulletListsEnabled else { return }
                             insertBullet(after: index)
                         }
                     Button {
@@ -114,6 +119,7 @@ struct BulletableField: View {
     }
 
     private func addBullet() {
+        guard bulletListsEnabled else { return }
         var parsed = BulletText.parseRaw(text)
         parsed.append("")
         text = parsed.joined(separator: "\n")
@@ -126,6 +132,7 @@ struct BulletableField: View {
     }
 
     private func insertBullet(after index: Int) {
+        guard bulletListsEnabled else { return }
         var parsed = BulletText.parseRaw(text)
         let newIndex = min(index + 1, parsed.count)
         parsed.insert("", at: newIndex)

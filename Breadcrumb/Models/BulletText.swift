@@ -34,4 +34,31 @@ enum BulletText {
     static func serialize(_ items: [String]) -> String {
         items.joined(separator: "\n")
     }
+
+    /// Collapses newline-separated content into a single inline string
+    /// joined by `". "`. Used when the bullet-lists feature is disabled
+    /// so that stored multi-item values render (and AI-extracted output
+    /// appears) as plain inline text.
+    ///
+    /// Trailing `.`, `!`, and `?` are stripped from each item before
+    /// joining so that `["do A.", "do B."]` becomes `"do A. do B"`, not
+    /// `"do A.. do B."`. Leading punctuation is preserved (so `".NET"`
+    /// is not mangled). The result is a lossy projection of the input —
+    /// `parse(joinInline(x))` is not a round trip.
+    static func joinInline(_ value: String) -> String {
+        parse(value)
+            .map(stripTrailingTerminators)
+            .filter { !$0.isEmpty }
+            .joined(separator: ". ")
+    }
+
+    private static let trailingTerminators: Set<Character> = [".", "!", "?"]
+
+    private static func stripTrailingTerminators(_ s: String) -> String {
+        var result = s
+        while let last = result.last, trailingTerminators.contains(last) {
+            result.removeLast()
+        }
+        return result
+    }
 }

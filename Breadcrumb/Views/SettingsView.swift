@@ -17,6 +17,7 @@ struct SettingsView: View {
     @AppStorage("pomodoro.showBannerNotification") private var showBannerNotification = true
     @AppStorage("pomodoro.autoOpenPopover") private var autoOpenPopover = true
     @AppStorage("ai.provider") private var aiProvider = AIBackend.local.rawValue
+    @AppStorage("feature.bulletListsEnabled") private var bulletListsEnabled = true
 
     var onBack: (() -> Void)? = nil
 
@@ -90,6 +91,7 @@ struct SettingsView: View {
                                 launchAtLogin = SMAppService.mainApp.status == .enabled
                             }
                         }
+                    Toggle(Strings.Settings.bulletLists(l), isOn: $bulletListsEnabled)
                 }
 
                 Section(Strings.Pomodoro.pomodoro(l)) {
