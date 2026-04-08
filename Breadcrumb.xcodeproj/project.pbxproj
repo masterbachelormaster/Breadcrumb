@@ -69,7 +69,6 @@
 		EB5BC1C5D771918616ECFE20 /* BreadcrumbSchema.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4615582F09AD75B7047439D1 /* BreadcrumbSchema.swift */; };
 		EDDBEC957A06EFB95B9B47DC /* PomodoroSessionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 724DF0D9521A50E754FB21F1 /* PomodoroSessionTests.swift */; };
 		F3CA383D086855E95F01B254 /* ProjectListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47078C1986E00D73E6A06727 /* ProjectListView.swift */; };
-		F6B086E1F9125AFECE18688A /* DetailFieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D560B5D8D1FB681EFF1D4E9E /* DetailFieldView.swift */; };
 		F8D0888E96F2ED902AF2E686 /* SmartTimestampView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65312D00F423DD42BAB0C2FD /* SmartTimestampView.swift */; };
 		FA03D196F0BF672CC3D62165 /* HistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8C5CE9442C811F8DCF196BD /* HistoryView.swift */; };
 /* End PBXBuildFile section */
@@ -137,7 +136,6 @@
 		CC0E444CDB40131D5BC3F8F0 /* BulletTextTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BulletTextTests.swift; sourceTree = "<group>"; };
 		D3C2BE7C0D1A3D1DC5DD8E35 /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
 		D457B91B9E7BF5F21E066059 /* BulletableField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BulletableField.swift; sourceTree = "<group>"; };
-		D560B5D8D1FB681EFF1D4E9E /* DetailFieldView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailFieldView.swift; sourceTree = "<group>"; };
 		D73B1C28DFFA54E78F9CA4D7 /* StatsContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsContentView.swift; sourceTree = "<group>"; };
 		D7EAC22A4CD3C8382F04F397 /* OpenRouterProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenRouterProvider.swift; sourceTree = "<group>"; };
 		D9BEAAE0D129FC67EB414904 /* DocumentListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentListView.swift; sourceTree = "<group>"; };
@@ -168,7 +166,6 @@
 				26CAFA63995C532306BBE521 /* BulletDetailField.swift */,
 				E04EB91901CE48B7E52558F1 /* ButtonStyles.swift */,
 				5FA0A334AD3755400D2E4FB6 /* ContentView.swift */,
-				D560B5D8D1FB681EFF1D4E9E /* DetailFieldView.swift */,
 				D9BEAAE0D129FC67EB414904 /* DocumentListView.swift */,
 				F6B294E9E641FE8862731EEA /* EditLabelFormView.swift */,
 				F506B326CA6737B42BEF9F99 /* FooterView.swift */,
@@ -390,7 +387,6 @@
 				1752A4FCC3DF18156F106B45 /* BulletableField.swift in Sources */,
 				E7C936BB8D7DBB7C39A6A16A /* ButtonStyles.swift in Sources */,
 				9BFD8EC86A0C17852AD2B57A /* ContentView.swift in Sources */,
-				F6B086E1F9125AFECE18688A /* DetailFieldView.swift in Sources */,
 				B57B25265EE67B1DEF64A0CC /* DocumentListView.swift in Sources */,
 				7952B45A0B64DDDFA48149C3 /* EditLabelFormView.swift in Sources */,
 				8BC4923EE801C29764E7E500 /* ExtractedStatus.swift in Sources */,
