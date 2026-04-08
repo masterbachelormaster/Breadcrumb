@@ -1,5 +1,6 @@
 import Testing
 import Foundation
+import SwiftData
 @testable import Breadcrumb
 
 @Suite("Model Tests")
@@ -46,6 +47,34 @@ struct ModelTests {
         newer.timestamp = Date()
         project.entries = [older, newer]
         #expect(project.latestEntry?.freeText == "new")
+    }
+
+    @Test("StatusEntry preserves newline-separated nextStep across save and fetch")
+    @MainActor
+    func nextStepNewlinesRoundTrip() throws {
+        let container = try ModelContainer(
+            for: Project.self, StatusEntry.self, PomodoroSession.self, LinkedDocument.self,
+            configurations: ModelConfiguration(isStoredInMemoryOnly: true)
+        )
+        let context = ModelContext(container)
+
+        let project = Project(name: "Test")
+        context.insert(project)
+
+        let entry = StatusEntry(
+            freeText: "test entry",
+            nextStep: "first step\nsecond step\nthird step"
+        )
+        entry.project = project
+        project.entries.append(entry)
+        context.insert(entry)
+
+        try context.save()
+
+        let fetched = try context.fetch(FetchDescriptor<StatusEntry>())
+
+        #expect(fetched.count == 1)
+        #expect(fetched.first?.nextStep == "first step\nsecond step\nthird step")
     }
 }
 
