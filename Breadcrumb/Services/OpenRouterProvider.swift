@@ -98,14 +98,14 @@ struct OpenRouterProvider: AIProvider {
         case .german:
             return """
                 Antworte ausschliesslich mit einem JSON-Objekt mit diesen Feldern:
-                {"lastAction": "...", "nextStep": "...", "openQuestions": "..."}
-                Lass Felder leer ("") wenn nichts zutrifft.
+                {"lastAction": "erster punkt\\nzweiter punkt", "nextStep": "naechster schritt", "openQuestions": ""}
+                Mehrere Punkte pro Feld mit Zeilenumbruch trennen. Lass Felder leer ("") wenn nichts zutrifft.
                 """
         case .english:
             return """
                 Respond only with a JSON object with these fields:
-                {"lastAction": "...", "nextStep": "...", "openQuestions": "..."}
-                Leave fields empty ("") if nothing applies.
+                {"lastAction": "first item\\nsecond item", "nextStep": "next step", "openQuestions": ""}
+                Separate multiple items per field with newlines. Leave fields empty ("") if nothing applies.
                 """
         }
     }

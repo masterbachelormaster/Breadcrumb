@@ -155,7 +155,7 @@ struct StringsTests {
 
     @Test("Status.addBullet returns correct translations")
     func statusAddBullet() {
-        #expect(Strings.Status.addBullet(.german) == "Aufzählungspunkt")
+        #expect(Strings.Status.addBullet(.german) == "Aufzählungspunkt hinzufügen")
         #expect(Strings.Status.addBullet(.english) == "Add bullet")
     }
 }

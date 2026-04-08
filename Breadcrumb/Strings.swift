@@ -132,7 +132,7 @@ enum Strings {
             l == .german ? "Offene Fragen" : "Open Questions"
         }
         static func addBullet(_ l: AppLanguage) -> String {
-            l == .german ? "Aufzählungspunkt" : "Add bullet"
+            l == .german ? "Aufzählungspunkt hinzufügen" : "Add bullet"
         }
         static func noEntries(_ l: AppLanguage) -> String {
             l == .german ? "Keine Einträge" : "No Entries"
