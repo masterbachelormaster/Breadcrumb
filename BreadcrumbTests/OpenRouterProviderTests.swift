@@ -10,14 +10,14 @@ struct OpenRouterProviderTests {
         let json = """
         {
             "lastAction": "Wrote the introduction",
-            "nextStep": "Add methodology section. Review references",
+            "nextStep": "Add methodology section\\nReview references",
             "openQuestions": "Which framework to use?"
         }
         """
         let data = Data(json.utf8)
         let status = try JSONDecoder().decode(ExtractedStatus.self, from: data)
         #expect(status.lastAction == "Wrote the introduction")
-        #expect(status.nextStep == "Add methodology section. Review references")
+        #expect(status.nextStep == "Add methodology section\nReview references")
         #expect(status.openQuestions == "Which framework to use?")
     }
 

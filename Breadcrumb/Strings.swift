@@ -444,7 +444,7 @@ enum Strings {
                 return """
                     Du bist ein Experte fuer Projekt-Status-Analyse. Extrahiere aus der Statusmeldung was erledigt ist, was als naechstes geplant ist und was unklar ist.
 
-                    Liste jeden genannten Punkt auf. Trenne mehrere Punkte mit ". ". Verwende kurze Stichpunkte ohne Pronomen. Bleib nah an den Originalworten.
+                    Liste jeden genannten Punkt auf. Trenne mehrere Punkte mit Zeilenumbruch (ein Punkt pro Zeile). Verwende kurze Stichpunkte ohne Pronomen. Bleib nah an den Originalworten.
 
                     Wenn nichts erledigt ist, lass lastAction leer. Wenn nichts unklar ist, lass openQuestions leer.
                     """
@@ -452,7 +452,7 @@ enum Strings {
                 return """
                     You are an expert project status parser. Extract what is done, what is planned next, and what is uncertain from the person's status update.
 
-                    List every item mentioned. Separate multiple items with ". ". Use short phrases without pronouns. Stay close to the original words.
+                    List every item mentioned. Separate multiple items with newlines (one item per line). Use short phrases without pronouns. Stay close to the original words.
 
                     If nothing is done, leave lastAction empty. If nothing is uncertain, leave openQuestions empty.
                     """
