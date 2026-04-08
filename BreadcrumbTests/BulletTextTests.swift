@@ -46,6 +46,23 @@ struct BulletTextTests {
         #expect(BulletText.parse("a\n   \nb") == ["a", "b"])
     }
 
+    // MARK: - parseRaw
+
+    @Test("parseRaw: preserves trailing empty line so list mode is sticky")
+    func parseRawTrailing() {
+        #expect(BulletText.parseRaw("a\n") == ["a", ""])
+    }
+
+    @Test("parseRaw: preserves trailing whitespace so the cursor does not jump")
+    func parseRawTrailingWhitespace() {
+        #expect(BulletText.parseRaw("a \nb") == ["a ", "b"])
+    }
+
+    @Test("parseRaw: preserves empty rows between items")
+    func parseRawEmptyRows() {
+        #expect(BulletText.parseRaw("a\n\nb") == ["a", "", "b"])
+    }
+
     // MARK: - serialize
 
     @Test("serialize: empty array yields empty string")

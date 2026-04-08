@@ -9,12 +9,24 @@ import Foundation
 enum BulletText {
 
     /// Splits a stored value into its bullet items. Filters out empty and
-    /// whitespace-only lines, trims each surviving line.
+    /// whitespace-only lines, trims each surviving line. Use this for
+    /// **display** contexts (history, detail views) where canonical,
+    /// clean output is wanted.
     static func parse(_ value: String) -> [String] {
         value
             .split(separator: "\n", omittingEmptySubsequences: false)
             .map { $0.trimmingCharacters(in: .whitespaces) }
             .filter { !$0.isEmpty }
+    }
+
+    /// Splits a stored value into its bullet items **without** trimming
+    /// or filtering. Use this for **editing** contexts where mid-typing
+    /// empty rows and trailing whitespace must be preserved so the cursor
+    /// doesn't jump out from under the user.
+    static func parseRaw(_ value: String) -> [String] {
+        value
+            .split(separator: "\n", omittingEmptySubsequences: false)
+            .map(String.init)
     }
 
     /// Joins bullet items into a single stored value. Inverse of `parse`

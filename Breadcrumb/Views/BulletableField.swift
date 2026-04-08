@@ -9,7 +9,10 @@ import SwiftUI
 /// pressing the "Add bullet" button or by adding/removing list items.
 ///
 /// **Source of truth:** the binding `String` is always authoritative.
-/// On every render the bullet array is derived by `BulletText.parse`.
+/// On every render the bullet array is derived by `BulletText.parseRaw`,
+/// which preserves empty rows and trailing whitespace so the cursor does
+/// not jump out from under the user mid-typing. Display contexts use
+/// `BulletText.parse` instead, which trims and filters for clean output.
 /// Edits write back through the binding immediately via the local helpers.
 struct BulletableField: View {
     @Environment(LanguageManager.self) private var languageManager
@@ -21,7 +24,7 @@ struct BulletableField: View {
     @FocusState private var listFocused: Int?
 
     private var items: [String] {
-        BulletText.parse(text)
+        BulletText.parseRaw(text)
     }
 
     var body: some View {
@@ -94,24 +97,24 @@ struct BulletableField: View {
     private func bindingForItem(at index: Int) -> Binding<String> {
         Binding(
             get: {
-                let parsed = BulletText.parse(text)
+                let parsed = BulletText.parseRaw(text)
                 guard index < parsed.count else { return "" }
                 return parsed[index]
             },
             set: { newValue in
-                var parsed = BulletText.parse(text)
+                var parsed = BulletText.parseRaw(text)
                 guard index < parsed.count else { return }
                 parsed[index] = newValue
-                // Don't filter empties here — that would yank the row out
-                // from under the user mid-typing. Re-derivation on next
-                // render handles cleanup once focus moves on.
+                // parseRaw (used throughout this view) preserves empty rows
+                // and trailing whitespace while the user is typing, so the
+                // cursor doesn't jump. Normalization is not done here.
                 text = parsed.joined(separator: "\n")
             }
         )
     }
 
     private func addBullet() {
-        var parsed = BulletText.parse(text)
+        var parsed = BulletText.parseRaw(text)
         parsed.append("")
         text = parsed.joined(separator: "\n")
         // Focus the new bullet. We need to wait one render so the new
@@ -123,7 +126,7 @@ struct BulletableField: View {
     }
 
     private func insertBullet(after index: Int) {
-        var parsed = BulletText.parse(text)
+        var parsed = BulletText.parseRaw(text)
         let newIndex = min(index + 1, parsed.count)
         parsed.insert("", at: newIndex)
         text = parsed.joined(separator: "\n")
@@ -134,7 +137,7 @@ struct BulletableField: View {
     }
 
     private func removeBullet(at index: Int) {
-        var parsed = BulletText.parse(text)
+        var parsed = BulletText.parseRaw(text)
         guard index < parsed.count else { return }
         parsed.remove(at: index)
         text = parsed.joined(separator: "\n")
