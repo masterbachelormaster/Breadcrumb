@@ -24,7 +24,8 @@ Breadcrumb lives in your menu bar and lets you quickly log status updates — wh
 - Log free-text status updates per project
 - Optional structured fields: last action, next step, open questions
 - Full history of all entries with timestamps
-- AI-powered field extraction from free text (macOS 26+, Apple Intelligence)
+- AI-powered field extraction from free text (Apple Intelligence or OpenRouter)
+- Optional bullet list formatting for structured fields
 
 ### Pomodoro Timer
 - Configurable work sessions (5-60 min), short breaks (1-15 min), and long breaks (5-30 min)
@@ -32,7 +33,9 @@ Breadcrumb lives in your menu bar and lets you quickly log status updates — wh
 - Start a timer for a specific project or standalone
 - Live countdown in the menu bar with phase indicators
 - Pause, resume, skip breaks, or continue into overtime
+- FocusMate mode with fixed end time
 - Log a status entry at the end of each session
+- Access project history during active sessions
 - Desktop notifications and optional sound alerts
 
 ### Stats & History
@@ -84,4 +87,4 @@ All data is stored locally using SwiftData. No account or internet connection re
 
 ## Version
 
-0.1.0
+0.3.1
