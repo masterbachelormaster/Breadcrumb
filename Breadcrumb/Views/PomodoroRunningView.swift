@@ -4,7 +4,9 @@ import SwiftData
 struct PomodoroRunningView: View {
     @Environment(PomodoroTimer.self) private var timer
     @Environment(LanguageManager.self) private var languageManager
+    @Environment(WindowManager.self) private var windowManager
     @Environment(\.modelContext) private var modelContext
+    @Environment(\.openWindow) private var openWindow
 
     var onFinished: () -> Void
 
@@ -32,7 +34,7 @@ struct PomodoroRunningView: View {
                 .foregroundStyle(.secondary)
                 .padding(.top, 4)
 
-            // Project name
+            // Project name + history
             if let project = timer.boundProject {
                 HStack(spacing: 4) {
                     Image(systemName: project.icon)
@@ -42,6 +44,14 @@ struct PomodoroRunningView: View {
                         .fontWeight(.medium)
                 }
                 .padding(.top, 8)
+
+                Button(Strings.Status.history(languageManager.language)) {
+                    windowManager.open(.history(project))
+                    openWindow(id: "main")
+                }
+                .buttonStyle(.bordered)
+                .controlSize(.small)
+                .padding(.top, 4)
             }
 
             Spacer()
