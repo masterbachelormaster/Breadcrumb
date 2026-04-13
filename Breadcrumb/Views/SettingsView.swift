@@ -21,6 +21,9 @@ struct SettingsView: View {
 
     var onBack: (() -> Void)? = nil
 
+    private var hasBreaks: Bool { totalSessions > 1 }
+    private var hasLongBreak: Bool { totalSessions >= 3 }
+
     var body: some View {
         @Bindable var languageManager = languageManager
         let l = languageManager.language
@@ -97,9 +100,19 @@ struct SettingsView: View {
                 Section(Strings.Pomodoro.pomodoro(l)) {
                     Stepper(Strings.Pomodoro.totalSessionsLabel(l, count: totalSessions), value: $totalSessions, in: 1...8)
                     Stepper(Strings.Pomodoro.focusTimeLabel(l, minutes: workMinutes), value: $workMinutes, in: 5...60)
-                    Stepper(Strings.Pomodoro.shortBreakLabel(l, minutes: shortBreakMinutes), value: $shortBreakMinutes, in: 1...15)
-                    Stepper(Strings.Pomodoro.longBreakLabel(l, minutes: longBreakMinutes), value: $longBreakMinutes, in: 5...30)
-                    Stepper(Strings.Pomodoro.sessionsBeforeLongBreak(l, count: sessionsBeforeLongBreak), value: $sessionsBeforeLongBreak, in: 2...8)
+                    if hasBreaks {
+                        Stepper(Strings.Pomodoro.shortBreakLabel(l, minutes: shortBreakMinutes), value: $shortBreakMinutes, in: 1...15)
+                        if hasLongBreak {
+                            Stepper(Strings.Pomodoro.sessionsBeforeLongBreak(l, count: sessionsBeforeLongBreak), value: $sessionsBeforeLongBreak, in: 2...(totalSessions - 1))
+                            Stepper(Strings.Pomodoro.longBreakLabel(l, minutes: longBreakMinutes), value: $longBreakMinutes, in: 5...30)
+                        }
+                    }
+                }
+                .animation(.default, value: totalSessions)
+                .onChange(of: totalSessions) {
+                    if sessionsBeforeLongBreak >= totalSessions {
+                        sessionsBeforeLongBreak = max(2, totalSessions - 1)
+                    }
                 }
 
                 Section(Strings.Settings.notifications(l)) {

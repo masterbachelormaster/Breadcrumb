@@ -23,6 +23,9 @@ struct PomodoroConfigView: View {
 
     @State private var availableBoundaries: [Date] = []
 
+    private var hasBreaks: Bool { totalSessions > 1 }
+    private var hasLongBreak: Bool { totalSessions >= 3 }
+
     var body: some View {
         let l = languageManager.language
         VStack(spacing: 16) {
@@ -49,9 +52,14 @@ struct PomodoroConfigView: View {
             if timerMode == .pomodoro {
                 Stepper(Strings.Pomodoro.totalSessionsLabel(l, count: totalSessions), value: $totalSessions, in: 1...8)
                 Stepper(Strings.Pomodoro.focusTimeLabel(l, minutes: workMinutes), value: $workMinutes, in: 5...60)
-                Stepper(Strings.Pomodoro.sessionsBeforeLongBreak(l, count: sessionsBeforeLong), value: $sessionsBeforeLong, in: 2...8)
-                Stepper(Strings.Pomodoro.shortBreakLabel(l, minutes: shortBreakMinutes), value: $shortBreakMinutes, in: 1...15)
-                Stepper(Strings.Pomodoro.longBreakLabel(l, minutes: longBreakMinutes), value: $longBreakMinutes, in: 5...30)
+
+                if hasBreaks {
+                    Stepper(Strings.Pomodoro.shortBreakLabel(l, minutes: shortBreakMinutes), value: $shortBreakMinutes, in: 1...15)
+                    if hasLongBreak {
+                        Stepper(Strings.Pomodoro.sessionsBeforeLongBreak(l, count: sessionsBeforeLong), value: $sessionsBeforeLong, in: 2...(totalSessions - 1))
+                        Stepper(Strings.Pomodoro.longBreakLabel(l, minutes: longBreakMinutes), value: $longBreakMinutes, in: 5...30)
+                    }
+                }
             } else {
                 Picker(Strings.Pomodoro.focusMateLength(l), selection: $focusMateMinutes) {
                     Text(Strings.Pomodoro.focusMateMinutesOption(l, minutes: 25)).tag(25)
@@ -87,6 +95,7 @@ struct PomodoroConfigView: View {
                     .keyboardShortcut(.defaultAction)
             }
         }
+        .animation(.default, value: totalSessions)
         .padding()
         .frame(width: 320)
         .background(Color(nsColor: .windowBackgroundColor))
@@ -97,6 +106,11 @@ struct PomodoroConfigView: View {
         }
         .onChange(of: focusMateMinutes) {
             updateBoundaries()
+        }
+        .onChange(of: totalSessions) {
+            if sessionsBeforeLong >= totalSessions {
+                sessionsBeforeLong = max(2, totalSessions - 1)
+            }
         }
     }
 
