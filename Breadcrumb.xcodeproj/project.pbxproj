@@ -63,6 +63,7 @@
 		DF61036FEAC7FB1050A1DE23 /* ArchivedProjectsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7CE7354CA860BF1B53435E6 /* ArchivedProjectsView.swift */; };
 		E5A0E84F6FCEE311E5A1BDC5 /* OpenRouterSettingsSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE3328A8C7C652E89DBC6008 /* OpenRouterSettingsSection.swift */; };
 		E5EC5D3EB88DE65DFD8560D9 /* AIFillerStripper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 591334A24A17942682F2A917 /* AIFillerStripper.swift */; };
+		E75154B3FC04793861E5A57C /* PomodoroSessionSaveTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4ECDD26ED0F879AA18991DD /* PomodoroSessionSaveTests.swift */; };
 		E7C936BB8D7DBB7C39A6A16A /* ButtonStyles.swift in Sources */ = {isa = PBXBuildFile; fileRef = E04EB91901CE48B7E52558F1 /* ButtonStyles.swift */; };
 		E81E8CD4BE3E29931E40C14D /* PomodoroTimerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F02E4F9B768BF31589ED8D8C /* PomodoroTimerTests.swift */; };
 		EB4760D960D7F807807B4D50 /* BulletDetailField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26CAFA63995C532306BBE521 /* BulletDetailField.swift */; };
@@ -144,6 +145,7 @@
 		E04EB91901CE48B7E52558F1 /* ButtonStyles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonStyles.swift; sourceTree = "<group>"; };
 		E0A23CE8D0C3663CAF21F178 /* PomodoroTimer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PomodoroTimer.swift; sourceTree = "<group>"; };
 		E13AD7C73B76D6EAB8CF5D8E /* Strings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Strings.swift; sourceTree = "<group>"; };
+		E4ECDD26ED0F879AA18991DD /* PomodoroSessionSaveTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PomodoroSessionSaveTests.swift; sourceTree = "<group>"; };
 		E7CE7354CA860BF1B53435E6 /* ArchivedProjectsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArchivedProjectsView.swift; sourceTree = "<group>"; };
 		E97F9AD204BAC7BB0A7E5D92 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		ED6AD4F67CC3533482F65A1B /* OpenRouterProviderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenRouterProviderTests.swift; sourceTree = "<group>"; };
@@ -201,6 +203,7 @@
 				85B023F7702442C9E73AD7FF /* LanguageManagerTests.swift */,
 				831984343AE49E818C7511B7 /* NotificationServiceTests.swift */,
 				ED6AD4F67CC3533482F65A1B /* OpenRouterProviderTests.swift */,
+				E4ECDD26ED0F879AA18991DD /* PomodoroSessionSaveTests.swift */,
 				724DF0D9521A50E754FB21F1 /* PomodoroSessionTests.swift */,
 				F02E4F9B768BF31589ED8D8C /* PomodoroTimerTests.swift */,
 				5B61E0FC8ED8FA3607CA8E73 /* StringsTests.swift */,
@@ -436,6 +439,7 @@
 				DCBDD5B7E686FFCEA004CABC /* LanguageManagerTests.swift in Sources */,
 				7FFA294677B1B83E4EE65977 /* NotificationServiceTests.swift in Sources */,
 				06867BFA63F30B28FE717A71 /* OpenRouterProviderTests.swift in Sources */,
+				E75154B3FC04793861E5A57C /* PomodoroSessionSaveTests.swift in Sources */,
 				EDDBEC957A06EFB95B9B47DC /* PomodoroSessionTests.swift in Sources */,
 				E81E8CD4BE3E29931E40C14D /* PomodoroTimerTests.swift in Sources */,
 				A2C0BB75C7ED0551645F313F /* StringsTests.swift in Sources */,

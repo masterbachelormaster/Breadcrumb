@@ -154,6 +154,12 @@ struct PomodoroRunningView: View {
                         timer.stop()
                         onFinished()
                     },
+                    onStopAfterSave: {
+                        // Session already saved by the overlay; just dismiss and stop.
+                        showingSessionEnd = false
+                        timer.stop()
+                        onFinished()
+                    },
                     onSnooze: { minutes in
                         showingSessionEnd = false
                         timer.snooze(minutes: minutes)

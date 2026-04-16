@@ -14,6 +14,7 @@ struct PomodoroSessionEndView: View {
     var onSkip: () -> Void
     var onStartNextSession: () -> Void
     var onStopCompletely: () -> Void
+    var onStopAfterSave: () -> Void
     var onSnooze: (Int) -> Void
 
     @State private var freeText = ""
@@ -228,6 +229,6 @@ struct PomodoroSessionEndView: View {
 
         modelContext.insert(session)
         modelContext.saveWithLogging()
-        onStopCompletely()
+        onStopAfterSave()
     }
 }
