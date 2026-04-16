@@ -15,6 +15,7 @@ struct FooterView: View {
             .font(.callout)
             .frame(maxWidth: .infinity)
             .buttonStyle(ToolbarButtonStyle())
+            .help(Strings.Projects.archiveTitle(languageManager.language))
 
             Button(action: onStartStandalonePomodoro) {
                 Text("🍅")
@@ -22,6 +23,7 @@ struct FooterView: View {
             }
             .frame(maxWidth: .infinity)
             .buttonStyle(ToolbarButtonStyle())
+            .help(Strings.Pomodoro.pomodoro(languageManager.language))
         }
         .padding(.horizontal, 4)
         .padding(.vertical, 4)

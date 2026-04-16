@@ -77,6 +77,7 @@ struct ProjectDetailView: View {
                             .font(.body)
                     }
                     .buttonStyle(ToolbarButtonStyle())
+                    .help(Strings.General.moreOptions(languageManager.language))
                 }
                 .padding(.horizontal)
                 .padding(.vertical, 8)

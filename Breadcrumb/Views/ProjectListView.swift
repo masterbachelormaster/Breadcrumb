@@ -41,6 +41,7 @@ struct ProjectListView: View {
                     .labelStyle(.iconOnly)
                     .font(.body)
                     .buttonStyle(ToolbarButtonStyle())
+                    .help(Strings.Projects.newProject(languageManager.language))
                 }
                 .padding(.horizontal)
                 .padding(.vertical, 8)
