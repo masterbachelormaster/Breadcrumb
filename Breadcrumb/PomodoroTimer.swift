@@ -27,6 +27,7 @@ final class PomodoroTimer {
     // FocusMate properties
     var isFocusMateSession: Bool = false
     var focusMateEndTime: Date?
+    var focusMateEarlyEndMinutes: Int = 0
 
     var notificationService: NotificationService?
 
@@ -111,11 +112,13 @@ final class PomodoroTimer {
         startTicking()
     }
 
-    func startFocusMate(project: Project?, durationMinutes: Int, endTime: Date) {
-        let remaining = max(0, Int(endTime.timeIntervalSince(Date.now)))
+    func startFocusMate(project: Project?, durationMinutes: Int, endTime: Date, earlyEndMinutes: Int = 0) {
+        let offsetSeconds = max(0, earlyEndMinutes) * 60
+        let remaining = max(0, Int(endTime.timeIntervalSince(Date.now)) - offsetSeconds)
 
         boundProject = project
         focusMateEndTime = endTime
+        focusMateEarlyEndMinutes = max(0, earlyEndMinutes)
         isFocusMateSession = true
         originalDurationSeconds = durationMinutes * 60
         phaseDurationSeconds = remaining
@@ -214,6 +217,7 @@ final class PomodoroTimer {
         boundProject = nil
         isFocusMateSession = false
         focusMateEndTime = nil
+        focusMateEarlyEndMinutes = 0
         sessionWorkMinutes = 25
         sessionShortBreakMinutes = 5
         sessionLongBreakMinutes = 15

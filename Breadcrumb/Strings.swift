@@ -268,6 +268,16 @@ enum Strings {
         static func focusMateComplete(_ l: AppLanguage) -> String {
             l == .german ? "👥 FocusMate-Sitzung beendet!" : "👥 FocusMate Session Complete!"
         }
+        static func focusMateEndEarlyLabel(_ l: AppLanguage, minutes: Int) -> String {
+            l == .german
+                ? "FocusMate: \(minutes) Min. vor Ende beenden"
+                : "FocusMate: end \(minutes) min early"
+        }
+        static func wrapUpBuffer(_ l: AppLanguage, minutes: Int) -> String {
+            l == .german
+                ? "Abschlusspuffer: \(minutes) Min."
+                : "Wrap-up buffer: \(minutes) min"
+        }
         static func saveAndDone(_ l: AppLanguage) -> String {
             l == .german ? "Speichern & Fertig" : "Save & Done"
         }

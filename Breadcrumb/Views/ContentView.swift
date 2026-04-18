@@ -100,6 +100,7 @@ struct ContentView: View {
     @AppStorage("pomodoro.longBreakMinutes") private var longBreakMinutes = 15
     @AppStorage("pomodoro.sessionsBeforeLongBreak") private var sessionsBeforeLong = 4
     @AppStorage("pomodoro.totalSessions") private var totalSessions = 4
+    @AppStorage("pomodoro.focusMateEndEarlyMinutes") private var focusMateEndEarlyMinutes = 0
 
     private func startPomodoro(project: Project?) {
         pendingPomodoroProject = project
@@ -128,7 +129,8 @@ struct ContentView: View {
             pomodoroTimer.startFocusMate(
                 project: pendingPomodoroProject,
                 durationMinutes: configFocusMateMinutes,
-                endTime: endTime
+                endTime: endTime,
+                earlyEndMinutes: focusMateEndEarlyMinutes
             )
         }
         showingPomodoroConfig = false

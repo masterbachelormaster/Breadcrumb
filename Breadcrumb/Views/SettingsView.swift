@@ -16,6 +16,7 @@ struct SettingsView: View {
     @AppStorage("pomodoro.sound.overtime") private var soundOvertime = "Tink"
     @AppStorage("pomodoro.showBannerNotification") private var showBannerNotification = true
     @AppStorage("pomodoro.autoOpenPopover") private var autoOpenPopover = true
+    @AppStorage("pomodoro.focusMateEndEarlyMinutes") private var focusMateEndEarlyMinutes = 0
     @AppStorage("ai.provider") private var aiProvider = AIBackend.local.rawValue
     @AppStorage("feature.bulletListsEnabled") private var bulletListsEnabled = true
 
@@ -107,6 +108,11 @@ struct SettingsView: View {
                             Stepper(Strings.Pomodoro.longBreakLabel(l, minutes: longBreakMinutes), value: $longBreakMinutes, in: 5...30)
                         }
                     }
+                    Stepper(
+                        Strings.Pomodoro.focusMateEndEarlyLabel(l, minutes: focusMateEndEarlyMinutes),
+                        value: $focusMateEndEarlyMinutes,
+                        in: 0...5
+                    )
                 }
                 .animation(.default, value: totalSessions)
                 .onChange(of: totalSessions) {

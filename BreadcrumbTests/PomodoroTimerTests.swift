@@ -168,10 +168,33 @@ struct PomodoroTimerTests {
     func stopResetsFocusMateProperties() {
         let timer = PomodoroTimer()
         let endTime = Date.now.addingTimeInterval(50 * 60)
-        timer.startFocusMate(project: nil, durationMinutes: 50, endTime: endTime)
+        timer.startFocusMate(project: nil, durationMinutes: 50, endTime: endTime, earlyEndMinutes: 2)
         timer.stop()
         #expect(timer.isFocusMateSession == false)
         #expect(timer.focusMateEndTime == nil)
+        #expect(timer.focusMateEarlyEndMinutes == 0)
+    }
+
+    @Test("FocusMate early-end offset shortens the countdown")
+    func focusMateEarlyEndReducesRemaining() {
+        let timer = PomodoroTimer()
+        let endTime = Date.now.addingTimeInterval(50 * 60)
+        timer.startFocusMate(project: nil, durationMinutes: 50, endTime: endTime, earlyEndMinutes: 2)
+        #expect(timer.isFocusMateSession == true)
+        #expect(timer.focusMateEarlyEndMinutes == 2)
+        #expect(timer.focusMateEndTime == endTime)
+        #expect(abs(timer.remainingSeconds - (48 * 60)) <= 1)
+    }
+
+    @Test("FocusMate early-end offset triggers session end early")
+    func focusMateEarlyEndTriggersSessionEnd() {
+        let timer = PomodoroTimer()
+        let endTime = Date.now.addingTimeInterval(25 * 60)
+        timer.startFocusMate(project: nil, durationMinutes: 25, endTime: endTime, earlyEndMinutes: 2)
+        timer.phaseStartDate = Date.now.addingTimeInterval(-Double(timer.phaseDurationSeconds))
+        timer.tick()
+        #expect(timer.currentPhase == .sessionEnded)
+        #expect(timer.isRunning == false)
     }
 
     // MARK: - Existing tests
