@@ -41,7 +41,8 @@ struct ProjectListView: View {
                     .labelStyle(.iconOnly)
                     .font(.body)
                     .buttonStyle(ToolbarButtonStyle())
-                    .help(Strings.Projects.newProject(languageManager.language))
+                    .keyboardShortcut("n", modifiers: .command)
+                    .help(Strings.Projects.newProjectHint(languageManager.language))
                 }
                 .padding(.horizontal)
                 .padding(.vertical, 8)
