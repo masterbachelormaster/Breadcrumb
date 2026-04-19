@@ -5,6 +5,7 @@ struct PlaceholderTextView: NSViewRepresentable {
     var placeholder: String
     @Binding var text: String
     var focusOnAppear: Bool = false
+    var onFocusChange: ((Bool) -> Void)?
 
     func makeCoordinator() -> Coordinator {
         Coordinator(self)
@@ -38,6 +39,13 @@ struct PlaceholderTextView: NSViewRepresentable {
         scrollView.hasHorizontalScroller = false
         scrollView.borderType = .noBorder
 
+        let coordinator = context.coordinator
+        textView.onFocusChange = { [weak coordinator] focused in
+            Task { @MainActor in
+                coordinator?.parent.onFocusChange?(focused)
+            }
+        }
+
         context.coordinator.textView = textView
         return scrollView
     }
@@ -49,6 +57,12 @@ struct PlaceholderTextView: NSViewRepresentable {
         }
         if textView.placeholderString != placeholder {
             textView.placeholderString = placeholder
+        }
+        let coordinator = context.coordinator
+        textView.onFocusChange = { [weak coordinator] focused in
+            Task { @MainActor in
+                coordinator?.parent.onFocusChange?(focused)
+            }
         }
         if focusOnAppear && !context.coordinator.hasFocused {
             context.coordinator.hasFocused = true
@@ -79,6 +93,20 @@ struct PlaceholderTextView: NSViewRepresentable {
 class PlaceholderNSTextView: NSTextView {
     var placeholderString: String = "" {
         didSet { needsDisplay = true }
+    }
+
+    var onFocusChange: ((Bool) -> Void)?
+
+    override func becomeFirstResponder() -> Bool {
+        let result = super.becomeFirstResponder()
+        if result { onFocusChange?(true) }
+        return result
+    }
+
+    override func resignFirstResponder() -> Bool {
+        let result = super.resignFirstResponder()
+        if result { onFocusChange?(false) }
+        return result
     }
 
     override func draw(_ dirtyRect: NSRect) {
