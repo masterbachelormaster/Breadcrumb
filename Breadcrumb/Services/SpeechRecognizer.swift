@@ -30,17 +30,22 @@ final class SpeechRecognizer {
             return
         }
 
-        SFSpeechRecognizer.requestAuthorization { [weak self] status in
-            Task { @MainActor in
-                guard let self else { return }
-                switch status {
-                case .authorized:
-                    self.beginRecognition(recognizer: recognizer)
-                default:
-                    self.error = "Permission denied"
-                    self.currentBinding = nil
-                }
+        Task {
+            let micGranted = await requestMicrophonePermission()
+            guard micGranted else {
+                error = "Permission denied"
+                currentBinding = nil
+                return
             }
+
+            let speechGranted = await requestSpeechPermission()
+            guard speechGranted else {
+                error = "Permission denied"
+                currentBinding = nil
+                return
+            }
+
+            await beginRecognition(recognizer: recognizer)
         }
     }
 
@@ -55,25 +60,40 @@ final class SpeechRecognizer {
         isListening = false
     }
 
-    private func beginRecognition(recognizer: SFSpeechRecognizer) {
+    private func requestMicrophonePermission() async -> Bool {
+        if AVAudioApplication.shared.recordPermission == .granted {
+            return true
+        }
+        return await AVAudioApplication.requestRecordPermission()
+    }
+
+    private func requestSpeechPermission() async -> Bool {
+        let status = SFSpeechRecognizer.authorizationStatus()
+        if status == .authorized { return true }
+        return await withCheckedContinuation { continuation in
+            Self.requestAuth { status in
+                continuation.resume(returning: status == .authorized)
+            }
+        }
+    }
+
+    // nonisolated static so the closure has no inherited @MainActor isolation
+    private nonisolated static func requestAuth(
+        handler: @escaping @Sendable (SFSpeechRecognizerAuthorizationStatus) -> Void
+    ) {
+        SFSpeechRecognizer.requestAuthorization(handler)
+    }
+
+    private func beginRecognition(recognizer: SFSpeechRecognizer) async {
         speechRecognizer = recognizer
 
-        let engine = AVAudioEngine()
         let request = SFSpeechAudioBufferRecognitionRequest()
         request.shouldReportPartialResults = true
         request.addsPunctuation = true
 
-        let inputNode = engine.inputNode
-        let recordingFormat = inputNode.outputFormat(forBus: 0)
-
-        nonisolated(unsafe) let sendableRequest = request
-        inputNode.installTap(onBus: 0, bufferSize: 1024, format: recordingFormat) { buffer, _ in
-            sendableRequest.append(buffer)
-        }
-
+        let engine: AVAudioEngine
         do {
-            engine.prepare()
-            try engine.start()
+            engine = try await Self.prepareAudioEngine(request: request)
         } catch {
             self.error = "Audio engine failed to start"
             return
@@ -81,11 +101,15 @@ final class SpeechRecognizer {
 
         self.audioEngine = engine
 
-        recognitionTask = recognizer.recognitionTask(with: request) { [weak self] result, error in
+        let task = Self.startRecognitionTask(
+            recognizer: recognizer, request: request
+        ) { [weak self] result, error in
+            let transcription = result?.bestTranscription.formattedString
+            let isFinal = result?.isFinal ?? false
+            let hasError = error != nil
             Task { @MainActor in
                 guard let self else { return }
-                if let result {
-                    let transcription = result.bestTranscription.formattedString
+                if let transcription {
                     let prefix = self.textBeforeListening
                     if prefix.isEmpty {
                         self.currentBinding?.wrappedValue = transcription
@@ -93,12 +117,45 @@ final class SpeechRecognizer {
                         self.currentBinding?.wrappedValue = prefix + " " + transcription
                     }
                 }
-                if error != nil || (result?.isFinal ?? false) {
+                if hasError || isFinal {
                     self.stopListening()
                 }
             }
         }
+        self.recognitionTask = task
 
         isListening = true
+    }
+
+    // Run audio engine setup off the main thread —
+    // AVAudioEngine.inputNode triggers HAL init with queue assertions
+    // incompatible with MainActor
+    private static func prepareAudioEngine(
+        request: SFSpeechAudioBufferRecognitionRequest
+    ) async throws -> AVAudioEngine {
+        nonisolated(unsafe) let sendableRequest = request
+        let engine = try await Task.detached { () -> AVAudioEngine in
+            let engine = AVAudioEngine()
+            let inputNode = engine.inputNode
+            let recordingFormat = inputNode.outputFormat(forBus: 0)
+
+            inputNode.installTap(onBus: 0, bufferSize: 1024, format: recordingFormat) { buffer, _ in
+                sendableRequest.append(buffer)
+            }
+
+            engine.prepare()
+            try engine.start()
+            return engine
+        }.value
+        return engine
+    }
+
+    // nonisolated static so the closure has no inherited @MainActor isolation
+    private nonisolated static func startRecognitionTask(
+        recognizer: SFSpeechRecognizer,
+        request: SFSpeechAudioBufferRecognitionRequest,
+        handler: @escaping @Sendable (SFSpeechRecognitionResult?, (any Error)?) -> Void
+    ) -> SFSpeechRecognitionTask {
+        recognizer.recognitionTask(with: request, resultHandler: handler)
     }
 }
