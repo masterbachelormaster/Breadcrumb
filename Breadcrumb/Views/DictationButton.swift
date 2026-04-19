@@ -1,0 +1,49 @@
+import SwiftUI
+
+struct DictationButton: View {
+    @Environment(SpeechRecognizer.self) private var speechRecognizer
+    @Environment(LanguageManager.self) private var languageManager
+
+    @Binding var text: String
+    var isFocused: Bool
+
+    @State private var isPulsing = false
+
+    var body: some View {
+        if isFocused {
+            Button(
+                Strings.Dictation.buttonLabel(languageManager.language),
+                systemImage: speechRecognizer.isListening ? "mic.fill" : "mic",
+                action: toggle
+            )
+            .labelStyle(.iconOnly)
+            .foregroundStyle(speechRecognizer.isListening ? .red : .secondary)
+            .scaleEffect(isPulsing ? 1.15 : 1.0)
+            .animation(.easeInOut(duration: 0.8).repeatForever(autoreverses: true), value: isPulsing)
+            .buttonStyle(.borderless)
+            .help(
+                speechRecognizer.error != nil
+                    ? Strings.Dictation.permissionRequired(languageManager.language)
+                    : Strings.Dictation.buttonLabel(languageManager.language)
+            )
+            .disabled(speechRecognizer.error != nil)
+            .transition(.opacity)
+            .onChange(of: speechRecognizer.isListening) { _, newValue in
+                isPulsing = newValue
+            }
+            .onChange(of: isFocused) { _, focused in
+                if !focused && speechRecognizer.isListening {
+                    speechRecognizer.stopListening()
+                }
+            }
+        }
+    }
+
+    private func toggle() {
+        if speechRecognizer.isListening {
+            speechRecognizer.stopListening()
+        } else {
+            speechRecognizer.startListening(into: $text, language: languageManager.language)
+        }
+    }
+}
