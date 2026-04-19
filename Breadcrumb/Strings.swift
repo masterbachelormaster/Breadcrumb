@@ -46,6 +46,9 @@ enum Strings {
         static func minutesAbbrev(_ l: AppLanguage) -> String {
             l == .german ? "Min." : "min"
         }
+        static func saveHint(_ l: AppLanguage) -> String {
+            l == .german ? "Sichern (⌘↩)" : "Save (⌘↩)"
+        }
     }
 
     // MARK: - Projects
@@ -96,6 +99,9 @@ enum Strings {
         static func permanentlyDelete(_ l: AppLanguage) -> String {
             l == .german ? "Endgültig löschen" : "Permanently Delete"
         }
+        static func newProjectHint(_ l: AppLanguage) -> String {
+            l == .german ? "Neues Projekt (⌘N)" : "New Project (⌘N)"
+        }
     }
 
     // MARK: - Status
@@ -142,6 +148,9 @@ enum Strings {
         }
         static func history(_ l: AppLanguage) -> String {
             l == .german ? "Historie" : "History"
+        }
+        static func updateStatusHint(_ l: AppLanguage) -> String {
+            l == .german ? "Status aktualisieren (⌘U)" : "Update Status (⌘U)"
         }
     }
 
@@ -204,6 +213,9 @@ enum Strings {
         }
         static func saveAndBreak(_ l: AppLanguage) -> String {
             l == .german ? "Speichern & Pause" : "Save & Break"
+        }
+        static func saveAndBreakHint(_ l: AppLanguage) -> String {
+            l == .german ? "Speichern & Pause (⌘↩)" : "Save & Break (⌘↩)"
         }
         static func continueWorking(_ l: AppLanguage) -> String {
             l == .german ? "Weiterarbeiten" : "Continue Working"
@@ -280,6 +292,9 @@ enum Strings {
         }
         static func saveAndDone(_ l: AppLanguage) -> String {
             l == .german ? "Speichern & Fertig" : "Save & Done"
+        }
+        static func saveAndDoneHint(_ l: AppLanguage) -> String {
+            l == .german ? "Speichern & Fertig (⌘↩)" : "Save & Done (⌘↩)"
         }
         static func snooze5(_ l: AppLanguage) -> String {
             l == .german ? "+5 Min." : "+5 min"

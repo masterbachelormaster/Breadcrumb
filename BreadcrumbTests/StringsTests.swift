@@ -166,4 +166,18 @@ struct StringsTests {
         #expect(Strings.Settings.bulletLists(.german) == "Aufzählungslisten verwenden")
         #expect(Strings.Settings.bulletLists(.english) == "Use bullet lists")
     }
+
+    @Test("Keyboard shortcut hint strings")
+    func keyboardShortcutHints() {
+        #expect(Strings.General.saveHint(.german) == "Sichern (⌘↩)")
+        #expect(Strings.General.saveHint(.english) == "Save (⌘↩)")
+        #expect(Strings.Projects.newProjectHint(.german) == "Neues Projekt (⌘N)")
+        #expect(Strings.Projects.newProjectHint(.english) == "New Project (⌘N)")
+        #expect(Strings.Status.updateStatusHint(.german) == "Status aktualisieren (⌘U)")
+        #expect(Strings.Status.updateStatusHint(.english) == "Update Status (⌘U)")
+        #expect(Strings.Pomodoro.saveAndBreakHint(.german) == "Speichern & Pause (⌘↩)")
+        #expect(Strings.Pomodoro.saveAndBreakHint(.english) == "Save & Break (⌘↩)")
+        #expect(Strings.Pomodoro.saveAndDoneHint(.german) == "Speichern & Fertig (⌘↩)")
+        #expect(Strings.Pomodoro.saveAndDoneHint(.english) == "Save & Done (⌘↩)")
+    }
 }
