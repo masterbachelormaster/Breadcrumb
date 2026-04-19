@@ -56,10 +56,7 @@ struct PlaceholderTextView: NSViewRepresentable {
         if textView.placeholderString != placeholder {
             textView.placeholderString = placeholder
         }
-        let coordinator = context.coordinator
-        textView.onFocusChange = { [weak coordinator] focused in
-            coordinator?.parent.onFocusChange?(focused)
-        }
+        context.coordinator.parent = self
         if focusOnAppear && !context.coordinator.hasFocused {
             context.coordinator.hasFocused = true
             Task { @MainActor in
