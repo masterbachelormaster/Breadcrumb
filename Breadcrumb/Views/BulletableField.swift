@@ -16,6 +16,7 @@ import SwiftUI
 /// Edits write back through the binding immediately via the local helpers.
 struct BulletableField: View {
     @Environment(LanguageManager.self) private var languageManager
+    @Environment(SpeechRecognizer.self) private var speechRecognizer
 
     @AppStorage("feature.bulletListsEnabled") private var bulletListsEnabled = true
 
@@ -46,9 +47,13 @@ struct BulletableField: View {
 
     @ViewBuilder
     private var plainModeField: some View {
-        TextField(label, text: $text)
-            .textFieldStyle(.roundedBorder)
-            .focused($plainFocused)
+        ZStack(alignment: .trailing) {
+            TextField(label, text: $text)
+                .textFieldStyle(.roundedBorder)
+                .focused($plainFocused)
+            DictationButton(text: $text, isFocused: plainFocused)
+                .padding(.trailing, 6)
+        }
     }
 
     // MARK: - List mode
@@ -60,13 +65,19 @@ struct BulletableField: View {
                 HStack(alignment: .firstTextBaseline, spacing: 6) {
                     Text("•")
                         .foregroundStyle(.secondary)
-                    TextField(label, text: bindingForItem(at: index))
-                        .textFieldStyle(.roundedBorder)
-                        .focused($listFocused, equals: index)
-                        .onSubmit {
-                            guard bulletListsEnabled else { return }
-                            insertBullet(after: index)
+                    ZStack(alignment: .trailing) {
+                        TextField(label, text: bindingForItem(at: index))
+                            .textFieldStyle(.roundedBorder)
+                            .focused($listFocused, equals: index)
+                            .onSubmit {
+                                guard bulletListsEnabled else { return }
+                                insertBullet(after: index)
+                            }
+                        if index == items.count - 1 {
+                            DictationButton(text: $text, isFocused: listFocused != nil)
+                                .padding(.trailing, 6)
                         }
+                    }
                     Button {
                         removeBullet(at: index)
                     } label: {
