@@ -5,6 +5,7 @@ struct PomodoroSessionEndView: View {
     @Environment(PomodoroTimer.self) private var timer
     @Environment(LanguageManager.self) private var languageManager
     @Environment(\.modelContext) private var modelContext
+    @Environment(SpeechRecognizer.self) private var speechRecognizer
 
     let wasBreak: Bool
     var isCycleComplete: Bool = false
@@ -18,6 +19,7 @@ struct PomodoroSessionEndView: View {
     var onSnooze: (Int) -> Void
 
     @State private var freeText = ""
+    @State private var freeTextFocused = false
     @State private var lastAction = ""
     @State private var nextStep = ""
     @State private var openQuestions = ""
@@ -142,15 +144,21 @@ struct PomodoroSessionEndView: View {
         }
 
         // Status entry form
-        PlaceholderTextView(
-            placeholder: Strings.Status.whereAreYou(l),
-            text: $freeText,
-            focusOnAppear: !wasBreak
-        )
-        .frame(minHeight: 50, maxHeight: 100)
-        .background(Color(nsColor: .textBackgroundColor))
-        .clipShape(.rect(cornerRadius: 6))
-        .overlay(RoundedRectangle(cornerRadius: 6).stroke(Color(nsColor: .separatorColor)))
+        ZStack(alignment: .bottomTrailing) {
+            PlaceholderTextView(
+                placeholder: Strings.Status.whereAreYou(l),
+                text: $freeText,
+                focusOnAppear: !wasBreak,
+                onFocusChange: { freeTextFocused = $0 }
+            )
+            .frame(minHeight: 50, maxHeight: 100)
+            .background(Color(nsColor: .textBackgroundColor))
+            .clipShape(.rect(cornerRadius: 6))
+            .overlay(RoundedRectangle(cornerRadius: 6).stroke(Color(nsColor: .separatorColor)))
+
+            DictationButton(text: $freeText, isFocused: freeTextFocused)
+                .padding(6)
+        }
 
         AIExtractButton(
             freeText: $freeText,
@@ -171,6 +179,7 @@ struct PomodoroSessionEndView: View {
     }
 
     private func saveAndBreak() {
+        speechRecognizer.stopListening()
         let project = selectedProject ?? timer.boundProject
 
         // Create PomodoroSession record
@@ -202,6 +211,7 @@ struct PomodoroSessionEndView: View {
     }
 
     private func saveAndDone() {
+        speechRecognizer.stopListening()
         let project = selectedProject ?? timer.boundProject
 
         let session = PomodoroSession(
