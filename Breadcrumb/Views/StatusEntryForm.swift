@@ -13,17 +13,21 @@ struct StatusEntryForm: View {
     @Binding var openQuestions: String
     var onDismiss: () -> Void = {}
     @State private var showOptionalFields = false
-    @FocusState private var isFreeTextFocused: Bool
 
     var body: some View {
         VStack(spacing: 16) {
             Text(Strings.Status.updateStatus(languageManager.language))
                 .font(.headline)
 
-            TextField(Strings.Status.whereAreYou(languageManager.language), text: $freeText, axis: .vertical)
-                .lineLimit(4...)
-                .textFieldStyle(.roundedBorder)
-                .focused($isFreeTextFocused)
+            PlaceholderTextView(
+                placeholder: Strings.Status.whereAreYou(languageManager.language),
+                text: $freeText,
+                focusOnAppear: true
+            )
+            .frame(minHeight: 60, maxHeight: 120)
+            .background(Color(nsColor: .textBackgroundColor))
+            .clipShape(.rect(cornerRadius: 6))
+            .overlay(RoundedRectangle(cornerRadius: 6).stroke(Color(nsColor: .separatorColor)))
 
             AIExtractButton(
                 freeText: $freeText,
@@ -59,10 +63,6 @@ struct StatusEntryForm: View {
         .background(Color(nsColor: .windowBackgroundColor))
         .clipShape(.rect(cornerRadius: 10))
         .shadow(radius: 10)
-        .task {
-            try? await Task.sleep(for: .milliseconds(300))
-            isFreeTextFocused = true
-        }
     }
 
     private func save() {

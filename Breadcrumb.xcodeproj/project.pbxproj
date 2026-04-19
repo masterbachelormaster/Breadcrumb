@@ -69,6 +69,7 @@
 		EB4760D960D7F807807B4D50 /* BulletDetailField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26CAFA63995C532306BBE521 /* BulletDetailField.swift */; };
 		EB5BC1C5D771918616ECFE20 /* BreadcrumbSchema.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4615582F09AD75B7047439D1 /* BreadcrumbSchema.swift */; };
 		EDDBEC957A06EFB95B9B47DC /* PomodoroSessionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 724DF0D9521A50E754FB21F1 /* PomodoroSessionTests.swift */; };
+		F1A927788CB2A63F724D4AE3 /* PlaceholderTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EDDE649AD967EFDBF0DF239 /* PlaceholderTextView.swift */; };
 		F3CA383D086855E95F01B254 /* ProjectListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47078C1986E00D73E6A06727 /* ProjectListView.swift */; };
 		F8D0888E96F2ED902AF2E686 /* SmartTimestampView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65312D00F423DD42BAB0C2FD /* SmartTimestampView.swift */; };
 		FA03D196F0BF672CC3D62165 /* HistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8C5CE9442C811F8DCF196BD /* HistoryView.swift */; };
@@ -87,6 +88,7 @@
 /* Begin PBXFileReference section */
 		0FE203A2FC256662ACD1B3C9 /* BreadcrumbTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreadcrumbTests.swift; sourceTree = "<group>"; };
 		1245F6E8248E227CA507BF8E /* Project.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Project.swift; sourceTree = "<group>"; };
+		1EDDE649AD967EFDBF0DF239 /* PlaceholderTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceholderTextView.swift; sourceTree = "<group>"; };
 		22C4476611D7A9F41AA244EA /* BulletText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BulletText.swift; sourceTree = "<group>"; };
 		22EB604EBEE6E40B6A21FFD2 /* AIFillerStripperTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AIFillerStripperTests.swift; sourceTree = "<group>"; };
 		26CAFA63995C532306BBE521 /* BulletDetailField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BulletDetailField.swift; sourceTree = "<group>"; };
@@ -173,6 +175,7 @@
 				F506B326CA6737B42BEF9F99 /* FooterView.swift */,
 				9C88E592971DB2AB4E478DA7 /* HistoryEntryRow.swift */,
 				B8C5CE9442C811F8DCF196BD /* HistoryView.swift */,
+				1EDDE649AD967EFDBF0DF239 /* PlaceholderTextView.swift */,
 				C3F1C79AA5792B6763AB7DF4 /* PomodoroConfigView.swift */,
 				AF7604A00FB4C888AA719B6C /* PomodoroRunningView.swift */,
 				4F5D21B8446DBC5F11312384 /* PomodoroSessionEndView.swift */,
@@ -404,6 +407,7 @@
 				BE6EE87AEF54FED09C1AB647 /* NotificationService.swift in Sources */,
 				0705F5EE8EF9C08EE07DDD18 /* OpenRouterProvider.swift in Sources */,
 				E5A0E84F6FCEE311E5A1BDC5 /* OpenRouterSettingsSection.swift in Sources */,
+				F1A927788CB2A63F724D4AE3 /* PlaceholderTextView.swift in Sources */,
 				3B8E91E329DF6960817BF4E7 /* PomodoroConfigView.swift in Sources */,
 				6864E481C9B390FF7CFB8D7C /* PomodoroRunningView.swift in Sources */,
 				403EFFDCD1BFA9E3FB455EE7 /* PomodoroSession.swift in Sources */,
