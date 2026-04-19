@@ -10,31 +10,30 @@ struct DictationButton: View {
     @State private var isPulsing = false
 
     var body: some View {
-        if isFocused {
-            Button(
-                Strings.Dictation.buttonLabel(languageManager.language),
-                systemImage: speechRecognizer.isListening ? "mic.fill" : "mic",
-                action: toggle
-            )
-            .labelStyle(.iconOnly)
-            .foregroundStyle(speechRecognizer.isListening ? .red : .secondary)
-            .scaleEffect(isPulsing ? 1.15 : 1.0)
-            .animation(.easeInOut(duration: 0.8).repeatForever(autoreverses: true), value: isPulsing)
-            .buttonStyle(.borderless)
-            .help(
-                speechRecognizer.error != nil
-                    ? Strings.Dictation.permissionRequired(languageManager.language)
-                    : Strings.Dictation.buttonLabel(languageManager.language)
-            )
-            .disabled(speechRecognizer.error != nil)
-            .transition(.opacity)
-            .onChange(of: speechRecognizer.isListening) { _, newValue in
-                isPulsing = newValue
-            }
-            .onChange(of: isFocused) { _, focused in
-                if !focused && speechRecognizer.isListening {
-                    speechRecognizer.stopListening()
-                }
+        Button(
+            Strings.Dictation.buttonLabel(languageManager.language),
+            systemImage: speechRecognizer.isListening ? "mic.fill" : "mic",
+            action: toggle
+        )
+        .labelStyle(.iconOnly)
+        .foregroundStyle(speechRecognizer.isListening ? .red : .secondary)
+        .scaleEffect(isPulsing ? 1.15 : 1.0)
+        .animation(.easeInOut(duration: 0.8).repeatForever(autoreverses: true), value: isPulsing)
+        .buttonStyle(.borderless)
+        .help(
+            speechRecognizer.error != nil
+                ? Strings.Dictation.permissionRequired(languageManager.language)
+                : Strings.Dictation.buttonLabel(languageManager.language)
+        )
+        .disabled(speechRecognizer.error != nil)
+        .opacity(isFocused ? 1 : 0)
+        .allowsHitTesting(isFocused)
+        .onChange(of: speechRecognizer.isListening) { _, newValue in
+            isPulsing = newValue
+        }
+        .onChange(of: isFocused) { _, focused in
+            if !focused && speechRecognizer.isListening {
+                speechRecognizer.stopListening()
             }
         }
     }

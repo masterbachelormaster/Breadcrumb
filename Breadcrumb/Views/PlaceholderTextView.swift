@@ -41,9 +41,7 @@ struct PlaceholderTextView: NSViewRepresentable {
 
         let coordinator = context.coordinator
         textView.onFocusChange = { [weak coordinator] focused in
-            Task { @MainActor in
-                coordinator?.parent.onFocusChange?(focused)
-            }
+            coordinator?.parent.onFocusChange?(focused)
         }
 
         context.coordinator.textView = textView
@@ -60,9 +58,7 @@ struct PlaceholderTextView: NSViewRepresentable {
         }
         let coordinator = context.coordinator
         textView.onFocusChange = { [weak coordinator] focused in
-            Task { @MainActor in
-                coordinator?.parent.onFocusChange?(focused)
-            }
+            coordinator?.parent.onFocusChange?(focused)
         }
         if focusOnAppear && !context.coordinator.hasFocused {
             context.coordinator.hasFocused = true

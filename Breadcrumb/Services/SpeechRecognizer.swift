@@ -20,6 +20,7 @@ final class SpeechRecognizer {
             stopListening()
         }
 
+        error = nil
         currentBinding = binding
         textBeforeListening = binding.wrappedValue
 
@@ -77,7 +78,6 @@ final class SpeechRecognizer {
         }
     }
 
-    // nonisolated static so the closure has no inherited @MainActor isolation
     private nonisolated static func requestAuth(
         handler: @escaping @Sendable (SFSpeechRecognizerAuthorizationStatus) -> Void
     ) {
@@ -127,9 +127,6 @@ final class SpeechRecognizer {
         isListening = true
     }
 
-    // Run audio engine setup off the main thread —
-    // AVAudioEngine.inputNode triggers HAL init with queue assertions
-    // incompatible with MainActor
     private static func prepareAudioEngine(
         request: SFSpeechAudioBufferRecognitionRequest
     ) async throws -> AVAudioEngine {
@@ -150,7 +147,6 @@ final class SpeechRecognizer {
         return engine
     }
 
-    // nonisolated static so the closure has no inherited @MainActor isolation
     private nonisolated static func startRecognitionTask(
         recognizer: SFSpeechRecognizer,
         request: SFSpeechAudioBufferRecognitionRequest,
