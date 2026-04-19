@@ -1,5 +1,5 @@
-import Speech
-import AVFoundation
+@preconcurrency import Speech
+@preconcurrency import AVFoundation
 import SwiftUI
 
 @Observable
@@ -20,9 +20,13 @@ final class SpeechRecognizer {
             stopListening()
         }
 
+        currentBinding = binding
+        textBeforeListening = binding.wrappedValue
+
         let locale = language == .german ? Locale(identifier: "de-DE") : Locale(identifier: "en-US")
         guard let recognizer = SFSpeechRecognizer(locale: locale), recognizer.isAvailable else {
             error = "Speech recognition not available"
+            currentBinding = nil
             return
         }
 
@@ -31,9 +35,10 @@ final class SpeechRecognizer {
                 guard let self else { return }
                 switch status {
                 case .authorized:
-                    self.beginRecognition(into: binding, recognizer: recognizer)
+                    self.beginRecognition(recognizer: recognizer)
                 default:
                     self.error = "Permission denied"
+                    self.currentBinding = nil
                 }
             }
         }
@@ -50,10 +55,8 @@ final class SpeechRecognizer {
         isListening = false
     }
 
-    private func beginRecognition(into binding: Binding<String>, recognizer: SFSpeechRecognizer) {
+    private func beginRecognition(recognizer: SFSpeechRecognizer) {
         speechRecognizer = recognizer
-        currentBinding = binding
-        textBeforeListening = binding.wrappedValue
 
         let engine = AVAudioEngine()
         let request = SFSpeechAudioBufferRecognitionRequest()
@@ -62,8 +65,10 @@ final class SpeechRecognizer {
 
         let inputNode = engine.inputNode
         let recordingFormat = inputNode.outputFormat(forBus: 0)
+
+        nonisolated(unsafe) let sendableRequest = request
         inputNode.installTap(onBus: 0, bufferSize: 1024, format: recordingFormat) { buffer, _ in
-            request.append(buffer)
+            sendableRequest.append(buffer)
         }
 
         do {
