@@ -131,6 +131,8 @@ struct ProjectDetailView: View {
                         showingStatusForm = true
                     }
                     .buttonStyle(.borderedProminent)
+                    .keyboardShortcut("u", modifiers: .command)
+                    .help(Strings.Status.updateStatusHint(languageManager.language))
 
                     Spacer()
 
