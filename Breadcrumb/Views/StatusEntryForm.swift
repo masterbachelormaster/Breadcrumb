@@ -3,6 +3,7 @@ import SwiftData
 
 struct StatusEntryForm: View {
     @Environment(LanguageManager.self) private var languageManager
+    @Environment(SpeechRecognizer.self) private var speechRecognizer
     let project: Project
 
     @Environment(\.modelContext) private var modelContext
@@ -13,21 +14,28 @@ struct StatusEntryForm: View {
     @Binding var openQuestions: String
     var onDismiss: () -> Void = {}
     @State private var showOptionalFields = false
+    @State private var freeTextFocused = false
 
     var body: some View {
         VStack(spacing: 16) {
             Text(Strings.Status.updateStatus(languageManager.language))
                 .font(.headline)
 
-            PlaceholderTextView(
-                placeholder: Strings.Status.whereAreYou(languageManager.language),
-                text: $freeText,
-                focusOnAppear: true
-            )
-            .frame(minHeight: 60, maxHeight: 120)
-            .background(Color(nsColor: .textBackgroundColor))
-            .clipShape(.rect(cornerRadius: 6))
-            .overlay(RoundedRectangle(cornerRadius: 6).stroke(Color(nsColor: .separatorColor)))
+            ZStack(alignment: .bottomTrailing) {
+                PlaceholderTextView(
+                    placeholder: Strings.Status.whereAreYou(languageManager.language),
+                    text: $freeText,
+                    focusOnAppear: true,
+                    onFocusChange: { freeTextFocused = $0 }
+                )
+                .frame(minHeight: 60, maxHeight: 120)
+                .background(Color(nsColor: .textBackgroundColor))
+                .clipShape(.rect(cornerRadius: 6))
+                .overlay(RoundedRectangle(cornerRadius: 6).stroke(Color(nsColor: .separatorColor)))
+
+                DictationButton(text: $freeText, isFocused: freeTextFocused)
+                    .padding(6)
+            }
 
             AIExtractButton(
                 freeText: $freeText,
@@ -47,7 +55,10 @@ struct StatusEntryForm: View {
             }
 
             HStack {
-                Button(Strings.General.cancel(languageManager.language)) { onDismiss() }
+                Button(Strings.General.cancel(languageManager.language)) {
+                    speechRecognizer.stopListening()
+                    onDismiss()
+                }
                     .buttonStyle(.bordered)
                     .keyboardShortcut(.cancelAction)
                 Spacer()
@@ -66,6 +77,7 @@ struct StatusEntryForm: View {
     }
 
     private func save() {
+        speechRecognizer.stopListening()
         let trimmed = freeText.trimmingCharacters(in: .whitespaces)
         guard !trimmed.isEmpty else { return }
 
