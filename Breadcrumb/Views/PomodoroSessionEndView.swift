@@ -92,6 +92,8 @@ struct PomodoroSessionEndView: View {
         HStack {
             Button(Strings.Pomodoro.saveAndDone(l)) { saveAndDone() }
                 .buttonStyle(.borderedProminent)
+                .keyboardShortcut(.return, modifiers: .command)
+                .help(Strings.Pomodoro.saveAndDoneHint(l))
                 .disabled(selectedProject == nil && timer.boundProject == nil)
             Button(Strings.Pomodoro.skip(l)) { onStopCompletely() }
                 .buttonStyle(.bordered)
@@ -116,6 +118,8 @@ struct PomodoroSessionEndView: View {
         HStack {
             Button(Strings.Pomodoro.saveAndBreak(l), action: saveAndBreak)
                 .buttonStyle(.borderedProminent)
+                .keyboardShortcut(.return, modifiers: .command)
+                .help(Strings.Pomodoro.saveAndBreakHint(l))
                 .disabled(selectedProject == nil && timer.boundProject == nil)
             Button(Strings.Pomodoro.continueWorking(l), action: { onContinueWorking() })
                 .buttonStyle(.bordered)
