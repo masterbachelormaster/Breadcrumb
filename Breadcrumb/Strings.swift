@@ -488,6 +488,17 @@ enum Strings {
         }
     }
 
+    // MARK: - Dictation
+
+    enum Dictation {
+        static func buttonLabel(_ l: AppLanguage) -> String {
+            l == .german ? "Diktat" : "Dictation"
+        }
+        static func permissionRequired(_ l: AppLanguage) -> String {
+            l == .german ? "Mikrofonzugriff erforderlich" : "Microphone access required"
+        }
+    }
+
     // MARK: - Errors
 
     enum Errors {

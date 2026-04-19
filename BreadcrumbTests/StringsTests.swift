@@ -180,4 +180,12 @@ struct StringsTests {
         #expect(Strings.Pomodoro.saveAndDoneHint(.german) == "Speichern & Fertig (⌘↩)")
         #expect(Strings.Pomodoro.saveAndDoneHint(.english) == "Save & Done (⌘↩)")
     }
+
+    @Test("Dictation strings return correct translations")
+    func dictationStrings() {
+        #expect(Strings.Dictation.buttonLabel(.german) == "Diktat")
+        #expect(Strings.Dictation.buttonLabel(.english) == "Dictation")
+        #expect(Strings.Dictation.permissionRequired(.german) == "Mikrofonzugriff erforderlich")
+        #expect(Strings.Dictation.permissionRequired(.english) == "Microphone access required")
+    }
 }
