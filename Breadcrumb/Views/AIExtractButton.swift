@@ -27,7 +27,8 @@ struct AIExtractButton: View {
     @ViewBuilder
     private var extractionContent: some View {
         let l = languageManager.language
-        if aiService.isAvailable && !freeText.trimmingCharacters(in: .whitespaces).isEmpty {
+        if aiService.isAvailable {
+            let hasText = !freeText.trimmingCharacters(in: .whitespaces).isEmpty
             VStack(spacing: 4) {
                 Button {
                     extractionTask = Task { await extract() }
@@ -53,6 +54,8 @@ struct AIExtractButton: View {
                         .foregroundStyle(.red)
                 }
             }
+            .opacity(hasText ? 1 : 0)
+            .allowsHitTesting(hasText)
         }
     }
 
