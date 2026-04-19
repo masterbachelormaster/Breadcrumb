@@ -49,7 +49,8 @@ struct StatusEntryForm: View {
                 Spacer()
                 Button(Strings.General.save(languageManager.language)) { save() }
                     .buttonStyle(.borderedProminent)
-                    .keyboardShortcut(.defaultAction)
+                    .keyboardShortcut(.return, modifiers: .command)
+                    .help(Strings.General.saveHint(languageManager.language))
                     .disabled(freeText.trimmingCharacters(in: .whitespaces).isEmpty)
             }
         }
