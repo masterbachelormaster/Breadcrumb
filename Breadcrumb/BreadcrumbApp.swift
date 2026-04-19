@@ -12,6 +12,7 @@ struct BreadcrumbApp: App {
     @State private var aiService = AIService()
     @State private var languageManager = LanguageManager()
     @State private var notificationService = NotificationService()
+    @State private var speechRecognizer = SpeechRecognizer()
 
     init() {
         sharedModelContainer = Self.createModelContainer()
@@ -28,6 +29,7 @@ struct BreadcrumbApp: App {
                 .environment(windowManager)
                 .environment(aiService)
                 .environment(languageManager)
+                .environment(speechRecognizer)
         } label: {
             if pomodoroTimer.currentPhase == .idle {
                 Image(systemName: "bookmark.fill")
@@ -44,6 +46,7 @@ struct BreadcrumbApp: App {
                 .environment(windowManager)
                 .environment(aiService)
                 .environment(languageManager)
+                .environment(speechRecognizer)
         }
         .modelContainer(sharedModelContainer)
         .defaultSize(width: 500, height: 400)
