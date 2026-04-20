@@ -89,16 +89,23 @@ class PlaceholderNSTextView: NSTextView {
     }
 
     var onFocusChange: ((Bool) -> Void)?
+    private var isFocused = false
 
     override func becomeFirstResponder() -> Bool {
         let result = super.becomeFirstResponder()
-        if result { onFocusChange?(true) }
+        if result && !isFocused {
+            isFocused = true
+            onFocusChange?(true)
+        }
         return result
     }
 
     override func resignFirstResponder() -> Bool {
         let result = super.resignFirstResponder()
-        if result { onFocusChange?(false) }
+        if result && isFocused {
+            isFocused = false
+            onFocusChange?(false)
+        }
         return result
     }
 

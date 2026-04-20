@@ -7,8 +7,6 @@ struct DictationButton: View {
     @Binding var text: String
     var isFocused: Bool
 
-    @State private var isPulsing = false
-
     var body: some View {
         Button(
             Strings.Dictation.buttonLabel(languageManager.language),
@@ -17,8 +15,7 @@ struct DictationButton: View {
         )
         .labelStyle(.iconOnly)
         .foregroundStyle(speechRecognizer.isListening ? .red : .secondary)
-        .scaleEffect(isPulsing ? 1.15 : 1.0)
-        .animation(.easeInOut(duration: 0.8).repeatForever(autoreverses: true), value: isPulsing)
+        .symbolEffect(.pulse, isActive: speechRecognizer.isListening)
         .buttonStyle(.borderless)
         .help(
             speechRecognizer.error != nil
@@ -28,9 +25,6 @@ struct DictationButton: View {
         .disabled(speechRecognizer.error != nil)
         .opacity(isFocused ? 1 : 0)
         .allowsHitTesting(isFocused)
-        .onChange(of: speechRecognizer.isListening) { _, newValue in
-            isPulsing = newValue
-        }
         .onChange(of: isFocused) { _, focused in
             if !focused && speechRecognizer.isListening {
                 speechRecognizer.stopListening()

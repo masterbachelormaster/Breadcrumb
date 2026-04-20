@@ -26,5 +26,9 @@
 	<string>$(MACOSX_DEPLOYMENT_TARGET)</string>
 	<key>LSUIElement</key>
 	<true/>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Breadcrumb uses the microphone for speech-to-text in status updates.</string>
+	<key>NSSpeechRecognitionUsageDescription</key>
+	<string>Breadcrumb uses speech recognition to transcribe your status updates.</string>
 </dict>
 </plist>

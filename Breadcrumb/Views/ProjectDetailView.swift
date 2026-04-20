@@ -34,6 +34,10 @@ struct ProjectDetailView: View {
     @State private var draftURL = ""
     @State private var draftLabel = ""
 
+    private var hasActiveOverlay: Bool {
+        showingStatusForm || showingEditForm || showingURLForm || showingEditLabel
+    }
+
     var body: some View {
         ZStack {
             VStack(spacing: 0) {
@@ -157,6 +161,7 @@ struct ProjectDetailView: View {
             } message: {
                 Text(Strings.Confirm.deleteProjectMessage(languageManager.language, name: project.name))
             }
+            .allowsHitTesting(!hasActiveOverlay)
 
             // Inline overlay for status form
             if showingStatusForm {
