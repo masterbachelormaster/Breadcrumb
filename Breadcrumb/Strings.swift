@@ -339,6 +339,9 @@ enum Strings {
         static func bulletLists(_ l: AppLanguage) -> String {
             l == .german ? "Aufzählungslisten verwenden" : "Use bullet lists"
         }
+        static func dictation(_ l: AppLanguage) -> String {
+            l == .german ? "Diktat (Experimentell)" : "Dictation (Experimental)"
+        }
         static func notifications(_ l: AppLanguage) -> String {
             l == .german ? "Benachrichtigungen" : "Notifications"
         }

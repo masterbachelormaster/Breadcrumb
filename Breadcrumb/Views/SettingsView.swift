@@ -19,6 +19,7 @@ struct SettingsView: View {
     @AppStorage("pomodoro.focusMateEndEarlyMinutes") private var focusMateEndEarlyMinutes = 0
     @AppStorage("ai.provider") private var aiProvider = AIBackend.local.rawValue
     @AppStorage("feature.bulletListsEnabled") private var bulletListsEnabled = true
+    @AppStorage("feature.dictationEnabled") private var dictationEnabled = false
 
     var onBack: (() -> Void)? = nil
 
@@ -96,6 +97,7 @@ struct SettingsView: View {
                             }
                         }
                     Toggle(Strings.Settings.bulletLists(l), isOn: $bulletListsEnabled)
+                    Toggle(Strings.Settings.dictation(l), isOn: $dictationEnabled)
                 }
 
                 Section(Strings.Pomodoro.pomodoro(l)) {
