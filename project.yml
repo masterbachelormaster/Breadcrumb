@@ -18,6 +18,8 @@ targets:
         LSMinimumSystemVersion: $(MACOSX_DEPLOYMENT_TARGET)
         CFBundleDisplayName: Breadcrumb
         CFBundleIconFile: ""
+        CFBundleShortVersionString: $(MARKETING_VERSION)
+        CFBundleVersion: $(CURRENT_PROJECT_VERSION)
         NSMicrophoneUsageDescription: "Breadcrumb uses the microphone for speech-to-text in status updates."
         NSSpeechRecognitionUsageDescription: "Breadcrumb uses speech recognition to transcribe your status updates."
     settings:

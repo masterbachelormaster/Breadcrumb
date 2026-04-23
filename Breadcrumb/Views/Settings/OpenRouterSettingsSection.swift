@@ -5,6 +5,8 @@ struct OpenRouterSettingsSection: View {
     @Environment(LanguageManager.self) private var languageManager
 
     @State private var apiKey = ""
+    @State private var lastSavedAPIKey = ""
+    @State private var apiKeySaveFailed = false
     @State private var model = ""
 
     var body: some View {
@@ -16,22 +18,29 @@ struct OpenRouterSettingsSection: View {
                 text: $apiKey,
                 prompt: Text(Strings.Settings.apiKeyPlaceholder(l))
             )
-            .onChange(of: apiKey) {
-                KeychainHelper.save(key: "openrouter.apiKey", value: apiKey)
+            .onChange(of: apiKey) { _, _ in
+                apiKeySaveFailed = false
             }
-            .onSubmit { aiService.refreshAvailability() }
+            .onSubmit { saveAPIKeyIfNeeded() }
 
             Text(Strings.Settings.apiKeyHelp(l))
                 .font(.caption)
                 .foregroundStyle(.secondary)
+
+            if apiKeySaveFailed {
+                Text(Strings.Settings.apiKeySaveFailed(l))
+                    .font(.caption)
+                    .foregroundStyle(.red)
+            }
 
             TextField(
                 Strings.Settings.model(l),
                 text: $model,
                 prompt: Text(Strings.Settings.modelPlaceholder(l))
             )
-            .onChange(of: model) {
-                UserDefaults.standard.set(model, forKey: "ai.openrouter.model")
+            .onChange(of: model) { _, newValue in
+                UserDefaults.standard.set(newValue, forKey: "ai.openrouter.model")
+                aiService.refreshAvailability()
             }
             .onSubmit { aiService.refreshAvailability() }
 
@@ -49,11 +58,30 @@ struct OpenRouterSettingsSection: View {
             }
         }
         .onAppear {
-            apiKey = KeychainHelper.read(key: "openrouter.apiKey") ?? ""
+            let storedAPIKey = KeychainHelper.read(key: "openrouter.apiKey") ?? ""
+            apiKey = storedAPIKey
+            lastSavedAPIKey = storedAPIKey
+            apiKeySaveFailed = false
             model = UserDefaults.standard.string(forKey: "ai.openrouter.model") ?? ""
         }
         .onDisappear {
-            aiService.refreshAvailability()
+            saveAPIKeyIfNeeded()
         }
+    }
+
+    @discardableResult
+    private func saveAPIKeyIfNeeded() -> Bool {
+        guard apiKey != lastSavedAPIKey else { return true }
+
+        let result = KeychainHelper.saveResult(key: "openrouter.apiKey", value: apiKey)
+        if result.succeeded {
+            lastSavedAPIKey = apiKey
+            apiKeySaveFailed = false
+            aiService.refreshAvailability()
+            return true
+        }
+
+        apiKeySaveFailed = true
+        return false
     }
 }

@@ -396,6 +396,9 @@ enum Strings {
         static func apiKeyHelp(_ l: AppLanguage) -> String {
             l == .german ? "API-Schlüssel von openrouter.ai" : "Get your API key at openrouter.ai"
         }
+        static func apiKeySaveFailed(_ l: AppLanguage) -> String {
+            l == .german ? "API-Schlüssel konnte nicht gespeichert werden." : "Could not save API key."
+        }
         static func modelHelp(_ l: AppLanguage) -> String {
             l == .german ? "Beliebige OpenRouter Modell-ID eingeben" : "Enter any OpenRouter model ID"
         }

@@ -135,6 +135,8 @@ struct StringsTests {
         #expect(Strings.Settings.modelPlaceholder(.english) == "e.g. anthropic/claude-sonnet-4")
         #expect(Strings.Settings.apiKeyHelp(.german).contains("openrouter.ai"))
         #expect(Strings.Settings.apiKeyHelp(.english).contains("openrouter.ai"))
+        #expect(Strings.Settings.apiKeySaveFailed(.german) == "API-Schlüssel konnte nicht gespeichert werden.")
+        #expect(Strings.Settings.apiKeySaveFailed(.english) == "Could not save API key.")
         #expect(Strings.Settings.modelHelp(.german).contains("Modell-ID"))
         #expect(Strings.Settings.modelHelp(.english).contains("model ID"))
         #expect(Strings.Settings.aiReady(.german) == "Bereit")
