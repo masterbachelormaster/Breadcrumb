@@ -1,14 +1,13 @@
 import AppKit
 
 extension Notification.Name {
-    static let openSettings = Notification.Name("Breadcrumb.openSettings")
-    static let openAbout = Notification.Name("Breadcrumb.openAbout")
     static let openPopover = Notification.Name("Breadcrumb.openPopover")
 }
 
 @MainActor
 final class AppDelegate: NSObject, NSApplicationDelegate {
     private var eventMonitor: Any?
+    var windowManager: WindowManager?
 
     func applicationDidFinishLaunching(_ notification: Notification) {
         eventMonitor = NSEvent.addLocalMonitorForEvents(matching: .rightMouseDown) { event in
@@ -85,10 +84,10 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     }
 
     @objc private func openSettings() {
-        NotificationCenter.default.post(name: .openSettings, object: nil)
+        windowManager?.open(.settings)
     }
 
     @objc private func openAbout() {
-        NotificationCenter.default.post(name: .openAbout, object: nil)
+        windowManager?.open(.about)
     }
 }

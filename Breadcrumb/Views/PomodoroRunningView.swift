@@ -6,8 +6,6 @@ struct PomodoroRunningView: View {
     @Environment(LanguageManager.self) private var languageManager
     @Environment(WindowManager.self) private var windowManager
     @Environment(\.modelContext) private var modelContext
-    @Environment(\.openWindow) private var openWindow
-
     var onFinished: () -> Void
 
     @State private var showingSessionEnd = false
@@ -53,7 +51,6 @@ struct PomodoroRunningView: View {
 
                 Button(Strings.Status.history(languageManager.language)) {
                     windowManager.open(.history(project))
-                    openWindow(id: "main")
                 }
                 .buttonStyle(.bordered)
                 .controlSize(.small)

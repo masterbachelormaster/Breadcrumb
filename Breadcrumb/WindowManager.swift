@@ -42,6 +42,12 @@ final class WindowManager {
     /// undoing a newer `open()`.
     private var openGeneration: Int = 0
 
+    private var openWindowAction: OpenWindowAction?
+
+    func setOpenWindowAction(_ action: OpenWindowAction) {
+        openWindowAction = action
+    }
+
     // MARK: - Public Methods
 
     func open(_ content: BreakoutContent) {
@@ -68,12 +74,12 @@ final class WindowManager {
         // process to the front, which also makes the app frontmost.
         NSRunningApplication.current.activate(options: [.activateAllWindows])
 
-        // The window itself doesn't exist yet — the caller is about to
-        // request it via `openWindow(id: "main")` right after this returns,
-        // and SwiftUI mounts it on the next run-loop tick. Wait a frame,
-        // then explicitly make it the key window so its title bar reflects
-        // the active state rather than the dimmed inactive state, and so
-        // keyboard focus actually lands inside our content.
+        openWindowAction?(id: "main")
+
+        // SwiftUI mounts the window on the next run-loop tick. Wait a
+        // frame, then explicitly make it the key window so its title bar
+        // reflects the active state rather than the dimmed inactive state,
+        // and so keyboard focus actually lands inside our content.
         Task { @MainActor in
             try? await Task.sleep(for: .milliseconds(100))
             if let window = NSApp.windows.first(where: { $0.identifier?.rawValue == "main" }) {

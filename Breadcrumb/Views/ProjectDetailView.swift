@@ -6,7 +6,6 @@ struct ProjectDetailView: View {
 
     @Environment(\.modelContext) private var modelContext
     @Environment(WindowManager.self) private var windowManager
-    @Environment(\.openWindow) private var openWindow
     @Environment(LanguageManager.self) private var languageManager
 
     var onBack: () -> Void
@@ -142,7 +141,6 @@ struct ProjectDetailView: View {
 
                     Button(Strings.Status.history(languageManager.language)) {
                         windowManager.open(.history(project))
-                        openWindow(id: "main")
                     }
                     .buttonStyle(.bordered)
                 }
@@ -309,7 +307,6 @@ struct ProjectDetailView: View {
 
                 Button {
                     windowManager.open(.stats(project))
-                    openWindow(id: "main")
                 } label: {
                     HStack(spacing: 2) {
                         Spacer()

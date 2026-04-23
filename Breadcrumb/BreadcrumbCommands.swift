@@ -9,13 +9,12 @@ struct BreadcrumbCommands: Commands {
         CommandGroup(replacing: .appInfo) {
             Button(Strings.General.about(languageManager.language)) {
                 windowManager.open(.about)
-                openWindow(id: "main")
             }
+            .task { windowManager.setOpenWindowAction(openWindow) }
         }
         CommandGroup(replacing: .appSettings) {
             Button(Strings.General.settingsEllipsis(languageManager.language)) {
                 windowManager.open(.settings)
-                openWindow(id: "main")
             }
             .keyboardShortcut(",", modifiers: .command)
         }
