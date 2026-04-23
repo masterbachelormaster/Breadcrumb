@@ -188,9 +188,9 @@ struct PomodoroSessionEndView: View {
             sessionType: .work,
             sessionNumber: timer.currentSessionNumber
         )
-        session.completed = true
+        session.completed = timer.remainingSeconds <= 0
         session.endedAt = .now
-        session.actualDuration = TimeInterval(timer.originalDurationSeconds + timer.overtimeSeconds)
+        session.actualDuration = TimeInterval(timer.originalDurationSeconds - timer.remainingSeconds + timer.overtimeSeconds)
         session.project = project
 
         // Create status entry if text provided
@@ -221,7 +221,7 @@ struct PomodoroSessionEndView: View {
         )
         session.completed = true
         session.endedAt = .now
-        session.actualDuration = TimeInterval(timer.originalDurationSeconds - timer.remainingSeconds)
+        session.actualDuration = TimeInterval(timer.phaseDurationSeconds - timer.remainingSeconds)
         session.project = project
         session.isFocusMate = true
 

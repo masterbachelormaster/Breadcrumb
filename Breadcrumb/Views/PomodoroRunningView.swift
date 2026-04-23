@@ -126,9 +126,9 @@ struct PomodoroRunningView: View {
                             sessionType: .work,
                             sessionNumber: timer.currentSessionNumber
                         )
-                        session.completed = true
+                        session.completed = timer.remainingSeconds <= 0
                         session.endedAt = .now
-                        session.actualDuration = TimeInterval(timer.originalDurationSeconds + timer.overtimeSeconds)
+                        session.actualDuration = TimeInterval(timer.originalDurationSeconds - timer.remainingSeconds + timer.overtimeSeconds)
                         session.project = timer.boundProject
                         session.isFocusMate = timer.isFocusMateSession
                         modelContext.insert(session)
@@ -142,19 +142,21 @@ struct PomodoroRunningView: View {
                         timer.startNextWorkSession()
                     },
                     onStopCompletely: {
-                        // Record session
-                        let session = PomodoroSession(
-                            plannedDuration: TimeInterval(timer.originalDurationSeconds),
-                            sessionType: .work,
-                            sessionNumber: timer.currentSessionNumber
-                        )
-                        session.completed = timer.remainingSeconds <= 0
-                        session.endedAt = .now
-                        session.actualDuration = TimeInterval(timer.originalDurationSeconds - timer.remainingSeconds + timer.overtimeSeconds)
-                        session.project = timer.boundProject
-                        session.isFocusMate = timer.isFocusMateSession
-                        modelContext.insert(session)
-                        modelContext.saveWithLogging()
+                        if !wasBreakEnd {
+                            // Record session
+                            let session = PomodoroSession(
+                                plannedDuration: TimeInterval(timer.originalDurationSeconds),
+                                sessionType: .work,
+                                sessionNumber: timer.currentSessionNumber
+                            )
+                            session.completed = timer.remainingSeconds <= 0
+                            session.endedAt = .now
+                            session.actualDuration = TimeInterval(timer.originalDurationSeconds - timer.remainingSeconds + timer.overtimeSeconds)
+                            session.project = timer.boundProject
+                            session.isFocusMate = timer.isFocusMateSession
+                            modelContext.insert(session)
+                            modelContext.saveWithLogging()
+                        }
 
                         showingSessionEnd = false
                         timer.stop()

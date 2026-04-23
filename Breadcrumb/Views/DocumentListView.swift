@@ -138,8 +138,8 @@ struct DocumentListView: View {
                 bookmarkDataIsStale: &isStale
             ) else { return }
 
-            if isStale {
-                doc.bookmarkData = try? url.bookmarkData()
+            if isStale, let newData = try? url.bookmarkData() {
+                doc.bookmarkData = newData
                 modelContext.saveWithLogging()
             }
             NSWorkspace.shared.open(url)
