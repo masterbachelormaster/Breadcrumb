@@ -205,6 +205,7 @@ struct PomodoroSessionEndView: View {
             entry.project = project
             entry.pomodoroSession = session
             project.entries.append(entry)
+            modelContext.insert(entry)
         }
 
         onSaveAndBreak(session)

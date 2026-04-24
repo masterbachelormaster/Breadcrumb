@@ -37,4 +37,37 @@ struct AIProviderTypesTests {
         #expect(allCases.contains(.local))
         #expect(allCases.contains(.openRouter))
     }
+
+    @Test("AIServiceError provides localized description for both languages")
+    func aiServiceErrorLocalized() {
+        let errors: [AIServiceError] = [
+            .contextWindowExceeded,
+            .unsupportedLanguage,
+            .guardrailViolation,
+            .networkError("timeout"),
+            .authenticationFailed,
+            .invalidResponse("bad json"),
+            .generationFailed("model error"),
+        ]
+        for error in errors {
+            let de = error.description(for: .german)
+            let en = error.description(for: .english)
+            #expect(!de.isEmpty)
+            #expect(!en.isEmpty)
+            #expect(de != en)
+        }
+    }
+
+    @Test("notAvailable error maps internal keys to localized text, not raw keys")
+    func notAvailableLocalizedNotRawKey() {
+        let internalKeys = ["notConfigured", "deviceNotEligible", "appleIntelligenceNotEnabled",
+                            "modelNotReady", "requiresMacOS26", "notSupportedInVersion", "unavailable"]
+        for key in internalKeys {
+            let error = AIServiceError.notAvailable(key)
+            let de = error.description(for: .german)
+            let en = error.description(for: .english)
+            #expect(de != key, "German description for '\(key)' should not be the raw key")
+            #expect(en != key, "English description for '\(key)' should not be the raw key")
+        }
+    }
 }

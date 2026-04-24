@@ -26,7 +26,15 @@ enum AIServiceError: LocalizedError, Sendable {
     func description(for language: AppLanguage) -> String {
         switch self {
         case .notAvailable(let reason):
-            return reason
+            switch reason {
+            case "deviceNotEligible": return Strings.Errors.deviceNotSupported(language)
+            case "appleIntelligenceNotEnabled": return Strings.Errors.enableAppleIntelligence(language)
+            case "modelNotReady": return Strings.Errors.modelLoading(language)
+            case "requiresMacOS26": return Strings.Errors.requiresMacOS26(language)
+            case "notSupportedInVersion": return Strings.Errors.notSupportedInVersion(language)
+            case "notConfigured": return Strings.Settings.aiNotConfigured(language)
+            default: return Strings.Errors.notAvailable(language)
+            }
         case .contextWindowExceeded:
             return Strings.Errors.textTooLong(language)
         case .unsupportedLanguage:

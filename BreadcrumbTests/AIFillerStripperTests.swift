@@ -77,4 +77,74 @@ struct AIFillerStripperTests {
     func cleanLinesTrim() {
         #expect(AIFillerStripper.cleanLines("  a  \n  b  ") == "a\nb")
     }
+
+    // MARK: - False positive protection: real text must survive
+
+    @Test("clean: preserves 'pending review from Sarah'")
+    func preservePendingReview() {
+        #expect(AIFillerStripper.clean("pending review from Sarah") == "pending review from Sarah")
+    }
+
+    @Test("clean: preserves sentence starting with 'no progress' followed by context")
+    func preserveNoProgressWithContext() {
+        let real = "no progress on API yet, blocked by auth"
+        #expect(AIFillerStripper.clean(real) == real)
+    }
+
+    @Test("clean: preserves sentence starting with 'nothing completed' followed by reason")
+    func preserveNothingCompletedWithReason() {
+        let real = "nothing completed because the server was down"
+        #expect(AIFillerStripper.clean(real) == real)
+    }
+
+    @Test("clean: preserves sentence starting with 'nothing planned' followed by qualifier")
+    func preserveNothingPlannedWithQualifier() {
+        let real = "nothing planned until Monday meeting"
+        #expect(AIFillerStripper.clean(real) == real)
+    }
+
+    @Test("clean: preserves German 'noch nichts von Sarah gehört'")
+    func preserveNochNichtsVon() {
+        let real = "noch nichts von Sarah gehört"
+        #expect(AIFillerStripper.clean(real) == real)
+    }
+
+    @Test("clean: preserves German 'nichts weiter als den Entwurf geschrieben'")
+    func preserveNichtsWeiterAls() {
+        let real = "nichts weiter als den Entwurf geschrieben"
+        #expect(AIFillerStripper.clean(real) == real)
+    }
+
+    @Test("clean: preserves 'nothing has been merged yet'")
+    func preserveNothingHasBeenMerged() {
+        let real = "nothing has been merged yet, PR still open"
+        #expect(AIFillerStripper.clean(real) == real)
+    }
+
+    // MARK: - Standalone filler still stripped after prefix removal
+
+    @Test("clean: still strips standalone 'no progress'")
+    func stillStripsNoProgress() {
+        #expect(AIFillerStripper.clean("no progress") == "")
+    }
+
+    @Test("clean: still strips standalone 'nothing completed'")
+    func stillStripsNothingCompleted() {
+        #expect(AIFillerStripper.clean("nothing completed") == "")
+    }
+
+    @Test("clean: still strips standalone 'nothing planned'")
+    func stillStripsNothingPlanned() {
+        #expect(AIFillerStripper.clean("nothing planned") == "")
+    }
+
+    @Test("clean: still strips standalone 'noch nichts'")
+    func stillStripsNochNichts() {
+        #expect(AIFillerStripper.clean("noch nichts") == "")
+    }
+
+    @Test("clean: still strips standalone 'nichts erledigt'")
+    func stillStripsNichtsErledigt() {
+        #expect(AIFillerStripper.clean("nichts erledigt") == "")
+    }
 }

@@ -134,4 +134,39 @@ struct LinkedDocumentTests {
         let project = Project(name: "Test")
         #expect(project.linkedDocuments.isEmpty)
     }
+
+    @Test("LinkedDocument isValid requires urlString for URL type")
+    func isValidURL() {
+        let valid = LinkedDocument(type: .url, originalFilename: "example.com", urlString: "https://example.com")
+        #expect(valid.isValid == true)
+        let invalid = LinkedDocument(type: .url, originalFilename: "example.com")
+        #expect(invalid.isValid == false)
+    }
+
+    @Test("LinkedDocument isValid requires bookmarkData for file type")
+    func isValidFile() {
+        let valid = LinkedDocument(type: .file, originalFilename: "doc.pdf", bookmarkData: Data([0x01]))
+        #expect(valid.isValid == true)
+        let invalid = LinkedDocument(type: .file, originalFilename: "doc.pdf")
+        #expect(invalid.isValid == false)
+    }
+
+    @Test("LinkedDocument.url factory returns nil for empty string")
+    func urlFactoryRejectsEmpty() {
+        #expect(LinkedDocument.url(string: "") == nil)
+    }
+
+    @Test("LinkedDocument.url factory creates valid document")
+    func urlFactoryValid() {
+        let doc = LinkedDocument.url(string: "https://example.com/path", label: "My Link")
+        #expect(doc != nil)
+        #expect(doc?.type == .url)
+        #expect(doc?.urlString == "https://example.com/path")
+        #expect(doc?.label == "My Link")
+    }
+
+    @Test("LinkedDocument.file factory returns nil for empty data")
+    func fileFactoryRejectsEmpty() {
+        #expect(LinkedDocument.file(bookmark: Data(), originalFilename: "test.pdf") == nil)
+    }
 }

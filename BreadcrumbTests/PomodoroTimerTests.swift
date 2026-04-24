@@ -129,6 +129,29 @@ struct PomodoroTimerTests {
         #expect(timer.currentSessionNumber == 1)
     }
 
+    @Test("sessionsBeforeLong determines long break trigger")
+    func sessionsBeforeLongDeterminesBreakType() {
+        let timer = PomodoroTimer()
+        timer.startWork(project: nil, durationMinutes: 25, shortBreakMinutes: 5, longBreakMinutes: 15, sessionsBeforeLong: 3, totalSessions: 6)
+        timer.currentSessionNumber = 2
+        timer.startBreak()
+        #expect(timer.currentPhase == .shortBreak)
+
+        timer.startWork(project: nil, durationMinutes: 25, shortBreakMinutes: 5, longBreakMinutes: 15, sessionsBeforeLong: 3, totalSessions: 6)
+        timer.currentSessionNumber = 3
+        timer.startBreak()
+        #expect(timer.currentPhase == .longBreak)
+        #expect(timer.remainingSeconds == 15 * 60)
+    }
+
+    @Test("Minimum work duration of 5 minutes works correctly")
+    func minimumWorkDuration() {
+        let timer = PomodoroTimer()
+        timer.startWork(project: nil, durationMinutes: 5, shortBreakMinutes: 1, longBreakMinutes: 5, sessionsBeforeLong: 2, totalSessions: 2)
+        #expect(timer.remainingSeconds == 300)
+        #expect(timer.originalDurationSeconds == 300)
+    }
+
     // MARK: - Feature 3: FocusMate
 
     @Test("FocusMate session starts correctly")

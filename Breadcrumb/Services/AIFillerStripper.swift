@@ -115,7 +115,7 @@ enum AIFillerStripper {
             "keine arbeit erledigt", "keine arbeit gemacht",
             "es gibt nichts erledigtes", "es gibt keine erledigten aufgaben",
             "aktuell nichts erledigt", "derzeit nichts erledigt",
-            "momentan nichts erledigt",
+            "momentan nichts erledigt", "nichts erledigt bisher",
             // English
             "nothing done", "nothing completed", "nothing finished",
             "nothing accomplished", "nothing happened",
@@ -206,22 +206,16 @@ enum AIFillerStripper {
             "no open question", "no further question", "no uncertaint",
             "there are no open", "there are no further",
             // Last action / completed
-            "nichts erledigt", "nichts abgeschlossen", "noch nichts",
-            "bisher nichts", "bislang nichts",
             "keine erledigten", "keine abgeschlossenen", "keine bisherigen",
             "keine vorherigen", "keine letzten",
             "es wurde nichts", "es gibt nichts erledigt",
-            "nothing done", "nothing completed", "nothing finished",
-            "no completed", "no previous", "no progress",
-            "nothing has been", "nothing was",
+            "no completed", "no previous",
             // Next steps / planned
-            "nichts geplant", "nichts weiter",
             "keine naechsten", "keine nächsten", "keine weiteren schritte",
             "keine geplanten", "keine weiteren aufgaben",
             "es gibt keine naechsten", "es gibt keine nächsten",
             "es gibt keine weiteren", "es gibt keine geplanten",
             "es ist nichts", "es sind keine",
-            "nothing planned", "nothing further",
             "no next step", "no further step", "no planned",
             "no upcoming", "there are no next", "there are no planned",
         ]
