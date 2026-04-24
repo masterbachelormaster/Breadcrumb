@@ -8,7 +8,7 @@ SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 PROJECT_DIR="$(dirname "$SCRIPT_DIR")"
 
 # Extract version from project.yml
-VERSION=$(grep '^\s*MARKETING_VERSION:' "$PROJECT_DIR/project.yml" | sed 's/.*"\(.*\)"/\1/')
+VERSION=$(grep -m 1 '^\s*MARKETING_VERSION:' "$PROJECT_DIR/project.yml" | sed 's/.*"\(.*\)"/\1/')
 DMG_NAME="Breadcrumb-v${VERSION}"
 APP_NAME="Breadcrumb"
 

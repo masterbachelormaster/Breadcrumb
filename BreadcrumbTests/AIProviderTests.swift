@@ -52,8 +52,8 @@ struct AIProviderTypesTests {
         for error in errors {
             let de = error.description(for: .german)
             let en = error.description(for: .english)
-            #expect(!de.isEmpty)
-            #expect(!en.isEmpty)
+            #expect(de.isEmpty == false)
+            #expect(en.isEmpty == false)
             #expect(de != en)
         }
     }
