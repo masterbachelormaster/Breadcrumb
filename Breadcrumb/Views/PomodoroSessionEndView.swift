@@ -25,7 +25,6 @@ struct PomodoroSessionEndView: View {
     @State private var openQuestions = ""
     @State private var showOptionalFields = false
     @State private var selectedProject: Project?
-    @State private var showMoreOptions = false
 
     @Query(filter: #Predicate<Project> { $0.isActive })
     private var activeProjects: [Project]
@@ -104,35 +103,14 @@ struct PomodoroSessionEndView: View {
 
         statusEntryForm
 
-        Button(Strings.Pomodoro.saveAndBreak(l), action: saveAndBreak)
-            .buttonStyle(.borderedProminent)
-            .keyboardShortcut(.return, modifiers: .command)
-            .help(Strings.Pomodoro.saveAndBreakHint(l))
-            .disabled(selectedProject == nil && timer.boundProject == nil)
-            .frame(maxWidth: .infinity)
-
-        Button(Strings.Pomodoro.continueWorking(l), action: { onContinueWorking() })
-            .buttonStyle(.borderless)
-            .foregroundStyle(.secondary)
-
-        DisclosureGroup(Strings.General.moreOptions(l), isExpanded: $showMoreOptions) {
-            VStack(spacing: 8) {
-                HStack(spacing: 8) {
-                    Button(Strings.Pomodoro.snooze5(l), action: { onSnooze(5) })
-                        .buttonStyle(.bordered)
-                    Button(Strings.Pomodoro.snooze10(l), action: { onSnooze(10) })
-                        .buttonStyle(.bordered)
-                }
-
-                HStack(spacing: 16) {
-                    Button(Strings.Pomodoro.skip(l), action: { onSkip() })
-                    Button(Strings.Pomodoro.stopCompletely(l), action: { onStopCompletely() })
-                }
-                .font(.caption)
-                .foregroundStyle(.secondary)
-                .buttonStyle(ToolbarButtonStyle())
-            }
-            .padding(.top, 4)
+        HStack {
+            Button(Strings.Pomodoro.continueWorking(l), action: { onContinueWorking() })
+                .buttonStyle(.bordered)
+            Button(Strings.Pomodoro.saveAndStop(l), action: saveAndBreak)
+                .buttonStyle(.borderedProminent)
+                .keyboardShortcut(.return, modifiers: .command)
+                .help(Strings.Pomodoro.saveAndStopHint(l))
+                .disabled(selectedProject == nil && timer.boundProject == nil)
         }
     }
 
