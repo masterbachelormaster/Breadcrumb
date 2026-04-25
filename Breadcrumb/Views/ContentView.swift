@@ -28,35 +28,57 @@ struct ContentView: View {
         ZStack {
             Group {
                 if !hasSeenWelcome {
-                    WelcomeView(onDismiss: { hasSeenWelcome = true })
+                    WelcomeView(onDismiss: {
+                        withAnimation(.easeInOut(duration: 0.2)) { hasSeenWelcome = true }
+                    })
+                    .transition(.opacity)
                 } else if pomodoroTimer.currentPhase != .idle {
                     PomodoroRunningView(onFinished: {
-                        screen = .projectList
-                        selectedProject = nil
+                        withAnimation(.easeInOut(duration: 0.2)) {
+                            screen = .projectList
+                            selectedProject = nil
+                        }
                     })
+                    .transition(.opacity)
                 } else if let project = selectedProject {
                     ProjectDetailView(
                         project: project,
-                        onBack: { selectedProject = nil },
+                        onBack: {
+                            withAnimation(.easeInOut(duration: 0.2)) { selectedProject = nil }
+                        },
                         onStartPomodoro: { startPomodoro(project: project) }
                     )
+                    .transition(.opacity)
                 } else {
                     switch screen {
                     case .projectList:
                         ProjectListView(
-                            onSelectProject: { selectedProject = $0 },
-                            onNavigate: { screen = $0 },
-                            onStartStandalonePomodoro: { screen = .projectPicker }
+                            onSelectProject: { project in
+                                withAnimation(.easeInOut(duration: 0.2)) { selectedProject = project }
+                            },
+                            onNavigate: { newScreen in
+                                withAnimation(.easeInOut(duration: 0.2)) { screen = newScreen }
+                            },
+                            onStartStandalonePomodoro: {
+                                withAnimation(.easeInOut(duration: 0.2)) { screen = .projectPicker }
+                            }
                         )
+                        .transition(.opacity)
                     case .archivedProjects:
-                        ArchivedProjectsView(onBack: { screen = .projectList })
+                        ArchivedProjectsView(onBack: {
+                            withAnimation(.easeInOut(duration: 0.2)) { screen = .projectList }
+                        })
+                        .transition(.opacity)
                     case .projectPicker:
                         ProjectPickerView(
                             onSelect: { project in
                                 startPomodoro(project: project)
                             },
-                            onBack: { screen = .projectList }
+                            onBack: {
+                                withAnimation(.easeInOut(duration: 0.2)) { screen = .projectList }
+                            }
                         )
+                        .transition(.opacity)
                     }
                 }
             }
@@ -77,6 +99,7 @@ struct ContentView: View {
                         onDismiss: { withAnimation(.easeInOut(duration: 0.2)) { showingPomodoroConfig = false } }
                     )
                 }
+                .transition(.opacity)
             }
         }
         .frame(width: 350, height: 450)

@@ -4,8 +4,6 @@ struct FormOverlay<Content: View>: View {
     var onDismiss: () -> Void
     @ViewBuilder var content: () -> Content
 
-    @Environment(\.accessibilityReduceMotion) private var reduceMotion
-
     var body: some View {
         ZStack {
             Button(action: onDismiss) {
@@ -16,8 +14,6 @@ struct FormOverlay<Content: View>: View {
             .buttonStyle(.plain)
 
             content()
-                .transition(reduceMotion ? .opacity : .opacity.combined(with: .scale(scale: 0.97)))
         }
-        .transition(.opacity)
     }
 }

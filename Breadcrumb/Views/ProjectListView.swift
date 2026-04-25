@@ -76,6 +76,7 @@ struct ProjectListView: View {
                         onDismiss: { withAnimation(.easeInOut(duration: 0.2)) { showingNewProject = false } }
                     )
                 }
+                .transition(.opacity)
             }
         }
     }

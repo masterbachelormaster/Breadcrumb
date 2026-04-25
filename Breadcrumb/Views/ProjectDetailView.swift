@@ -172,6 +172,7 @@ struct ProjectDetailView: View {
                         onDismiss: { dismissOverlay { showingStatusForm = false } }
                     )
                 }
+                .transition(.opacity)
             }
 
             if showingEditForm {
@@ -183,6 +184,7 @@ struct ProjectDetailView: View {
                         onDismiss: { dismissOverlay { showingEditForm = false } }
                     )
                 }
+                .transition(.opacity)
             }
 
             if showingURLForm {
@@ -194,6 +196,7 @@ struct ProjectDetailView: View {
                         onDismiss: { dismissOverlay { showingURLForm = false } }
                     )
                 }
+                .transition(.opacity)
             }
 
             if showingEditLabel {
@@ -204,6 +207,7 @@ struct ProjectDetailView: View {
                         onDismiss: { dismissOverlay { showingEditLabel = false; editingDocument = nil } }
                     )
                 }
+                .transition(.opacity)
             }
 
         }

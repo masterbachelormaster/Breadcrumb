@@ -167,6 +167,7 @@ struct PomodoroRunningView: View {
                         }
                     )
                 }
+                .transition(.opacity)
             }
         }
     }
