@@ -112,6 +112,9 @@ struct PomodoroSessionEndView: View {
                 .help(Strings.Pomodoro.saveAndStopHint(l))
                 .disabled(selectedProject == nil && timer.boundProject == nil)
         }
+
+        Button(Strings.Pomodoro.stopWithoutSaving(l), action: { onStopCompletely() })
+            .buttonStyle(.bordered)
     }
 
     @ViewBuilder

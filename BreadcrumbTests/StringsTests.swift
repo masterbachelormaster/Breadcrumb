@@ -191,6 +191,8 @@ struct StringsTests {
         #expect(Strings.Pomodoro.saveAndStop(.english) == "Save & Stop")
         #expect(Strings.Pomodoro.saveAndStopHint(.german) == "Speichern & Stopp (⌘↩)")
         #expect(Strings.Pomodoro.saveAndStopHint(.english) == "Save & Stop (⌘↩)")
+        #expect(Strings.Pomodoro.stopWithoutSaving(.german) == "Ohne Speichern beenden")
+        #expect(Strings.Pomodoro.stopWithoutSaving(.english) == "Stop without saving")
     }
 
     @Test("Dictation strings return correct translations")

@@ -208,6 +208,9 @@ enum Strings {
         static func stopCompletely(_ l: AppLanguage) -> String {
             l == .german ? "Aufhören" : "Stop"
         }
+        static func stopWithoutSaving(_ l: AppLanguage) -> String {
+            l == .german ? "Ohne Speichern beenden" : "Stop without saving"
+        }
         static func saveAndBreak(_ l: AppLanguage) -> String {
             l == .german ? "Speichern & Pause" : "Save & Break"
         }

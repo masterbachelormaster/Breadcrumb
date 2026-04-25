@@ -99,6 +99,12 @@ struct PomodoroRunningView: View {
                 }
             }
         }
+        .onChange(of: timer.didCrossZero) { _, crossed in
+            if crossed && timer.currentPhase == .work && !showingSessionEnd {
+                wasBreakEnd = false
+                withAnimation(.easeInOut(duration: 0.2)) { showingSessionEnd = true }
+            }
+        }
         .overlay {
             if showingSessionEnd {
                 FormOverlay(onDismiss: {}) {
@@ -113,7 +119,6 @@ struct PomodoroRunningView: View {
                         },
                         onContinueWorking: {
                             dismissSessionEnd()
-                            timer.enterOvertime()
                         },
                         onSkip: {
                             let session = PomodoroSession(
