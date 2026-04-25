@@ -36,7 +36,7 @@ struct ProjectListView: View {
                     Button(Strings.Projects.newProject(languageManager.language), systemImage: "plus") {
                         draftProjectName = ""
                         draftProjectIcon = "doc.text"
-                        showingNewProject = true
+                        withAnimation(.easeInOut(duration: 0.2)) { showingNewProject = true }
                     }
                     .labelStyle(.iconOnly)
                     .font(.body)
@@ -68,18 +68,14 @@ struct ProjectListView: View {
                 FooterView(onNavigate: onNavigate, onStartStandalonePomodoro: onStartStandalonePomodoro)
             }
 
-            // Inline overlay for new project form
             if showingNewProject {
-                Button { showingNewProject = false } label: {
-                    Color.black.opacity(0.3)
-                        .ignoresSafeArea()
+                FormOverlay(onDismiss: { withAnimation(.easeInOut(duration: 0.2)) { showingNewProject = false } }) {
+                    ProjectFormView(
+                        name: $draftProjectName,
+                        selectedIcon: $draftProjectIcon,
+                        onDismiss: { withAnimation(.easeInOut(duration: 0.2)) { showingNewProject = false } }
+                    )
                 }
-                .buttonStyle(.plain)
-                ProjectFormView(
-                    name: $draftProjectName,
-                    selectedIcon: $draftProjectIcon,
-                    onDismiss: { showingNewProject = false }
-                )
             }
         }
     }

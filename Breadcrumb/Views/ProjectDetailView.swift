@@ -63,7 +63,7 @@ struct ProjectDetailView: View {
                         Button(Strings.General.edit(languageManager.language), systemImage: "pencil") {
                             editDraftName = project.name
                             editDraftIcon = project.icon
-                            showingEditForm = true
+                            showOverlay { showingEditForm = true }
                         }
                         Button(Strings.Projects.archive(languageManager.language), systemImage: "archivebox") {
                             project.isActive = false
@@ -93,12 +93,12 @@ struct ProjectDetailView: View {
                             onAddURL: {
                                 draftURL = ""
                                 draftLabel = ""
-                                showingURLForm = true
+                                showOverlay { showingURLForm = true }
                             },
                             onEditLabel: { doc in
                                 editingDocument = doc
                                 draftLabel = doc.label ?? doc.originalFilename
-                                showingEditLabel = true
+                                showOverlay { showingEditLabel = true }
                             }
                         )
 
@@ -131,7 +131,7 @@ struct ProjectDetailView: View {
                     .tint(.red)
 
                     Button(Strings.Status.updateStatus(languageManager.language)) {
-                        showingStatusForm = true
+                        showOverlay { showingStatusForm = true }
                     }
                     .buttonStyle(.borderedProminent)
                     .keyboardShortcut("u", modifiers: .command)
@@ -161,65 +161,49 @@ struct ProjectDetailView: View {
             }
             .allowsHitTesting(!hasActiveOverlay)
 
-            // Inline overlay for status form
             if showingStatusForm {
-                Button { showingStatusForm = false } label: {
-                    Color.black.opacity(0.3)
-                        .ignoresSafeArea()
+                FormOverlay(onDismiss: { dismissOverlay { showingStatusForm = false } }) {
+                    StatusEntryForm(
+                        project: project,
+                        freeText: $draftFreeText,
+                        lastAction: $draftLastAction,
+                        nextStep: $draftNextStep,
+                        openQuestions: $draftOpenQuestions,
+                        onDismiss: { dismissOverlay { showingStatusForm = false } }
+                    )
                 }
-                .buttonStyle(.plain)
-                StatusEntryForm(
-                    project: project,
-                    freeText: $draftFreeText,
-                    lastAction: $draftLastAction,
-                    nextStep: $draftNextStep,
-                    openQuestions: $draftOpenQuestions,
-                    onDismiss: { showingStatusForm = false }
-                )
             }
 
-            // Inline overlay for edit form
             if showingEditForm {
-                Button { showingEditForm = false } label: {
-                    Color.black.opacity(0.3)
-                        .ignoresSafeArea()
+                FormOverlay(onDismiss: { dismissOverlay { showingEditForm = false } }) {
+                    ProjectFormView(
+                        editingProject: project,
+                        name: $editDraftName,
+                        selectedIcon: $editDraftIcon,
+                        onDismiss: { dismissOverlay { showingEditForm = false } }
+                    )
                 }
-                .buttonStyle(.plain)
-                ProjectFormView(
-                    editingProject: project,
-                    name: $editDraftName,
-                    selectedIcon: $editDraftIcon,
-                    onDismiss: { showingEditForm = false }
-                )
             }
 
-            // Inline overlay for URL form
             if showingURLForm {
-                Button { showingURLForm = false } label: {
-                    Color.black.opacity(0.3)
-                        .ignoresSafeArea()
+                FormOverlay(onDismiss: { dismissOverlay { showingURLForm = false } }) {
+                    AddURLFormView(
+                        project: project,
+                        draftURL: $draftURL,
+                        draftLabel: $draftLabel,
+                        onDismiss: { dismissOverlay { showingURLForm = false } }
+                    )
                 }
-                .buttonStyle(.plain)
-                AddURLFormView(
-                    project: project,
-                    draftURL: $draftURL,
-                    draftLabel: $draftLabel,
-                    onDismiss: { showingURLForm = false }
-                )
             }
 
-            // Inline overlay for edit label
             if showingEditLabel {
-                Button { showingEditLabel = false; editingDocument = nil } label: {
-                    Color.black.opacity(0.3)
-                        .ignoresSafeArea()
+                FormOverlay(onDismiss: { dismissOverlay { showingEditLabel = false; editingDocument = nil } }) {
+                    EditLabelFormView(
+                        editingDocument: editingDocument,
+                        draftLabel: $draftLabel,
+                        onDismiss: { dismissOverlay { showingEditLabel = false; editingDocument = nil } }
+                    )
                 }
-                .buttonStyle(.plain)
-                EditLabelFormView(
-                    editingDocument: editingDocument,
-                    draftLabel: $draftLabel,
-                    onDismiss: { showingEditLabel = false; editingDocument = nil }
-                )
             }
 
         }
@@ -342,6 +326,18 @@ struct ProjectDetailView: View {
                 .buttonStyle(ToolbarButtonStyle())
             }
             .transition(.opacity.combined(with: .move(edge: .top)))
+        }
+    }
+
+    private func showOverlay(_ action: () -> Void) {
+        withAnimation(.easeInOut(duration: 0.2)) {
+            action()
+        }
+    }
+
+    private func dismissOverlay(_ action: () -> Void) {
+        withAnimation(.easeInOut(duration: 0.2)) {
+            action()
         }
     }
 

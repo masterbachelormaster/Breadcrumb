@@ -62,25 +62,21 @@ struct ContentView: View {
             }
 
             if showingPomodoroConfig {
-                Button { showingPomodoroConfig = false } label: {
-                    Color.black.opacity(0.3)
-                        .ignoresSafeArea()
+                FormOverlay(onDismiss: { withAnimation(.easeInOut(duration: 0.2)) { showingPomodoroConfig = false } }) {
+                    PomodoroConfigView(
+                        project: pendingPomodoroProject,
+                        workMinutes: $configWorkMinutes,
+                        shortBreakMinutes: $configShortBreakMinutes,
+                        longBreakMinutes: $configLongBreakMinutes,
+                        sessionsBeforeLong: $configSessionsBeforeLong,
+                        totalSessions: $configTotalSessions,
+                        timerMode: $configTimerMode,
+                        focusMateMinutes: $configFocusMateMinutes,
+                        focusMateStartTime: $configFocusMateStartTime,
+                        onStart: { confirmStartPomodoro() },
+                        onDismiss: { withAnimation(.easeInOut(duration: 0.2)) { showingPomodoroConfig = false } }
+                    )
                 }
-                .buttonStyle(.plain)
-
-                PomodoroConfigView(
-                    project: pendingPomodoroProject,
-                    workMinutes: $configWorkMinutes,
-                    shortBreakMinutes: $configShortBreakMinutes,
-                    longBreakMinutes: $configLongBreakMinutes,
-                    sessionsBeforeLong: $configSessionsBeforeLong,
-                    totalSessions: $configTotalSessions,
-                    timerMode: $configTimerMode,
-                    focusMateMinutes: $configFocusMateMinutes,
-                    focusMateStartTime: $configFocusMateStartTime,
-                    onStart: { confirmStartPomodoro() },
-                    onDismiss: { showingPomodoroConfig = false }
-                )
             }
         }
         .frame(width: 350, height: 450)
@@ -101,7 +97,7 @@ struct ContentView: View {
         configSessionsBeforeLong = sessionsBeforeLong
         configTotalSessions = totalSessions
         screen = .projectList
-        showingPomodoroConfig = true
+        withAnimation(.easeInOut(duration: 0.2)) { showingPomodoroConfig = true }
     }
 
     private func confirmStartPomodoro() {

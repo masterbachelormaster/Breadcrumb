@@ -16,6 +16,7 @@
 		1D53C6857A69A72D3AECC555 /* LocalAIProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54423F165AE132713BA19F8B /* LocalAIProvider.swift */; };
 		2687E27759A34607BF54B7B2 /* AIProviderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 913C1D4F480359F1604A530C /* AIProviderTests.swift */; };
 		26BE57BD5EF31441DDE3F3E9 /* WelcomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBC8EB9F931D9DE70D2806CE /* WelcomeView.swift */; };
+		28DE9021DA67CF3E510643FC /* FormOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36ADA56CAAFC591548F4CFDB /* FormOverlay.swift */; };
 		3063417A9901446E2F9C06CA /* BulletTextTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC0E444CDB40131D5BC3F8F0 /* BulletTextTests.swift */; };
 		332BF2812B86C21141AF9D88 /* AppLanguage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70969E1971A3847B517389ED /* AppLanguage.swift */; };
 		370A4A9D4C47387CB9F2FB1A /* AIFillerStripperTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22EB604EBEE6E40B6A21FFD2 /* AIFillerStripperTests.swift */; };
@@ -98,6 +99,7 @@
 		2DE07044651329554A55EEDB /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		2E6EEACEFC2209FA8283A175 /* KeychainHelperTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainHelperTests.swift; sourceTree = "<group>"; };
 		333198756E01368320CCC0C9 /* BreadcrumbTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BreadcrumbTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		36ADA56CAAFC591548F4CFDB /* FormOverlay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormOverlay.swift; sourceTree = "<group>"; };
 		3909410FC96455280C214468 /* ModelContext+SaveWithLogging.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ModelContext+SaveWithLogging.swift"; sourceTree = "<group>"; };
 		3B5EF89CD286DC72F7290682 /* AboutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutView.swift; sourceTree = "<group>"; };
 		4615582F09AD75B7047439D1 /* BreadcrumbSchema.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreadcrumbSchema.swift; sourceTree = "<group>"; };
@@ -176,6 +178,7 @@
 				D9BEAAE0D129FC67EB414904 /* DocumentListView.swift */,
 				F6B294E9E641FE8862731EEA /* EditLabelFormView.swift */,
 				F506B326CA6737B42BEF9F99 /* FooterView.swift */,
+				36ADA56CAAFC591548F4CFDB /* FormOverlay.swift */,
 				9C88E592971DB2AB4E478DA7 /* HistoryEntryRow.swift */,
 				B8C5CE9442C811F8DCF196BD /* HistoryView.swift */,
 				1EDDE649AD967EFDBF0DF239 /* PlaceholderTextView.swift */,
@@ -402,6 +405,7 @@
 				7952B45A0B64DDDFA48149C3 /* EditLabelFormView.swift in Sources */,
 				8BC4923EE801C29764E7E500 /* ExtractedStatus.swift in Sources */,
 				72339BF4A0E3ACDC31DC98A0 /* FooterView.swift in Sources */,
+				28DE9021DA67CF3E510643FC /* FormOverlay.swift in Sources */,
 				4B7239E38F057E021A7D6948 /* HistoryEntryRow.swift in Sources */,
 				FA03D196F0BF672CC3D62165 /* HistoryView.swift in Sources */,
 				7D34D0135D8B9F99FDCC585F /* KeychainHelper.swift in Sources */,
