@@ -18,7 +18,6 @@ struct SettingsView: View {
     @AppStorage("pomodoro.autoOpenPopover") private var autoOpenPopover = true
     @AppStorage("pomodoro.focusMateEndEarlyMinutes") private var focusMateEndEarlyMinutes = 0
     @AppStorage("ai.provider") private var aiProvider = AIBackend.local.rawValue
-    @AppStorage("feature.bulletListsEnabled") private var bulletListsEnabled = true
     @AppStorage("feature.dictationEnabled") private var dictationEnabled = false
 
     var onBack: (() -> Void)? = nil
@@ -96,7 +95,6 @@ struct SettingsView: View {
                                 launchAtLogin = SMAppService.mainApp.status == .enabled
                             }
                         }
-                    Toggle(Strings.Settings.bulletLists(l), isOn: $bulletListsEnabled)
                     Toggle(Strings.Settings.dictation(l), isOn: $dictationEnabled)
                 }
 

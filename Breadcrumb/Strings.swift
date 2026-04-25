@@ -137,9 +137,6 @@ enum Strings {
         static func openQuestions(_ l: AppLanguage) -> String {
             l == .german ? "Offene Fragen" : "Open Questions"
         }
-        static func addBullet(_ l: AppLanguage) -> String {
-            l == .german ? "Aufzählungspunkt hinzufügen" : "Add bullet"
-        }
         static func noEntries(_ l: AppLanguage) -> String {
             l == .german ? "Keine Einträge" : "No Entries"
         }
@@ -336,10 +333,7 @@ enum Strings {
         static func launchAtLogin(_ l: AppLanguage) -> String {
             l == .german ? "Beim Login starten" : "Launch at Login"
         }
-        static func bulletLists(_ l: AppLanguage) -> String {
-            l == .german ? "Aufzählungslisten verwenden" : "Use bullet lists"
-        }
-        static func dictation(_ l: AppLanguage) -> String {
+static func dictation(_ l: AppLanguage) -> String {
             l == .german ? "Diktat (Experimentell)" : "Dictation (Experimental)"
         }
         static func notifications(_ l: AppLanguage) -> String {

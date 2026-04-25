@@ -170,9 +170,9 @@ struct PomodoroSessionEndView: View {
 
         DisclosureGroup(Strings.Status.optionalFields(l), isExpanded: $showOptionalFields) {
             VStack(spacing: 8) {
-                BulletableField(label: Strings.Status.lastStep(l), text: $lastAction)
-                BulletableField(label: Strings.Status.nextStep(l), text: $nextStep)
-                BulletableField(label: Strings.Status.openQuestions(l), text: $openQuestions)
+                TextField(Strings.Status.lastStep(l), text: $lastAction)
+                TextField(Strings.Status.nextStep(l), text: $nextStep)
+                TextField(Strings.Status.openQuestions(l), text: $openQuestions)
             }
             .padding(.top, 4)
         }

@@ -157,18 +157,6 @@ struct StringsTests {
         #expect(Strings.Errors.invalidResponse(.english, detail: "test detail").contains("test detail"))
     }
 
-    @Test("Status.addBullet returns correct translations")
-    func statusAddBullet() {
-        #expect(Strings.Status.addBullet(.german) == "Aufzählungspunkt hinzufügen")
-        #expect(Strings.Status.addBullet(.english) == "Add bullet")
-    }
-
-    @Test("Settings.bulletLists returns correct translations")
-    func settingsBulletLists() {
-        #expect(Strings.Settings.bulletLists(.german) == "Aufzählungslisten verwenden")
-        #expect(Strings.Settings.bulletLists(.english) == "Use bullet lists")
-    }
-
     @Test("Keyboard shortcut hint strings")
     func keyboardShortcutHints() {
         #expect(Strings.General.saveHint(.german) == "Sichern (⌘↩)")
