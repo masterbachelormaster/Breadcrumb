@@ -5,7 +5,6 @@ struct PomodoroSessionEndView: View {
     @Environment(PomodoroTimer.self) private var timer
     @Environment(LanguageManager.self) private var languageManager
     @Environment(\.modelContext) private var modelContext
-    @Environment(SpeechRecognizer.self) private var speechRecognizer
 
     let wasBreak: Bool
     var isCycleComplete: Bool = false
@@ -144,7 +143,7 @@ struct PomodoroSessionEndView: View {
             .clipShape(.rect(cornerRadius: 6))
             .overlay(RoundedRectangle(cornerRadius: 6).stroke(Color(nsColor: .separatorColor)))
 
-            DictationButton(text: $freeText, isFocused: freeTextFocused)
+            NativeDictationButton(isFocused: freeTextFocused)
                 .padding(6)
         }
 
@@ -165,7 +164,6 @@ struct PomodoroSessionEndView: View {
     }
 
     private func saveAndBreak() {
-        speechRecognizer.stopListening()
         let project = selectedProject ?? timer.boundProject
 
         // Create PomodoroSession record
@@ -197,7 +195,6 @@ struct PomodoroSessionEndView: View {
     }
 
     private func saveAndDone() {
-        speechRecognizer.stopListening()
         let project = selectedProject ?? timer.boundProject
 
         let session = PomodoroSession(
