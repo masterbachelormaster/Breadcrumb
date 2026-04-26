@@ -3,7 +3,7 @@ import SwiftData
 
 struct StatusEntryForm: View {
     @Environment(LanguageManager.self) private var languageManager
-    @Environment(SpeechRecognizer.self) private var speechRecognizer
+
     let project: Project
 
     @Environment(\.modelContext) private var modelContext
@@ -32,7 +32,7 @@ struct StatusEntryForm: View {
                 .clipShape(.rect(cornerRadius: 6))
                 .overlay(RoundedRectangle(cornerRadius: 6).stroke(Color(nsColor: .separatorColor)))
 
-                DictationButton(text: $freeText, isFocused: freeTextFocused)
+                NativeDictationButton(isFocused: freeTextFocused)
                     .padding(6)
             }
 
@@ -53,7 +53,6 @@ struct StatusEntryForm: View {
 
             HStack {
                 Button(Strings.General.cancel(languageManager.language)) {
-                    speechRecognizer.stopListening()
                     onDismiss()
                 }
                     .buttonStyle(.bordered)
@@ -74,7 +73,6 @@ struct StatusEntryForm: View {
     }
 
     private func save() {
-        speechRecognizer.stopListening()
         let trimmed = freeText.trimmingCharacters(in: .whitespaces)
         guard !trimmed.isEmpty else { return }
 
