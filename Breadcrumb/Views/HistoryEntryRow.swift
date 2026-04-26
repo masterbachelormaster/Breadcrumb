@@ -31,16 +31,6 @@ struct HistoryEntryRow: View {
                             .font(.callout)
                     }
                 }
-                if let openQuestions = entry.openQuestions, !openQuestions.isEmpty {
-                    VStack(alignment: .leading, spacing: 2) {
-                        Text(Strings.Status.openQuestions(languageManager.language))
-                            .font(.caption)
-                            .foregroundStyle(.secondary)
-                            .textCase(.uppercase)
-                        Text(openQuestions)
-                            .font(.callout)
-                    }
-                }
             }
             .padding(.vertical, 4)
             .textSelection(.enabled)

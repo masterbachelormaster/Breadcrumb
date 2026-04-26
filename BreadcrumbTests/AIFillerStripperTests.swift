@@ -26,11 +26,6 @@ struct AIFillerStripperTests {
         #expect(AIFillerStripper.clean("-") == "")
     }
 
-    @Test("clean: strips 'no open questions' prefix variants")
-    func cleanNoOpenQuestions() {
-        #expect(AIFillerStripper.clean("no open questions at this time") == "")
-    }
-
     @Test("clean: strips German 'nichts erledigt' prefix variants")
     func cleanNichtsErledigt() {
         #expect(AIFillerStripper.clean("nichts erledigt bisher") == "")

@@ -34,58 +34,6 @@ enum AIFillerStripper {
             "...", "…", "-", "--", "---", "–", "—",
             "[]", "()", "\"\"", "''",
 
-            // === OPEN QUESTIONS / UNCERTAINTIES ===
-            // German
-            "nichts unklar", "nichts offen", "alles klar", "alles soweit klar",
-            "soweit alles klar", "alles verstanden", "passt", "passt soweit",
-            "keine fragen", "keine offenen fragen", "keine fragen offen",
-            "keine offenen fragen vorhanden", "keine fragen vorhanden",
-            "keine unsicherheiten", "keine unsicherheit",
-            "keine offenen unsicherheiten", "keine unsicherheiten vorhanden",
-            "keine aktuellen fragen", "keine aktuellen unsicherheiten",
-            "keine offenen punkte", "keine offenen themen",
-            "keine weiteren fragen", "keine anmerkungen", "keine probleme",
-            "keine bedenken", "keine zweifel", "keine unklarheiten",
-            "keine unklarheit", "keine offene frage",
-            "keine unklaren punkte",
-            "es gibt keine offenen fragen", "es gibt keine unsicherheiten",
-            "es gibt nichts unklares", "es gibt keine unklarheiten",
-            "keine offenen fragen oder unsicherheiten",
-            "momentan keine fragen", "aktuell keine fragen",
-            "aktuell keine unsicherheiten", "derzeit keine fragen",
-            "derzeit keine unsicherheiten", "zur zeit keine fragen",
-            "bisher keine fragen", "im moment keine fragen",
-            "soweit keine fragen", "keine fragen im moment",
-            "keine fragen aktuell", "keine fragen derzeit",
-            "momentan keine unsicherheiten", "bisher keine unsicherheiten",
-            "im moment keine unsicherheiten",
-            "es sind keine fragen offen", "es bestehen keine unsicherheiten",
-            "es bestehen keine fragen", "es bestehen keine offenen fragen",
-            "hierzu keine fragen", "dazu keine fragen",
-            "keine offenen fragen identifiziert",
-            "keine offenen fragen festgestellt",
-            "alles wurde geklaert", "alles geklaert", "alles geklärt",
-            // English
-            "nothing unclear", "nothing open", "all clear", "all understood",
-            "everything is clear", "everything clear",
-            "no questions", "no open questions", "no questions open",
-            "no open questions at this time", "no open questions right now",
-            "no uncertainties", "no uncertainty",
-            "no open issues", "no open items", "no open topics",
-            "no further questions", "no comments", "no problems", "no concerns",
-            "no doubts", "no unclear points", "no ambiguity",
-            "no open questions or uncertainties",
-            "no questions identified", "no open questions identified",
-            "no open questions identified at this time",
-            "there are no open questions", "there are no uncertainties",
-            "nothing is unclear", "nothing remains unclear",
-            "currently no questions", "currently no uncertainties",
-            "no questions at the moment", "no questions currently",
-            "no questions right now", "no questions at this time",
-            "no uncertainties at the moment", "no uncertainties right now",
-            "everything has been clarified", "all clarified",
-            "no issues identified", "no concerns identified",
-
             // === LAST ACTION / COMPLETED TASKS ===
             // German
             "nichts erledigt", "nichts abgeschlossen", "nichts gemacht",
@@ -197,14 +145,6 @@ enum AIFillerStripper {
 
         // Prefix patterns: catch variations we didn't list exactly
         let fillerPrefixes = [
-            // Questions/uncertainties
-            "keine offenen fragen", "keine weiteren fragen", "keine aktuellen fragen",
-            "keine offenen unsicherheit", "keine weiteren unsicherheit",
-            "keine unklaren",
-            "es gibt keine offenen", "es gibt keine weiteren",
-            "es bestehen keine", "hierzu keine",
-            "no open question", "no further question", "no uncertaint",
-            "there are no open", "there are no further",
             // Last action / completed
             "keine erledigten", "keine abgeschlossenen", "keine bisherigen",
             "keine vorherigen", "keine letzten",

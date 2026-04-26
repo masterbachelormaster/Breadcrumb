@@ -10,15 +10,13 @@ struct OpenRouterProviderTests {
         let json = """
         {
             "lastAction": "Wrote the introduction",
-            "nextStep": "Add methodology section\\nReview references",
-            "openQuestions": "Which framework to use?"
+            "nextStep": "Add methodology section\\nReview references"
         }
         """
         let data = Data(json.utf8)
         let status = try JSONDecoder().decode(ExtractedStatus.self, from: data)
         #expect(status.lastAction == "Wrote the introduction")
         #expect(status.nextStep == "Add methodology section\nReview references")
-        #expect(status.openQuestions == "Which framework to use?")
     }
 
     @Test("Parses JSON with empty fields")
@@ -26,15 +24,13 @@ struct OpenRouterProviderTests {
         let json = """
         {
             "lastAction": "",
-            "nextStep": "Start writing",
-            "openQuestions": ""
+            "nextStep": "Start writing"
         }
         """
         let data = Data(json.utf8)
         let status = try JSONDecoder().decode(ExtractedStatus.self, from: data)
         #expect(status.lastAction.isEmpty)
         #expect(status.nextStep == "Start writing")
-        #expect(status.openQuestions.isEmpty)
     }
 
     @Test("extractJSONObject passes through pure JSON unchanged")
@@ -48,41 +44,38 @@ struct OpenRouterProviderTests {
     func extractJSONFromJSONFence() throws {
         let input = """
         ```json
-        {"lastAction": "wrote intro", "nextStep": "edit", "openQuestions": ""}
+        {"lastAction": "wrote intro", "nextStep": "edit"}
         ```
         """
         let result = OpenRouterProvider.extractJSONObject(from: input)
         let status = try JSONDecoder().decode(ExtractedStatus.self, from: Data(result.utf8))
         #expect(status.lastAction == "wrote intro")
         #expect(status.nextStep == "edit")
-        #expect(status.openQuestions.isEmpty)
     }
 
     @Test("extractJSONObject strips plain markdown fence")
     func extractJSONFromPlainFence() throws {
         let input = """
         ```
-        {"lastAction": "a", "nextStep": "b", "openQuestions": "c"}
+        {"lastAction": "a", "nextStep": "b"}
         ```
         """
         let result = OpenRouterProvider.extractJSONObject(from: input)
         let status = try JSONDecoder().decode(ExtractedStatus.self, from: Data(result.utf8))
         #expect(status.lastAction == "a")
         #expect(status.nextStep == "b")
-        #expect(status.openQuestions == "c")
     }
 
     @Test("extractJSONObject extracts JSON from prose-prefixed text")
     func extractJSONFromProse() throws {
         let input = """
         Here is the extracted data:
-        {"lastAction": "x", "nextStep": "y", "openQuestions": "z"}
+        {"lastAction": "x", "nextStep": "y"}
         """
         let result = OpenRouterProvider.extractJSONObject(from: input)
         let status = try JSONDecoder().decode(ExtractedStatus.self, from: Data(result.utf8))
         #expect(status.lastAction == "x")
         #expect(status.nextStep == "y")
-        #expect(status.openQuestions == "z")
     }
 
     @Test("extractJSONObject trims whitespace and handles fence with prose around")
@@ -93,7 +86,7 @@ struct OpenRouterProviderTests {
         Sure! Here you go:
 
         ```json
-        {"lastAction": "done", "nextStep": "next", "openQuestions": ""}
+        {"lastAction": "done", "nextStep": "next"}
         ```
 
         Let me know if you need more.

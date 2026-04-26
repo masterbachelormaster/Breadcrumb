@@ -7,7 +7,6 @@ struct AIExtractButton: View {
     @Binding var freeText: String
     @Binding var lastAction: String
     @Binding var nextStep: String
-    @Binding var openQuestions: String
     @Binding var showOptionalFields: Bool
 
     @State private var errorMessage: String?
@@ -63,7 +62,7 @@ struct AIExtractButton: View {
 
         do {
             let result = try await aiService.extractStatus(from: freeText, language: language)
-            applyResult(lastAction: result.lastAction, nextStep: result.nextStep, openQuestions: result.openQuestions)
+            applyResult(lastAction: result.lastAction, nextStep: result.nextStep)
             showOptionalFields = true
         } catch is CancellationError {
             // Normal lifecycle event (view disappeared, task cancelled) — ignore.
@@ -76,19 +75,12 @@ struct AIExtractButton: View {
         }
     }
 
-    private func applyResult(lastAction: String, nextStep: String, openQuestions: String) {
-        let finalize: (String) -> String = { raw in
-            BulletText.joinInline(AIFillerStripper.cleanLines(raw))
-        }
-
+    private func applyResult(lastAction: String, nextStep: String) {
         if !lastAction.isEmpty {
-            self.lastAction = finalize(lastAction)
+            self.lastAction = AIFillerStripper.clean(lastAction)
         }
         if !nextStep.isEmpty {
-            self.nextStep = finalize(nextStep)
-        }
-        if !openQuestions.isEmpty {
-            self.openQuestions = finalize(openQuestions)
+            self.nextStep = AIFillerStripper.clean(nextStep)
         }
     }
 }

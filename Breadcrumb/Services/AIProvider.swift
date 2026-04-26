@@ -5,7 +5,6 @@ import Foundation
 struct ExtractedStatus: Sendable, Codable {
     var lastAction: String
     var nextStep: String
-    var openQuestions: String
 }
 
 // MARK: - Backend Selection

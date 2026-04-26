@@ -198,8 +198,7 @@ struct PomodoroSessionSaveTests {
         let entry = StatusEntry(
             freeText: "Finished the draft",
             lastAction: "Wrote intro",
-            nextStep: nil,
-            openQuestions: nil
+            nextStep: nil
         )
         entry.project = project
         project.entries.append(entry)

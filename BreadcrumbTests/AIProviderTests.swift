@@ -8,20 +8,17 @@ struct AIProviderTypesTests {
     func extractedStatusInit() {
         let status = ExtractedStatus(
             lastAction: "Wrote intro",
-            nextStep: "Add data section",
-            openQuestions: "Which dataset?"
+            nextStep: "Add data section"
         )
         #expect(status.lastAction == "Wrote intro")
         #expect(status.nextStep == "Add data section")
-        #expect(status.openQuestions == "Which dataset?")
     }
 
     @Test("ExtractedStatus supports empty fields")
     func extractedStatusEmpty() {
-        let status = ExtractedStatus(lastAction: "", nextStep: "", openQuestions: "")
+        let status = ExtractedStatus(lastAction: "", nextStep: "")
         #expect(status.lastAction.isEmpty)
         #expect(status.nextStep.isEmpty)
-        #expect(status.openQuestions.isEmpty)
     }
 
     @Test("AIBackend raw values match UserDefaults keys")

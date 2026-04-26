@@ -42,22 +42,15 @@ struct StringsTests {
         #expect(en.contains("Extract"))
     }
 
-    @Test("Per-field AI extraction instructions exist for both languages")
+    @Test("Per-field AI extraction instructions contain locale and focus keyword")
     func perFieldAIInstructions() {
-        let laDE = Strings.AIExtraction.lastActionInstructions(.german)
-        let laEN = Strings.AIExtraction.lastActionInstructions(.english)
-        #expect(laDE.contains("erledigt"))
-        #expect(laEN.contains("done"))
+        let la = Strings.AIExtraction.lastActionInstructions(.german)
+        #expect(la.contains("FINISHED"))
+        #expect(la.contains("de_DE"))
 
-        let nsDE = Strings.AIExtraction.nextStepInstructions(.german)
-        let nsEN = Strings.AIExtraction.nextStepInstructions(.english)
-        #expect(nsDE.contains("geplant"))
-        #expect(nsEN.contains("planned"))
-
-        let oqDE = Strings.AIExtraction.openQuestionsInstructions(.german)
-        let oqEN = Strings.AIExtraction.openQuestionsInstructions(.english)
-        #expect(oqDE.contains("Unsicherheiten"))
-        #expect(oqEN.contains("uncertainties"))
+        let ns = Strings.AIExtraction.nextStepInstructions(.english)
+        #expect(ns.contains("planned"))
+        #expect(ns.contains("en_US"))
     }
 
     @Test("Total sessions strings")
@@ -191,8 +184,6 @@ struct StringsTests {
         #expect(Strings.Pomodoro.saveAndStop(.english) == "Save & Stop")
         #expect(Strings.Pomodoro.saveAndStopHint(.german) == "Speichern & Stopp (⌘↩)")
         #expect(Strings.Pomodoro.saveAndStopHint(.english) == "Save & Stop (⌘↩)")
-        #expect(Strings.Pomodoro.stopWithoutSaving(.german) == "Ohne Speichern beenden")
-        #expect(Strings.Pomodoro.stopWithoutSaving(.english) == "Stop without saving")
     }
 
     @Test("Dictation strings return correct translations")

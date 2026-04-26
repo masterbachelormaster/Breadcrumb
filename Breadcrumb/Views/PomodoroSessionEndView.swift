@@ -22,7 +22,6 @@ struct PomodoroSessionEndView: View {
     @State private var freeTextFocused = false
     @State private var lastAction = ""
     @State private var nextStep = ""
-    @State private var openQuestions = ""
     @State private var showOptionalFields = false
     @State private var selectedProject: Project?
 
@@ -153,7 +152,6 @@ struct PomodoroSessionEndView: View {
             freeText: $freeText,
             lastAction: $lastAction,
             nextStep: $nextStep,
-            openQuestions: $openQuestions,
             showOptionalFields: $showOptionalFields
         )
 
@@ -161,7 +159,6 @@ struct PomodoroSessionEndView: View {
             VStack(spacing: 8) {
                 TextField(Strings.Status.lastStep(l), text: $lastAction)
                 TextField(Strings.Status.nextStep(l), text: $nextStep)
-                TextField(Strings.Status.openQuestions(l), text: $openQuestions)
             }
             .padding(.top, 4)
         }
@@ -188,8 +185,7 @@ struct PomodoroSessionEndView: View {
             let entry = StatusEntry(
                 freeText: trimmed,
                 lastAction: lastAction.isEmpty ? nil : lastAction,
-                nextStep: nextStep.isEmpty ? nil : nextStep,
-                openQuestions: openQuestions.isEmpty ? nil : openQuestions
+                nextStep: nextStep.isEmpty ? nil : nextStep
             )
             entry.project = project
             entry.pomodoroSession = session
@@ -220,8 +216,7 @@ struct PomodoroSessionEndView: View {
             let entry = StatusEntry(
                 freeText: trimmed,
                 lastAction: lastAction.isEmpty ? nil : lastAction,
-                nextStep: nextStep.isEmpty ? nil : nextStep,
-                openQuestions: openQuestions.isEmpty ? nil : openQuestions
+                nextStep: nextStep.isEmpty ? nil : nextStep
             )
             entry.project = project
             entry.pomodoroSession = session

@@ -134,9 +134,6 @@ enum Strings {
         static func nextStep(_ l: AppLanguage) -> String {
             l == .german ? "Nächster Schritt" : "Next Step"
         }
-        static func openQuestions(_ l: AppLanguage) -> String {
-            l == .german ? "Offene Fragen" : "Open Questions"
-        }
         static func noEntries(_ l: AppLanguage) -> String {
             l == .german ? "Keine Einträge" : "No Entries"
         }
@@ -209,7 +206,7 @@ enum Strings {
             l == .german ? "Aufhören" : "Stop"
         }
         static func stopWithoutSaving(_ l: AppLanguage) -> String {
-            l == .german ? "Ohne Speichern beenden" : "Stop without saving"
+            l == .german ? "Aufhören ohne Speichern" : "Stop Without Saving"
         }
         static func saveAndBreak(_ l: AppLanguage) -> String {
             l == .german ? "Speichern & Pause" : "Save & Break"
@@ -479,69 +476,41 @@ static func dictation(_ l: AppLanguage) -> String {
             switch l {
             case .german:
                 return """
-                    Du bist ein Experte fuer Projekt-Status-Analyse. Extrahiere aus der Statusmeldung was erledigt ist, was als naechstes geplant ist und was unklar ist.
+                    Du bist ein Experte fuer Projekt-Status-Analyse. Extrahiere aus der Statusmeldung was erledigt ist und was als naechstes geplant ist.
 
                     Liste jeden genannten Punkt auf. Trenne mehrere Punkte mit Zeilenumbruch (ein Punkt pro Zeile). Verwende kurze Stichpunkte ohne Pronomen. Bleib nah an den Originalworten.
 
-                    Wenn nichts erledigt ist, lass lastAction leer. Wenn nichts unklar ist, lass openQuestions leer.
+                    Wenn nichts erledigt ist, lass lastAction leer.
                     """
             case .english:
                 return """
-                    You are an expert project status parser. Extract what is done, what is planned next, and what is uncertain from the person's status update.
+                    You are an expert project status parser. Extract what is done and what is planned next from the person's status update.
 
                     List every item mentioned. Separate multiple items with newlines (one item per line). Use short phrases without pronouns. Stay close to the original words.
 
-                    If nothing is done, leave lastAction empty. If nothing is uncertain, leave openQuestions empty.
+                    If nothing is done, leave lastAction empty.
                     """
             }
         }
         static func lastActionInstructions(_ l: AppLanguage) -> String {
-            switch l {
-            case .german:
-                return """
-                    Du bist ein Experte fuer Projekt-Status-Analyse. Extrahiere aus der Statusmeldung was bereits erledigt oder abgeschlossen ist.
-
-                    Verwende kurze Stichpunkte ohne Pronomen. Bleib nah an den Originalworten. Wenn nichts erledigt ist, antworte mit einem leeren String.
-                    """
-            case .english:
-                return """
-                    You are an expert project status parser. Extract what is already done or completed from the person's status update.
-
-                    Use short phrases without pronouns. Stay close to the original words. If nothing is done, respond with an empty string.
-                    """
-            }
+            """
+            Extract ONLY work that is ALREADY FINISHED from the person's status update. \
+            "Finished" means done and complete, not in progress or planned. \
+            Words like "will", "want to", "should", "muss noch" describe future plans, NOT finished work. \
+            DO NOT include future tasks. \
+            Use a short phrase without pronouns. Stay close to the original words. \
+            If nothing is finished, produce an empty string. \
+            The person's locale is \(l == .german ? "de_DE" : "en_US").
+            """
         }
         static func nextStepInstructions(_ l: AppLanguage) -> String {
-            switch l {
-            case .german:
-                return """
-                    Du bist ein Experte fuer Projekt-Status-Analyse. Extrahiere aus der Statusmeldung was als naechstes geplant ist.
-
-                    Verwende kurze Stichpunkte ohne Pronomen. Bleib nah an den Originalworten.
-                    """
-            case .english:
-                return """
-                    You are an expert project status parser. Extract what is planned next from the person's status update.
-
-                    Use short phrases without pronouns. Stay close to the original words.
-                    """
-            }
-        }
-        static func openQuestionsInstructions(_ l: AppLanguage) -> String {
-            switch l {
-            case .german:
-                return """
-                    Du bist ein Experte fuer Projekt-Status-Analyse. Extrahiere aus der Statusmeldung nur echte Unsicherheiten oder offene Fragen.
-
-                    Verwende kurze Stichpunkte ohne Pronomen. Bleib nah an den Originalworten. Wenn nichts unklar ist, antworte mit einem leeren String.
-                    """
-            case .english:
-                return """
-                    You are an expert project status parser. Extract only genuine uncertainties or open questions from the person's status update.
-
-                    Use short phrases without pronouns. Stay close to the original words. If nothing is uncertain, respond with an empty string.
-                    """
-            }
+            """
+            Extract ONLY future or planned tasks from the person's status update. \
+            Look for intentions and plans, not work that is already done. \
+            DO NOT include already finished work. \
+            Use a short phrase without pronouns. Stay close to the original words. \
+            The person's locale is \(l == .german ? "de_DE" : "en_US").
+            """
         }
     }
 

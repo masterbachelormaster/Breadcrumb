@@ -20,7 +20,6 @@ struct ProjectDetailView: View {
     @State private var draftFreeText = ""
     @State private var draftLastAction = ""
     @State private var draftNextStep = ""
-    @State private var draftOpenQuestions = ""
 
     // Edit form drafts
     @State private var editDraftName = ""
@@ -168,7 +167,6 @@ struct ProjectDetailView: View {
                         freeText: $draftFreeText,
                         lastAction: $draftLastAction,
                         nextStep: $draftNextStep,
-                        openQuestions: $draftOpenQuestions,
                         onDismiss: { dismissOverlay { showingStatusForm = false } }
                     )
                 }
@@ -243,16 +241,6 @@ struct ProjectDetailView: View {
                         .foregroundStyle(.secondary)
                         .textCase(.uppercase)
                     Text(nextStep)
-                        .font(.callout)
-                }
-            }
-            if let openQuestions = entry.openQuestions, !openQuestions.isEmpty {
-                VStack(alignment: .leading, spacing: 2) {
-                    Text(Strings.Status.openQuestions(languageManager.language))
-                        .font(.caption)
-                        .foregroundStyle(.secondary)
-                        .textCase(.uppercase)
-                    Text(openQuestions)
                         .font(.callout)
                 }
             }

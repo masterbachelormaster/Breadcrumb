@@ -11,7 +11,6 @@ struct StatusEntryForm: View {
     @Binding var freeText: String
     @Binding var lastAction: String
     @Binding var nextStep: String
-    @Binding var openQuestions: String
     var onDismiss: () -> Void = {}
     @State private var showOptionalFields = false
     @State private var freeTextFocused = false
@@ -41,7 +40,6 @@ struct StatusEntryForm: View {
                 freeText: $freeText,
                 lastAction: $lastAction,
                 nextStep: $nextStep,
-                openQuestions: $openQuestions,
                 showOptionalFields: $showOptionalFields
             )
 
@@ -49,7 +47,6 @@ struct StatusEntryForm: View {
                 VStack(spacing: 12) {
                     TextField(Strings.Status.lastStep(languageManager.language), text: $lastAction)
                     TextField(Strings.Status.nextStep(languageManager.language), text: $nextStep)
-                    TextField(Strings.Status.openQuestions(languageManager.language), text: $openQuestions)
                 }
                 .padding(.top, 8)
             }
@@ -84,8 +81,7 @@ struct StatusEntryForm: View {
         let entry = StatusEntry(
             freeText: trimmed,
             lastAction: lastAction.isEmpty ? nil : lastAction,
-            nextStep: nextStep.isEmpty ? nil : nextStep,
-            openQuestions: openQuestions.isEmpty ? nil : openQuestions
+            nextStep: nextStep.isEmpty ? nil : nextStep
         )
         entry.project = project
         project.entries.append(entry)
@@ -96,7 +92,6 @@ struct StatusEntryForm: View {
         freeText = ""
         lastAction = ""
         nextStep = ""
-        openQuestions = ""
 
         onDismiss()
     }
