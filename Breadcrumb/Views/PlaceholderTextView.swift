@@ -109,6 +109,14 @@ class PlaceholderNSTextView: NSTextView {
         return result
     }
 
+    override func cancelOperation(_ sender: Any?) {
+        if markedRange().length > 0 {
+            inputContext?.discardMarkedText()
+            return
+        }
+        super.cancelOperation(sender)
+    }
+
     override func draw(_ dirtyRect: NSRect) {
         super.draw(dirtyRect)
         if string.isEmpty && !placeholderString.isEmpty {

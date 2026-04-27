@@ -57,6 +57,7 @@
 		BE6EE87AEF54FED09C1AB647 /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3C2BE7C0D1A3D1DC5DD8E35 /* NotificationService.swift */; };
 		C0556C526B6E95E3EAC49CFE /* PomodoroTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0A23CE8D0C3663CAF21F178 /* PomodoroTimer.swift */; };
 		C1DD81AE19623D581BBA2884 /* SessionDurationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F49D61D1877C7BF5C4F92E66 /* SessionDurationTests.swift */; };
+		C4A7741AE7FFA6422EF71BDD /* NativeDictationButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01F1A5207F7DE996DE352A42 /* NativeDictationButton.swift */; };
 		CA24E531052945BC800D6D9C /* ProjectFormView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9DBEBA30993B89A48537DA5 /* ProjectFormView.swift */; };
 		CF4074B7669439CA1E033539 /* Project.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1245F6E8248E227CA507BF8E /* Project.swift */; };
 		D0588FAB966D5A3C4D11176B /* KeychainHelperTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E6EEACEFC2209FA8283A175 /* KeychainHelperTests.swift */; };
@@ -89,6 +90,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		01F1A5207F7DE996DE352A42 /* NativeDictationButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NativeDictationButton.swift; sourceTree = "<group>"; };
 		0FE203A2FC256662ACD1B3C9 /* BreadcrumbTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreadcrumbTests.swift; sourceTree = "<group>"; };
 		1245F6E8248E227CA507BF8E /* Project.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Project.swift; sourceTree = "<group>"; };
 		1E0A1502531E88A18FD246F5 /* DictationButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictationButton.swift; sourceTree = "<group>"; };
@@ -181,6 +183,7 @@
 				36ADA56CAAFC591548F4CFDB /* FormOverlay.swift */,
 				9C88E592971DB2AB4E478DA7 /* HistoryEntryRow.swift */,
 				B8C5CE9442C811F8DCF196BD /* HistoryView.swift */,
+				01F1A5207F7DE996DE352A42 /* NativeDictationButton.swift */,
 				1EDDE649AD967EFDBF0DF239 /* PlaceholderTextView.swift */,
 				C3F1C79AA5792B6763AB7DF4 /* PomodoroConfigView.swift */,
 				AF7604A00FB4C888AA719B6C /* PomodoroRunningView.swift */,
@@ -413,6 +416,7 @@
 				497D467A820A0F052FBA9DE7 /* LinkedDocument.swift in Sources */,
 				1D53C6857A69A72D3AECC555 /* LocalAIProvider.swift in Sources */,
 				043A15563757C2E509CB275D /* ModelContext+SaveWithLogging.swift in Sources */,
+				C4A7741AE7FFA6422EF71BDD /* NativeDictationButton.swift in Sources */,
 				BE6EE87AEF54FED09C1AB647 /* NotificationService.swift in Sources */,
 				0705F5EE8EF9C08EE07DDD18 /* OpenRouterProvider.swift in Sources */,
 				E5A0E84F6FCEE311E5A1BDC5 /* OpenRouterSettingsSection.swift in Sources */,
