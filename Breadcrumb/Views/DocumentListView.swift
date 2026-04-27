@@ -10,6 +10,7 @@ struct DocumentListView: View {
     @Environment(LanguageManager.self) private var languageManager
 
     @State private var documentToDelete: LinkedDocument?
+    @State private var isExpanded = false
 
     private var sortedDocuments: [LinkedDocument] {
         project.linkedDocuments.sorted { $0.createdAt < $1.createdAt }
@@ -18,21 +19,44 @@ struct DocumentListView: View {
     var body: some View {
         let l = languageManager.language
 
-        Group {
-            if sortedDocuments.isEmpty {
-                addMenu(language: l)
-            } else {
-                VStack(alignment: .leading, spacing: 8) {
-                    HStack {
-                        Text(Strings.Documents.documents(l))
-                            .font(.headline)
-                        Spacer()
-                        addMenu(language: l)
+        VStack(alignment: .leading, spacing: 8) {
+            Button {
+                withAnimation(.easeInOut(duration: 0.2)) {
+                    isExpanded.toggle()
+                }
+                UserDefaults.standard.set(isExpanded, forKey: "section.documents.\(project.id)")
+            } label: {
+                HStack {
+                    Text(Strings.Documents.documents(l))
+                        .font(.headline)
+                    if !sortedDocuments.isEmpty {
+                        Text("\(sortedDocuments.count)")
+                            .font(.caption)
+                            .foregroundStyle(.secondary)
+                            .padding(.horizontal, 6)
+                            .padding(.vertical, 2)
+                            .background(.quaternary, in: Capsule())
                     }
+                    Spacer()
+                    Image(systemName: "chevron.right")
+                        .font(.caption)
+                        .foregroundStyle(.tertiary)
+                        .rotationEffect(.degrees(isExpanded ? 90 : 0))
+                }
+            }
+            .buttonStyle(ToolbarButtonStyle())
+            .onAppear {
+                isExpanded = UserDefaults.standard.bool(forKey: "section.documents.\(project.id)")
+            }
 
-                    ForEach(sortedDocuments) { doc in
-                        documentRow(doc, language: l)
-                    }
+            if isExpanded {
+                HStack {
+                    Spacer()
+                    addMenu(language: l)
+                }
+
+                ForEach(sortedDocuments) { doc in
+                    documentRow(doc, language: l)
                 }
             }
         }

@@ -87,6 +87,18 @@ struct ProjectDetailView: View {
                 // Content
                 ScrollView {
                     VStack(alignment: .leading, spacing: 16) {
+                        if let entry = project.latestEntry {
+                            latestEntrySection(entry)
+                        } else {
+                            ContentUnavailableView(
+                                Strings.Status.noStatusYet(languageManager.language),
+                                systemImage: "text.badge.plus",
+                                description: Text(Strings.Status.noStatusYetDescription(languageManager.language))
+                            )
+                        }
+
+                        Divider()
+
                         DocumentListView(
                             project: project,
                             onAddURL: {
@@ -101,22 +113,15 @@ struct ProjectDetailView: View {
                             }
                         )
 
-                        if let entry = project.latestEntry {
-                            latestEntrySection(entry)
-                        } else {
-                            ContentUnavailableView(
-                                Strings.Status.noStatusYet(languageManager.language),
-                                systemImage: "text.badge.plus",
-                                description: Text(Strings.Status.noStatusYetDescription(languageManager.language))
-                            )
-                        }
-
                         if project.completedPomodoroCount > 0 {
                             pomodoroStatsSection
                         }
                     }
                     .padding()
                     .textSelection(.enabled)
+                }
+                .onAppear {
+                    isStatsExpanded = UserDefaults.standard.bool(forKey: "section.pomodoro.\(project.id)")
                 }
 
                 // Footer
@@ -256,6 +261,7 @@ struct ProjectDetailView: View {
             withAnimation(.easeInOut(duration: 0.2)) {
                 isStatsExpanded.toggle()
             }
+            UserDefaults.standard.set(isStatsExpanded, forKey: "section.pomodoro.\(project.id)")
         } label: {
             HStack {
                 Text(Strings.Pomodoro.pomodoro(languageManager.language))
