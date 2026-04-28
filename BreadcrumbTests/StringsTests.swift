@@ -45,12 +45,12 @@ struct StringsTests {
     @Test("Per-field AI extraction instructions contain locale and focus keyword")
     func perFieldAIInstructions() {
         let la = Strings.AIExtraction.lastActionInstructions(.german)
-        #expect(la.contains("FINISHED"))
+        #expect(la.contains("finished"))
         #expect(la.contains("de_DE"))
 
         let ns = Strings.AIExtraction.nextStepInstructions(.english)
         #expect(ns.contains("planned"))
-        #expect(ns.contains("en_US"))
+        #expect(!ns.contains("de_DE"))
     }
 
     @Test("Total sessions strings")

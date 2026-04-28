@@ -493,23 +493,29 @@ static func dictation(_ l: AppLanguage) -> String {
             }
         }
         static func lastActionInstructions(_ l: AppLanguage) -> String {
-            """
-            Extract ONLY work that is ALREADY FINISHED from the person's status update. \
-            "Finished" means done and complete, not in progress or planned. \
-            Words like "will", "want to", "should", "muss noch" describe future plans, NOT finished work. \
-            DO NOT include future tasks. \
-            Use a short phrase without pronouns. Stay close to the original words. \
-            If nothing is finished, produce an empty string. \
-            The person's locale is \(l == .german ? "de_DE" : "en_US").
+            let locale = l == .german ? "\nThe person's locale is de_DE." : ""
+            return """
+            You are a project status parser. Extract only finished work from the person's update.
+
+            List every completed task. Separate items with ". ". \
+            Use a few words per item, stay close to the original wording. \
+            Words like "will", "should", "muss noch", "next", "als nächstes" signal future plans — skip those entirely. \
+            If nothing is finished, produce an empty string.
+
+            Extract only finished work.\(locale)
             """
         }
         static func nextStepInstructions(_ l: AppLanguage) -> String {
-            """
-            Extract ONLY future or planned tasks from the person's status update. \
-            Look for intentions and plans, not work that is already done. \
-            DO NOT include already finished work. \
-            Use a short phrase without pronouns. Stay close to the original words. \
-            The person's locale is \(l == .german ? "de_DE" : "en_US").
+            let locale = l == .german ? "\nThe person's locale is de_DE." : ""
+            return """
+            You are a project status parser. Extract only planned or future tasks from the person's update.
+
+            List every planned task. Separate items with ". ". \
+            Use a few words per item, stay close to the original wording. \
+            Words like "fertig", "erledigt", "done", "finished", "geschrieben" signal completed work — skip those entirely. \
+            If nothing is planned, produce an empty string.
+
+            Extract only planned tasks.\(locale)
             """
         }
     }
