@@ -135,6 +135,11 @@ final class PomodoroTimer {
     }
 
     func startBreak() {
+        guard !isCycleComplete else {
+            stop()
+            return
+        }
+
         isOvertime = false
         overtimeSeconds = 0
         didCrossZero = false

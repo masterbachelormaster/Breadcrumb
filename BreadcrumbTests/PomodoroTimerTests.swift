@@ -129,6 +129,16 @@ struct PomodoroTimerTests {
         #expect(timer.currentSessionNumber == 1)
     }
 
+    @Test("startBreak stops instead of starting break when cycle is complete")
+    func startBreakStopsWhenCycleComplete() {
+        let timer = PomodoroTimer()
+        timer.startWork(project: nil, durationMinutes: 25, shortBreakMinutes: 5, longBreakMinutes: 15, sessionsBeforeLong: 4, totalSessions: 1)
+        timer.startBreak()
+        #expect(timer.currentPhase == .idle)
+        #expect(timer.isRunning == false)
+        #expect(timer.currentSessionNumber == 1)
+    }
+
     @Test("sessionsBeforeLong determines long break trigger")
     func sessionsBeforeLongDeterminesBreakType() {
         let timer = PomodoroTimer()
@@ -251,7 +261,7 @@ struct PomodoroTimerTests {
     @Test("Long break after configured sessions")
     func longBreakAfterFourSessions() {
         let timer = PomodoroTimer()
-        timer.startWork(project: nil, durationMinutes: 25, shortBreakMinutes: 5, longBreakMinutes: 15, sessionsBeforeLong: 4, totalSessions: 4)
+        timer.startWork(project: nil, durationMinutes: 25, shortBreakMinutes: 5, longBreakMinutes: 15, sessionsBeforeLong: 4, totalSessions: 5)
         timer.currentSessionNumber = 4
         timer.startBreak()
         #expect(timer.currentPhase == .longBreak)

@@ -9,7 +9,7 @@ struct PomodoroSessionEndView: View {
     let wasBreak: Bool
     var isCycleComplete: Bool = false
     var isFocusMate: Bool = false
-    var onSaveAndBreak: (PomodoroSession) -> Void
+    var onSaveWorkSession: (PomodoroSession) -> Void
     var onContinueWorking: () -> Void
     var onSkip: () -> Void
     var onStartNextSession: () -> Void
@@ -104,10 +104,10 @@ struct PomodoroSessionEndView: View {
         HStack {
             Button(Strings.Pomodoro.continueWorking(l), action: { onContinueWorking() })
                 .buttonStyle(.bordered)
-            Button(Strings.Pomodoro.saveAndStop(l), action: saveAndBreak)
+            Button(primaryWorkEndButtonTitle(l), action: saveWorkSession)
                 .buttonStyle(.borderedProminent)
                 .keyboardShortcut(.return, modifiers: .command)
-                .help(Strings.Pomodoro.saveAndStopHint(l))
+                .help(primaryWorkEndButtonHelp(l))
                 .disabled(selectedProject == nil && timer.boundProject == nil)
         }
 
@@ -163,7 +163,7 @@ struct PomodoroSessionEndView: View {
         }
     }
 
-    private func saveAndBreak() {
+    private func saveWorkSession() {
         let project = selectedProject ?? timer.boundProject
 
         // Create PomodoroSession record
@@ -191,7 +191,15 @@ struct PomodoroSessionEndView: View {
             modelContext.insert(entry)
         }
 
-        onSaveAndBreak(session)
+        onSaveWorkSession(session)
+    }
+
+    private func primaryWorkEndButtonTitle(_ l: AppLanguage) -> String {
+        isCycleComplete ? Strings.Pomodoro.saveAndStop(l) : Strings.Pomodoro.saveAndBreak(l)
+    }
+
+    private func primaryWorkEndButtonHelp(_ l: AppLanguage) -> String {
+        isCycleComplete ? Strings.Pomodoro.saveAndStopHint(l) : Strings.Pomodoro.saveAndBreakHint(l)
     }
 
     private func saveAndDone() {

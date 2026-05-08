@@ -112,10 +112,15 @@ struct PomodoroRunningView: View {
                         wasBreak: wasBreakEnd,
                         isCycleComplete: timer.isCycleComplete,
                         isFocusMate: timer.isFocusMateSession,
-                        onSaveAndBreak: { session in
+                        onSaveWorkSession: { session in
                             saveSession(session)
                             dismissSessionEnd()
-                            timer.startBreak()
+                            if timer.isCycleComplete {
+                                timer.stop()
+                                onFinished()
+                            } else {
+                                timer.startBreak()
+                            }
                         },
                         onContinueWorking: {
                             dismissSessionEnd()
@@ -135,7 +140,12 @@ struct PomodoroRunningView: View {
                             modelContext.saveWithLogging()
 
                             dismissSessionEnd()
-                            timer.startBreak()
+                            if timer.isCycleComplete {
+                                timer.stop()
+                                onFinished()
+                            } else {
+                                timer.startBreak()
+                            }
                         },
                         onStartNextSession: {
                             dismissSessionEnd()
