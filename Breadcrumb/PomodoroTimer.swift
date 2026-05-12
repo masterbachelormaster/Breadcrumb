@@ -29,7 +29,7 @@ final class PomodoroTimer {
     var focusMateEndTime: Date?
     var focusMateEarlyEndMinutes: Int = 0
 
-    var notificationService: NotificationService?
+    var notificationService: (any PomodoroNotificationScheduling)?
 
     // Per-session settings (set at start, read during cycle)
     var sessionWorkMinutes: Int = 25
@@ -109,6 +109,8 @@ final class PomodoroTimer {
         overtimeSeconds = 0
         didCrossZero = false
         currentPhase = .work
+        notificationService?.cancelScheduledBanners()
+        scheduleCurrentPhaseBanner()
         startTicking()
     }
 
@@ -131,6 +133,8 @@ final class PomodoroTimer {
         didCrossZero = false
         currentPhase = .work
         currentSessionNumber = 1
+        notificationService?.cancelScheduledBanners()
+        scheduleCurrentPhaseBanner()
         startTicking()
     }
 
@@ -157,6 +161,8 @@ final class PomodoroTimer {
 
         isRunning = true
         isPaused = false
+        notificationService?.cancelScheduledBanners()
+        scheduleCurrentPhaseBanner()
         startTicking()
     }
 
@@ -173,6 +179,7 @@ final class PomodoroTimer {
         phaseDurationSeconds = 0
         elapsedBeforePause = 0
         currentPhase = .work
+        notificationService?.cancelScheduledBanners()
         startTicking()
     }
 
@@ -186,6 +193,8 @@ final class PomodoroTimer {
         phaseDurationSeconds = minutes * 60
         currentPhase = .work
         isRunning = true
+        notificationService?.cancelScheduledBanners()
+        scheduleCurrentPhaseBanner()
         startTicking()
     }
 
@@ -197,14 +206,17 @@ final class PomodoroTimer {
         phaseStartDate = nil
         timerTask?.cancel()
         timerTask = nil
+        notificationService?.cancelScheduledBanners()
     }
 
     func resume() {
         isPaused = false
+        scheduleCurrentPhaseBanner()
         startTicking()
     }
 
     func stop() {
+        notificationService?.cancelScheduledBanners()
         timerTask?.cancel()
         timerTask = nil
         remainingSeconds = 0
@@ -240,6 +252,7 @@ final class PomodoroTimer {
             remainingSeconds = max(0, phaseDurationSeconds - elapsed)
             if remainingSeconds <= 0 {
                 remainingSeconds = 0
+                notificationService?.cancelScheduledBanners()
                 if currentPhase == .work && !isFocusMateSession {
                     // Auto-continue into overtime for regular Pomodoro work phases
                     isOvertime = true
@@ -279,5 +292,26 @@ final class PomodoroTimer {
                 self.tick()
             }
         }
+    }
+
+    private func scheduleCurrentPhaseBanner() {
+        guard !isOvertime else { return }
+
+        let seconds = TimeInterval(max(1, phaseDurationSeconds - elapsedBeforePause))
+        let language = currentLanguage
+
+        switch currentPhase {
+        case .work:
+            notificationService?.scheduleWorkDoneBanner(language: language, after: seconds)
+        case .shortBreak, .longBreak:
+            notificationService?.scheduleBreakDoneBanner(language: language, after: seconds)
+        case .idle, .sessionEnded:
+            break
+        }
+    }
+
+    private var currentLanguage: AppLanguage {
+        let stored = UserDefaults.standard.string(forKey: "app.language") ?? "de"
+        return AppLanguage(rawValue: stored) ?? .german
     }
 }

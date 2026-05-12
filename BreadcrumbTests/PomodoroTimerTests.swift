@@ -27,6 +27,61 @@ struct PomodoroTimerTests {
         #expect(timer.currentSessionNumber == 1)
     }
 
+    @Test("Starting work schedules a native completion banner")
+    func startWorkSchedulesCompletionBanner() {
+        let notifier = RecordingPomodoroNotifier()
+        let timer = PomodoroTimer()
+        timer.notificationService = notifier
+
+        timer.startWork(project: nil, durationMinutes: 25, shortBreakMinutes: 5, longBreakMinutes: 15, sessionsBeforeLong: 4, totalSessions: 4)
+
+        #expect(notifier.scheduledBanners == [.workDone(seconds: 25 * 60)])
+    }
+
+    @Test("Starting a break schedules a native break completion banner")
+    func startBreakSchedulesCompletionBanner() {
+        let notifier = RecordingPomodoroNotifier()
+        let timer = PomodoroTimer()
+        timer.notificationService = notifier
+        timer.startWork(project: nil, durationMinutes: 25, shortBreakMinutes: 5, longBreakMinutes: 15, sessionsBeforeLong: 4, totalSessions: 4)
+
+        timer.startBreak()
+
+        #expect(notifier.scheduledBanners == [
+            .workDone(seconds: 25 * 60),
+            .breakDone(seconds: 5 * 60)
+        ])
+    }
+
+    @Test("Pausing and stopping cancel pending native completion banners")
+    func pauseAndStopCancelCompletionBanners() {
+        let notifier = RecordingPomodoroNotifier()
+        let timer = PomodoroTimer()
+        timer.notificationService = notifier
+        timer.startWork(project: nil, durationMinutes: 25, shortBreakMinutes: 5, longBreakMinutes: 15, sessionsBeforeLong: 4, totalSessions: 4)
+        let countAfterStart = notifier.cancelCount
+
+        timer.pause()
+        timer.stop()
+
+        #expect(notifier.cancelCount == countAfterStart + 2)
+    }
+
+    @Test("Tick cancels scheduled banners when timer crosses zero")
+    func tickCancelsScheduledBannersAtZero() {
+        let notifier = RecordingPomodoroNotifier()
+        let timer = PomodoroTimer()
+        timer.notificationService = notifier
+        timer.startWork(project: nil, durationMinutes: 25, shortBreakMinutes: 5, longBreakMinutes: 15, sessionsBeforeLong: 4, totalSessions: 4)
+        let countAfterStart = notifier.cancelCount
+
+        timer.remainingSeconds = 0
+        timer.phaseStartDate = Date.now.addingTimeInterval(-1500)
+        timer.tick()
+
+        #expect(notifier.cancelCount > countAfterStart)
+    }
+
     @Test("Tick decrements remaining seconds")
     func tickDecrement() {
         let timer = PomodoroTimer()
@@ -380,5 +435,47 @@ struct PomodoroTimerTests {
         timer.didCrossZero = true
         timer.snooze(minutes: 10)
         #expect(timer.didCrossZero == false)
+    }
+}
+
+private enum ScheduledBanner: Equatable {
+    case workDone(seconds: Int)
+    case breakDone(seconds: Int)
+}
+
+@MainActor
+private final class RecordingPomodoroNotifier: PomodoroNotificationScheduling {
+    var scheduledBanners: [ScheduledBanner] = []
+    var cancelCount = 0
+    var workDoneCount = 0
+    var breakDoneCount = 0
+    var overtimeCount = 0
+
+    @discardableResult
+    func scheduleWorkDoneBanner(language: AppLanguage, after seconds: TimeInterval) -> Task<Void, Never>? {
+        scheduledBanners.append(.workDone(seconds: Int(seconds)))
+        return nil
+    }
+
+    @discardableResult
+    func scheduleBreakDoneBanner(language: AppLanguage, after seconds: TimeInterval) -> Task<Void, Never>? {
+        scheduledBanners.append(.breakDone(seconds: Int(seconds)))
+        return nil
+    }
+
+    func cancelScheduledBanners() {
+        cancelCount += 1
+    }
+
+    func notifyWorkDone(language: AppLanguage) {
+        workDoneCount += 1
+    }
+
+    func notifyBreakDone(language: AppLanguage) {
+        breakDoneCount += 1
+    }
+
+    func notifyOvertime(language: AppLanguage) {
+        overtimeCount += 1
     }
 }
