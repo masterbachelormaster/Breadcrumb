@@ -96,8 +96,36 @@ struct NotificationServiceTests {
 
         #expect(center.removedIdentifiers == [
             "breadcrumb.pomodoro.workDone",
-            "breadcrumb.pomodoro.breakDone"
+            "breadcrumb.pomodoro.breakDone",
+            "breadcrumb.pomodoro.overtime"
         ])
+    }
+
+    @Test("Init registers notification categories with action buttons")
+    func registersCategoriesOnInit() {
+        let center = RecordingUserNotificationCenter()
+        let _ = NotificationService(notificationCenter: center)
+
+        #expect(center.registeredCategories.count == 3)
+
+        let categoryIDs = center.registeredCategories.map(\.identifier).sorted()
+        #expect(categoryIDs == [
+            "breadcrumb.category.breakDone",
+            "breadcrumb.category.overtime",
+            "breadcrumb.category.workDone"
+        ])
+
+        let workDone = center.registeredCategories.first { $0.identifier == "breadcrumb.category.workDone" }!
+        #expect(workDone.actions.count == 1)
+        #expect(workDone.actions[0].identifier == "breadcrumb.action.startBreak")
+
+        let breakDone = center.registeredCategories.first { $0.identifier == "breadcrumb.category.breakDone" }!
+        #expect(breakDone.actions.count == 1)
+        #expect(breakDone.actions[0].identifier == "breadcrumb.action.nextSession")
+
+        let overtime = center.registeredCategories.first { $0.identifier == "breadcrumb.category.overtime" }!
+        #expect(overtime.actions.count == 1)
+        #expect(overtime.actions[0].identifier == "breadcrumb.action.stop")
     }
 }
 

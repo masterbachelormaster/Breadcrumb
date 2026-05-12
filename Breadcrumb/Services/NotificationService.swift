@@ -38,11 +38,21 @@ final class NotificationService: NSObject, UNUserNotificationCenterDelegate, Pom
     private enum Banner {
         case workDone
         case breakDone
+        case overtime
 
         var identifier: String {
             switch self {
             case .workDone: "breadcrumb.pomodoro.workDone"
             case .breakDone: "breadcrumb.pomodoro.breakDone"
+            case .overtime: "breadcrumb.pomodoro.overtime"
+            }
+        }
+
+        var categoryIdentifier: String {
+            switch self {
+            case .workDone: "breadcrumb.category.workDone"
+            case .breakDone: "breadcrumb.category.breakDone"
+            case .overtime: "breadcrumb.category.overtime"
             }
         }
 
@@ -50,6 +60,7 @@ final class NotificationService: NSObject, UNUserNotificationCenterDelegate, Pom
             switch self {
             case .workDone: Strings.Notifications.pomodoroFinishedTitle(language)
             case .breakDone: Strings.Notifications.breakOverTitle(language)
+            case .overtime: Strings.Notifications.overtimeTitle(language)
             }
         }
 
@@ -57,10 +68,11 @@ final class NotificationService: NSObject, UNUserNotificationCenterDelegate, Pom
             switch self {
             case .workDone: Strings.Notifications.pomodoroFinishedBody(language)
             case .breakDone: Strings.Notifications.breakOverBody(language)
+            case .overtime: Strings.Notifications.overtimeNotificationBody(language)
             }
         }
 
-        static let allIdentifiers = [workDone.identifier, breakDone.identifier]
+        static let allIdentifiers = [workDone.identifier, breakDone.identifier, overtime.identifier]
     }
 
     private let notificationCenter: any UserNotificationCenterClient
@@ -74,6 +86,7 @@ final class NotificationService: NSObject, UNUserNotificationCenterDelegate, Pom
         self.userDefaults = userDefaults
         super.init()
         self.notificationCenter.delegate = self
+        registerCategories()
     }
 
     @discardableResult
@@ -102,6 +115,42 @@ final class NotificationService: NSObject, UNUserNotificationCenterDelegate, Pom
 
     func cancelScheduledBanners() {
         notificationCenter.removePendingNotificationRequests(withIdentifiers: Banner.allIdentifiers)
+    }
+
+    private func registerCategories() {
+        let stored = userDefaults.string(forKey: "app.language") ?? "de"
+        let language = AppLanguage(rawValue: stored) ?? .german
+
+        let startBreak = UNNotificationAction(
+            identifier: "breadcrumb.action.startBreak",
+            title: Strings.Notifications.actionStartBreak(language)
+        )
+        let nextSession = UNNotificationAction(
+            identifier: "breadcrumb.action.nextSession",
+            title: Strings.Notifications.actionNextSession(language)
+        )
+        let stop = UNNotificationAction(
+            identifier: "breadcrumb.action.stop",
+            title: Strings.Notifications.actionStop(language)
+        )
+
+        let workDoneCategory = UNNotificationCategory(
+            identifier: "breadcrumb.category.workDone",
+            actions: [startBreak],
+            intentIdentifiers: []
+        )
+        let breakDoneCategory = UNNotificationCategory(
+            identifier: "breadcrumb.category.breakDone",
+            actions: [nextSession],
+            intentIdentifiers: []
+        )
+        let overtimeCategory = UNNotificationCategory(
+            identifier: "breadcrumb.category.overtime",
+            actions: [stop],
+            intentIdentifiers: []
+        )
+
+        notificationCenter.setNotificationCategories([workDoneCategory, breakDoneCategory, overtimeCategory])
     }
 
     // MARK: - Tier 1: Work Done (full interruption feedback)
