@@ -25,6 +25,7 @@ struct BreadcrumbApp: App {
                     pomodoroTimer.notificationService = notificationService
                     notificationService.requestAuthorization()
                     appDelegate.windowManager = windowManager
+                    appDelegate.pomodoroTimer = pomodoroTimer
                 }
                 .environment(pomodoroTimer)
                 .environment(windowManager)

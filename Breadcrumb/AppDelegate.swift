@@ -11,6 +11,7 @@ extension Notification.Name {
 final class AppDelegate: NSObject, NSApplicationDelegate {
     private var eventMonitor: Any?
     var windowManager: WindowManager?
+    var pomodoroTimer: PomodoroTimer?
 
     func applicationDidFinishLaunching(_ notification: Notification) {
         eventMonitor = NSEvent.addLocalMonitorForEvents(matching: .rightMouseDown) { event in
@@ -72,6 +73,36 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
                     .first(where: { $0 is NSStatusBarButton }) as? NSStatusBarButton {
                     button.performClick(nil)
                 }
+            }
+        }
+
+        NotificationCenter.default.addObserver(
+            forName: .pomodoroStartBreak,
+            object: nil,
+            queue: .main
+        ) { [weak self] _ in
+            MainActor.assumeIsolated {
+                self?.pomodoroTimer?.startBreak()
+            }
+        }
+
+        NotificationCenter.default.addObserver(
+            forName: .pomodoroNextSession,
+            object: nil,
+            queue: .main
+        ) { [weak self] _ in
+            MainActor.assumeIsolated {
+                self?.pomodoroTimer?.startNextWorkSession()
+            }
+        }
+
+        NotificationCenter.default.addObserver(
+            forName: .pomodoroStop,
+            object: nil,
+            queue: .main
+        ) { [weak self] _ in
+            MainActor.assumeIsolated {
+                self?.pomodoroTimer?.stop()
             }
         }
     }
