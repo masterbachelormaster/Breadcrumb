@@ -2,6 +2,9 @@ import AppKit
 
 extension Notification.Name {
     static let openPopover = Notification.Name("Breadcrumb.openPopover")
+    static let pomodoroStartBreak = Notification.Name("Breadcrumb.pomodoroStartBreak")
+    static let pomodoroNextSession = Notification.Name("Breadcrumb.pomodoroNextSession")
+    static let pomodoroStop = Notification.Name("Breadcrumb.pomodoroStop")
 }
 
 @MainActor

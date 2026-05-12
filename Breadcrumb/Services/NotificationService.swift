@@ -267,4 +267,23 @@ final class NotificationService: NSObject, UNUserNotificationCenterDelegate, Pom
     ) async -> UNNotificationPresentationOptions {
         [.banner, .list]
     }
+
+    nonisolated func userNotificationCenter(
+        _ center: UNUserNotificationCenter,
+        didReceive response: UNNotificationResponse
+    ) async {
+        let actionIdentifier = response.actionIdentifier
+        await MainActor.run {
+            switch actionIdentifier {
+            case "breadcrumb.action.startBreak":
+                NotificationCenter.default.post(name: .pomodoroStartBreak, object: nil)
+            case "breadcrumb.action.nextSession":
+                NotificationCenter.default.post(name: .pomodoroNextSession, object: nil)
+            case "breadcrumb.action.stop":
+                NotificationCenter.default.post(name: .pomodoroStop, object: nil)
+            default:
+                break
+            }
+        }
+    }
 }
