@@ -158,6 +158,7 @@ final class NotificationService: NSObject, UNUserNotificationCenterDelegate, Pom
     func notifyWorkDone(language: AppLanguage) {
         let soundName = userDefaults.string(forKey: "pomodoro.sound.workDone") ?? "Glass"
         playSound(named: soundName)
+        sendImmediateBanner(.workDone, language: language)
 
         let autoOpen = userDefaults.object(forKey: "pomodoro.autoOpenPopover") as? Bool ?? true
         if autoOpen {
@@ -170,6 +171,7 @@ final class NotificationService: NSObject, UNUserNotificationCenterDelegate, Pom
     func notifyBreakDone(language: AppLanguage) {
         let soundName = userDefaults.string(forKey: "pomodoro.sound.breakDone") ?? "Ping"
         playSound(named: soundName)
+        sendImmediateBanner(.breakDone, language: language)
     }
 
     // MARK: - Tier 3: Overtime (gentle nudge)
@@ -177,6 +179,7 @@ final class NotificationService: NSObject, UNUserNotificationCenterDelegate, Pom
     func notifyOvertime(language: AppLanguage) {
         let soundName = userDefaults.string(forKey: "pomodoro.sound.overtime") ?? "Tink"
         playSound(named: soundName)
+        sendImmediateBanner(.overtime, language: language)
 
         let autoOpen = userDefaults.object(forKey: "pomodoro.autoOpenPopover") as? Bool ?? true
         if autoOpen {
@@ -193,6 +196,33 @@ final class NotificationService: NSObject, UNUserNotificationCenterDelegate, Pom
 
     // MARK: - Banner
 
+    private func sendImmediateBanner(_ banner: Banner, language: AppLanguage) {
+        let showBanner = userDefaults.object(forKey: "pomodoro.showBannerNotification") as? Bool ?? true
+        guard showBanner else { return }
+
+        notificationCenter.removePendingNotificationRequests(withIdentifiers: [banner.identifier])
+
+        let content = UNMutableNotificationContent()
+        content.title = banner.title(language: language)
+        content.body = banner.body(language: language)
+        content.categoryIdentifier = banner.categoryIdentifier
+
+        let request = UNNotificationRequest(
+            identifier: banner.identifier,
+            content: content,
+            trigger: nil
+        )
+
+        Task {
+            do {
+                try await notificationCenter.add(request)
+                logger.info("Posted immediate banner: id=\(banner.identifier, privacy: .public)")
+            } catch {
+                logger.error("Failed to post immediate banner: id=\(banner.identifier, privacy: .public), error=\(error.localizedDescription, privacy: .public)")
+            }
+        }
+    }
+
     private func scheduleBanner(_ banner: Banner, language: AppLanguage, after seconds: TimeInterval) -> Task<Void, Never>? {
         let showBanner = userDefaults.object(forKey: "pomodoro.showBannerNotification") as? Bool ?? true
         guard showBanner else { return nil }
@@ -200,6 +230,7 @@ final class NotificationService: NSObject, UNUserNotificationCenterDelegate, Pom
         let content = UNMutableNotificationContent()
         content.title = banner.title(language: language)
         content.body = banner.body(language: language)
+        content.categoryIdentifier = banner.categoryIdentifier
 
         let delay = max(1, seconds)
         let trigger = UNTimeIntervalNotificationTrigger(

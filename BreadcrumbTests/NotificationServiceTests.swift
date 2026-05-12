@@ -101,6 +101,86 @@ struct NotificationServiceTests {
         ])
     }
 
+    @Test("notifyWorkDone posts an immediate banner")
+    func notifyWorkDonePostsImmediateBanner() async throws {
+        let center = RecordingUserNotificationCenter()
+        let suiteName = "NotificationServiceTests-\(UUID().uuidString)"
+        let defaults = try #require(UserDefaults(suiteName: suiteName))
+        defaults.set(true, forKey: "pomodoro.showBannerNotification")
+        defer { defaults.removePersistentDomain(forName: suiteName) }
+
+        let service = NotificationService(notificationCenter: center, userDefaults: defaults)
+        service.notifyWorkDone(language: .english)
+
+        await Task.yield()
+        try await Task.sleep(for: .milliseconds(50))
+
+        let request = try #require(center.addedRequests.first)
+        #expect(request.identifier == "breadcrumb.pomodoro.workDone")
+        #expect(request.content.title == "Pomodoro Finished!")
+        #expect(request.trigger == nil)
+        #expect(request.content.categoryIdentifier == "breadcrumb.category.workDone")
+    }
+
+    @Test("notifyBreakDone posts an immediate banner")
+    func notifyBreakDonePostsImmediateBanner() async throws {
+        let center = RecordingUserNotificationCenter()
+        let suiteName = "NotificationServiceTests-\(UUID().uuidString)"
+        let defaults = try #require(UserDefaults(suiteName: suiteName))
+        defaults.set(true, forKey: "pomodoro.showBannerNotification")
+        defer { defaults.removePersistentDomain(forName: suiteName) }
+
+        let service = NotificationService(notificationCenter: center, userDefaults: defaults)
+        service.notifyBreakDone(language: .english)
+
+        await Task.yield()
+        try await Task.sleep(for: .milliseconds(50))
+
+        let request = try #require(center.addedRequests.first)
+        #expect(request.identifier == "breadcrumb.pomodoro.breakDone")
+        #expect(request.content.title == "Break Over!")
+        #expect(request.trigger == nil)
+        #expect(request.content.categoryIdentifier == "breadcrumb.category.breakDone")
+    }
+
+    @Test("notifyOvertime posts an immediate banner")
+    func notifyOvertimePostsImmediateBanner() async throws {
+        let center = RecordingUserNotificationCenter()
+        let suiteName = "NotificationServiceTests-\(UUID().uuidString)"
+        let defaults = try #require(UserDefaults(suiteName: suiteName))
+        defaults.set(true, forKey: "pomodoro.showBannerNotification")
+        defer { defaults.removePersistentDomain(forName: suiteName) }
+
+        let service = NotificationService(notificationCenter: center, userDefaults: defaults)
+        service.notifyOvertime(language: .english)
+
+        await Task.yield()
+        try await Task.sleep(for: .milliseconds(50))
+
+        let request = try #require(center.addedRequests.first)
+        #expect(request.identifier == "breadcrumb.pomodoro.overtime")
+        #expect(request.content.title == "Overtime!")
+        #expect(request.trigger == nil)
+        #expect(request.content.categoryIdentifier == "breadcrumb.category.overtime")
+    }
+
+    @Test("notifyWorkDone skips banner when disabled")
+    func notifyWorkDoneSkipsBannerWhenDisabled() async throws {
+        let center = RecordingUserNotificationCenter()
+        let suiteName = "NotificationServiceTests-\(UUID().uuidString)"
+        let defaults = try #require(UserDefaults(suiteName: suiteName))
+        defaults.set(false, forKey: "pomodoro.showBannerNotification")
+        defer { defaults.removePersistentDomain(forName: suiteName) }
+
+        let service = NotificationService(notificationCenter: center, userDefaults: defaults)
+        service.notifyWorkDone(language: .english)
+
+        await Task.yield()
+        try await Task.sleep(for: .milliseconds(50))
+
+        #expect(center.addedRequests.isEmpty)
+    }
+
     @Test("Init registers notification categories with action buttons")
     func registersCategoriesOnInit() {
         let center = RecordingUserNotificationCenter()
