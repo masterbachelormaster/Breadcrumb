@@ -325,6 +325,18 @@ enum Strings {
         static func overtimeNotificationBody(_ l: AppLanguage) -> String {
             l == .german ? "Timer abgelaufen — Überstunden gestartet" : "Timer complete — overtime started"
         }
+        static func overtimeTitle(_ l: AppLanguage) -> String {
+            l == .german ? "Überstunden!" : "Overtime!"
+        }
+        static func actionStartBreak(_ l: AppLanguage) -> String {
+            l == .german ? "Pause starten" : "Start Break"
+        }
+        static func actionNextSession(_ l: AppLanguage) -> String {
+            l == .german ? "Nächste Sitzung" : "Next Session"
+        }
+        static func actionStop(_ l: AppLanguage) -> String {
+            l == .german ? "Stoppen" : "Stop"
+        }
     }
 
     // MARK: - Settings
