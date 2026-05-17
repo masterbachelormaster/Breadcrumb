@@ -4,7 +4,6 @@ extension Notification.Name {
     static let openPopover = Notification.Name("Breadcrumb.openPopover")
     static let pomodoroStartBreak = Notification.Name("Breadcrumb.pomodoroStartBreak")
     static let pomodoroNextSession = Notification.Name("Breadcrumb.pomodoroNextSession")
-    static let pomodoroStop = Notification.Name("Breadcrumb.pomodoroStop")
 }
 
 @MainActor
@@ -64,15 +63,9 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
             forName: .openPopover,
             object: nil,
             queue: .main
-        ) { _ in
+        ) { [weak self] _ in
             MainActor.assumeIsolated {
-                // Find the status bar window and simulate a click to open the MenuBarExtra popover
-                if let button = NSApp.windows
-                    .compactMap({ $0.contentView?.subviews })
-                    .flatMap({ $0 })
-                    .first(where: { $0 is NSStatusBarButton }) as? NSStatusBarButton {
-                    button.performClick(nil)
-                }
+                self?.openMenuBarPopover()
             }
         }
 
@@ -96,15 +89,6 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
             }
         }
 
-        NotificationCenter.default.addObserver(
-            forName: .pomodoroStop,
-            object: nil,
-            queue: .main
-        ) { [weak self] _ in
-            MainActor.assumeIsolated {
-                self?.pomodoroTimer?.stop()
-            }
-        }
     }
 
     func applicationWillTerminate(_ notification: Notification) {
@@ -123,5 +107,32 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
 
     @objc private func openAbout() {
         windowManager?.open(.about)
+    }
+
+    private func openMenuBarPopover() {
+        guard let button = NSApp.windows
+            .compactMap(\.contentView)
+            .compactMap({ $0.firstSubview(ofType: NSStatusBarButton.self) })
+            .first else {
+            return
+        }
+
+        button.performClick(nil)
+    }
+}
+
+private extension NSView {
+    func firstSubview<T: NSView>(ofType type: T.Type) -> T? {
+        if let view = self as? T {
+            return view
+        }
+
+        for subview in subviews {
+            if let match = subview.firstSubview(ofType: type) {
+                return match
+            }
+        }
+
+        return nil
     }
 }

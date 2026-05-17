@@ -14,18 +14,30 @@ protocol UserNotificationCenterClient: AnyObject {
 
 extension UNUserNotificationCenter: UserNotificationCenterClient {}
 
+enum PomodoroWorkCompletionContext: Equatable {
+    case breakAvailable
+    case sessionComplete
+    case cycleComplete
+    case focusMateComplete
+}
+
 @MainActor
 protocol PomodoroNotificationScheduling: AnyObject {
     @discardableResult
-    func scheduleWorkDoneBanner(language: AppLanguage, after seconds: TimeInterval) -> Task<Void, Never>?
+    func scheduleWorkDoneBanner(
+        language: AppLanguage,
+        after seconds: TimeInterval,
+        completion: PomodoroWorkCompletionContext
+    ) -> Task<Void, Never>?
 
     @discardableResult
     func scheduleBreakDoneBanner(language: AppLanguage, after seconds: TimeInterval) -> Task<Void, Never>?
 
     func cancelScheduledBanners()
+    func playWorkDoneFeedback(language: AppLanguage)
+    func playBreakDoneFeedback(language: AppLanguage)
     func notifyWorkDone(language: AppLanguage)
     func notifyBreakDone(language: AppLanguage)
-    func notifyOvertime(language: AppLanguage)
 }
 
 @MainActor
@@ -36,54 +48,62 @@ final class NotificationService: NSObject, UNUserNotificationCenterDelegate, Pom
     )
 
     private enum Banner {
-        case workDone
+        case workDone(PomodoroWorkCompletionContext)
         case breakDone
-        case overtime
 
         var identifier: String {
             switch self {
             case .workDone: "breadcrumb.pomodoro.workDone"
             case .breakDone: "breadcrumb.pomodoro.breakDone"
-            case .overtime: "breadcrumb.pomodoro.overtime"
             }
         }
 
         var categoryIdentifier: String {
             switch self {
-            case .workDone: "breadcrumb.category.workDone"
+            case .workDone(.breakAvailable): "breadcrumb.category.workDone"
+            case .workDone: "breadcrumb.category.workComplete"
             case .breakDone: "breadcrumb.category.breakDone"
-            case .overtime: "breadcrumb.category.overtime"
             }
         }
 
         func title(language: AppLanguage) -> String {
             switch self {
+            case .workDone(.focusMateComplete): Strings.Notifications.focusMateFinishedTitle(language)
             case .workDone: Strings.Notifications.pomodoroFinishedTitle(language)
             case .breakDone: Strings.Notifications.breakOverTitle(language)
-            case .overtime: Strings.Notifications.overtimeTitle(language)
             }
         }
 
         func body(language: AppLanguage) -> String {
             switch self {
-            case .workDone: Strings.Notifications.pomodoroFinishedBody(language)
+            case .workDone(.breakAvailable): Strings.Notifications.pomodoroFinishedBody(language)
+            case .workDone(.sessionComplete): Strings.Notifications.sessionCompleteBody(language)
+            case .workDone(.cycleComplete): Strings.Notifications.allSessionsCompleteBody(language)
+            case .workDone(.focusMateComplete): Strings.Notifications.sessionCompleteBody(language)
             case .breakDone: Strings.Notifications.breakOverBody(language)
-            case .overtime: Strings.Notifications.overtimeNotificationBody(language)
             }
         }
 
-        static let allIdentifiers = [workDone.identifier, breakDone.identifier, overtime.identifier]
+        static let allIdentifiers = [
+            Banner.workDone(.breakAvailable).identifier,
+            Banner.breakDone.identifier
+        ]
     }
 
     private let notificationCenter: any UserNotificationCenterClient
     private let userDefaults: UserDefaults
+    private let postAppNotification: (Notification.Name) -> Void
 
     init(
         notificationCenter: any UserNotificationCenterClient = UNUserNotificationCenter.current(),
-        userDefaults: UserDefaults = .standard
+        userDefaults: UserDefaults = .standard,
+        postAppNotification: @escaping (Notification.Name) -> Void = {
+            NotificationCenter.default.post(name: $0, object: nil)
+        }
     ) {
         self.notificationCenter = notificationCenter
         self.userDefaults = userDefaults
+        self.postAppNotification = postAppNotification
         super.init()
         self.notificationCenter.delegate = self
         registerCategories()
@@ -104,8 +124,12 @@ final class NotificationService: NSObject, UNUserNotificationCenterDelegate, Pom
     // MARK: - Scheduled Banners
 
     @discardableResult
-    func scheduleWorkDoneBanner(language: AppLanguage, after seconds: TimeInterval) -> Task<Void, Never>? {
-        scheduleBanner(.workDone, language: language, after: seconds)
+    func scheduleWorkDoneBanner(
+        language: AppLanguage,
+        after seconds: TimeInterval,
+        completion: PomodoroWorkCompletionContext
+    ) -> Task<Void, Never>? {
+        scheduleBanner(.workDone(completion), language: language, after: seconds)
     }
 
     @discardableResult
@@ -121,22 +145,27 @@ final class NotificationService: NSObject, UNUserNotificationCenterDelegate, Pom
         let stored = userDefaults.string(forKey: "app.language") ?? "de"
         let language = AppLanguage(rawValue: stored) ?? .german
 
-        let startBreak = UNNotificationAction(
-            identifier: "breadcrumb.action.startBreak",
-            title: Strings.Notifications.actionStartBreak(language)
-        )
         let nextSession = UNNotificationAction(
             identifier: "breadcrumb.action.nextSession",
             title: Strings.Notifications.actionNextSession(language)
         )
-        let stop = UNNotificationAction(
-            identifier: "breadcrumb.action.stop",
-            title: Strings.Notifications.actionStop(language)
+        let continueWorking = UNNotificationAction(
+            identifier: "breadcrumb.action.continueWorking",
+            title: Strings.Notifications.actionContinueWorking(language)
         )
-
+        let openPopover = UNNotificationAction(
+            identifier: "breadcrumb.action.openPopover",
+            title: Strings.Notifications.actionStop(language),
+            options: [.foreground]
+        )
         let workDoneCategory = UNNotificationCategory(
             identifier: "breadcrumb.category.workDone",
-            actions: [startBreak],
+            actions: [continueWorking, openPopover],
+            intentIdentifiers: []
+        )
+        let workCompleteCategory = UNNotificationCategory(
+            identifier: "breadcrumb.category.workComplete",
+            actions: [continueWorking, openPopover],
             intentIdentifiers: []
         )
         let breakDoneCategory = UNNotificationCategory(
@@ -144,47 +173,32 @@ final class NotificationService: NSObject, UNUserNotificationCenterDelegate, Pom
             actions: [nextSession],
             intentIdentifiers: []
         )
-        let overtimeCategory = UNNotificationCategory(
-            identifier: "breadcrumb.category.overtime",
-            actions: [stop],
-            intentIdentifiers: []
-        )
 
-        notificationCenter.setNotificationCategories([workDoneCategory, breakDoneCategory, overtimeCategory])
+        notificationCenter.setNotificationCategories([workDoneCategory, workCompleteCategory, breakDoneCategory])
     }
 
     // MARK: - Tier 1: Work Done (full interruption feedback)
 
-    func notifyWorkDone(language: AppLanguage) {
+    func playWorkDoneFeedback(language: AppLanguage) {
         let soundName = userDefaults.string(forKey: "pomodoro.sound.workDone") ?? "Glass"
         playSound(named: soundName)
-        sendImmediateBanner(.workDone, language: language)
+    }
 
-        let autoOpen = userDefaults.object(forKey: "pomodoro.autoOpenPopover") as? Bool ?? true
-        if autoOpen {
-            NotificationCenter.default.post(name: .openPopover, object: nil)
-        }
+    func notifyWorkDone(language: AppLanguage) {
+        playWorkDoneFeedback(language: language)
+        sendImmediateBanner(.workDone(.breakAvailable), language: language)
     }
 
     // MARK: - Tier 2: Break Done (medium feedback)
 
-    func notifyBreakDone(language: AppLanguage) {
+    func playBreakDoneFeedback(language: AppLanguage) {
         let soundName = userDefaults.string(forKey: "pomodoro.sound.breakDone") ?? "Ping"
         playSound(named: soundName)
-        sendImmediateBanner(.breakDone, language: language)
     }
 
-    // MARK: - Tier 3: Overtime (gentle nudge)
-
-    func notifyOvertime(language: AppLanguage) {
-        let soundName = userDefaults.string(forKey: "pomodoro.sound.overtime") ?? "Tink"
-        playSound(named: soundName)
-        sendImmediateBanner(.overtime, language: language)
-
-        let autoOpen = userDefaults.object(forKey: "pomodoro.autoOpenPopover") as? Bool ?? true
-        if autoOpen {
-            NotificationCenter.default.post(name: .openPopover, object: nil)
-        }
+    func notifyBreakDone(language: AppLanguage) {
+        playBreakDoneFeedback(language: language)
+        sendImmediateBanner(.breakDone, language: language)
     }
 
     // MARK: - Sound
@@ -274,16 +288,22 @@ final class NotificationService: NSObject, UNUserNotificationCenterDelegate, Pom
     ) async {
         let actionIdentifier = response.actionIdentifier
         await MainActor.run {
-            switch actionIdentifier {
-            case "breadcrumb.action.startBreak":
-                NotificationCenter.default.post(name: .pomodoroStartBreak, object: nil)
-            case "breadcrumb.action.nextSession":
-                NotificationCenter.default.post(name: .pomodoroNextSession, object: nil)
-            case "breadcrumb.action.stop":
-                NotificationCenter.default.post(name: .pomodoroStop, object: nil)
-            default:
-                break
-            }
+            handleActionIdentifier(actionIdentifier)
+        }
+    }
+
+    func handleActionIdentifier(_ actionIdentifier: String) {
+        switch actionIdentifier {
+        case "breadcrumb.action.continueWorking":
+            break
+        case "breadcrumb.action.openPopover":
+            postAppNotification(.openPopover)
+        case "breadcrumb.action.startBreak":
+            postAppNotification(.pomodoroStartBreak)
+        case "breadcrumb.action.nextSession":
+            postAppNotification(.pomodoroNextSession)
+        default:
+            break
         }
     }
 }

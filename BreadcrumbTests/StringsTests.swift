@@ -78,10 +78,20 @@ struct StringsTests {
         #expect(Strings.Pomodoro.saveAndDone(.german) == "Speichern & Fertig")
     }
 
-    @Test("Overtime notification strings")
-    func overtimeNotificationStrings() {
-        #expect(Strings.Notifications.overtimeNotificationBody(.english).contains("overtime"))
-        #expect(Strings.Notifications.overtimeNotificationBody(.german).contains("Überstunden"))
+    @Test("Completion notification strings")
+    func completionNotificationStrings() {
+        #expect(Strings.Notifications.pomodoroFinishedBody(.english) == "Time for a break")
+        #expect(Strings.Notifications.pomodoroFinishedBody(.german) == "Zeit für eine Pause")
+        #expect(Strings.Notifications.sessionCompleteBody(.english) == "Session complete")
+        #expect(Strings.Notifications.sessionCompleteBody(.german) == "Sitzung abgeschlossen")
+        #expect(Strings.Notifications.allSessionsCompleteBody(.english) == "All sessions complete")
+        #expect(Strings.Notifications.allSessionsCompleteBody(.german) == "Alle Sitzungen abgeschlossen")
+        #expect(Strings.Notifications.focusMateFinishedTitle(.english) == "FocusMate Finished!")
+        #expect(Strings.Notifications.focusMateFinishedTitle(.german) == "FocusMate beendet!")
+        #expect(Strings.Notifications.actionContinueWorking(.english) == "Continue working")
+        #expect(Strings.Notifications.actionContinueWorking(.german) == "Weiterarbeiten")
+        #expect(Strings.Notifications.actionStop(.english) == "Stop")
+        #expect(Strings.Notifications.actionStop(.german) == "Stopp")
     }
 
     @Test("Documents strings return correct translations")
@@ -108,12 +118,8 @@ struct StringsTests {
         #expect(Strings.Settings.soundWorkDone(.german) == "Ton bei Arbeitsende")
         #expect(Strings.Settings.soundBreakDone(.english) == "Break done sound")
         #expect(Strings.Settings.soundBreakDone(.german) == "Ton bei Pausenende")
-        #expect(Strings.Settings.soundOvertime(.english) == "Overtime sound")
-        #expect(Strings.Settings.soundOvertime(.german) == "Ton bei Überstunden")
         #expect(Strings.Settings.showBannerNotification(.english) == "Show banner notification")
         #expect(Strings.Settings.showBannerNotification(.german) == "Bannerbenachrichtigung anzeigen")
-        #expect(Strings.Settings.autoOpenPopover(.english) == "Auto-open popover")
-        #expect(Strings.Settings.autoOpenPopover(.german) == "Popover automatisch öffnen")
         #expect(Strings.Settings.previewSound(.english) == "Preview")
         #expect(Strings.Settings.previewSound(.german) == "Vorschau")
         #expect(Strings.Settings.noSound(.english) == "None")

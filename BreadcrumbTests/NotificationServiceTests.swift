@@ -47,16 +47,74 @@ struct NotificationServiceTests {
         defer { defaults.removePersistentDomain(forName: suiteName) }
 
         let service = NotificationService(notificationCenter: center, userDefaults: defaults)
-        let task = try #require(service.scheduleWorkDoneBanner(language: .english, after: 90))
+        let task = try #require(service.scheduleWorkDoneBanner(language: .english, after: 90, completion: .breakAvailable))
         await task.value
 
         let request = try #require(center.addedRequests.first)
         #expect(request.identifier == "breadcrumb.pomodoro.workDone")
         #expect(request.content.title == "Pomodoro Finished!")
-        #expect(request.content.body == "Time for a break.")
+        #expect(request.content.body == "Time for a break")
+        #expect(request.content.categoryIdentifier == "breadcrumb.category.workDone")
 
         let trigger = try #require(request.trigger as? UNTimeIntervalNotificationTrigger)
         #expect(trigger.timeInterval == 90)
+    }
+
+    @Test("Scheduling final single-session work done uses completion copy")
+    func scheduleSingleSessionWorkDoneBanner() async throws {
+        let center = RecordingUserNotificationCenter()
+        let suiteName = "NotificationServiceTests-\(UUID().uuidString)"
+        let defaults = try #require(UserDefaults(suiteName: suiteName))
+        defaults.set(true, forKey: "pomodoro.showBannerNotification")
+        defer { defaults.removePersistentDomain(forName: suiteName) }
+
+        let service = NotificationService(notificationCenter: center, userDefaults: defaults)
+        let task = try #require(service.scheduleWorkDoneBanner(language: .german, after: 90, completion: .sessionComplete))
+        await task.value
+
+        let request = try #require(center.addedRequests.first)
+        #expect(request.identifier == "breadcrumb.pomodoro.workDone")
+        #expect(request.content.title == "Pomodoro beendet!")
+        #expect(request.content.body == "Sitzung abgeschlossen")
+        #expect(request.content.categoryIdentifier == "breadcrumb.category.workComplete")
+    }
+
+    @Test("Scheduling final cycle work done uses all sessions copy")
+    func scheduleFinalCycleWorkDoneBanner() async throws {
+        let center = RecordingUserNotificationCenter()
+        let suiteName = "NotificationServiceTests-\(UUID().uuidString)"
+        let defaults = try #require(UserDefaults(suiteName: suiteName))
+        defaults.set(true, forKey: "pomodoro.showBannerNotification")
+        defer { defaults.removePersistentDomain(forName: suiteName) }
+
+        let service = NotificationService(notificationCenter: center, userDefaults: defaults)
+        let task = try #require(service.scheduleWorkDoneBanner(language: .german, after: 90, completion: .cycleComplete))
+        await task.value
+
+        let request = try #require(center.addedRequests.first)
+        #expect(request.identifier == "breadcrumb.pomodoro.workDone")
+        #expect(request.content.title == "Pomodoro beendet!")
+        #expect(request.content.body == "Alle Sitzungen abgeschlossen")
+        #expect(request.content.categoryIdentifier == "breadcrumb.category.workComplete")
+    }
+
+    @Test("Scheduling FocusMate done uses FocusMate completion copy")
+    func scheduleFocusMateDoneBanner() async throws {
+        let center = RecordingUserNotificationCenter()
+        let suiteName = "NotificationServiceTests-\(UUID().uuidString)"
+        let defaults = try #require(UserDefaults(suiteName: suiteName))
+        defaults.set(true, forKey: "pomodoro.showBannerNotification")
+        defer { defaults.removePersistentDomain(forName: suiteName) }
+
+        let service = NotificationService(notificationCenter: center, userDefaults: defaults)
+        let task = try #require(service.scheduleWorkDoneBanner(language: .german, after: 90, completion: .focusMateComplete))
+        await task.value
+
+        let request = try #require(center.addedRequests.first)
+        #expect(request.identifier == "breadcrumb.pomodoro.workDone")
+        #expect(request.content.title == "FocusMate beendet!")
+        #expect(request.content.body == "Sitzung abgeschlossen")
+        #expect(request.content.categoryIdentifier == "breadcrumb.category.workComplete")
     }
 
     @Test("Scheduling requests notification authorization before adding banner")
@@ -64,7 +122,7 @@ struct NotificationServiceTests {
         let center = RecordingUserNotificationCenter()
         let service = NotificationService(notificationCenter: center)
 
-        let task = try #require(service.scheduleWorkDoneBanner(language: .english, after: 90))
+        let task = try #require(service.scheduleWorkDoneBanner(language: .english, after: 90, completion: .breakAvailable))
         await task.value
 
         #expect(center.requestedAuthorizationOptions == [.alert, .sound])
@@ -96,8 +154,7 @@ struct NotificationServiceTests {
 
         #expect(center.removedIdentifiers == [
             "breadcrumb.pomodoro.workDone",
-            "breadcrumb.pomodoro.breakDone",
-            "breadcrumb.pomodoro.overtime"
+            "breadcrumb.pomodoro.breakDone"
         ])
     }
 
@@ -143,27 +200,6 @@ struct NotificationServiceTests {
         #expect(request.content.categoryIdentifier == "breadcrumb.category.breakDone")
     }
 
-    @Test("notifyOvertime posts an immediate banner")
-    func notifyOvertimePostsImmediateBanner() async throws {
-        let center = RecordingUserNotificationCenter()
-        let suiteName = "NotificationServiceTests-\(UUID().uuidString)"
-        let defaults = try #require(UserDefaults(suiteName: suiteName))
-        defaults.set(true, forKey: "pomodoro.showBannerNotification")
-        defer { defaults.removePersistentDomain(forName: suiteName) }
-
-        let service = NotificationService(notificationCenter: center, userDefaults: defaults)
-        service.notifyOvertime(language: .english)
-
-        await Task.yield()
-        try await Task.sleep(for: .milliseconds(50))
-
-        let request = try #require(center.addedRequests.first)
-        #expect(request.identifier == "breadcrumb.pomodoro.overtime")
-        #expect(request.content.title == "Overtime!")
-        #expect(request.trigger == nil)
-        #expect(request.content.categoryIdentifier == "breadcrumb.category.overtime")
-    }
-
     @Test("notifyWorkDone skips banner when disabled")
     func notifyWorkDoneSkipsBannerWhenDisabled() async throws {
         let center = RecordingUserNotificationCenter()
@@ -181,6 +217,63 @@ struct NotificationServiceTests {
         #expect(center.addedRequests.isEmpty)
     }
 
+    @Test("Work done feedback does not open the popover automatically")
+    func workDoneFeedbackDoesNotOpenPopover() throws {
+        let center = RecordingUserNotificationCenter()
+        let suiteName = "NotificationServiceTests-\(UUID().uuidString)"
+        let defaults = try #require(UserDefaults(suiteName: suiteName))
+        defaults.set("", forKey: "pomodoro.sound.workDone")
+        defer { defaults.removePersistentDomain(forName: suiteName) }
+        var postedNames: [Notification.Name] = []
+        let service = NotificationService(notificationCenter: center, userDefaults: defaults) { name in
+            postedNames.append(name)
+        }
+
+        service.playWorkDoneFeedback(language: .english)
+
+        #expect(postedNames.isEmpty)
+        #expect(center.addedRequests.isEmpty)
+    }
+
+    @Test("Continue working action does not post an app notification")
+    func continueWorkingActionIsNoOp() {
+        let center = RecordingUserNotificationCenter()
+        var postedNames: [Notification.Name] = []
+        let service = NotificationService(notificationCenter: center) { name in
+            postedNames.append(name)
+        }
+
+        service.handleActionIdentifier("breadcrumb.action.continueWorking")
+
+        #expect(postedNames.isEmpty)
+    }
+
+    @Test("Stop action opens the popover")
+    func stopActionOpensPopover() {
+        let center = RecordingUserNotificationCenter()
+        var postedNames: [Notification.Name] = []
+        let service = NotificationService(notificationCenter: center) { name in
+            postedNames.append(name)
+        }
+
+        service.handleActionIdentifier("breadcrumb.action.openPopover")
+
+        #expect(postedNames == [.openPopover])
+    }
+
+    @Test("Break action still starts the next session")
+    func nextSessionActionStillPostsNextSession() {
+        let center = RecordingUserNotificationCenter()
+        var postedNames: [Notification.Name] = []
+        let service = NotificationService(notificationCenter: center) { name in
+            postedNames.append(name)
+        }
+
+        service.handleActionIdentifier("breadcrumb.action.nextSession")
+
+        #expect(postedNames == [.pomodoroNextSession])
+    }
+
     @Test("Init registers notification categories with action buttons")
     func registersCategoriesOnInit() {
         let center = RecordingUserNotificationCenter()
@@ -191,21 +284,29 @@ struct NotificationServiceTests {
         let categoryIDs = center.registeredCategories.map(\.identifier).sorted()
         #expect(categoryIDs == [
             "breadcrumb.category.breakDone",
-            "breadcrumb.category.overtime",
+            "breadcrumb.category.workComplete",
             "breadcrumb.category.workDone"
         ])
 
         let workDone = center.registeredCategories.first { $0.identifier == "breadcrumb.category.workDone" }!
-        #expect(workDone.actions.count == 1)
-        #expect(workDone.actions[0].identifier == "breadcrumb.action.startBreak")
+        assertWorkCompletionActions(workDone.actions)
 
         let breakDone = center.registeredCategories.first { $0.identifier == "breadcrumb.category.breakDone" }!
         #expect(breakDone.actions.count == 1)
         #expect(breakDone.actions[0].identifier == "breadcrumb.action.nextSession")
 
-        let overtime = center.registeredCategories.first { $0.identifier == "breadcrumb.category.overtime" }!
-        #expect(overtime.actions.count == 1)
-        #expect(overtime.actions[0].identifier == "breadcrumb.action.stop")
+        let workComplete = center.registeredCategories.first { $0.identifier == "breadcrumb.category.workComplete" }!
+        assertWorkCompletionActions(workComplete.actions)
+    }
+
+    private func assertWorkCompletionActions(_ actions: [UNNotificationAction]) {
+        #expect(actions.count == 2)
+        #expect(actions[0].identifier == "breadcrumb.action.continueWorking")
+        #expect(actions[0].title == "Weiterarbeiten")
+        #expect(actions[0].options.isEmpty)
+        #expect(actions[1].identifier == "breadcrumb.action.openPopover")
+        #expect(actions[1].title == "Stopp")
+        #expect(actions[1].options.contains(.foreground))
     }
 }
 

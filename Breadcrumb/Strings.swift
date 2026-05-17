@@ -314,7 +314,16 @@ enum Strings {
             l == .german ? "Pomodoro beendet!" : "Pomodoro Finished!"
         }
         static func pomodoroFinishedBody(_ l: AppLanguage) -> String {
-            l == .german ? "Zeit für eine Pause." : "Time for a break."
+            l == .german ? "Zeit für eine Pause" : "Time for a break"
+        }
+        static func sessionCompleteBody(_ l: AppLanguage) -> String {
+            l == .german ? "Sitzung abgeschlossen" : "Session complete"
+        }
+        static func allSessionsCompleteBody(_ l: AppLanguage) -> String {
+            l == .german ? "Alle Sitzungen abgeschlossen" : "All sessions complete"
+        }
+        static func focusMateFinishedTitle(_ l: AppLanguage) -> String {
+            l == .german ? "FocusMate beendet!" : "FocusMate Finished!"
         }
         static func breakOverTitle(_ l: AppLanguage) -> String {
             l == .german ? "Pause vorbei!" : "Break Over!"
@@ -322,20 +331,17 @@ enum Strings {
         static func breakOverBody(_ l: AppLanguage) -> String {
             l == .german ? "Bereit für die nächste Sitzung?" : "Ready for the next session?"
         }
-        static func overtimeNotificationBody(_ l: AppLanguage) -> String {
-            l == .german ? "Timer abgelaufen — Überstunden gestartet" : "Timer complete — overtime started"
-        }
-        static func overtimeTitle(_ l: AppLanguage) -> String {
-            l == .german ? "Überstunden!" : "Overtime!"
-        }
         static func actionStartBreak(_ l: AppLanguage) -> String {
             l == .german ? "Pause starten" : "Start Break"
         }
         static func actionNextSession(_ l: AppLanguage) -> String {
             l == .german ? "Nächste Sitzung" : "Next Session"
         }
+        static func actionContinueWorking(_ l: AppLanguage) -> String {
+            l == .german ? "Weiterarbeiten" : "Continue working"
+        }
         static func actionStop(_ l: AppLanguage) -> String {
-            l == .german ? "Stoppen" : "Stop"
+            l == .german ? "Stopp" : "Stop"
         }
     }
 
@@ -369,14 +375,8 @@ static func dictation(_ l: AppLanguage) -> String {
         static func soundBreakDone(_ l: AppLanguage) -> String {
             l == .german ? "Ton bei Pausenende" : "Break done sound"
         }
-        static func soundOvertime(_ l: AppLanguage) -> String {
-            l == .german ? "Ton bei Überstunden" : "Overtime sound"
-        }
         static func showBannerNotification(_ l: AppLanguage) -> String {
             l == .german ? "Bannerbenachrichtigung anzeigen" : "Show banner notification"
-        }
-        static func autoOpenPopover(_ l: AppLanguage) -> String {
-            l == .german ? "Popover automatisch öffnen" : "Auto-open popover"
         }
         static func previewSound(_ l: AppLanguage) -> String {
             l == .german ? "Vorschau" : "Preview"

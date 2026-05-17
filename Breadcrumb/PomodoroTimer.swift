@@ -252,15 +252,14 @@ final class PomodoroTimer {
             remainingSeconds = max(0, phaseDurationSeconds - elapsed)
             if remainingSeconds <= 0 {
                 remainingSeconds = 0
-                notificationService?.cancelScheduledBanners()
+                let stored = UserDefaults.standard.string(forKey: "app.language") ?? "de"
+                let language = AppLanguage(rawValue: stored) ?? .german
                 if currentPhase == .work && !isFocusMateSession {
                     // Auto-continue into overtime for regular Pomodoro work phases
                     isOvertime = true
                     didCrossZero = true
                     overtimeSeconds = elapsed - phaseDurationSeconds
-                    let stored = UserDefaults.standard.string(forKey: "app.language") ?? "de"
-                    let language = AppLanguage(rawValue: stored) ?? .german
-                    notificationService?.notifyOvertime(language: language)
+                    notificationService?.playWorkDoneFeedback(language: language)
                 } else {
                     // Breaks and FocusMate sessions stop at zero
                     isRunning = false
@@ -268,12 +267,10 @@ final class PomodoroTimer {
                     currentPhase = .sessionEnded
                     timerTask?.cancel()
                     timerTask = nil
-                    let stored = UserDefaults.standard.string(forKey: "app.language") ?? "de"
-                    let language = AppLanguage(rawValue: stored) ?? .german
                     if wasBreak {
-                        notificationService?.notifyBreakDone(language: language)
+                        notificationService?.playBreakDoneFeedback(language: language)
                     } else {
-                        notificationService?.notifyWorkDone(language: language)
+                        notificationService?.playWorkDoneFeedback(language: language)
                     }
                 }
             }
@@ -302,12 +299,28 @@ final class PomodoroTimer {
 
         switch currentPhase {
         case .work:
-            notificationService?.scheduleWorkDoneBanner(language: language, after: seconds)
+            notificationService?.scheduleWorkDoneBanner(
+                language: language,
+                after: seconds,
+                completion: workCompletionContext
+            )
         case .shortBreak, .longBreak:
             notificationService?.scheduleBreakDoneBanner(language: language, after: seconds)
         case .idle, .sessionEnded:
             break
         }
+    }
+
+    private var workCompletionContext: PomodoroWorkCompletionContext {
+        if isFocusMateSession {
+            return .focusMateComplete
+        }
+
+        if isCycleComplete {
+            return sessionTotalSessions == 1 ? .sessionComplete : .cycleComplete
+        }
+
+        return .breakAvailable
     }
 
     private var currentLanguage: AppLanguage {

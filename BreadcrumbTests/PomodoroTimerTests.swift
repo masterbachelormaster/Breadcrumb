@@ -35,7 +35,7 @@ struct PomodoroTimerTests {
 
         timer.startWork(project: nil, durationMinutes: 25, shortBreakMinutes: 5, longBreakMinutes: 15, sessionsBeforeLong: 4, totalSessions: 4)
 
-        #expect(notifier.scheduledBanners == [.workDone(seconds: 25 * 60)])
+        #expect(notifier.scheduledBanners == [.workDone(seconds: 25 * 60, completion: .breakAvailable)])
     }
 
     @Test("Starting a break schedules a native break completion banner")
@@ -48,7 +48,7 @@ struct PomodoroTimerTests {
         timer.startBreak()
 
         #expect(notifier.scheduledBanners == [
-            .workDone(seconds: 25 * 60),
+            .workDone(seconds: 25 * 60, completion: .breakAvailable),
             .breakDone(seconds: 5 * 60)
         ])
     }
@@ -67,19 +67,73 @@ struct PomodoroTimerTests {
         #expect(notifier.cancelCount == countAfterStart + 2)
     }
 
-    @Test("Tick cancels scheduled banners when timer crosses zero")
-    func tickCancelsScheduledBannersAtZero() {
+    @Test("Work expiry keeps the scheduled end banner as the only user-facing notification")
+    func workExpiryDoesNotPostImmediateOvertimeBanner() {
+        let notifier = RecordingPomodoroNotifier()
+        let timer = PomodoroTimer()
+        timer.notificationService = notifier
+        timer.startWork(project: nil, durationMinutes: 25, shortBreakMinutes: 5, longBreakMinutes: 15, sessionsBeforeLong: 4, totalSessions: 1)
+        let countAfterStart = notifier.cancelCount
+
+        timer.phaseStartDate = Date.now.addingTimeInterval(-1500)
+        timer.tick()
+
+        #expect(notifier.cancelCount == countAfterStart)
+        #expect(notifier.scheduledBanners == [.workDone(seconds: 25 * 60, completion: .sessionComplete)])
+        #expect(notifier.workDoneFeedbackCount == 1)
+        #expect(notifier.workDoneCount == 0)
+        #expect(notifier.overtimeCount == 0)
+        #expect(timer.isOvertime == true)
+    }
+
+    @Test("Break expiry keeps the scheduled break banner as the only user-facing notification")
+    func breakExpiryDoesNotPostImmediateBreakDoneBanner() {
         let notifier = RecordingPomodoroNotifier()
         let timer = PomodoroTimer()
         timer.notificationService = notifier
         timer.startWork(project: nil, durationMinutes: 25, shortBreakMinutes: 5, longBreakMinutes: 15, sessionsBeforeLong: 4, totalSessions: 4)
-        let countAfterStart = notifier.cancelCount
+        timer.startBreak()
+        let countAfterBreakStart = notifier.cancelCount
 
-        timer.remainingSeconds = 0
-        timer.phaseStartDate = Date.now.addingTimeInterval(-1500)
+        timer.phaseStartDate = Date.now.addingTimeInterval(-Double(5 * 60))
         timer.tick()
 
-        #expect(notifier.cancelCount > countAfterStart)
+        #expect(notifier.cancelCount == countAfterBreakStart)
+        #expect(notifier.breakDoneFeedbackCount == 1)
+        #expect(notifier.breakDoneCount == 0)
+        #expect(timer.currentPhase == .sessionEnded)
+    }
+
+    @Test("FocusMate expiry keeps the scheduled work banner as the only user-facing notification")
+    func focusMateExpiryDoesNotPostImmediateWorkDoneBanner() {
+        let notifier = RecordingPomodoroNotifier()
+        let timer = PomodoroTimer()
+        timer.notificationService = notifier
+        let endTime = Date.now.addingTimeInterval(25 * 60)
+        timer.startFocusMate(project: nil, durationMinutes: 25, endTime: endTime)
+        let countAfterStart = notifier.cancelCount
+
+        timer.phaseStartDate = Date.now.addingTimeInterval(-Double(timer.phaseDurationSeconds))
+        timer.tick()
+
+        #expect(notifier.cancelCount == countAfterStart)
+        #expect(notifier.scheduledBanners == [.workDone(seconds: timer.phaseDurationSeconds, completion: .focusMateComplete)])
+        #expect(notifier.workDoneFeedbackCount == 1)
+        #expect(notifier.workDoneCount == 0)
+        #expect(timer.currentPhase == .sessionEnded)
+    }
+
+    @Test("Final session in a multi-session cycle schedules all-sessions completion")
+    func finalCycleSessionSchedulesAllSessionsCompletionBanner() {
+        let notifier = RecordingPomodoroNotifier()
+        let timer = PomodoroTimer()
+        timer.notificationService = notifier
+        timer.startWork(project: nil, durationMinutes: 25, shortBreakMinutes: 5, longBreakMinutes: 15, sessionsBeforeLong: 4, totalSessions: 2)
+
+        timer.startBreak()
+        timer.startNextWorkSession()
+
+        #expect(notifier.scheduledBanners.last == .workDone(seconds: 25 * 60, completion: .cycleComplete))
     }
 
     @Test("Tick decrements remaining seconds")
@@ -439,7 +493,7 @@ struct PomodoroTimerTests {
 }
 
 private enum ScheduledBanner: Equatable {
-    case workDone(seconds: Int)
+    case workDone(seconds: Int, completion: PomodoroWorkCompletionContext)
     case breakDone(seconds: Int)
 }
 
@@ -447,13 +501,19 @@ private enum ScheduledBanner: Equatable {
 private final class RecordingPomodoroNotifier: PomodoroNotificationScheduling {
     var scheduledBanners: [ScheduledBanner] = []
     var cancelCount = 0
+    var workDoneFeedbackCount = 0
+    var breakDoneFeedbackCount = 0
     var workDoneCount = 0
     var breakDoneCount = 0
     var overtimeCount = 0
 
     @discardableResult
-    func scheduleWorkDoneBanner(language: AppLanguage, after seconds: TimeInterval) -> Task<Void, Never>? {
-        scheduledBanners.append(.workDone(seconds: Int(seconds)))
+    func scheduleWorkDoneBanner(
+        language: AppLanguage,
+        after seconds: TimeInterval,
+        completion: PomodoroWorkCompletionContext
+    ) -> Task<Void, Never>? {
+        scheduledBanners.append(.workDone(seconds: Int(seconds), completion: completion))
         return nil
     }
 
@@ -467,6 +527,14 @@ private final class RecordingPomodoroNotifier: PomodoroNotificationScheduling {
         cancelCount += 1
     }
 
+    func playWorkDoneFeedback(language: AppLanguage) {
+        workDoneFeedbackCount += 1
+    }
+
+    func playBreakDoneFeedback(language: AppLanguage) {
+        breakDoneFeedbackCount += 1
+    }
+
     func notifyWorkDone(language: AppLanguage) {
         workDoneCount += 1
     }
@@ -475,7 +543,4 @@ private final class RecordingPomodoroNotifier: PomodoroNotificationScheduling {
         breakDoneCount += 1
     }
 
-    func notifyOvertime(language: AppLanguage) {
-        overtimeCount += 1
-    }
 }

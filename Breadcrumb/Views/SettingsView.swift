@@ -13,9 +13,7 @@ struct SettingsView: View {
     @AppStorage("pomodoro.totalSessions") private var totalSessions = 4
     @AppStorage("pomodoro.sound.workDone") private var soundWorkDone = "Glass"
     @AppStorage("pomodoro.sound.breakDone") private var soundBreakDone = "Ping"
-    @AppStorage("pomodoro.sound.overtime") private var soundOvertime = "Tink"
     @AppStorage("pomodoro.showBannerNotification") private var showBannerNotification = true
-    @AppStorage("pomodoro.autoOpenPopover") private var autoOpenPopover = true
     @AppStorage("pomodoro.focusMateEndEarlyMinutes") private var focusMateEndEarlyMinutes = 0
     @AppStorage("ai.provider") private var aiProvider = AIBackend.local.rawValue
     @AppStorage("feature.dictationEnabled") private var dictationEnabled = false
@@ -124,9 +122,7 @@ struct SettingsView: View {
                 Section(Strings.Settings.notifications(l)) {
                     SoundPicker(label: Strings.Settings.soundWorkDone(l), selection: $soundWorkDone)
                     SoundPicker(label: Strings.Settings.soundBreakDone(l), selection: $soundBreakDone)
-                    SoundPicker(label: Strings.Settings.soundOvertime(l), selection: $soundOvertime)
                     Toggle(Strings.Settings.showBannerNotification(l), isOn: $showBannerNotification)
-                    Toggle(Strings.Settings.autoOpenPopover(l), isOn: $autoOpenPopover)
                 }
             }
             .formStyle(.grouped)
