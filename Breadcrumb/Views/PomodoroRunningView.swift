@@ -1,15 +1,12 @@
 import SwiftUI
-import SwiftData
 
 struct PomodoroRunningView: View {
     @Environment(PomodoroTimer.self) private var timer
     @Environment(LanguageManager.self) private var languageManager
     @Environment(WindowManager.self) private var windowManager
-    @Environment(\.modelContext) private var modelContext
     var onFinished: () -> Void
 
-    @State private var showingSessionEnd = false
-    @State private var wasBreakEnd = false
+    @AppStorage("pomodoro.sessionEndPresentation") private var sessionEndPresentation = SessionEndPresentation.window.rawValue
 
     var body: some View {
         VStack(spacing: 0) {
@@ -88,104 +85,18 @@ struct PomodoroRunningView: View {
             .padding(.bottom, 24)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .onChange(of: timer.currentPhase) { oldPhase, newPhase in
-            if newPhase == .sessionEnded {
-                if oldPhase == .work {
-                    wasBreakEnd = false
-                    withAnimation(.easeInOut(duration: 0.2)) { showingSessionEnd = true }
-                } else if oldPhase == .shortBreak || oldPhase == .longBreak {
-                    wasBreakEnd = true
-                    withAnimation(.easeInOut(duration: 0.2)) { showingSessionEnd = true }
-                }
-            }
-        }
-        .onChange(of: timer.didCrossZero) { _, crossed in
-            if crossed && timer.currentPhase == .work && !showingSessionEnd {
-                wasBreakEnd = false
-                withAnimation(.easeInOut(duration: 0.2)) { showingSessionEnd = true }
-            }
-        }
         .overlay {
-            if showingSessionEnd {
+            if timer.pendingSessionEnd != nil && sessionEndMode == .menuBar {
                 FormOverlay(onDismiss: {}) {
-                    PomodoroSessionEndView(
-                        wasBreak: wasBreakEnd,
-                        isCycleComplete: timer.isCycleComplete,
-                        isFocusMate: timer.isFocusMateSession,
-                        boundProjectID: timer.boundProjectID,
-                        onSaveWorkSession: { session in
-                            saveSession(session)
-                            dismissSessionEnd()
-                            if timer.isCycleComplete {
-                                timer.stop()
-                                onFinished()
-                            } else {
-                                timer.startBreak()
-                            }
-                        },
-                        onContinueWorking: {
-                            dismissSessionEnd()
-                        },
-                        onSkip: {
-                            let session = PomodoroSession(
-                                plannedDuration: TimeInterval(timer.originalDurationSeconds),
-                                sessionType: .work,
-                                sessionNumber: timer.currentSessionNumber
-                            )
-                            session.completed = timer.remainingSeconds <= 0
-                            session.endedAt = .now
-                            session.actualDuration = TimeInterval(timer.originalDurationSeconds - timer.remainingSeconds + timer.overtimeSeconds)
-                            session.project = timer.boundProject
-                            session.isFocusMate = timer.isFocusMateSession
-                            modelContext.insert(session)
-                            modelContext.saveWithLogging()
-
-                            dismissSessionEnd()
-                            if timer.isCycleComplete {
-                                timer.stop()
-                                onFinished()
-                            } else {
-                                timer.startBreak()
-                            }
-                        },
-                        onStartNextSession: {
-                            dismissSessionEnd()
-                            timer.startNextWorkSession()
-                        },
-                        onStopCompletely: {
-                            if !wasBreakEnd {
-                                let session = PomodoroSession(
-                                    plannedDuration: TimeInterval(timer.originalDurationSeconds),
-                                    sessionType: .work,
-                                    sessionNumber: timer.currentSessionNumber
-                                )
-                                session.completed = timer.remainingSeconds <= 0
-                                session.endedAt = .now
-                                session.actualDuration = TimeInterval(timer.originalDurationSeconds - timer.remainingSeconds + timer.overtimeSeconds)
-                                session.project = timer.boundProject
-                                session.isFocusMate = timer.isFocusMateSession
-                                modelContext.insert(session)
-                                modelContext.saveWithLogging()
-                            }
-
-                            dismissSessionEnd()
-                            timer.stop()
-                            onFinished()
-                        },
-                        onStopAfterSave: {
-                            dismissSessionEnd()
-                            timer.stop()
-                            onFinished()
-                        },
-                        onSnooze: { minutes in
-                            dismissSessionEnd()
-                            timer.snooze(minutes: minutes)
-                        }
-                    )
+                    PomodoroSessionEndHostView(onFinished: onFinished)
                 }
                 .transition(.opacity)
             }
         }
+    }
+
+    private var sessionEndMode: SessionEndPresentation {
+        SessionEndPresentation(rawValue: sessionEndPresentation) ?? .window
     }
 
     private var phaseEmoji: String {
@@ -221,17 +132,11 @@ struct PomodoroRunningView: View {
     }
 
     private func stopSession() {
-        wasBreakEnd = false
-        withAnimation(.easeInOut(duration: 0.2)) { showingSessionEnd = true }
-        timer.pause()
-    }
-
-    private func dismissSessionEnd() {
-        withAnimation(.easeInOut(duration: 0.2)) { showingSessionEnd = false }
+        timer.requestStop()
     }
 
     private func skipBreak() {
-        showingSessionEnd = false
+        timer.clearPendingSessionEnd()
         if timer.isCycleComplete {
             timer.stop()
             onFinished()
@@ -239,10 +144,4 @@ struct PomodoroRunningView: View {
             timer.startNextWorkSession()
         }
     }
-
-    private func saveSession(_ session: PomodoroSession) {
-        modelContext.insert(session)
-        modelContext.saveWithLogging()
-    }
-
 }

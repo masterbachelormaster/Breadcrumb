@@ -3,6 +3,7 @@ import SwiftUI
 struct ContentView: View {
     @Environment(PomodoroTimer.self) private var pomodoroTimer
     @Environment(WindowManager.self) private var windowManager
+    @Environment(\.openWindow) private var openWindow
     @State private var selectedProject: Project?
     @State private var screen: Screen = .projectList
     @State private var showingPomodoroConfig = false
@@ -17,6 +18,7 @@ struct ContentView: View {
     @State private var configFocusMateStartTime: Date = .now
 
     @AppStorage("hasSeenWelcome") private var hasSeenWelcome = false
+    @AppStorage("pomodoro.sessionEndPresentation") private var sessionEndPresentation = SessionEndPresentation.window.rawValue
 
     enum Screen {
         case projectList
@@ -31,6 +33,11 @@ struct ContentView: View {
                     WelcomeView(onDismiss: {
                         withAnimation(.easeInOut(duration: 0.2)) { hasSeenWelcome = true }
                     })
+                    .transition(.opacity)
+                } else if shouldShowSessionEndSummary {
+                    SessionEndPopoverSummaryView {
+                        windowManager.openSessionEnd()
+                    }
                     .transition(.opacity)
                 } else if pomodoroTimer.currentPhase != .idle {
                     PomodoroRunningView(onFinished: {
@@ -103,6 +110,21 @@ struct ContentView: View {
             }
         }
         .frame(width: 350, height: 450)
+        .task {
+            windowManager.setOpenWindowAction(openWindow)
+            autoOpenSessionEndWindowIfNeeded()
+        }
+        .onChange(of: pomodoroTimer.pendingSessionEnd) { oldValue, newValue in
+            if oldValue == nil && newValue != nil {
+                windowManager.resetSessionEndWindowSuppression()
+            } else if newValue == nil {
+                windowManager.resetSessionEndWindowSuppression()
+            }
+            autoOpenSessionEndWindowIfNeeded()
+        }
+        .onChange(of: sessionEndPresentation) {
+            autoOpenSessionEndWindowIfNeeded()
+        }
     }
 
     @AppStorage("pomodoro.workMinutes") private var workMinutes = 25
@@ -111,6 +133,19 @@ struct ContentView: View {
     @AppStorage("pomodoro.sessionsBeforeLongBreak") private var sessionsBeforeLong = 4
     @AppStorage("pomodoro.totalSessions") private var totalSessions = 4
     @AppStorage("pomodoro.focusMateEndEarlyMinutes") private var focusMateEndEarlyMinutes = 0
+
+    private var sessionEndMode: SessionEndPresentation {
+        SessionEndPresentation(rawValue: sessionEndPresentation) ?? .window
+    }
+
+    private var shouldShowSessionEndSummary: Bool {
+        pomodoroTimer.pendingSessionEnd != nil && sessionEndMode == .window
+    }
+
+    private func autoOpenSessionEndWindowIfNeeded() {
+        guard pomodoroTimer.pendingSessionEnd != nil, sessionEndMode == .window else { return }
+        windowManager.autoOpenSessionEnd()
+    }
 
     private func startPomodoro(project: Project?) {
         pendingPomodoroProject = project

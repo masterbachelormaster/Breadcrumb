@@ -38,6 +38,7 @@
 		7952B45A0B64DDDFA48149C3 /* EditLabelFormView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6B294E9E641FE8862731EEA /* EditLabelFormView.swift */; };
 		798EB533E3B9781D9CFF360F /* SpeechRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE04F7FFEC823E6DA5439900 /* SpeechRecognizer.swift */; };
 		7A9DF4EB4DEA7C643635E72F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DE07044651329554A55EEDB /* AppDelegate.swift */; };
+		7CCED741743384FB098186F2 /* SessionEndPopoverSummaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7F1DAD5605F9B53EBAB6512 /* SessionEndPopoverSummaryView.swift */; };
 		7D34D0135D8B9F99FDCC585F /* KeychainHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E85B0B7BA2187935D5BE75D /* KeychainHelper.swift */; };
 		7FFA294677B1B83E4EE65977 /* NotificationServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 831984343AE49E818C7511B7 /* NotificationServiceTests.swift */; };
 		82589CF7B313B78A00138E1E /* PomodoroSessionEndHostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84E8BCCA2B83DAD9CF398B39 /* PomodoroSessionEndHostView.swift */; };
@@ -142,6 +143,7 @@
 		AF0C4FAC9B8A87BEA26FBC8B /* StatusEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusEntry.swift; sourceTree = "<group>"; };
 		AF7604A00FB4C888AA719B6C /* PomodoroRunningView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PomodoroRunningView.swift; sourceTree = "<group>"; };
 		B73A74DE75279264943C5462 /* WindowManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WindowManager.swift; sourceTree = "<group>"; };
+		B7F1DAD5605F9B53EBAB6512 /* SessionEndPopoverSummaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionEndPopoverSummaryView.swift; sourceTree = "<group>"; };
 		B8C5CE9442C811F8DCF196BD /* HistoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryView.swift; sourceTree = "<group>"; };
 		BDF418F050E4F08EE71C99E8 /* BreadcrumbCommands.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreadcrumbCommands.swift; sourceTree = "<group>"; };
 		C3F1C79AA5792B6763AB7DF4 /* PomodoroConfigView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PomodoroConfigView.swift; sourceTree = "<group>"; };
@@ -198,6 +200,7 @@
 				47078C1986E00D73E6A06727 /* ProjectListView.swift */,
 				9E21EBC79DC6B3D44E36AD65 /* ProjectPickerView.swift */,
 				47DF5F532D7705CA6E56446A /* ProjectRowView.swift */,
+				B7F1DAD5605F9B53EBAB6512 /* SessionEndPopoverSummaryView.swift */,
 				2653310DF0F41C97000B793D /* SessionEndWindowView.swift */,
 				E97F9AD204BAC7BB0A7E5D92 /* SettingsView.swift */,
 				65312D00F423DD42BAB0C2FD /* SmartTimestampView.swift */,
@@ -439,6 +442,7 @@
 				F3CA383D086855E95F01B254 /* ProjectListView.swift in Sources */,
 				0F8F9143B46A16257511C6B5 /* ProjectPickerView.swift in Sources */,
 				D9DA16D240E3D429351FAB57 /* ProjectRowView.swift in Sources */,
+				7CCED741743384FB098186F2 /* SessionEndPopoverSummaryView.swift in Sources */,
 				DCB13A00132C99389B99D4B5 /* SessionEndWindowView.swift in Sources */,
 				B949DE8B498359E91079E6D7 /* SettingsView.swift in Sources */,
 				F8D0888E96F2ED902AF2E686 /* SmartTimestampView.swift in Sources */,
