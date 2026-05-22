@@ -1,5 +1,6 @@
 import Testing
 import Foundation
+import SwiftData
 @testable import Breadcrumb
 
 @Suite("PomodoroTimer Tests")
@@ -121,6 +122,82 @@ struct PomodoroTimerTests {
         #expect(notifier.workDoneFeedbackCount == 1)
         #expect(notifier.workDoneCount == 0)
         #expect(timer.currentPhase == .sessionEnded)
+    }
+
+    @Test("Work expiry sets pending work-done prompt")
+    func workExpirySetsPendingWorkDonePrompt() {
+        let timer = PomodoroTimer()
+        timer.startWork(project: nil, durationMinutes: 25, shortBreakMinutes: 5, longBreakMinutes: 15, sessionsBeforeLong: 4, totalSessions: 4)
+
+        timer.phaseStartDate = Date.now.addingTimeInterval(-Double(25 * 60))
+        timer.tick()
+
+        #expect(timer.pendingSessionEnd == .workDone)
+        #expect(timer.didCrossZero == true)
+        #expect(timer.currentPhase == .work)
+        #expect(timer.isOvertime == true)
+    }
+
+    @Test("Break expiry sets pending break-done prompt")
+    func breakExpirySetsPendingBreakDonePrompt() {
+        let timer = PomodoroTimer()
+        timer.startWork(project: nil, durationMinutes: 25, shortBreakMinutes: 5, longBreakMinutes: 15, sessionsBeforeLong: 4, totalSessions: 4)
+        timer.startBreak()
+
+        timer.phaseStartDate = Date.now.addingTimeInterval(-Double(5 * 60))
+        timer.tick()
+
+        #expect(timer.pendingSessionEnd == .breakDone)
+        #expect(timer.currentPhase == .sessionEnded)
+    }
+
+    @Test("FocusMate expiry sets pending FocusMate prompt")
+    func focusMateExpirySetsPendingFocusMatePrompt() {
+        let timer = PomodoroTimer()
+        let endTime = Date.now.addingTimeInterval(25 * 60)
+        timer.startFocusMate(project: nil, durationMinutes: 25, endTime: endTime)
+
+        timer.phaseStartDate = Date.now.addingTimeInterval(-Double(timer.phaseDurationSeconds))
+        timer.tick()
+
+        #expect(timer.pendingSessionEnd == .focusMateDone)
+        #expect(timer.currentPhase == .sessionEnded)
+    }
+
+    @Test("Manual stop pauses timer and sets pending stopped prompt")
+    func manualStopSetsPendingStoppedPrompt() {
+        let timer = PomodoroTimer()
+        timer.startWork(project: nil, durationMinutes: 25, shortBreakMinutes: 5, longBreakMinutes: 15, sessionsBeforeLong: 4, totalSessions: 4)
+
+        timer.requestStop()
+
+        #expect(timer.pendingSessionEnd == .stopped)
+        #expect(timer.isPaused == true)
+        #expect(timer.currentPhase == .work)
+    }
+
+    @Test("Starting work stores bound project identifier")
+    func startWorkStoresBoundProjectIdentifier() {
+        let timer = PomodoroTimer()
+        let project = Project(name: "Planning", icon: "list.bullet")
+
+        timer.startWork(project: project, durationMinutes: 25, shortBreakMinutes: 5, longBreakMinutes: 15, sessionsBeforeLong: 4, totalSessions: 4)
+
+        #expect(timer.boundProject === project)
+        #expect(timer.boundProjectID == project.persistentModelID)
+    }
+
+    @Test("Clearing pending session end leaves timer state intact")
+    func clearPendingSessionEndLeavesTimerStateIntact() {
+        let timer = PomodoroTimer()
+        timer.startWork(project: nil, durationMinutes: 25, shortBreakMinutes: 5, longBreakMinutes: 15, sessionsBeforeLong: 4, totalSessions: 4)
+        timer.requestStop()
+
+        timer.clearPendingSessionEnd()
+
+        #expect(timer.pendingSessionEnd == nil)
+        #expect(timer.isPaused == true)
+        #expect(timer.currentPhase == .work)
     }
 
     @Test("Final session in a multi-session cycle schedules all-sessions completion")

@@ -1,6 +1,7 @@
 import AppKit
 import Foundation
 import Observation
+import SwiftData
 
 enum TimerPhase: Equatable {
     case idle
@@ -8,6 +9,20 @@ enum TimerPhase: Equatable {
     case shortBreak
     case longBreak
     case sessionEnded
+}
+
+enum SessionEndReason: Equatable {
+    case workDone
+    case breakDone
+    case focusMateDone
+    case stopped
+}
+
+enum SessionEndPresentation: String, CaseIterable, Identifiable {
+    case window
+    case menuBar
+
+    var id: String { rawValue }
 }
 
 @Observable
@@ -21,8 +36,10 @@ final class PomodoroTimer {
     var currentPhase: TimerPhase = .idle
     var currentSessionNumber: Int = 1
     var boundProject: Project?
+    var boundProjectID: PersistentIdentifier?
     var originalDurationSeconds: Int = 0
     var didCrossZero: Bool = false
+    var pendingSessionEnd: SessionEndReason?
 
     // FocusMate properties
     var isFocusMateSession: Bool = false
@@ -93,7 +110,9 @@ final class PomodoroTimer {
     // MARK: - Methods
 
     func startWork(project: Project?, durationMinutes: Int, shortBreakMinutes: Int, longBreakMinutes: Int, sessionsBeforeLong: Int, totalSessions: Int) {
+        pendingSessionEnd = nil
         boundProject = project
+        boundProjectID = project?.persistentModelID
         sessionWorkMinutes = durationMinutes
         sessionShortBreakMinutes = shortBreakMinutes
         sessionLongBreakMinutes = longBreakMinutes
@@ -118,7 +137,9 @@ final class PomodoroTimer {
         let offsetSeconds = max(0, earlyEndMinutes) * 60
         let remaining = max(0, Int(endTime.timeIntervalSince(Date.now)) - offsetSeconds)
 
+        pendingSessionEnd = nil
         boundProject = project
+        boundProjectID = project?.persistentModelID
         focusMateEndTime = endTime
         focusMateEarlyEndMinutes = max(0, earlyEndMinutes)
         isFocusMateSession = true
@@ -139,6 +160,7 @@ final class PomodoroTimer {
     }
 
     func startBreak() {
+        pendingSessionEnd = nil
         guard !isCycleComplete else {
             stop()
             return
@@ -173,6 +195,7 @@ final class PomodoroTimer {
     }
 
     func enterOvertime() {
+        pendingSessionEnd = nil
         isOvertime = true
         isRunning = true
         overtimeSeconds = 0
@@ -184,6 +207,7 @@ final class PomodoroTimer {
     }
 
     func snooze(minutes: Int) {
+        pendingSessionEnd = nil
         isOvertime = false
         overtimeSeconds = 0
         didCrossZero = false
@@ -215,7 +239,17 @@ final class PomodoroTimer {
         startTicking()
     }
 
+    func requestStop() {
+        pause()
+        pendingSessionEnd = .stopped
+    }
+
+    func clearPendingSessionEnd() {
+        pendingSessionEnd = nil
+    }
+
     func stop() {
+        pendingSessionEnd = nil
         notificationService?.cancelScheduledBanners()
         timerTask?.cancel()
         timerTask = nil
@@ -232,6 +266,7 @@ final class PomodoroTimer {
         currentPhase = .idle
         currentSessionNumber = 1
         boundProject = nil
+        boundProjectID = nil
         isFocusMateSession = false
         focusMateEndTime = nil
         focusMateEarlyEndMinutes = 0
@@ -258,6 +293,7 @@ final class PomodoroTimer {
                     // Auto-continue into overtime for regular Pomodoro work phases
                     isOvertime = true
                     didCrossZero = true
+                    pendingSessionEnd = .workDone
                     overtimeSeconds = elapsed - phaseDurationSeconds
                     notificationService?.playWorkDoneFeedback(language: language)
                 } else {
@@ -265,6 +301,7 @@ final class PomodoroTimer {
                     isRunning = false
                     let wasBreak = currentPhase == .shortBreak || currentPhase == .longBreak
                     currentPhase = .sessionEnded
+                    pendingSessionEnd = wasBreak ? .breakDone : (isFocusMateSession ? .focusMateDone : .workDone)
                     timerTask?.cancel()
                     timerTask = nil
                     if wasBreak {
