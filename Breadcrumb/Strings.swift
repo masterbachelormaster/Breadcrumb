@@ -288,6 +288,24 @@ enum Strings {
                 ? "FocusMate: \(minutes) Min. vor Ende beenden"
                 : "FocusMate: end \(minutes) min early"
         }
+        static func sessionEndPrompt(_ l: AppLanguage) -> String {
+            l == .german ? "Sitzungsende-Dialog" : "Session end prompt"
+        }
+        static func sessionEndPromptWindow(_ l: AppLanguage) -> String {
+            l == .german ? "Separates Fenster" : "Separate window"
+        }
+        static func sessionEndPromptMenuBar(_ l: AppLanguage) -> String {
+            l == .german ? "Menüleiste" : "Menu bar"
+        }
+        static func sessionEndedOpenPromptTitle(_ l: AppLanguage) -> String {
+            l == .german ? "Sitzung beendet" : "Session ended"
+        }
+        static func sessionEndedOpenPromptMessage(_ l: AppLanguage) -> String {
+            l == .german ? "Speichere oder wähle, was als Nächstes passiert." : "Save or choose what happens next."
+        }
+        static func openSessionEndPrompt(_ l: AppLanguage) -> String {
+            l == .german ? "Dialog öffnen" : "Open Prompt"
+        }
         static func wrapUpBuffer(_ l: AppLanguage, minutes: Int) -> String {
             l == .german
                 ? "Abschlusspuffer: \(minutes) Min."

@@ -15,6 +15,7 @@ struct SettingsView: View {
     @AppStorage("pomodoro.sound.breakDone") private var soundBreakDone = "Ping"
     @AppStorage("pomodoro.showBannerNotification") private var showBannerNotification = true
     @AppStorage("pomodoro.focusMateEndEarlyMinutes") private var focusMateEndEarlyMinutes = 0
+    @AppStorage("pomodoro.sessionEndPresentation") private var sessionEndPresentation = SessionEndPresentation.window.rawValue
     @AppStorage("ai.provider") private var aiProvider = AIBackend.local.rawValue
     @AppStorage("feature.dictationEnabled") private var dictationEnabled = false
 
@@ -111,6 +112,11 @@ struct SettingsView: View {
                         value: $focusMateEndEarlyMinutes,
                         in: 0...5
                     )
+                    Picker(Strings.Pomodoro.sessionEndPrompt(l), selection: $sessionEndPresentation) {
+                        Text(Strings.Pomodoro.sessionEndPromptWindow(l)).tag(SessionEndPresentation.window.rawValue)
+                        Text(Strings.Pomodoro.sessionEndPromptMenuBar(l)).tag(SessionEndPresentation.menuBar.rawValue)
+                    }
+                    .pickerStyle(.segmented)
                 }
                 .animation(.default, value: totalSessions)
                 .onChange(of: totalSessions) {

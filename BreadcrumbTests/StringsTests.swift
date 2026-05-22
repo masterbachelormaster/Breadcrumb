@@ -78,6 +78,22 @@ struct StringsTests {
         #expect(Strings.Pomodoro.saveAndDone(.german) == "Speichern & Fertig")
     }
 
+    @Test("Session end presentation strings")
+    func sessionEndPresentationStrings() {
+        #expect(Strings.Pomodoro.sessionEndPrompt(.english) == "Session end prompt")
+        #expect(Strings.Pomodoro.sessionEndPrompt(.german) == "Sitzungsende-Dialog")
+        #expect(Strings.Pomodoro.sessionEndPromptWindow(.english) == "Separate window")
+        #expect(Strings.Pomodoro.sessionEndPromptWindow(.german) == "Separates Fenster")
+        #expect(Strings.Pomodoro.sessionEndPromptMenuBar(.english) == "Menu bar")
+        #expect(Strings.Pomodoro.sessionEndPromptMenuBar(.german) == "Menüleiste")
+        #expect(Strings.Pomodoro.sessionEndedOpenPromptTitle(.english) == "Session ended")
+        #expect(Strings.Pomodoro.sessionEndedOpenPromptTitle(.german) == "Sitzung beendet")
+        #expect(Strings.Pomodoro.sessionEndedOpenPromptMessage(.english) == "Save or choose what happens next.")
+        #expect(Strings.Pomodoro.sessionEndedOpenPromptMessage(.german) == "Speichere oder wähle, was als Nächstes passiert.")
+        #expect(Strings.Pomodoro.openSessionEndPrompt(.english) == "Open Prompt")
+        #expect(Strings.Pomodoro.openSessionEndPrompt(.german) == "Dialog öffnen")
+    }
+
     @Test("Completion notification strings")
     func completionNotificationStrings() {
         #expect(Strings.Notifications.pomodoroFinishedBody(.english) == "Time for a break")
