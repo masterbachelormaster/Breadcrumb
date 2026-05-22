@@ -55,6 +55,17 @@ struct BreadcrumbApp: App {
         .commands {
             BreadcrumbCommands(windowManager: windowManager, languageManager: languageManager)
         }
+
+        Window("Session Complete", id: "session-end") {
+            SessionEndWindowView()
+                .environment(pomodoroTimer)
+                .environment(windowManager)
+                .environment(aiService)
+                .environment(languageManager)
+                .environment(speechRecognizer)
+        }
+        .modelContainer(sharedModelContainer)
+        .defaultSize(width: 360, height: 420)
     }
 
     // MARK: - Model Container

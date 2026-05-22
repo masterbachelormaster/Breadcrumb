@@ -43,6 +43,7 @@ final class WindowManager {
     private var openGeneration: Int = 0
 
     private var openWindowAction: OpenWindowAction?
+    private var isSessionEndAutoOpenSuppressed = false
 
     func setOpenWindowAction(_ action: OpenWindowAction) {
         openWindowAction = action
@@ -54,6 +55,75 @@ final class WindowManager {
         openGeneration += 1
         currentContent = content
 
+        activateForWindowPresentation()
+
+        openWindowAction?(id: "main")
+
+        // SwiftUI mounts the window on the next run-loop tick. Wait a
+        // frame, then explicitly make it the key window so its title bar
+        // reflects the active state rather than the dimmed inactive state,
+        // and so keyboard focus actually lands inside our content.
+        Task { @MainActor in
+            try? await Task.sleep(for: .milliseconds(100))
+            if let window = NSApp.windows.first(where: { $0.identifier?.rawValue == "main" }) {
+                window.makeKeyAndOrderFront(nil)
+            }
+        }
+    }
+
+    func openSessionEnd() {
+        isSessionEndAutoOpenSuppressed = false
+        presentSessionEndWindow()
+    }
+
+    func autoOpenSessionEnd() {
+        guard !isSessionEndAutoOpenSuppressed else { return }
+        presentSessionEndWindow()
+    }
+
+    func resetSessionEndWindowSuppression() {
+        isSessionEndAutoOpenSuppressed = false
+    }
+
+    func windowClosed() {
+        let generation = openGeneration
+        // Short delay so a rapid open() that fires right after (e.g. content
+        // swap causing onDisappear followed by a new open()) bumps the
+        // generation before we act.
+        Task {
+            try? await Task.sleep(for: .milliseconds(50))
+            guard self.openGeneration == generation else { return }
+            self.currentContent = nil
+            if !self.hasVisibleRegularWindow(excluding: "main") {
+                NSApp.setActivationPolicy(.accessory)
+            }
+        }
+    }
+
+    func sessionEndWindowClosed() {
+        isSessionEndAutoOpenSuppressed = true
+
+        Task {
+            try? await Task.sleep(for: .milliseconds(50))
+            if !self.hasVisibleRegularWindow(excluding: "session-end") {
+                NSApp.setActivationPolicy(.accessory)
+            }
+        }
+    }
+
+    private func presentSessionEndWindow() {
+        activateForWindowPresentation()
+        openWindowAction?(id: "session-end")
+
+        Task { @MainActor in
+            try? await Task.sleep(for: .milliseconds(100))
+            if let window = NSApp.windows.first(where: { $0.identifier?.rawValue == "session-end" }) {
+                window.makeKeyAndOrderFront(nil)
+            }
+        }
+    }
+
+    private func activateForWindowPresentation() {
         // Transition from menu-bar-only (.accessory) to a regular app so a
         // Dock icon and a proper window can appear.
         NSApp.setActivationPolicy(.regular)
@@ -73,31 +143,14 @@ final class WindowManager {
         // it bypasses cooperative activation and brings every window of this
         // process to the front, which also makes the app frontmost.
         NSRunningApplication.current.activate(options: [.activateAllWindows])
-
-        openWindowAction?(id: "main")
-
-        // SwiftUI mounts the window on the next run-loop tick. Wait a
-        // frame, then explicitly make it the key window so its title bar
-        // reflects the active state rather than the dimmed inactive state,
-        // and so keyboard focus actually lands inside our content.
-        Task { @MainActor in
-            try? await Task.sleep(for: .milliseconds(100))
-            if let window = NSApp.windows.first(where: { $0.identifier?.rawValue == "main" }) {
-                window.makeKeyAndOrderFront(nil)
-            }
-        }
     }
 
-    func windowClosed() {
-        let generation = openGeneration
-        // Short delay so a rapid open() that fires right after (e.g. content
-        // swap causing onDisappear followed by a new open()) bumps the
-        // generation before we act.
-        Task {
-            try? await Task.sleep(for: .milliseconds(50))
-            guard self.openGeneration == generation else { return }
-            self.currentContent = nil
-            NSApp.setActivationPolicy(.accessory)
+    private func hasVisibleRegularWindow(excluding identifier: String) -> Bool {
+        NSApp.windows.contains { window in
+            window.identifier?.rawValue != identifier
+                && window.isVisible
+                && !window.isMiniaturized
+                && window.level == .normal
         }
     }
 }

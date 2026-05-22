@@ -65,6 +65,7 @@
 		D3A267CF1E0176A1D0BA37B5 /* AddURLFormView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9492B635806349A2C9556E20 /* AddURLFormView.swift */; };
 		D3D2E68C0A5910AFFDAFDF12 /* ProjectDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AB137DC9044186B8877D8CD /* ProjectDetailView.swift */; };
 		D9DA16D240E3D429351FAB57 /* ProjectRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47DF5F532D7705CA6E56446A /* ProjectRowView.swift */; };
+		DCB13A00132C99389B99D4B5 /* SessionEndWindowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2653310DF0F41C97000B793D /* SessionEndWindowView.swift */; };
 		DCBDD5B7E686FFCEA004CABC /* LanguageManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85B023F7702442C9E73AD7FF /* LanguageManagerTests.swift */; };
 		DF61036FEAC7FB1050A1DE23 /* ArchivedProjectsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7CE7354CA860BF1B53435E6 /* ArchivedProjectsView.swift */; };
 		E5A0E84F6FCEE311E5A1BDC5 /* OpenRouterSettingsSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE3328A8C7C652E89DBC6008 /* OpenRouterSettingsSection.swift */; };
@@ -98,6 +99,7 @@
 		1EDDE649AD967EFDBF0DF239 /* PlaceholderTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceholderTextView.swift; sourceTree = "<group>"; };
 		22C4476611D7A9F41AA244EA /* BulletText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BulletText.swift; sourceTree = "<group>"; };
 		22EB604EBEE6E40B6A21FFD2 /* AIFillerStripperTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AIFillerStripperTests.swift; sourceTree = "<group>"; };
+		2653310DF0F41C97000B793D /* SessionEndWindowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionEndWindowView.swift; sourceTree = "<group>"; };
 		270530DCEC9B4626EE2AABF0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		2DE07044651329554A55EEDB /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		2E6EEACEFC2209FA8283A175 /* KeychainHelperTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainHelperTests.swift; sourceTree = "<group>"; };
@@ -196,6 +198,7 @@
 				47078C1986E00D73E6A06727 /* ProjectListView.swift */,
 				9E21EBC79DC6B3D44E36AD65 /* ProjectPickerView.swift */,
 				47DF5F532D7705CA6E56446A /* ProjectRowView.swift */,
+				2653310DF0F41C97000B793D /* SessionEndWindowView.swift */,
 				E97F9AD204BAC7BB0A7E5D92 /* SettingsView.swift */,
 				65312D00F423DD42BAB0C2FD /* SmartTimestampView.swift */,
 				75DE9B3987F1DA2381072E8E /* SoundPicker.swift */,
@@ -436,6 +439,7 @@
 				F3CA383D086855E95F01B254 /* ProjectListView.swift in Sources */,
 				0F8F9143B46A16257511C6B5 /* ProjectPickerView.swift in Sources */,
 				D9DA16D240E3D429351FAB57 /* ProjectRowView.swift in Sources */,
+				DCB13A00132C99389B99D4B5 /* SessionEndWindowView.swift in Sources */,
 				B949DE8B498359E91079E6D7 /* SettingsView.swift in Sources */,
 				F8D0888E96F2ED902AF2E686 /* SmartTimestampView.swift in Sources */,
 				8E074923FEA5436E3AD06EB3 /* SoundPicker.swift in Sources */,
