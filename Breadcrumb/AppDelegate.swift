@@ -2,6 +2,7 @@ import AppKit
 
 extension Notification.Name {
     static let openPopover = Notification.Name("Breadcrumb.openPopover")
+    static let openSessionEnd = Notification.Name("Breadcrumb.openSessionEnd")
     static let pomodoroStartBreak = Notification.Name("Breadcrumb.pomodoroStartBreak")
     static let pomodoroNextSession = Notification.Name("Breadcrumb.pomodoroNextSession")
 }
@@ -70,6 +71,16 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         }
 
         NotificationCenter.default.addObserver(
+            forName: .openSessionEnd,
+            object: nil,
+            queue: .main
+        ) { [weak self] _ in
+            MainActor.assumeIsolated {
+                self?.openConfiguredSessionEndPrompt()
+            }
+        }
+
+        NotificationCenter.default.addObserver(
             forName: .pomodoroStartBreak,
             object: nil,
             queue: .main
@@ -118,6 +129,22 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         }
 
         button.performClick(nil)
+    }
+
+    private func openConfiguredSessionEndPrompt() {
+        let stored = UserDefaults.standard.string(forKey: "pomodoro.sessionEndPresentation") ?? SessionEndPresentation.window.rawValue
+        let presentation = SessionEndPresentation(rawValue: stored) ?? .window
+
+        switch presentation {
+        case .window:
+            if let windowManager {
+                windowManager.openSessionEnd()
+            } else {
+                openMenuBarPopover()
+            }
+        case .menuBar:
+            openMenuBarPopover()
+        }
     }
 }
 

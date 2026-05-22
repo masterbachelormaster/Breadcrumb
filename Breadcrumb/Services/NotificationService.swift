@@ -153,19 +153,19 @@ final class NotificationService: NSObject, UNUserNotificationCenterDelegate, Pom
             identifier: "breadcrumb.action.continueWorking",
             title: Strings.Notifications.actionContinueWorking(language)
         )
-        let openPopover = UNNotificationAction(
-            identifier: "breadcrumb.action.openPopover",
+        let openSessionEnd = UNNotificationAction(
+            identifier: "breadcrumb.action.openSessionEnd",
             title: Strings.Notifications.actionStop(language),
             options: [.foreground]
         )
         let workDoneCategory = UNNotificationCategory(
             identifier: "breadcrumb.category.workDone",
-            actions: [continueWorking, openPopover],
+            actions: [continueWorking, openSessionEnd],
             intentIdentifiers: []
         )
         let workCompleteCategory = UNNotificationCategory(
             identifier: "breadcrumb.category.workComplete",
-            actions: [continueWorking, openPopover],
+            actions: [continueWorking, openSessionEnd],
             intentIdentifiers: []
         )
         let breakDoneCategory = UNNotificationCategory(
@@ -296,8 +296,8 @@ final class NotificationService: NSObject, UNUserNotificationCenterDelegate, Pom
         switch actionIdentifier {
         case "breadcrumb.action.continueWorking":
             break
-        case "breadcrumb.action.openPopover":
-            postAppNotification(.openPopover)
+        case "breadcrumb.action.openSessionEnd", "breadcrumb.action.openPopover":
+            postAppNotification(.openSessionEnd)
         case "breadcrumb.action.startBreak":
             postAppNotification(.pomodoroStartBreak)
         case "breadcrumb.action.nextSession":

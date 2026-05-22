@@ -248,8 +248,21 @@ struct NotificationServiceTests {
         #expect(postedNames.isEmpty)
     }
 
-    @Test("Stop action opens the popover")
-    func stopActionOpensPopover() {
+    @Test("Stop action opens the session-end prompt")
+    func stopActionOpensSessionEndPrompt() {
+        let center = RecordingUserNotificationCenter()
+        var postedNames: [Notification.Name] = []
+        let service = NotificationService(notificationCenter: center) { name in
+            postedNames.append(name)
+        }
+
+        service.handleActionIdentifier("breadcrumb.action.openSessionEnd")
+
+        #expect(postedNames == [.openSessionEnd])
+    }
+
+    @Test("Legacy stop action identifier still opens the session-end prompt")
+    func legacyStopActionIdentifierStillOpensSessionEndPrompt() {
         let center = RecordingUserNotificationCenter()
         var postedNames: [Notification.Name] = []
         let service = NotificationService(notificationCenter: center) { name in
@@ -258,7 +271,7 @@ struct NotificationServiceTests {
 
         service.handleActionIdentifier("breadcrumb.action.openPopover")
 
-        #expect(postedNames == [.openPopover])
+        #expect(postedNames == [.openSessionEnd])
     }
 
     @Test("Break action still starts the next session")
@@ -304,7 +317,7 @@ struct NotificationServiceTests {
         #expect(actions[0].identifier == "breadcrumb.action.continueWorking")
         #expect(actions[0].title == "Weiterarbeiten")
         #expect(actions[0].options.isEmpty)
-        #expect(actions[1].identifier == "breadcrumb.action.openPopover")
+        #expect(actions[1].identifier == "breadcrumb.action.openSessionEnd")
         #expect(actions[1].title == "Stopp")
         #expect(actions[1].options.contains(.foreground))
     }
