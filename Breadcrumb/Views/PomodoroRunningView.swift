@@ -112,6 +112,7 @@ struct PomodoroRunningView: View {
                         wasBreak: wasBreakEnd,
                         isCycleComplete: timer.isCycleComplete,
                         isFocusMate: timer.isFocusMateSession,
+                        boundProjectID: timer.boundProjectID,
                         onSaveWorkSession: { session in
                             saveSession(session)
                             dismissSessionEnd()

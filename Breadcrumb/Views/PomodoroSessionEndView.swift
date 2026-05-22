@@ -9,6 +9,7 @@ struct PomodoroSessionEndView: View {
     let wasBreak: Bool
     var isCycleComplete: Bool = false
     var isFocusMate: Bool = false
+    var boundProjectID: PersistentIdentifier?
     var onSaveWorkSession: (PomodoroSession) -> Void
     var onContinueWorking: () -> Void
     var onSkip: () -> Void
@@ -46,7 +47,7 @@ struct PomodoroSessionEndView: View {
         .clipShape(.rect(cornerRadius: 10))
         .shadow(radius: 10)
         .onAppear {
-            selectedProject = timer.boundProject
+            selectedProject = boundProject
         }
     }
 
@@ -87,7 +88,7 @@ struct PomodoroSessionEndView: View {
                 .buttonStyle(.borderedProminent)
                 .keyboardShortcut(.return, modifiers: .command)
                 .help(Strings.Pomodoro.saveAndDoneHint(l))
-                .disabled(selectedProject == nil && timer.boundProject == nil)
+                .disabled(selectedProject == nil && boundProject == nil)
             Button(Strings.Pomodoro.skip(l)) { onStopCompletely() }
                 .buttonStyle(.bordered)
         }
@@ -108,7 +109,7 @@ struct PomodoroSessionEndView: View {
                 .buttonStyle(.borderedProminent)
                 .keyboardShortcut(.return, modifiers: .command)
                 .help(primaryWorkEndButtonHelp(l))
-                .disabled(selectedProject == nil && timer.boundProject == nil)
+                .disabled(selectedProject == nil && boundProject == nil)
         }
 
         Button(Strings.Pomodoro.stopWithoutSaving(l), action: { onStopCompletely() })
@@ -120,7 +121,7 @@ struct PomodoroSessionEndView: View {
         let l = languageManager.language
 
         // Project picker for standalone sessions
-        if timer.boundProject == nil {
+        if boundProject == nil {
             Picker(Strings.Projects.project(l), selection: $selectedProject) {
                 Text(Strings.Projects.withoutProject(l)).tag(nil as Project?)
                 ForEach(activeProjects) { project in
@@ -163,8 +164,13 @@ struct PomodoroSessionEndView: View {
         }
     }
 
+    private var boundProject: Project? {
+        guard let boundProjectID else { return nil }
+        return modelContext.model(for: boundProjectID) as? Project
+    }
+
     private func saveWorkSession() {
-        let project = selectedProject ?? timer.boundProject
+        let project = selectedProject ?? boundProject
 
         // Create PomodoroSession record
         let session = PomodoroSession(
@@ -203,7 +209,7 @@ struct PomodoroSessionEndView: View {
     }
 
     private func saveAndDone() {
-        let project = selectedProject ?? timer.boundProject
+        let project = selectedProject ?? boundProject
 
         let session = PomodoroSession(
             plannedDuration: TimeInterval(timer.originalDurationSeconds),

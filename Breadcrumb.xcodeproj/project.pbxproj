@@ -40,6 +40,7 @@
 		7A9DF4EB4DEA7C643635E72F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DE07044651329554A55EEDB /* AppDelegate.swift */; };
 		7D34D0135D8B9F99FDCC585F /* KeychainHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E85B0B7BA2187935D5BE75D /* KeychainHelper.swift */; };
 		7FFA294677B1B83E4EE65977 /* NotificationServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 831984343AE49E818C7511B7 /* NotificationServiceTests.swift */; };
+		82589CF7B313B78A00138E1E /* PomodoroSessionEndHostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84E8BCCA2B83DAD9CF398B39 /* PomodoroSessionEndHostView.swift */; };
 		8BC4923EE801C29764E7E500 /* ExtractedStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4538B21914489F24883231D /* ExtractedStatus.swift */; };
 		8C122A7AB70310BCF81D2061 /* PomodoroSessionEndView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F5D21B8446DBC5F11312384 /* PomodoroSessionEndView.swift */; };
 		8E074923FEA5436E3AD06EB3 /* SoundPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75DE9B3987F1DA2381072E8E /* SoundPicker.swift */; };
@@ -124,6 +125,7 @@
 		777246810162C2507E304C44 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		7E9AB4FB8217059480EEA8FA /* BreakoutWindowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreakoutWindowView.swift; sourceTree = "<group>"; };
 		831984343AE49E818C7511B7 /* NotificationServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationServiceTests.swift; sourceTree = "<group>"; };
+		84E8BCCA2B83DAD9CF398B39 /* PomodoroSessionEndHostView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PomodoroSessionEndHostView.swift; sourceTree = "<group>"; };
 		85B023F7702442C9E73AD7FF /* LanguageManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LanguageManagerTests.swift; sourceTree = "<group>"; };
 		913C1D4F480359F1604A530C /* AIProviderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AIProviderTests.swift; sourceTree = "<group>"; };
 		9492B635806349A2C9556E20 /* AddURLFormView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddURLFormView.swift; sourceTree = "<group>"; };
@@ -187,6 +189,7 @@
 				1EDDE649AD967EFDBF0DF239 /* PlaceholderTextView.swift */,
 				C3F1C79AA5792B6763AB7DF4 /* PomodoroConfigView.swift */,
 				AF7604A00FB4C888AA719B6C /* PomodoroRunningView.swift */,
+				84E8BCCA2B83DAD9CF398B39 /* PomodoroSessionEndHostView.swift */,
 				4F5D21B8446DBC5F11312384 /* PomodoroSessionEndView.swift */,
 				6AB137DC9044186B8877D8CD /* ProjectDetailView.swift */,
 				D9DBEBA30993B89A48537DA5 /* ProjectFormView.swift */,
@@ -424,6 +427,7 @@
 				3B8E91E329DF6960817BF4E7 /* PomodoroConfigView.swift in Sources */,
 				6864E481C9B390FF7CFB8D7C /* PomodoroRunningView.swift in Sources */,
 				403EFFDCD1BFA9E3FB455EE7 /* PomodoroSession.swift in Sources */,
+				82589CF7B313B78A00138E1E /* PomodoroSessionEndHostView.swift in Sources */,
 				8C122A7AB70310BCF81D2061 /* PomodoroSessionEndView.swift in Sources */,
 				C0556C526B6E95E3EAC49CFE /* PomodoroTimer.swift in Sources */,
 				CF4074B7669439CA1E033539 /* Project.swift in Sources */,
