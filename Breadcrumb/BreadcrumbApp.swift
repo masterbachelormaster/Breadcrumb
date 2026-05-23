@@ -33,11 +33,11 @@ struct BreadcrumbApp: App {
                 .environment(languageManager)
                 .environment(speechRecognizer)
         } label: {
-            if pomodoroTimer.currentPhase == .idle {
-                Image(systemName: "bookmark.fill")
-            } else {
-                Text(pomodoroTimer.menuBarLabel(languageManager.language))
-            }
+            MenuBarLabelView(
+                pomodoroTimer: pomodoroTimer,
+                windowManager: windowManager,
+                languageManager: languageManager
+            )
         }
         .menuBarExtraStyle(.window)
         .modelContainer(sharedModelContainer)

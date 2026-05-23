@@ -47,6 +47,7 @@
 		8E074923FEA5436E3AD06EB3 /* SoundPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75DE9B3987F1DA2381072E8E /* SoundPicker.swift */; };
 		90CE6923808FD08E80D66C07 /* SpeechRecognizerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDAA39C819F06A5E9B6A6918 /* SpeechRecognizerTests.swift */; };
 		92290445CED96E2CD75FFD92 /* DictationButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E0A1502531E88A18FD246F5 /* DictationButton.swift */; };
+		9A7707A3CB851E10591927E2 /* MenuBarLabelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A3D2DAF302F92A82D4E4748 /* MenuBarLabelView.swift */; };
 		9B619503406331710EB35740 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 777246810162C2507E304C44 /* Assets.xcassets */; };
 		9BFD8EC86A0C17852AD2B57A /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FA0A334AD3755400D2E4FB6 /* ContentView.swift */; };
 		A2C0BB75C7ED0551645F313F /* StringsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B61E0FC8ED8FA3607CA8E73 /* StringsTests.swift */; };
@@ -102,6 +103,7 @@
 		22EB604EBEE6E40B6A21FFD2 /* AIFillerStripperTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AIFillerStripperTests.swift; sourceTree = "<group>"; };
 		2653310DF0F41C97000B793D /* SessionEndWindowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionEndWindowView.swift; sourceTree = "<group>"; };
 		270530DCEC9B4626EE2AABF0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		2A3D2DAF302F92A82D4E4748 /* MenuBarLabelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBarLabelView.swift; sourceTree = "<group>"; };
 		2DE07044651329554A55EEDB /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		2E6EEACEFC2209FA8283A175 /* KeychainHelperTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainHelperTests.swift; sourceTree = "<group>"; };
 		333198756E01368320CCC0C9 /* BreadcrumbTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BreadcrumbTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -189,6 +191,7 @@
 				36ADA56CAAFC591548F4CFDB /* FormOverlay.swift */,
 				9C88E592971DB2AB4E478DA7 /* HistoryEntryRow.swift */,
 				B8C5CE9442C811F8DCF196BD /* HistoryView.swift */,
+				2A3D2DAF302F92A82D4E4748 /* MenuBarLabelView.swift */,
 				01F1A5207F7DE996DE352A42 /* NativeDictationButton.swift */,
 				1EDDE649AD967EFDBF0DF239 /* PlaceholderTextView.swift */,
 				C3F1C79AA5792B6763AB7DF4 /* PomodoroConfigView.swift */,
@@ -424,6 +427,7 @@
 				674F307AC2D1DD30DDBA74DE /* LanguageManager.swift in Sources */,
 				497D467A820A0F052FBA9DE7 /* LinkedDocument.swift in Sources */,
 				1D53C6857A69A72D3AECC555 /* LocalAIProvider.swift in Sources */,
+				9A7707A3CB851E10591927E2 /* MenuBarLabelView.swift in Sources */,
 				043A15563757C2E509CB275D /* ModelContext+SaveWithLogging.swift in Sources */,
 				C4A7741AE7FFA6422EF71BDD /* NativeDictationButton.swift in Sources */,
 				BE6EE87AEF54FED09C1AB647 /* NotificationService.swift in Sources */,

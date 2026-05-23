@@ -112,18 +112,6 @@ struct ContentView: View {
         .frame(width: 350, height: 450)
         .task {
             windowManager.setOpenWindowAction(openWindow)
-            autoOpenSessionEndWindowIfNeeded()
-        }
-        .onChange(of: pomodoroTimer.pendingSessionEnd) { oldValue, newValue in
-            if oldValue == nil && newValue != nil {
-                windowManager.resetSessionEndWindowSuppression()
-            } else if newValue == nil {
-                windowManager.resetSessionEndWindowSuppression()
-            }
-            autoOpenSessionEndWindowIfNeeded()
-        }
-        .onChange(of: sessionEndPresentation) {
-            autoOpenSessionEndWindowIfNeeded()
         }
     }
 
@@ -139,12 +127,9 @@ struct ContentView: View {
     }
 
     private var shouldShowSessionEndSummary: Bool {
-        pomodoroTimer.pendingSessionEnd != nil && sessionEndMode == .window
-    }
-
-    private func autoOpenSessionEndWindowIfNeeded() {
-        guard pomodoroTimer.pendingSessionEnd != nil, sessionEndMode == .window else { return }
-        windowManager.autoOpenSessionEnd()
+        guard let reason = pomodoroTimer.pendingSessionEnd else { return false }
+        if reason == .stopped { return false }
+        return sessionEndMode == .window
     }
 
     private func startPomodoro(project: Project?) {

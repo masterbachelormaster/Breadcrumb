@@ -86,9 +86,14 @@ struct PomodoroRunningView: View {
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .overlay {
-            if timer.pendingSessionEnd != nil && sessionEndMode == .menuBar {
+            if timer.pendingSessionEnd != nil && (sessionEndMode == .menuBar || timer.pendingSessionEnd == .stopped) {
                 FormOverlay(onDismiss: {}) {
                     PomodoroSessionEndHostView(onFinished: onFinished)
+                        .frame(width: 320)
+                        .frame(maxHeight: 400)
+                        .background(Color(nsColor: .windowBackgroundColor))
+                        .clipShape(.rect(cornerRadius: 10))
+                        .shadow(radius: 10)
                 }
                 .transition(.opacity)
             }

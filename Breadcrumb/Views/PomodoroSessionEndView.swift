@@ -41,11 +41,7 @@ struct PomodoroSessionEndView: View {
             }
             .padding()
         }
-        .frame(width: 320)
-        .frame(maxHeight: 400)
-        .background(Color(nsColor: .windowBackgroundColor))
-        .clipShape(.rect(cornerRadius: 10))
-        .shadow(radius: 10)
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
         .onAppear {
             selectedProject = boundProject
         }

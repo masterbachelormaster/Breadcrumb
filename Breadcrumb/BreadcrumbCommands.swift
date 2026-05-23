@@ -1,7 +1,6 @@
 import SwiftUI
 
 struct BreadcrumbCommands: Commands {
-    @Environment(\.openWindow) private var openWindow
     let windowManager: WindowManager
     let languageManager: LanguageManager
 
@@ -10,7 +9,6 @@ struct BreadcrumbCommands: Commands {
             Button(Strings.General.about(languageManager.language)) {
                 windowManager.open(.about)
             }
-            .task { windowManager.setOpenWindowAction(openWindow) }
         }
         CommandGroup(replacing: .appSettings) {
             Button(Strings.General.settingsEllipsis(languageManager.language)) {

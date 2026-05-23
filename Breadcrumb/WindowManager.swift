@@ -55,18 +55,14 @@ final class WindowManager {
         openGeneration += 1
         currentContent = content
 
-        activateForWindowPresentation()
-
-        openWindowAction?(id: "main")
-
-        // SwiftUI mounts the window on the next run-loop tick. Wait a
-        // frame, then explicitly make it the key window so its title bar
-        // reflects the active state rather than the dimmed inactive state,
-        // and so keyboard focus actually lands inside our content.
         Task { @MainActor in
-            try? await Task.sleep(for: .milliseconds(100))
+            await activateForWindowPresentation()
+            openWindowAction?(id: "main")
+
+            try? await Task.sleep(for: .milliseconds(200))
             if let window = NSApp.windows.first(where: { $0.identifier?.rawValue == "main" }) {
                 window.makeKeyAndOrderFront(nil)
+                NSApp.activate(ignoringOtherApps: true)
             }
         }
     }
@@ -112,37 +108,23 @@ final class WindowManager {
     }
 
     private func presentSessionEndWindow() {
-        activateForWindowPresentation()
-        openWindowAction?(id: "session-end")
-
         Task { @MainActor in
-            try? await Task.sleep(for: .milliseconds(100))
+            await activateForWindowPresentation()
+            openWindowAction?(id: "session-end")
+
+            try? await Task.sleep(for: .milliseconds(200))
             if let window = NSApp.windows.first(where: { $0.identifier?.rawValue == "session-end" }) {
                 window.makeKeyAndOrderFront(nil)
+                window.orderFrontRegardless()
+                NSApp.activate(ignoringOtherApps: true)
             }
         }
     }
 
-    private func activateForWindowPresentation() {
-        // Transition from menu-bar-only (.accessory) to a regular app so a
-        // Dock icon and a proper window can appear.
+    private func activateForWindowPresentation() async {
         NSApp.setActivationPolicy(.regular)
-
-        // Force this process to become the frontmost app. We explicitly do
-        // NOT use cooperative `NSApp.activate()` here: on macOS 14+ the
-        // cooperative call silently no-ops once the MenuBarExtra popover has
-        // dismissed and transferred "user attention" back to whatever app was
-        // previously front. The policy change succeeds, the window orders
-        // forward, but the app itself never becomes frontmost — so the window
-        // stays visible with a grayed-out title bar until the user clicks the
-        // Dock icon. For a menu bar utility presenting its primary window in
-        // direct response to an explicit user action, that's the wrong model.
-        //
-        // `NSRunningApplication.current.activate(options:)` with
-        // `.activateAllWindows` is the modern, non-deprecated escape hatch:
-        // it bypasses cooperative activation and brings every window of this
-        // process to the front, which also makes the app frontmost.
-        NSRunningApplication.current.activate(options: [.activateAllWindows])
+        try? await Task.sleep(for: .milliseconds(100))
+        NSApp.activate(ignoringOtherApps: true)
     }
 
     private func hasVisibleRegularWindow(excluding identifier: String) -> Bool {
