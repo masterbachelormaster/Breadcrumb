@@ -8,6 +8,8 @@ struct OpenRouterSettingsSection: View {
     @State private var lastSavedAPIKey = ""
     @State private var apiKeySaveFailed = false
     @State private var model = ""
+    @State private var customPrompt = ""
+    @State private var isPromptExpanded = false
 
     var body: some View {
         let l = languageManager.language
@@ -56,6 +58,34 @@ struct OpenRouterSettingsSection: View {
                     .font(.caption)
                     .foregroundStyle(.secondary)
             }
+
+            DisclosureGroup(Strings.Settings.systemPrompt(l), isExpanded: $isPromptExpanded) {
+                VStack(alignment: .leading, spacing: 8) {
+                    TextEditor(text: $customPrompt)
+                        .font(.system(.caption, design: .monospaced))
+                        .frame(minHeight: 100, maxHeight: 200)
+                        .scrollContentBackground(.hidden)
+                        .padding(4)
+                        .background(Color(nsColor: .textBackgroundColor))
+                        .clipShape(RoundedRectangle(cornerRadius: 6))
+                        .onChange(of: customPrompt) { _, newValue in
+                            UserDefaults.standard.set(newValue, forKey: "ai.openrouter.customSystemPrompt")
+                        }
+
+                    Text(Strings.Settings.systemPromptHelp(l))
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+
+                    if customPrompt != defaultPrompt(for: l) {
+                        Button(Strings.Settings.resetToDefault(l)) {
+                            customPrompt = defaultPrompt(for: l)
+                        }
+                        .font(.caption)
+                        .buttonStyle(.bordered)
+                    }
+                }
+                .padding(.top, 4)
+            }
         }
         .onAppear {
             let storedAPIKey = KeychainHelper.read(key: "openrouter.apiKey") ?? ""
@@ -63,10 +93,18 @@ struct OpenRouterSettingsSection: View {
             lastSavedAPIKey = storedAPIKey
             apiKeySaveFailed = false
             model = UserDefaults.standard.string(forKey: "ai.openrouter.model") ?? ""
+            let stored = UserDefaults.standard.string(forKey: "ai.openrouter.customSystemPrompt")
+            customPrompt = (stored?.isEmpty ?? true)
+                ? defaultPrompt(for: languageManager.language)
+                : stored!
         }
         .onDisappear {
             saveAPIKeyIfNeeded()
         }
+    }
+
+    private func defaultPrompt(for language: AppLanguage) -> String {
+        Strings.AIExtraction.instructions(language)
     }
 
     @discardableResult

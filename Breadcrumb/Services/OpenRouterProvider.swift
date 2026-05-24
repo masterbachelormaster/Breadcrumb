@@ -3,9 +3,12 @@ import Foundation
 struct OpenRouterProvider: AIProvider {
     let apiKey: String
     let model: String
+    let customSystemPrompt: String?
 
     func extractStatus(from text: String, language: AppLanguage) async throws -> ExtractedStatus {
-        let systemPrompt = Strings.AIExtraction.instructions(language) + "\n\n" + jsonInstructions(language)
+        let instructions = customSystemPrompt.flatMap({ $0.isEmpty ? nil : $0 })
+            ?? Strings.AIExtraction.instructions(language)
+        let systemPrompt = instructions + "\n\n" + jsonInstructions(language)
         let request = buildRequest(systemPrompt: systemPrompt, userMessage: text)
 
         let (data, response): (Data, URLResponse)

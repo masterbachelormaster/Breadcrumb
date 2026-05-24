@@ -51,7 +51,7 @@ struct BreakoutWindowView: View {
             return CGSize(width: 350, height: 300)
         }
         switch content {
-        case .settings: return CGSize(width: 450, height: 350)
+        case .settings: return CGSize(width: 450, height: 450)
         case .about: return CGSize(width: 300, height: 250)
         case .history, .stats: return CGSize(width: 400, height: 300)
         }
@@ -62,7 +62,7 @@ struct BreakoutWindowView: View {
             return CGSize(width: 500, height: 400)
         }
         switch content {
-        case .settings: return CGSize(width: 500, height: 400)
+        case .settings: return CGSize(width: 500, height: 550)
         case .about: return CGSize(width: 350, height: 300)
         case .history, .stats: return CGSize(width: 600, height: 500)
         }

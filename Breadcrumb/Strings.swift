@@ -438,6 +438,17 @@ static func dictation(_ l: AppLanguage) -> String {
         static func aiNotConfigured(_ l: AppLanguage) -> String {
             l == .german ? "Nicht konfiguriert" : "Not configured"
         }
+        static func systemPrompt(_ l: AppLanguage) -> String {
+            l == .german ? "System-Prompt" : "System Prompt"
+        }
+        static func systemPromptHelp(_ l: AppLanguage) -> String {
+            l == .german
+                ? "Anweisungen für die KI-Extraktion. JSON-Formatierung wird automatisch angehängt."
+                : "Instructions for AI extraction. JSON formatting is appended automatically."
+        }
+        static func resetToDefault(_ l: AppLanguage) -> String {
+            l == .german ? "Auf Standard zurücksetzen" : "Reset to Default"
+        }
     }
 
     // MARK: - Welcome

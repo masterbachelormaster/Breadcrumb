@@ -120,7 +120,8 @@ final class AIService {
             guard let apiKey = KeychainHelper.read(key: "openrouter.apiKey"),
                   let model = UserDefaults.standard.string(forKey: "ai.openrouter.model"),
                   !apiKey.isEmpty, !model.isEmpty else { return nil }
-            return OpenRouterProvider(apiKey: apiKey, model: model)
+            let customPrompt = UserDefaults.standard.string(forKey: "ai.openrouter.customSystemPrompt")
+            return OpenRouterProvider(apiKey: apiKey, model: model, customSystemPrompt: customPrompt)
         }
     }
 

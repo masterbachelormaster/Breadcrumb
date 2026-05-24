@@ -99,7 +99,7 @@ struct OpenRouterProviderTests {
 
     @Test("buildRequest creates correct URLRequest")
     func buildRequest() throws {
-        let provider = OpenRouterProvider(apiKey: "sk-test-123", model: "anthropic/claude-sonnet-4")
+        let provider = OpenRouterProvider(apiKey: "sk-test-123", model: "anthropic/claude-sonnet-4", customSystemPrompt: nil)
         let request = provider.buildRequest(
             systemPrompt: "You are a parser",
             userMessage: "I finished the intro"
@@ -145,5 +145,23 @@ struct OpenRouterProviderTests {
         } else {
             Issue.record("Expected .networkError, got \(error)")
         }
+    }
+
+    @Test("Custom system prompt is stored on provider")
+    func customPromptStored() {
+        let provider = OpenRouterProvider(apiKey: "sk-test", model: "test/model", customSystemPrompt: "Custom instructions")
+        #expect(provider.customSystemPrompt == "Custom instructions")
+    }
+
+    @Test("Nil custom prompt falls back correctly")
+    func nilCustomPrompt() {
+        let provider = OpenRouterProvider(apiKey: "sk-test", model: "test/model", customSystemPrompt: nil)
+        #expect(provider.customSystemPrompt == nil)
+    }
+
+    @Test("Empty custom prompt is treated as nil")
+    func emptyCustomPrompt() {
+        let provider = OpenRouterProvider(apiKey: "sk-test", model: "test/model", customSystemPrompt: "")
+        #expect(provider.customSystemPrompt?.isEmpty == true)
     }
 }
