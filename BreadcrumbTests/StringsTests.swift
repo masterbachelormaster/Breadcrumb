@@ -208,6 +208,12 @@ struct StringsTests {
         #expect(Strings.Pomodoro.saveAndStopHint(.english) == "Save & Stop (⌘↩)")
     }
 
+    @Test("Edit status strings return correct translations")
+    func editStatusStrings() {
+        #expect(Strings.Status.editStatus(.german) == "Status bearbeiten")
+        #expect(Strings.Status.editStatus(.english) == "Edit Status")
+    }
+
     @Test("Dictation strings return correct translations")
     func dictationStrings() {
         #expect(Strings.Dictation.buttonLabel(.german) == "Diktat")

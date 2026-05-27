@@ -146,6 +146,9 @@ enum Strings {
         static func updateStatusHint(_ l: AppLanguage) -> String {
             l == .german ? "Status aktualisieren (⌘U)" : "Update Status (⌘U)"
         }
+        static func editStatus(_ l: AppLanguage) -> String {
+            l == .german ? "Status bearbeiten" : "Edit Status"
+        }
     }
 
     // MARK: - Pomodoro

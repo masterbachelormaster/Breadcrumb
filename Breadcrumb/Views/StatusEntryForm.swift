@@ -5,6 +5,7 @@ struct StatusEntryForm: View {
     @Environment(LanguageManager.self) private var languageManager
 
     let project: Project
+    var editingEntry: StatusEntry? = nil
 
     @Environment(\.modelContext) private var modelContext
 
@@ -13,11 +14,13 @@ struct StatusEntryForm: View {
     @Binding var nextStep: String
     var onDismiss: () -> Void = {}
     @State private var showOptionalFields = false
+
+    private var isEditing: Bool { editingEntry != nil }
     @State private var freeTextFocused = false
 
     var body: some View {
         VStack(spacing: 16) {
-            Text(Strings.Status.updateStatus(languageManager.language))
+            Text(isEditing ? Strings.Status.editStatus(languageManager.language) : Strings.Status.updateStatus(languageManager.language))
                 .font(.headline)
 
             ZStack(alignment: .bottomTrailing) {
@@ -70,23 +73,35 @@ struct StatusEntryForm: View {
         .background(Color(nsColor: .windowBackgroundColor))
         .clipShape(.rect(cornerRadius: 10))
         .shadow(radius: 10)
+        .onAppear {
+            if let entry = editingEntry {
+                let hasOptional = (entry.lastAction != nil && !entry.lastAction!.isEmpty)
+                    || (entry.nextStep != nil && !entry.nextStep!.isEmpty)
+                if hasOptional { showOptionalFields = true }
+            }
+        }
     }
 
     private func save() {
         let trimmed = freeText.trimmingCharacters(in: .whitespaces)
         guard !trimmed.isEmpty else { return }
 
-        let entry = StatusEntry(
-            freeText: trimmed,
-            lastAction: lastAction.isEmpty ? nil : lastAction,
-            nextStep: nextStep.isEmpty ? nil : nextStep
-        )
-        entry.project = project
-        project.entries.append(entry)
-        modelContext.insert(entry)
+        if let entry = editingEntry {
+            entry.freeText = trimmed
+            entry.lastAction = lastAction.isEmpty ? nil : lastAction
+            entry.nextStep = nextStep.isEmpty ? nil : nextStep
+        } else {
+            let entry = StatusEntry(
+                freeText: trimmed,
+                lastAction: lastAction.isEmpty ? nil : lastAction,
+                nextStep: nextStep.isEmpty ? nil : nextStep
+            )
+            entry.project = project
+            project.entries.append(entry)
+            modelContext.insert(entry)
+        }
         modelContext.saveWithLogging()
 
-        // Clear draft
         freeText = ""
         lastAction = ""
         nextStep = ""

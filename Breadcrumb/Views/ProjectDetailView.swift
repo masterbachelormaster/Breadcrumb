@@ -13,6 +13,7 @@ struct ProjectDetailView: View {
 
     @State private var showingStatusForm = false
     @State private var showingEditForm = false
+    @State private var editingEntry: StatusEntry?
     @State private var showDeleteConfirmation = false
     @State private var isStatsExpanded = false
 
@@ -135,6 +136,7 @@ struct ProjectDetailView: View {
                     .tint(.red)
 
                     Button(Strings.Status.updateStatus(languageManager.language)) {
+                        editingEntry = nil
                         showOverlay { showingStatusForm = true }
                     }
                     .buttonStyle(.borderedProminent)
@@ -166,13 +168,14 @@ struct ProjectDetailView: View {
             .allowsHitTesting(!hasActiveOverlay)
 
             if showingStatusForm {
-                FormOverlay(onDismiss: { dismissOverlay { showingStatusForm = false } }) {
+                FormOverlay(onDismiss: { dismissOverlay { showingStatusForm = false; editingEntry = nil } }) {
                     StatusEntryForm(
                         project: project,
+                        editingEntry: editingEntry,
                         freeText: $draftFreeText,
                         lastAction: $draftLastAction,
                         nextStep: $draftNextStep,
-                        onDismiss: { dismissOverlay { showingStatusForm = false } }
+                        onDismiss: { dismissOverlay { showingStatusForm = false; editingEntry = nil } }
                     )
                 }
                 .transition(.opacity)
@@ -224,6 +227,19 @@ struct ProjectDetailView: View {
                     .font(.headline)
                 Spacer()
                 SmartTimestampView(date: entry.timestamp, color: AnyShapeStyle(.tertiary))
+                Button {
+                    draftFreeText = entry.freeText
+                    draftLastAction = entry.lastAction ?? ""
+                    draftNextStep = entry.nextStep ?? ""
+                    editingEntry = entry
+                    showOverlay { showingStatusForm = true }
+                } label: {
+                    Image(systemName: "pencil")
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                }
+                .buttonStyle(ToolbarButtonStyle())
+                .help(Strings.Status.editStatus(languageManager.language))
             }
 
             Text(entry.freeText)
