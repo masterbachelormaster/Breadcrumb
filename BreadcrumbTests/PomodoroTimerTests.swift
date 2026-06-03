@@ -387,29 +387,38 @@ struct PomodoroTimerTests {
     func stopResetsFocusMateProperties() {
         let timer = PomodoroTimer()
         let endTime = Date.now.addingTimeInterval(50 * 60)
-        timer.startFocusMate(project: nil, durationMinutes: 50, endTime: endTime, earlyEndMinutes: 2)
+        timer.startFocusMate(project: nil, durationMinutes: 50, endTime: endTime, earlyEndSeconds: 120)
         timer.stop()
         #expect(timer.isFocusMateSession == false)
         #expect(timer.focusMateEndTime == nil)
-        #expect(timer.focusMateEarlyEndMinutes == 0)
+        #expect(timer.focusMateEarlyEndSeconds == 0)
     }
 
     @Test("FocusMate early-end offset shortens the countdown")
     func focusMateEarlyEndReducesRemaining() {
         let timer = PomodoroTimer()
         let endTime = Date.now.addingTimeInterval(50 * 60)
-        timer.startFocusMate(project: nil, durationMinutes: 50, endTime: endTime, earlyEndMinutes: 2)
+        timer.startFocusMate(project: nil, durationMinutes: 50, endTime: endTime, earlyEndSeconds: 120)
         #expect(timer.isFocusMateSession == true)
-        #expect(timer.focusMateEarlyEndMinutes == 2)
+        #expect(timer.focusMateEarlyEndSeconds == 120)
         #expect(timer.focusMateEndTime == endTime)
         #expect(abs(timer.remainingSeconds - (48 * 60)) <= 1)
+    }
+
+    @Test("FocusMate early-end offset supports sub-minute (seconds) granularity")
+    func focusMateEarlyEndSupportsSeconds() {
+        let timer = PomodoroTimer()
+        let endTime = Date.now.addingTimeInterval(50 * 60)
+        timer.startFocusMate(project: nil, durationMinutes: 50, endTime: endTime, earlyEndSeconds: 90)
+        #expect(timer.focusMateEarlyEndSeconds == 90)
+        #expect(abs(timer.remainingSeconds - (50 * 60 - 90)) <= 1)
     }
 
     @Test("FocusMate early-end offset triggers session end early")
     func focusMateEarlyEndTriggersSessionEnd() {
         let timer = PomodoroTimer()
         let endTime = Date.now.addingTimeInterval(25 * 60)
-        timer.startFocusMate(project: nil, durationMinutes: 25, endTime: endTime, earlyEndMinutes: 2)
+        timer.startFocusMate(project: nil, durationMinutes: 25, endTime: endTime, earlyEndSeconds: 120)
         timer.phaseStartDate = Date.now.addingTimeInterval(-Double(timer.phaseDurationSeconds))
         timer.tick()
         #expect(timer.currentPhase == .sessionEnded)

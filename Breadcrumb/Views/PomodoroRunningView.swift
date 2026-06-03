@@ -29,8 +29,8 @@ struct PomodoroRunningView: View {
                 .foregroundStyle(.secondary)
                 .padding(.top, 4)
 
-            if timer.isFocusMateSession && timer.focusMateEarlyEndMinutes > 0 && timer.currentPhase == .work {
-                Text(Strings.Pomodoro.wrapUpBuffer(languageManager.language, minutes: timer.focusMateEarlyEndMinutes))
+            if timer.isFocusMateSession && timer.focusMateEarlyEndSeconds > 0 && timer.currentPhase == .work {
+                Text(Strings.Pomodoro.wrapUpBuffer(languageManager.language, seconds: timer.focusMateEarlyEndSeconds))
                     .font(.caption2)
                     .foregroundStyle(.tertiary)
             }

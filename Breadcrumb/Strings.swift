@@ -286,10 +286,14 @@ enum Strings {
         static func focusMateComplete(_ l: AppLanguage) -> String {
             l == .german ? "👥 FocusMate-Sitzung beendet!" : "👥 FocusMate Session Complete!"
         }
-        static func focusMateEndEarlyLabel(_ l: AppLanguage, minutes: Int) -> String {
-            l == .german
-                ? "FocusMate: \(minutes) Min. vor Ende beenden"
-                : "FocusMate: end \(minutes) min early"
+        static func focusMateEndEarlyHeader(_ l: AppLanguage) -> String {
+            l == .german ? "FocusMate Abschlusspuffer" : "FocusMate wrap-up buffer"
+        }
+        static func focusMateBufferMinutes(_ l: AppLanguage, minutes: Int) -> String {
+            l == .german ? "Minuten: \(minutes)" : "Minutes: \(minutes)"
+        }
+        static func focusMateBufferSeconds(_ l: AppLanguage, seconds: Int) -> String {
+            l == .german ? "Sekunden: \(seconds)" : "Seconds: \(seconds)"
         }
         static func sessionEndPrompt(_ l: AppLanguage) -> String {
             l == .german ? "Sitzungsende-Dialog" : "Session end prompt"
@@ -309,10 +313,11 @@ enum Strings {
         static func openSessionEndPrompt(_ l: AppLanguage) -> String {
             l == .german ? "Dialog öffnen" : "Open Prompt"
         }
-        static func wrapUpBuffer(_ l: AppLanguage, minutes: Int) -> String {
-            l == .german
-                ? "Abschlusspuffer: \(minutes) Min."
-                : "Wrap-up buffer: \(minutes) min"
+        static func wrapUpBuffer(_ l: AppLanguage, seconds: Int) -> String {
+            let m = seconds / 60
+            let s = seconds % 60
+            let t = "\(m):\(s.formatted(.number.precision(.integerLength(2))))"
+            return l == .german ? "Abschlusspuffer: \(t)" : "Wrap-up buffer: \(t)"
         }
         static func saveAndDone(_ l: AppLanguage) -> String {
             l == .german ? "Speichern & Fertig" : "Save & Done"

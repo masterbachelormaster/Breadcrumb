@@ -121,6 +121,7 @@ struct ContentView: View {
     @AppStorage("pomodoro.sessionsBeforeLongBreak") private var sessionsBeforeLong = 4
     @AppStorage("pomodoro.totalSessions") private var totalSessions = 4
     @AppStorage("pomodoro.focusMateEndEarlyMinutes") private var focusMateEndEarlyMinutes = 0
+    @AppStorage("pomodoro.focusMateEndEarlySeconds") private var focusMateEndEarlySeconds = 0
 
     private var sessionEndMode: SessionEndPresentation {
         SessionEndPresentation(rawValue: sessionEndPresentation) ?? .window
@@ -160,7 +161,7 @@ struct ContentView: View {
                 project: pendingPomodoroProject,
                 durationMinutes: configFocusMateMinutes,
                 endTime: endTime,
-                earlyEndMinutes: focusMateEndEarlyMinutes
+                earlyEndSeconds: focusMateEndEarlyMinutes * 60 + focusMateEndEarlySeconds
             )
         }
         showingPomodoroConfig = false

@@ -34,6 +34,13 @@ struct StringsTests {
         #expect(Strings.Pomodoro.startSession(.english) == "Start Session")
     }
 
+    @Test("Wrap-up buffer formats seconds as M:SS")
+    func wrapUpBufferFormatsMinutesSeconds() {
+        #expect(Strings.Pomodoro.wrapUpBuffer(.english, seconds: 90).hasSuffix("1:30"))
+        #expect(Strings.Pomodoro.wrapUpBuffer(.english, seconds: 30).hasSuffix("0:30"))
+        #expect(Strings.Pomodoro.wrapUpBuffer(.german, seconds: 650).hasSuffix("10:50"))
+    }
+
     @Test("AI extraction instructions exist for both languages")
     func aiInstructions() {
         let de = Strings.AIExtraction.instructions(.german)
