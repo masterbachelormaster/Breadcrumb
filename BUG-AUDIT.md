@@ -293,7 +293,9 @@ session.isFocusMate = timer.isFocusMateSession
 
 ### BC-013 — Uncommitted project.yml downgrades app version from 0.8.1 (build 19) back to 0.8.0 (build 18)
 
-- [ ] **medium** · `project.yml:27` · found by: orchestrator · ✅ Verified real (high confidence)
+- [x] **medium** · `project.yml:27` · found by: orchestrator · ✅ Verified real (high confidence)
+
+**Resolution:** reverted — v0.8.1 was confirmed already published on GitHub, so the working-tree downgrade was discarded (`git checkout -- project.yml` + `xcodegen generate`); project.yml is back at the released 0.8.1/build 19 and the accidental edit was never committed.
 
 **Problem:** The working tree contains an uncommitted change reverting MARKETING_VERSION from "0.8.1" to "0.8.0" and CURRENT_PROJECT_VERSION from "19" to "18", while commit 912a6aa already bumped the repo to 0.8.1/19. If committed as-is, the next build/release would ship with a DOWNGRADED version number, confusing updates and release tooling (/breadcrumb-release bumps from whatever is in project.yml).
 
