@@ -34,7 +34,7 @@
 
 ### BC-001 — Wake-notification tick re-entry after break end corrupts pendingSessionEnd (.breakDone flips to .workDone) and can duplicate session records
 
-- [ ] **high** · `Breadcrumb/PomodoroTimer.swift:302` · found by: timer-logic, concurrency · ✅ Verified real (high confidence)
+- [x] **high** · `Breadcrumb/PomodoroTimer.swift:302` · found by: timer-logic, concurrency · ✅ Verified real (high confidence)
 
 **Problem:** When a break (or FocusMate session) expires, tick() sets currentPhase = .sessionEnded and cancels timerTask, but never clears phaseStartDate. The NSWorkspace.didWakeNotification observer (line 66-74) calls tick() directly. If the Mac sleeps and wakes while the break-done prompt is still pending, tick() passes the `guard let start = phaseStartDate` check, recomputes remainingSeconds = 0, and re-enters the expiry branch. At that point currentPhase is already .sessionEnded, so `wasBreak` evaluates to false and pendingSessionEnd is overwritten from .breakDone to .workDone, and playWorkDoneFeedback fires again (spurious sound). The open session-end UI (wasBreak: reason == .breakDone in PomodoroSessionEndHostView) switches from the break-end buttons to the work-end save form; if the user saves, a duplicate PomodoroSession is recorded for a work session that was already saved before the break started, and startBreak() runs a second break. For FocusMate the reason stays .focusMateDone but the completion sound replays on every wake.
 
@@ -53,9 +53,11 @@ pendingSessionEnd = wasBreak ? .breakDone : (isFocusMateSession ? .focusMateDone
 
 **Verifier notes:** Confirmed by trace. tick() guards only on phaseStartDate (PomodoroTimer.swift:281); the break/FocusMate expiry branch (299-312) cancels timerTask but leaves phaseStartDate set, and the didWakeNotification observer (66-74) calls tick() directly. On re-entry currentPhase is .sessionEnded so wasBreak is false and pendingSessionEnd is overwritten .breakDone -> .workDone with a spurious playWorkDoneFeedback; PomodoroSessionEndHostView.swift:13 keys the UI variant on reason == .breakDone, so the form switches to the work-end save variant and saveWorkSession() can record a duplicate PomodoroSession.
 
+**Resolution:** d6ca402 — tick()'s break/FocusMate expiry branch now clears phaseStartDate alongside the timerTask cancellation, making the expiry transition one-shot so a wake-triggered tick() cannot rewrite pendingSessionEnd or replay completion feedback (regression tests added in PomodoroTimerTests).
+
 ### BC-002 — Stop button leads to 'Save & Break' which starts a break — no way to save a status AND stop; .stopped reason is never differentiated
 
-- [ ] **high** · `Breadcrumb/Views/PomodoroSessionEndHostView.swift:42` · found by: timer-logic · ✅ Verified real (high confidence)
+- [x] **high** · `Breadcrumb/Views/PomodoroSessionEndHostView.swift:42` · found by: timer-logic · ✅ Verified real (high confidence)
 
 **Problem:** Pressing the red Stop button during a work session calls requestStop() which sets pendingSessionEnd = .stopped, and the session-end form appears. But PomodoroSessionEndView never receives the reason — workEndContent renders identically for .workDone and .stopped. Mid-cycle (isCycleComplete == false) the primary button is 'Save & Break' (PomodoroSessionEndView.swift:200), and handleSaveWorkSession unconditionally calls timer.startBreak(): a user who pressed Stop, typed a status note, and hit the primary button is put into a 5-minute break instead of stopping. Worse, during a break the only control in PomodoroRunningView is 'Skip' (which starts the NEXT work session), so the only exits are 'Stop without saving' (discards the typed status entry) or riding out the break. There is no save-status-and-stop path after pressing Stop mid-cycle.
 
@@ -75,6 +77,8 @@ if timer.isCycleComplete {
 ```
 
 **Verifier notes:** PomodoroSessionEndHostView.swift:13 passes only wasBreak (reason == .breakDone), discarding .stopped; workEndContent renders identically for .workDone and .stopped with mid-cycle primary 'Save & Break' (PomodoroSessionEndView.swift:200), and handleSaveWorkSession (host view:38-43) unconditionally calls timer.startBreak() when !isCycleComplete. The .stopped reason always routes to this overlay (PomodoroRunningView.swift:89; ContentView.swift:132 and MenuBarLabelView.swift:43 exclude .stopped from the window path), and during the resulting break the only control is Skip which starts the NEXT work session (PomodoroRunningView.swift:74-76, 143-151), so there is no save-status-and-stop path. Minor correction to the report: 'Stop without saving' does persist a PomodoroSession record via saveCurrentWorkSession — it only discards the typed status text.
+
+**Resolution:** 7ffb130 — PomodoroSessionEndHostView now passes wasStopped (reason == .stopped) into PomodoroSessionEndView and the save handler routes through a shared endsCycleAfterSave predicate, so a stopped session shows "Save & Stop" and calls timer.stop() + onFinished() instead of startBreak() in both .menuBar and .window presentations.
 
 ---
 
