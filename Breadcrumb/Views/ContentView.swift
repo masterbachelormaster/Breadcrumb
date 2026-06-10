@@ -18,6 +18,8 @@ struct ContentView: View {
     @State private var configFocusMateStartTime: Date = .now
 
     @AppStorage("hasSeenWelcome") private var hasSeenWelcome = false
+    @AppStorage("hasAnsweredFocusMateQuestion") private var hasAnsweredFocusMateQuestion = false
+    @AppStorage("feature.focusMateEnabled") private var focusMateEnabled = false
     @AppStorage("pomodoro.sessionEndPresentation") private var sessionEndPresentation = SessionEndPresentation.window.rawValue
 
     enum Screen {
@@ -32,6 +34,14 @@ struct ContentView: View {
                 if !hasSeenWelcome {
                     WelcomeView(onDismiss: {
                         withAnimation(.easeInOut(duration: 0.2)) { hasSeenWelcome = true }
+                    })
+                    .transition(.opacity)
+                } else if !hasAnsweredFocusMateQuestion {
+                    FocusMateQuestionView(onAnswer: { isUser in
+                        withAnimation(.easeInOut(duration: 0.2)) {
+                            focusMateEnabled = isUser
+                            hasAnsweredFocusMateQuestion = true
+                        }
                     })
                     .transition(.opacity)
                 } else if shouldShowSessionEndSummary {
@@ -134,6 +144,7 @@ struct ContentView: View {
     }
 
     private func startPomodoro(project: Project?) {
+        if !focusMateEnabled { configTimerMode = .pomodoro }
         pendingPomodoroProject = project
         configWorkMinutes = workMinutes
         configShortBreakMinutes = shortBreakMinutes

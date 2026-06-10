@@ -19,6 +19,7 @@ struct SettingsView: View {
     @AppStorage("pomodoro.sessionEndPresentation") private var sessionEndPresentation = SessionEndPresentation.window.rawValue
     @AppStorage("ai.provider") private var aiProvider = AIBackend.local.rawValue
     @AppStorage("feature.dictationEnabled") private var dictationEnabled = false
+    @AppStorage("feature.focusMateEnabled") private var focusMateEnabled = false
 
     var onBack: (() -> Void)? = nil
 
@@ -96,6 +97,12 @@ struct SettingsView: View {
                             }
                         }
                     Toggle(Strings.Settings.dictation(l), isOn: $dictationEnabled)
+                    Toggle(Strings.Settings.focusMateUser(l), isOn: $focusMateEnabled)
+                    Text(Strings.Settings.focusMateUserCaption(l))
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                    Link(Strings.Settings.focusMateLink(l), destination: URL(string: "https://www.focusmate.com")!)
+                        .font(.caption)
                 }
 
                 Section(Strings.Pomodoro.pomodoro(l)) {
@@ -108,20 +115,22 @@ struct SettingsView: View {
                             Stepper(Strings.Pomodoro.longBreakLabel(l, minutes: longBreakMinutes), value: $longBreakMinutes, in: 5...30)
                         }
                     }
-                    Text(Strings.Pomodoro.focusMateEndEarlyHeader(l))
-                        .font(.caption)
-                        .foregroundStyle(.secondary)
-                    Stepper(
-                        Strings.Pomodoro.focusMateBufferMinutes(l, minutes: focusMateEndEarlyMinutes),
-                        value: $focusMateEndEarlyMinutes,
-                        in: 0...10
-                    )
-                    Stepper(
-                        Strings.Pomodoro.focusMateBufferSeconds(l, seconds: focusMateEndEarlySeconds),
-                        value: $focusMateEndEarlySeconds,
-                        in: 0...50,
-                        step: 10
-                    )
+                    if focusMateEnabled {
+                        Text(Strings.Pomodoro.focusMateEndEarlyHeader(l))
+                            .font(.caption)
+                            .foregroundStyle(.secondary)
+                        Stepper(
+                            Strings.Pomodoro.focusMateBufferMinutes(l, minutes: focusMateEndEarlyMinutes),
+                            value: $focusMateEndEarlyMinutes,
+                            in: 0...10
+                        )
+                        Stepper(
+                            Strings.Pomodoro.focusMateBufferSeconds(l, seconds: focusMateEndEarlySeconds),
+                            value: $focusMateEndEarlySeconds,
+                            in: 0...50,
+                            step: 10
+                        )
+                    }
                     Picker(Strings.Pomodoro.sessionEndPrompt(l), selection: $sessionEndPresentation) {
                         Text(Strings.Pomodoro.sessionEndPromptWindow(l)).tag(SessionEndPresentation.window.rawValue)
                         Text(Strings.Pomodoro.sessionEndPromptMenuBar(l)).tag(SessionEndPresentation.menuBar.rawValue)
