@@ -88,17 +88,27 @@ final class PomodoroTimer {
         }
     }
 
+    /// Like `formattedTime`, but minutes are zero-padded so the menu bar label
+    /// keeps a constant width for the whole session (09:59 instead of 9:59).
+    var menuBarFormattedTime: String {
+        let total = isOvertime ? overtimeSeconds : remainingSeconds
+        let minutes = total / 60
+        let seconds = total % 60
+        let time = "\(minutes.formatted(.number.precision(.integerLength(2...)))):\(seconds.formatted(.number.precision(.integerLength(2))))"
+        return isOvertime ? "+\(time)" : time
+    }
+
     func menuBarLabel(_ l: AppLanguage) -> String {
         switch currentPhase {
         case .idle:
             return "Breadcrumb"
         case .work:
             if isFocusMateSession {
-                return "👥 \(formattedTime)"
+                return "👥 \(menuBarFormattedTime)"
             }
-            return "🍅 \(formattedTime)"
+            return "🍅 \(menuBarFormattedTime)"
         case .shortBreak, .longBreak:
-            return "☕ \(formattedTime)"
+            return "☕ \(menuBarFormattedTime)"
         case .sessionEnded:
             if isFocusMateSession {
                 return "👥 \(Strings.Pomodoro.done(l))"
