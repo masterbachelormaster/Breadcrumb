@@ -50,14 +50,13 @@ struct ProjectDetailView: View {
                         .font(.body)
                     }
                     .buttonStyle(ToolbarButtonStyle())
-
-                    Spacer()
+                    .fixedSize()
+                    .frame(maxWidth: .infinity, alignment: .leading)
 
                     Text(project.name)
                         .font(.headline)
                         .lineLimit(1)
-
-                    Spacer()
+                        .layoutPriority(1)
 
                     Menu {
                         Button(Strings.General.edit(languageManager.language), systemImage: "pencil") {
@@ -81,6 +80,7 @@ struct ProjectDetailView: View {
                     }
                     .buttonStyle(ToolbarButtonStyle())
                     .help(Strings.General.moreOptions(languageManager.language))
+                    .frame(maxWidth: .infinity, alignment: .trailing)
                 }
                 .padding(.horizontal)
                 .padding(.vertical, 8)

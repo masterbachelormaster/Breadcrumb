@@ -24,16 +24,16 @@ struct ArchivedProjectsView: View {
                     .font(.body)
                 }
                 .buttonStyle(ToolbarButtonStyle())
-
-                Spacer()
+                .fixedSize()
+                .frame(maxWidth: .infinity, alignment: .leading)
 
                 Text(Strings.Projects.archiveTitle(languageManager.language))
                     .font(.headline)
+                    .lineLimit(1)
+                    .layoutPriority(1)
 
-                Spacer()
-
-                // Spacer for symmetry
-                Color.clear.frame(width: 60, height: 1)
+                // Equal-width counterpart to the back button keeps the title centered
+                Color.clear.frame(maxWidth: .infinity, maxHeight: 1)
             }
             .padding(.horizontal)
             .padding(.vertical, 8)
