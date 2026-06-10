@@ -21,15 +21,15 @@ struct ProjectPickerView: View {
                     .font(.body)
                 }
                 .buttonStyle(ToolbarButtonStyle())
-
-                Spacer()
+                .fixedSize()
+                .frame(maxWidth: .infinity, alignment: .leading)
 
                 Text(Strings.Projects.chooseProject(languageManager.language))
                     .font(.headline)
+                    .lineLimit(1)
+                    .layoutPriority(1)
 
-                Spacer()
-
-                Color.clear.frame(width: 60, height: 1)
+                Color.clear.frame(maxWidth: .infinity, maxHeight: 1)
             }
             .padding(.horizontal)
             .padding(.vertical, 8)

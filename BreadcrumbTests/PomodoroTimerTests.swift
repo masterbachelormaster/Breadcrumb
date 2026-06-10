@@ -565,6 +565,21 @@ struct PomodoroTimerTests {
         #expect(timer.formattedTime == "0:05")
     }
 
+    @Test("Menu bar time zero-pads minutes for constant width")
+    func menuBarFormattedTime() {
+        let timer = PomodoroTimer()
+        timer.startWork(project: nil, durationMinutes: 25, shortBreakMinutes: 5, longBreakMinutes: 15, sessionsBeforeLong: 4, totalSessions: 4)
+        timer.remainingSeconds = 1500
+        #expect(timer.menuBarFormattedTime == "25:00")
+        timer.remainingSeconds = 599
+        #expect(timer.menuBarFormattedTime == "09:59")
+        timer.remainingSeconds = 5
+        #expect(timer.menuBarFormattedTime == "00:05")
+        timer.isOvertime = true
+        timer.overtimeSeconds = 5
+        #expect(timer.menuBarFormattedTime == "+00:05")
+    }
+
     @Test("Session settings are stored on startWork")
     func sessionSettings() {
         let timer = PomodoroTimer()

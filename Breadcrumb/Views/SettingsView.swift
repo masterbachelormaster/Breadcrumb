@@ -19,6 +19,7 @@ struct SettingsView: View {
     @AppStorage("pomodoro.sessionEndPresentation") private var sessionEndPresentation = SessionEndPresentation.window.rawValue
     @AppStorage("ai.provider") private var aiProvider = AIBackend.local.rawValue
     @AppStorage("feature.dictationEnabled") private var dictationEnabled = false
+    @AppStorage("feature.focusMateEnabled") private var focusMateEnabled = false
 
     var onBack: (() -> Void)? = nil
 
@@ -41,15 +42,15 @@ struct SettingsView: View {
                         .font(.body)
                     }
                     .buttonStyle(ToolbarButtonStyle())
-
-                    Spacer()
+                    .fixedSize()
+                    .frame(maxWidth: .infinity, alignment: .leading)
 
                     Text(Strings.General.settings(l))
                         .font(.headline)
+                        .lineLimit(1)
+                        .layoutPriority(1)
 
-                    Spacer()
-
-                    Color.clear.frame(width: 60, height: 1)
+                    Color.clear.frame(maxWidth: .infinity, maxHeight: 1)
                 }
                 .padding(.horizontal)
                 .padding(.vertical, 8)
@@ -175,28 +176,37 @@ struct SettingsView: View {
     private var focusMateSection: some View {
         let l = languageManager.language
         Section {
-            VStack(alignment: .leading, spacing: 2) {
-                Text(Strings.Pomodoro.focusMateEndEarlyHeader(l))
-                Text(Strings.Pomodoro.focusMateBufferCaption(l))
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
+            Toggle(isOn: $focusMateEnabled) {
+                Text(Strings.Settings.focusMateUser(l))
+                Text(Strings.Settings.focusMateUserCaption(l))
             }
-            Stepper(
-                Strings.Pomodoro.focusMateBufferMinutes(l, minutes: focusMateEndEarlyMinutes),
-                value: $focusMateEndEarlyMinutes,
-                in: 0...10
-            )
-            Stepper(
-                Strings.Pomodoro.focusMateBufferSeconds(l, seconds: focusMateEndEarlySeconds),
-                value: $focusMateEndEarlySeconds,
-                in: 0...50,
-                step: 10
-            )
+            if focusMateEnabled {
+                VStack(alignment: .leading, spacing: 2) {
+                    Text(Strings.Pomodoro.focusMateEndEarlyHeader(l))
+                    Text(Strings.Pomodoro.focusMateBufferCaption(l))
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                }
+                Stepper(
+                    Strings.Pomodoro.focusMateBufferMinutes(l, minutes: focusMateEndEarlyMinutes),
+                    value: $focusMateEndEarlyMinutes,
+                    in: 0...10
+                )
+                Stepper(
+                    Strings.Pomodoro.focusMateBufferSeconds(l, seconds: focusMateEndEarlySeconds),
+                    value: $focusMateEndEarlySeconds,
+                    in: 0...50,
+                    step: 10
+                )
+            }
+            Link(Strings.Settings.focusMateLink(l), destination: URL(string: "https://www.focusmate.com")!)
+                .font(.caption)
         } header: {
             Text(Strings.Pomodoro.focusMateMode(l))
         } footer: {
             Text(Strings.Pomodoro.focusMateSectionFooter(l))
         }
+        .animation(.default, value: focusMateEnabled)
     }
 
     @ViewBuilder

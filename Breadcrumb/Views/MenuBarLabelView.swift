@@ -15,7 +15,9 @@ struct MenuBarLabelView: View {
             if pomodoroTimer.currentPhase == .idle {
                 Image(systemName: "bookmark.fill")
             } else {
-                Text(pomodoroTimer.menuBarLabel(languageManager.language))
+                let label = pomodoroTimer.menuBarLabel(languageManager.language)
+                Image(nsImage: MenuBarLabelRenderer.image(for: label))
+                    .accessibilityLabel(label)
             }
         }
         .task {

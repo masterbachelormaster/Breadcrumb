@@ -528,6 +528,17 @@ enum Strings {
         static func resetToDefault(_ l: AppLanguage) -> String {
             l == .german ? "Auf Standard zurücksetzen" : "Reset to Default"
         }
+        static func focusMateUser(_ l: AppLanguage) -> String {
+            l == .german ? "FocusMate-Modus" : "FocusMate mode"
+        }
+        static func focusMateUserCaption(_ l: AppLanguage) -> String {
+            l == .german
+                ? "Zeigt im Pomodoro-Dialog eine FocusMate-Option: einen Timer für FocusMate-Video-Sitzungen. Aktiviere dies, wenn du FocusMate nutzt."
+                : "Shows a FocusMate option in the Pomodoro dialog: a timer for FocusMate video sessions. Turn this on if you use FocusMate."
+        }
+        static func focusMateLink(_ l: AppLanguage) -> String {
+            l == .german ? "focusmate.com besuchen" : "Visit focusmate.com"
+        }
     }
 
     // MARK: - Welcome
@@ -556,6 +567,28 @@ enum Strings {
         }
         static func letsGo(_ l: AppLanguage) -> String {
             l == .german ? "Los geht's!" : "Let's Go!"
+        }
+    }
+
+    // MARK: - FocusMate Question
+
+    enum FocusMateQuestion {
+        static func title(_ l: AppLanguage) -> String {
+            l == .german ? "Nutzt du FocusMate?" : "Are you a FocusMate user?"
+        }
+        static func explanation(_ l: AppLanguage) -> String {
+            l == .german
+                ? "Breadcrumb hat einen FocusMate-Modus: einen Timer, der parallel zu deinen FocusMate-Video-Sitzungen läuft. Wenn du FocusMate nutzt, blenden wir diese Option ein. Du kannst das später in den Einstellungen ändern."
+                : "Breadcrumb has a FocusMate mode: a timer that runs alongside your FocusMate video coworking sessions. If you use FocusMate, we'll show this option. You can change this later in Settings."
+        }
+        static func linkLabel(_ l: AppLanguage) -> String {
+            l == .german ? "Mehr über FocusMate" : "Learn more about FocusMate"
+        }
+        static func yes(_ l: AppLanguage) -> String {
+            l == .german ? "Ja" : "Yes"
+        }
+        static func no(_ l: AppLanguage) -> String {
+            l == .german ? "Nein" : "No"
         }
     }
 

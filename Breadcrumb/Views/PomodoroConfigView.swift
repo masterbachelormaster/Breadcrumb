@@ -21,6 +21,7 @@ struct PomodoroConfigView: View {
     var onStart: () -> Void
     var onDismiss: () -> Void
 
+    @AppStorage("feature.focusMateEnabled") private var focusMateEnabled = false
     @State private var availableBoundaries: [Date] = []
 
     private var hasBreaks: Bool { totalSessions > 1 }
@@ -42,14 +43,16 @@ struct PomodoroConfigView: View {
                 .foregroundStyle(.secondary)
             }
 
-            Picker("", selection: $timerMode) {
-                Text(Strings.Pomodoro.pomodoroMode(l)).tag(TimerMode.pomodoro)
-                Text(Strings.Pomodoro.focusMateMode(l)).tag(TimerMode.focusMate)
+            if focusMateEnabled {
+                Picker("", selection: $timerMode) {
+                    Text(Strings.Pomodoro.pomodoroMode(l)).tag(TimerMode.pomodoro)
+                    Text(Strings.Pomodoro.focusMateMode(l)).tag(TimerMode.focusMate)
+                }
+                .pickerStyle(.segmented)
+                .labelsHidden()
             }
-            .pickerStyle(.segmented)
-            .labelsHidden()
 
-            if timerMode == .pomodoro {
+            if timerMode == .pomodoro || !focusMateEnabled {
                 Stepper(Strings.Pomodoro.totalSessionsLabel(l, count: totalSessions), value: $totalSessions, in: 1...8)
                 Stepper(Strings.Pomodoro.focusTimeLabel(l, minutes: workMinutes), value: $workMinutes, in: 1...60)
 

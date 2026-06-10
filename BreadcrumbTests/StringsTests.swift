@@ -105,6 +105,30 @@ struct StringsTests {
         #expect(Strings.Pomodoro.saveAndDone(.german) == "Speichern & Fertig")
     }
 
+    @Test("FocusMate question strings")
+    func focusMateQuestionStrings() {
+        #expect(Strings.FocusMateQuestion.title(.german) == "Nutzt du FocusMate?")
+        #expect(Strings.FocusMateQuestion.title(.english) == "Are you a FocusMate user?")
+        #expect(Strings.FocusMateQuestion.yes(.german) == "Ja")
+        #expect(Strings.FocusMateQuestion.yes(.english) == "Yes")
+        #expect(Strings.FocusMateQuestion.no(.german) == "Nein")
+        #expect(Strings.FocusMateQuestion.no(.english) == "No")
+        #expect(Strings.FocusMateQuestion.explanation(.german).contains("FocusMate"))
+        #expect(Strings.FocusMateQuestion.explanation(.english).contains("FocusMate"))
+        #expect(Strings.FocusMateQuestion.linkLabel(.german).contains("FocusMate"))
+        #expect(Strings.FocusMateQuestion.linkLabel(.english).contains("FocusMate"))
+    }
+
+    @Test("FocusMate settings strings")
+    func focusMateSettingsStrings() {
+        #expect(Strings.Settings.focusMateUser(.german) == "FocusMate-Modus")
+        #expect(Strings.Settings.focusMateUser(.english) == "FocusMate mode")
+        #expect(Strings.Settings.focusMateUserCaption(.german).contains("FocusMate"))
+        #expect(Strings.Settings.focusMateUserCaption(.english).contains("FocusMate"))
+        #expect(Strings.Settings.focusMateLink(.german).contains("focusmate.com"))
+        #expect(Strings.Settings.focusMateLink(.english).contains("focusmate.com"))
+    }
+
     @Test("Session end presentation strings")
     func sessionEndPresentationStrings() {
         #expect(Strings.Pomodoro.sessionEndPrompt(.english) == "Session end prompt")
