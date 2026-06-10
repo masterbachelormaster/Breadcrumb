@@ -18,6 +18,7 @@
 		2687E27759A34607BF54B7B2 /* AIProviderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 913C1D4F480359F1604A530C /* AIProviderTests.swift */; };
 		26BE57BD5EF31441DDE3F3E9 /* WelcomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBC8EB9F931D9DE70D2806CE /* WelcomeView.swift */; };
 		28DE9021DA67CF3E510643FC /* FormOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36ADA56CAAFC591548F4CFDB /* FormOverlay.swift */; };
+		2A4F2B4CE4DEEDAEF0F63EE5 /* InfoButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3291AE487041943FA611F1D /* InfoButton.swift */; };
 		3063417A9901446E2F9C06CA /* BulletTextTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC0E444CDB40131D5BC3F8F0 /* BulletTextTests.swift */; };
 		332BF2812B86C21141AF9D88 /* AppLanguage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70969E1971A3847B517389ED /* AppLanguage.swift */; };
 		370A4A9D4C47387CB9F2FB1A /* AIFillerStripperTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22EB604EBEE6E40B6A21FFD2 /* AIFillerStripperTests.swift */; };
@@ -164,6 +165,7 @@
 		E04EB91901CE48B7E52558F1 /* ButtonStyles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonStyles.swift; sourceTree = "<group>"; };
 		E0A23CE8D0C3663CAF21F178 /* PomodoroTimer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PomodoroTimer.swift; sourceTree = "<group>"; };
 		E13AD7C73B76D6EAB8CF5D8E /* Strings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Strings.swift; sourceTree = "<group>"; };
+		E3291AE487041943FA611F1D /* InfoButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoButton.swift; sourceTree = "<group>"; };
 		E4ECDD26ED0F879AA18991DD /* PomodoroSessionSaveTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PomodoroSessionSaveTests.swift; sourceTree = "<group>"; };
 		E7CE7354CA860BF1B53435E6 /* ArchivedProjectsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArchivedProjectsView.swift; sourceTree = "<group>"; };
 		E97F9AD204BAC7BB0A7E5D92 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
@@ -196,6 +198,7 @@
 				36ADA56CAAFC591548F4CFDB /* FormOverlay.swift */,
 				9C88E592971DB2AB4E478DA7 /* HistoryEntryRow.swift */,
 				B8C5CE9442C811F8DCF196BD /* HistoryView.swift */,
+				E3291AE487041943FA611F1D /* InfoButton.swift */,
 				A1C57F278DDAF7B87BEB4F2D /* MenuBarLabelRenderer.swift */,
 				2A3D2DAF302F92A82D4E4748 /* MenuBarLabelView.swift */,
 				01F1A5207F7DE996DE352A42 /* NativeDictationButton.swift */,
@@ -430,6 +433,7 @@
 				28DE9021DA67CF3E510643FC /* FormOverlay.swift in Sources */,
 				4B7239E38F057E021A7D6948 /* HistoryEntryRow.swift in Sources */,
 				FA03D196F0BF672CC3D62165 /* HistoryView.swift in Sources */,
+				2A4F2B4CE4DEEDAEF0F63EE5 /* InfoButton.swift in Sources */,
 				7D34D0135D8B9F99FDCC585F /* KeychainHelper.swift in Sources */,
 				674F307AC2D1DD30DDBA74DE /* LanguageManager.swift in Sources */,
 				497D467A820A0F052FBA9DE7 /* LinkedDocument.swift in Sources */,

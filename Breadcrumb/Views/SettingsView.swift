@@ -124,8 +124,10 @@ struct SettingsView: View {
                     }
                 }
             Toggle(isOn: $dictationEnabled) {
-                Text(Strings.Settings.dictation(l))
-                Text(Strings.Settings.dictationCaption(l))
+                HStack(spacing: 6) {
+                    Text(Strings.Settings.dictation(l))
+                    InfoButton(text: Strings.Settings.dictationCaption(l))
+                }
             }
         }
     }
@@ -166,9 +168,10 @@ struct SettingsView: View {
             }
             .pickerStyle(.segmented)
         } header: {
-            Text(Strings.Settings.sessionEndSection(l))
-        } footer: {
-            Text(Strings.Pomodoro.sessionEndPromptCaption(l))
+            HStack(spacing: 6) {
+                Text(Strings.Settings.sessionEndSection(l))
+                InfoButton(text: Strings.Pomodoro.sessionEndPromptCaption(l))
+            }
         }
     }
 
@@ -177,15 +180,19 @@ struct SettingsView: View {
         let l = languageManager.language
         Section {
             Toggle(isOn: $focusMateEnabled) {
-                Text(Strings.Settings.focusMateUser(l))
-                Text(Strings.Settings.focusMateUserCaption(l))
+                HStack(spacing: 6) {
+                    Text(Strings.Settings.focusMateUser(l))
+                    InfoButton(
+                        text: Strings.Settings.focusMateUserCaption(l)
+                            + "\n\n"
+                            + Strings.Pomodoro.focusMateSectionFooter(l)
+                    )
+                }
             }
             if focusMateEnabled {
-                VStack(alignment: .leading, spacing: 2) {
+                HStack(spacing: 6) {
                     Text(Strings.Pomodoro.focusMateEndEarlyHeader(l))
-                    Text(Strings.Pomodoro.focusMateBufferCaption(l))
-                        .font(.caption)
-                        .foregroundStyle(.secondary)
+                    InfoButton(text: Strings.Pomodoro.focusMateBufferCaption(l))
                 }
                 Stepper(
                     Strings.Pomodoro.focusMateBufferMinutes(l, minutes: focusMateEndEarlyMinutes),
@@ -203,8 +210,6 @@ struct SettingsView: View {
                 .font(.caption)
         } header: {
             Text(Strings.Pomodoro.focusMateMode(l))
-        } footer: {
-            Text(Strings.Pomodoro.focusMateSectionFooter(l))
         }
         .animation(.default, value: focusMateEnabled)
     }
@@ -216,8 +221,10 @@ struct SettingsView: View {
             SoundPicker(label: Strings.Settings.soundWorkDone(l), selection: $soundWorkDone)
             SoundPicker(label: Strings.Settings.soundBreakDone(l), selection: $soundBreakDone)
             Toggle(isOn: $showBannerNotification) {
-                Text(Strings.Settings.showBannerNotification(l))
-                Text(Strings.Settings.showBannerCaption(l))
+                HStack(spacing: 6) {
+                    Text(Strings.Settings.showBannerNotification(l))
+                    InfoButton(text: Strings.Settings.showBannerCaption(l))
+                }
             }
         }
     }
@@ -225,26 +232,22 @@ struct SettingsView: View {
     @ViewBuilder
     private var aiSection: some View {
         let l = languageManager.language
-        Section(Strings.Settings.aiSection(l)) {
-            Text(Strings.Settings.aiIntro(l))
-                .font(.caption)
-                .foregroundStyle(.secondary)
+        Section {
+            HStack(spacing: 8) {
+                Picker(Strings.Settings.aiProvider(l), selection: $aiProvider) {
+                    Text(Strings.Settings.aiProviderLocal(l)).tag(AIBackend.local.rawValue)
+                    Text(Strings.Settings.aiProviderOpenRouter(l)).tag(AIBackend.openRouter.rawValue)
+                }
+                .pickerStyle(.segmented)
+                .labelsHidden()
+                .onChange(of: aiProvider) {
+                    aiService.refreshAvailability()
+                }
 
-            Picker(Strings.Settings.aiProvider(l), selection: $aiProvider) {
-                Text(Strings.Settings.aiProviderLocal(l)).tag(AIBackend.local.rawValue)
-                Text(Strings.Settings.aiProviderOpenRouter(l)).tag(AIBackend.openRouter.rawValue)
+                InfoButton(text: aiProvider == AIBackend.openRouter.rawValue
+                    ? Strings.Settings.aiProviderOpenRouterCaption(l)
+                    : Strings.Settings.aiProviderLocalCaption(l))
             }
-            .pickerStyle(.segmented)
-            .labelsHidden()
-            .onChange(of: aiProvider) {
-                aiService.refreshAvailability()
-            }
-
-            Text(aiProvider == AIBackend.openRouter.rawValue
-                ? Strings.Settings.aiProviderOpenRouterCaption(l)
-                : Strings.Settings.aiProviderLocalCaption(l))
-                .font(.caption)
-                .foregroundStyle(.secondary)
 
             HStack {
                 Circle()
@@ -253,6 +256,11 @@ struct SettingsView: View {
                 Text(aiService.isAvailable ? Strings.Settings.aiReady(l) : Strings.Settings.aiNotConfigured(l))
                     .font(.caption)
                     .foregroundStyle(.secondary)
+            }
+        } header: {
+            HStack(spacing: 6) {
+                Text(Strings.Settings.aiSection(l))
+                InfoButton(text: Strings.Settings.aiIntro(l))
             }
         }
     }
