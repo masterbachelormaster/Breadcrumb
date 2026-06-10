@@ -11,10 +11,11 @@ struct PomodoroSessionEndHostView: View {
         if let reason = timer.pendingSessionEnd {
             PomodoroSessionEndView(
                 wasBreak: reason == .breakDone,
+                wasStopped: reason == .stopped,
                 isCycleComplete: timer.isCycleComplete,
                 isFocusMate: reason == .focusMateDone || timer.isFocusMateSession,
                 boundProjectID: timer.boundProjectID,
-                onSaveWorkSession: handleSaveWorkSession,
+                onSaveWorkSession: { handleSaveWorkSession($0, wasStopped: reason == .stopped) },
                 onContinueWorking: handleContinueWorking,
                 onSkip: handleSkip,
                 onStartNextSession: handleStartNextSession,
@@ -30,12 +31,12 @@ struct PomodoroSessionEndHostView: View {
         return modelContext.model(for: boundProjectID) as? Project
     }
 
-    private func handleSaveWorkSession(_ session: PomodoroSession) {
+    private func handleSaveWorkSession(_ session: PomodoroSession, wasStopped: Bool) {
         modelContext.insert(session)
         modelContext.saveWithLogging()
         timer.clearPendingSessionEnd()
 
-        if timer.isCycleComplete {
+        if PomodoroSessionEndView.endsCycleAfterSave(wasStopped: wasStopped, isCycleComplete: timer.isCycleComplete) {
             timer.stop()
             onFinished()
         } else {

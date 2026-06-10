@@ -134,6 +134,20 @@ struct PomodoroSessionSaveTests {
         #expect(entries.count == 0)
     }
 
+    // MARK: - Save & Stop routing (BC-002)
+
+    @Test("Saving after pressing Stop ends the cycle instead of starting a break")
+    func saveAfterStopEndsCycle() {
+        #expect(PomodoroSessionEndView.endsCycleAfterSave(wasStopped: true, isCycleComplete: false) == true)
+        #expect(PomodoroSessionEndView.endsCycleAfterSave(wasStopped: true, isCycleComplete: true) == true)
+    }
+
+    @Test("Saving a natural work end starts a break unless the cycle is complete")
+    func saveNaturalWorkEndKeepsBreakFlow() {
+        #expect(PomodoroSessionEndView.endsCycleAfterSave(wasStopped: false, isCycleComplete: false) == false)
+        #expect(PomodoroSessionEndView.endsCycleAfterSave(wasStopped: false, isCycleComplete: true) == true)
+    }
+
     // MARK: - Skip path
 
     @Test("Skip creates session with no entry")

@@ -7,6 +7,7 @@ struct PomodoroSessionEndView: View {
     @Environment(\.modelContext) private var modelContext
 
     let wasBreak: Bool
+    var wasStopped: Bool = false
     var isCycleComplete: Bool = false
     var isFocusMate: Bool = false
     var boundProjectID: PersistentIdentifier?
@@ -196,12 +197,24 @@ struct PomodoroSessionEndView: View {
         onSaveWorkSession(session)
     }
 
+    /// Whether saving the work session should end the cycle (stop the timer)
+    /// instead of starting a break. True when the user explicitly pressed Stop
+    /// or when the cycle is complete. Shared by the primary button title and
+    /// the host view's save handler so UI and behavior cannot drift apart.
+    static func endsCycleAfterSave(wasStopped: Bool, isCycleComplete: Bool) -> Bool {
+        wasStopped || isCycleComplete
+    }
+
     private func primaryWorkEndButtonTitle(_ l: AppLanguage) -> String {
-        isCycleComplete ? Strings.Pomodoro.saveAndStop(l) : Strings.Pomodoro.saveAndBreak(l)
+        Self.endsCycleAfterSave(wasStopped: wasStopped, isCycleComplete: isCycleComplete)
+            ? Strings.Pomodoro.saveAndStop(l)
+            : Strings.Pomodoro.saveAndBreak(l)
     }
 
     private func primaryWorkEndButtonHelp(_ l: AppLanguage) -> String {
-        isCycleComplete ? Strings.Pomodoro.saveAndStopHint(l) : Strings.Pomodoro.saveAndBreakHint(l)
+        Self.endsCycleAfterSave(wasStopped: wasStopped, isCycleComplete: isCycleComplete)
+            ? Strings.Pomodoro.saveAndStopHint(l)
+            : Strings.Pomodoro.saveAndBreakHint(l)
     }
 
     private func saveAndDone() {
