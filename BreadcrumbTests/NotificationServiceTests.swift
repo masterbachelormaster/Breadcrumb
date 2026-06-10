@@ -120,7 +120,11 @@ struct NotificationServiceTests {
     @Test("Scheduling requests notification authorization before adding banner")
     func scheduleRequestsAuthorizationBeforeAddingBanner() async throws {
         let center = RecordingUserNotificationCenter()
-        let service = NotificationService(notificationCenter: center)
+        let suiteName = "NotificationServiceTests-\(UUID().uuidString)"
+        let defaults = try #require(UserDefaults(suiteName: suiteName))
+        defer { defaults.removePersistentDomain(forName: suiteName) }
+
+        let service = NotificationService(notificationCenter: center, userDefaults: defaults)
 
         let task = try #require(service.scheduleWorkDoneBanner(language: .english, after: 90, completion: .breakAvailable))
         await task.value
