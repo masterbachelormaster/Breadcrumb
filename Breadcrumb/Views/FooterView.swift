@@ -39,7 +39,7 @@ struct FooterView: View {
                     .labelStyle(.iconOnly)
                     .font(.callout)
             }
-            .menuStyle(.borderlessButton)
+            .menuStyle(.button)
             .menuIndicator(.hidden)
             .frame(maxWidth: .infinity)
             .buttonStyle(ToolbarButtonStyle())

@@ -380,7 +380,9 @@ if doc.type == .file && resolveBookmark(doc) == nil {
 
 ### BC-018 — Uncommitted change switches FooterView menu to deprecated .menuStyle(.borderlessButton), making the attached ToolbarButtonStyle inert
 
-- [ ] **medium** · `Breadcrumb/Views/FooterView.swift:42` · found by: swiftui-state, windows-lifecycle, ui-views · ⚠️ UNVERIFIED — confirm in code before fixing
+- [x] **medium** · `Breadcrumb/Views/FooterView.swift:42` · found by: swiftui-state, windows-lifecycle, ui-views · ⚠️ UNVERIFIED — confirm in code before fixing
+
+**Resolution:** reverted — the stray edit was briefly committed (61b8816, shipped in v0.8.2) and the user reported the ⋯ overflow menu regressed versus v0.8.1; FooterView.swift:42 is back to `.menuStyle(.button)`, the exact released v0.8.1 code. Binary symbol comparison of the released v0.8.1 DMG vs v0.8.2 confirmed this menu style switch was the only user-visible difference beyond the BC-001/BC-002 fixes.
 
 **Problem:** The working tree replaces `.menuStyle(.button)` with `.menuStyle(.borderlessButton)` (git diff confirms). BorderlessButtonMenuStyle has been deprecated since macOS 14 — Apple's guidance is `.menuStyle(.button)` combined with `.buttonStyle(.borderless)` — and this is a macOS 26 target. Additionally, line 45 still applies `.buttonStyle(ToolbarButtonStyle())`; with the borderlessButton menu style the custom ButtonStyle is no longer consulted for the menu label, so the ⋯ overflow button loses the hover/press highlight that its two sibling footer buttons (archive, 🍅) get from ToolbarButtonStyle, producing inconsistent footer styling.
 
