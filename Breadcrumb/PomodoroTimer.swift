@@ -304,6 +304,10 @@ final class PomodoroTimer {
                     pendingSessionEnd = wasBreak ? .breakDone : (isFocusMateSession ? .focusMateDone : .workDone)
                     timerTask?.cancel()
                     timerTask = nil
+                    // One-shot transition: clear the start date so a stray tick()
+                    // (e.g. from the wake-notification observer) cannot re-enter
+                    // this branch and overwrite pendingSessionEnd or replay feedback.
+                    phaseStartDate = nil
                     if wasBreak {
                         notificationService?.playBreakDoneFeedback(language: language)
                     } else {

@@ -124,6 +124,47 @@ struct PomodoroTimerTests {
         #expect(timer.currentPhase == .sessionEnded)
     }
 
+    @Test("Break expiry is one-shot: a wake-triggered tick must not flip the prompt or replay feedback")
+    func breakExpiryTickReentryDoesNotRefire() {
+        let notifier = RecordingPomodoroNotifier()
+        let timer = PomodoroTimer()
+        timer.notificationService = notifier
+        timer.startWork(project: nil, durationMinutes: 25, shortBreakMinutes: 5, longBreakMinutes: 15, sessionsBeforeLong: 4, totalSessions: 4)
+        timer.startBreak()
+        timer.phaseStartDate = Date.now.addingTimeInterval(-Double(5 * 60))
+        timer.tick()
+        #expect(timer.pendingSessionEnd == .breakDone)
+        #expect(timer.phaseStartDate == nil)
+
+        // Simulate the NSWorkspace.didWakeNotification observer re-entering tick()
+        timer.tick()
+
+        #expect(timer.pendingSessionEnd == .breakDone)
+        #expect(timer.currentPhase == .sessionEnded)
+        #expect(notifier.breakDoneFeedbackCount == 1)
+        #expect(notifier.workDoneFeedbackCount == 0)
+    }
+
+    @Test("FocusMate expiry is one-shot: a wake-triggered tick must not replay completion feedback")
+    func focusMateExpiryTickReentryDoesNotReplayFeedback() {
+        let notifier = RecordingPomodoroNotifier()
+        let timer = PomodoroTimer()
+        timer.notificationService = notifier
+        let endTime = Date.now.addingTimeInterval(25 * 60)
+        timer.startFocusMate(project: nil, durationMinutes: 25, endTime: endTime)
+        timer.phaseStartDate = Date.now.addingTimeInterval(-Double(timer.phaseDurationSeconds))
+        timer.tick()
+        #expect(timer.pendingSessionEnd == .focusMateDone)
+        #expect(timer.phaseStartDate == nil)
+
+        // Simulate the NSWorkspace.didWakeNotification observer re-entering tick()
+        timer.tick()
+
+        #expect(timer.pendingSessionEnd == .focusMateDone)
+        #expect(timer.currentPhase == .sessionEnded)
+        #expect(notifier.workDoneFeedbackCount == 1)
+    }
+
     @Test("Work expiry sets pending work-done prompt")
     func workExpirySetsPendingWorkDonePrompt() {
         let timer = PomodoroTimer()
