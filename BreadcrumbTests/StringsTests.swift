@@ -36,9 +36,9 @@ struct StringsTests {
 
     @Test("Wrap-up buffer formats seconds as M:SS")
     func wrapUpBufferFormatsMinutesSeconds() {
-        #expect(Strings.Pomodoro.wrapUpBuffer(.english, seconds: 90).hasSuffix("1:30"))
-        #expect(Strings.Pomodoro.wrapUpBuffer(.english, seconds: 30).hasSuffix("0:30"))
-        #expect(Strings.Pomodoro.wrapUpBuffer(.german, seconds: 650).hasSuffix("10:50"))
+        #expect(Strings.Pomodoro.wrapUpBuffer(.english, seconds: 90).contains("1:30"))
+        #expect(Strings.Pomodoro.wrapUpBuffer(.english, seconds: 30).contains("0:30"))
+        #expect(Strings.Pomodoro.wrapUpBuffer(.german, seconds: 650).contains("10:50"))
     }
 
     @Test("AI extraction instructions exist for both languages")
@@ -62,10 +62,30 @@ struct StringsTests {
 
     @Test("Total sessions strings")
     func totalSessionsStrings() {
-        #expect(Strings.Pomodoro.totalSessionsLabel(.german, count: 4) == "Gesamtsitzungen: 4")
-        #expect(Strings.Pomodoro.totalSessionsLabel(.english, count: 4) == "Total Sessions: 4")
+        #expect(Strings.Pomodoro.totalSessionsLabel(.german, count: 4) == "Fokus-Sitzungen: 4")
+        #expect(Strings.Pomodoro.totalSessionsLabel(.english, count: 4) == "Focus sessions: 4")
         #expect(Strings.Pomodoro.allSessionsComplete(.german) == "Alle Sitzungen abgeschlossen!")
         #expect(Strings.Pomodoro.allSessionsComplete(.english) == "All Sessions Complete!")
+    }
+
+    @Test("Sessions before long break relabel")
+    func sessionsBeforeLongBreakStrings() {
+        #expect(Strings.Pomodoro.sessionsBeforeLongBreak(.german, count: 4) == "Lange Pause nach: 4 Sitzungen")
+        #expect(Strings.Pomodoro.sessionsBeforeLongBreak(.english, count: 4) == "Long break after: 4 sessions")
+    }
+
+    @Test("Cycle summary formats duration and singular variant")
+    func cycleSummaryStrings() {
+        // 4 sessions × 25 min focus, totalMinutes 115 -> "1 h 55 min" / "1 Std. 55 Min."
+        let en = Strings.Pomodoro.cycleSummary(.english, sessions: 4, workMinutes: 25, totalMinutes: 115)
+        #expect(en.contains("1 h 55 min"))
+        let de = Strings.Pomodoro.cycleSummary(.german, sessions: 4, workMinutes: 25, totalMinutes: 115)
+        #expect(de.contains("1 Std. 55 Min."))
+        // sessions == 1 -> singular variant, no duration
+        #expect(Strings.Pomodoro.cycleSummary(.english, sessions: 1, workMinutes: 25, totalMinutes: 25)
+            == "Your cycle: one 25 min focus session.")
+        #expect(Strings.Pomodoro.cycleSummary(.german, sessions: 1, workMinutes: 25, totalMinutes: 25)
+            == "Dein Durchgang: 1 Fokus-Sitzung à 25 Min.")
     }
 
     @Test("FocusMate strings")
@@ -137,9 +157,9 @@ struct StringsTests {
 
     @Test("Notification settings strings")
     func notificationSettingsStrings() {
-        #expect(Strings.Settings.soundWorkDone(.english) == "Work done sound")
-        #expect(Strings.Settings.soundWorkDone(.german) == "Ton bei Arbeitsende")
-        #expect(Strings.Settings.soundBreakDone(.english) == "Break done sound")
+        #expect(Strings.Settings.soundWorkDone(.english) == "Sound when focus ends")
+        #expect(Strings.Settings.soundWorkDone(.german) == "Ton bei Sitzungsende")
+        #expect(Strings.Settings.soundBreakDone(.english) == "Sound when break ends")
         #expect(Strings.Settings.soundBreakDone(.german) == "Ton bei Pausenende")
         #expect(Strings.Settings.showBannerNotification(.english) == "Show banner notification")
         #expect(Strings.Settings.showBannerNotification(.german) == "Bannerbenachrichtigung anzeigen")

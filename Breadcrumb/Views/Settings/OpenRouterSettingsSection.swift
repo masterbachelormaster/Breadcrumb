@@ -50,15 +50,6 @@ struct OpenRouterSettingsSection: View {
                 .font(.caption)
                 .foregroundStyle(.secondary)
 
-            HStack {
-                Circle()
-                    .fill(aiService.isAvailable ? Color.green : Color.secondary)
-                    .frame(width: 8, height: 8)
-                Text(aiService.isAvailable ? Strings.Settings.aiReady(l) : Strings.Settings.aiNotConfigured(l))
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
-            }
-
             DisclosureGroup(Strings.Settings.systemPrompt(l), isExpanded: $isPromptExpanded) {
                 VStack(alignment: .leading, spacing: 8) {
                     TextEditor(text: $customPrompt)

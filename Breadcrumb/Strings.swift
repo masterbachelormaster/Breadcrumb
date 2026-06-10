@@ -239,7 +239,7 @@ enum Strings {
             l == .german ? "Lange Pause: \(minutes) Min." : "Long Break: \(minutes) min"
         }
         static func sessionsBeforeLongBreak(_ l: AppLanguage, count: Int) -> String {
-            l == .german ? "Sitzungen bis lange Pause: \(count)" : "Sessions Before Long Break: \(count)"
+            l == .german ? "Lange Pause nach: \(count) Sitzungen" : "Long break after: \(count) sessions"
         }
         static func overtimeSession(_ l: AppLanguage, number: Int) -> String {
             l == .german ? "Überstunden · Sitzung \(number)" : "Overtime · Session \(number)"
@@ -257,7 +257,7 @@ enum Strings {
             l == .german ? "Sitzung starten" : "Start Session"
         }
         static func totalSessionsLabel(_ l: AppLanguage, count: Int) -> String {
-            l == .german ? "Gesamtsitzungen: \(count)" : "Total Sessions: \(count)"
+            l == .german ? "Fokus-Sitzungen: \(count)" : "Focus sessions: \(count)"
         }
         static func allSessionsComplete(_ l: AppLanguage) -> String {
             l == .german ? "Alle Sitzungen abgeschlossen!" : "All Sessions Complete!"
@@ -287,13 +287,48 @@ enum Strings {
             l == .german ? "👥 FocusMate-Sitzung beendet!" : "👥 FocusMate Session Complete!"
         }
         static func focusMateEndEarlyHeader(_ l: AppLanguage) -> String {
-            l == .german ? "FocusMate Abschlusspuffer" : "FocusMate wrap-up buffer"
+            l == .german ? "Timer früher beenden" : "End the timer early"
+        }
+        static func focusMateBufferCaption(_ l: AppLanguage) -> String {
+            l == .german
+                ? "So bleibt dir Zeit, deinen Stand festzuhalten, bevor die Sitzung vorbei ist."
+                : "Leaves you time to note down where you stand before the session is over."
+        }
+        static func focusMateSectionFooter(_ l: AppLanguage) -> String {
+            l == .german
+                ? "FocusMate-Sitzungen laufen bis zu einer festen Endzeit, z. B. für Video-Co-Working auf focusmate.com."
+                : "FocusMate sessions run to a fixed end time, e.g. for video co-working on focusmate.com."
         }
         static func focusMateBufferMinutes(_ l: AppLanguage, minutes: Int) -> String {
             l == .german ? "Minuten: \(minutes)" : "Minutes: \(minutes)"
         }
         static func focusMateBufferSeconds(_ l: AppLanguage, seconds: Int) -> String {
             l == .german ? "Sekunden: \(seconds)" : "Seconds: \(seconds)"
+        }
+        static func cycleSummary(_ l: AppLanguage, sessions: Int, workMinutes: Int, totalMinutes: Int) -> String {
+            if sessions == 1 {
+                return l == .german
+                    ? "Dein Durchgang: 1 Fokus-Sitzung à \(workMinutes) Min."
+                    : "Your cycle: one \(workMinutes) min focus session."
+            }
+            let duration = formatDuration(l, totalMinutes: totalMinutes)
+            return l == .german
+                ? "Dein Durchgang: \(sessions) × \(workMinutes) Min. Fokus mit Pausen — insgesamt ca. \(duration)."
+                : "Your cycle: \(sessions) × \(workMinutes) min focus with breaks — about \(duration) total."
+        }
+        private static func formatDuration(_ l: AppLanguage, totalMinutes: Int) -> String {
+            let hours = totalMinutes / 60
+            let minutes = totalMinutes % 60
+            let hoursUnit = l == .german ? "Std." : "h"
+            let minutesUnit = l == .german ? "Min." : "min"
+            var parts: [String] = []
+            if hours > 0 {
+                parts.append("\(hours) \(hoursUnit)")
+            }
+            if minutes > 0 || hours == 0 {
+                parts.append("\(minutes) \(minutesUnit)")
+            }
+            return parts.joined(separator: " ")
         }
         static func sessionEndPrompt(_ l: AppLanguage) -> String {
             l == .german ? "Sitzungsende-Dialog" : "Session end prompt"
@@ -303,6 +338,11 @@ enum Strings {
         }
         static func sessionEndPromptMenuBar(_ l: AppLanguage) -> String {
             l == .german ? "Menüleiste" : "Menu bar"
+        }
+        static func sessionEndPromptCaption(_ l: AppLanguage) -> String {
+            l == .german
+                ? "Wenn eine Sitzung endet, fragt Breadcrumb, was du geschafft hast, und speichert es als Status. Wähle, ob diese Abfrage in einem eigenen Fenster oder im Menüleisten-Popover erscheint."
+                : "When a session ends, Breadcrumb asks what you got done and saves it as a status update. Choose whether this prompt appears in its own window or in the menu bar popover."
         }
         static func sessionEndedOpenPromptTitle(_ l: AppLanguage) -> String {
             l == .german ? "Sitzung beendet" : "Session ended"
@@ -317,7 +357,7 @@ enum Strings {
             let m = seconds / 60
             let s = seconds % 60
             let t = "\(m):\(s.formatted(.number.precision(.integerLength(2))))"
-            return l == .german ? "Abschlusspuffer: \(t)" : "Wrap-up buffer: \(t)"
+            return l == .german ? "Endet \(t) früher" : "Ends \(t) early"
         }
         static func saveAndDone(_ l: AppLanguage) -> String {
             l == .german ? "Speichern & Fertig" : "Save & Done"
@@ -383,8 +423,13 @@ enum Strings {
         static func launchAtLogin(_ l: AppLanguage) -> String {
             l == .german ? "Beim Login starten" : "Launch at Login"
         }
-static func dictation(_ l: AppLanguage) -> String {
+        static func dictation(_ l: AppLanguage) -> String {
             l == .german ? "Diktat (Experimentell)" : "Dictation (Experimental)"
+        }
+        static func dictationCaption(_ l: AppLanguage) -> String {
+            l == .german
+                ? "Zeigt eine Mikrofon-Taste in Status-Formularen, um Text zu diktieren statt zu tippen."
+                : "Adds a microphone button to status forms so you can dictate instead of type."
         }
         static func notifications(_ l: AppLanguage) -> String {
             l == .german ? "Benachrichtigungen" : "Notifications"
@@ -396,13 +441,39 @@ static func dictation(_ l: AppLanguage) -> String {
             l == .german ? "Systembenachrichtigung" : "System Notification"
         }
         static func soundWorkDone(_ l: AppLanguage) -> String {
-            l == .german ? "Ton bei Arbeitsende" : "Work done sound"
+            l == .german ? "Ton bei Sitzungsende" : "Sound when focus ends"
         }
         static func soundBreakDone(_ l: AppLanguage) -> String {
-            l == .german ? "Ton bei Pausenende" : "Break done sound"
+            l == .german ? "Ton bei Pausenende" : "Sound when break ends"
         }
         static func showBannerNotification(_ l: AppLanguage) -> String {
             l == .german ? "Bannerbenachrichtigung anzeigen" : "Show banner notification"
+        }
+        static func showBannerCaption(_ l: AppLanguage) -> String {
+            l == .german
+                ? "Zeigt eine macOS-Mitteilung, wenn eine Sitzung oder Pause endet – auch wenn du gerade in einer anderen App bist."
+                : "Shows a macOS notification when a session or break ends — even while you're in another app."
+        }
+        static func sessionEndSection(_ l: AppLanguage) -> String {
+            l == .german ? "Sitzungsende" : "Session End"
+        }
+        static func aiSection(_ l: AppLanguage) -> String {
+            l == .german ? "KI" : "AI"
+        }
+        static func aiIntro(_ l: AppLanguage) -> String {
+            l == .german
+                ? "Die KI liest deinen Statustext und füllt „Letzter Schritt“ und „Nächster Schritt“ automatisch aus."
+                : "AI reads your status text and fills in “Last Step” and “Next Step” for you."
+        }
+        static func aiProviderLocalCaption(_ l: AppLanguage) -> String {
+            l == .german
+                ? "Läuft komplett auf diesem Mac mit Apple Intelligence. Dein Text verlässt dein Gerät nicht."
+                : "Runs entirely on this Mac using Apple Intelligence. Your text never leaves your device."
+        }
+        static func aiProviderOpenRouterCaption(_ l: AppLanguage) -> String {
+            l == .german
+                ? "Sendet deinen Text an ein Cloud-KI-Modell deiner Wahl. Benötigt einen OpenRouter-Account und API-Schlüssel (openrouter.ai)."
+                : "Sends your text to a cloud AI model of your choice. Requires an OpenRouter account and API key (openrouter.ai)."
         }
         static func previewSound(_ l: AppLanguage) -> String {
             l == .german ? "Vorschau" : "Preview"
@@ -438,7 +509,7 @@ static func dictation(_ l: AppLanguage) -> String {
             l == .german ? "API-Schlüssel konnte nicht gespeichert werden." : "Could not save API key."
         }
         static func modelHelp(_ l: AppLanguage) -> String {
-            l == .german ? "Beliebige OpenRouter Modell-ID eingeben" : "Enter any OpenRouter model ID"
+            l == .german ? "Modell-ID von openrouter.ai/models eingeben" : "Enter a model ID from openrouter.ai/models"
         }
         static func aiReady(_ l: AppLanguage) -> String {
             l == .german ? "Bereit" : "Ready"
@@ -447,12 +518,12 @@ static func dictation(_ l: AppLanguage) -> String {
             l == .german ? "Nicht konfiguriert" : "Not configured"
         }
         static func systemPrompt(_ l: AppLanguage) -> String {
-            l == .german ? "System-Prompt" : "System Prompt"
+            l == .german ? "KI-Anweisungen (Erweitert)" : "AI Instructions (Advanced)"
         }
         static func systemPromptHelp(_ l: AppLanguage) -> String {
             l == .german
-                ? "Anweisungen für die KI-Extraktion. JSON-Formatierung wird automatisch angehängt."
-                : "Instructions for AI extraction. JSON formatting is appended automatically."
+                ? "Diese Anweisungen steuern, wie die KI deinen Text auswertet. Nur ändern, wenn du weißt, was du tust."
+                : "These instructions control how the AI interprets your text. Only change this if you know what you're doing."
         }
         static func resetToDefault(_ l: AppLanguage) -> String {
             l == .german ? "Auf Standard zurücksetzen" : "Reset to Default"
