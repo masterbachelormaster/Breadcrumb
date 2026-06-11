@@ -371,6 +371,12 @@ enum Strings {
         static func snooze10(_ l: AppLanguage) -> String {
             l == .german ? "+10 Min." : "+10 min"
         }
+        static func collapseToBanner(_ l: AppLanguage) -> String {
+            l == .german ? "Timer einklappen" : "Collapse timer"
+        }
+        static func showTimer(_ l: AppLanguage) -> String {
+            l == .german ? "Timer anzeigen" : "Show timer"
+        }
     }
 
     // MARK: - Notifications

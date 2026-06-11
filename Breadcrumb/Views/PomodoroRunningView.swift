@@ -4,16 +4,15 @@ struct PomodoroRunningView: View {
     @Environment(PomodoroTimer.self) private var timer
     @Environment(LanguageManager.self) private var languageManager
     @Environment(WindowManager.self) private var windowManager
+    var onCollapse: () -> Void
     var onFinished: () -> Void
-
-    @AppStorage("pomodoro.sessionEndPresentation") private var sessionEndPresentation = SessionEndPresentation.window.rawValue
 
     var body: some View {
         VStack(spacing: 0) {
             Spacer()
 
             // Phase icon
-            Text(phaseEmoji)
+            Text(timer.phaseEmoji)
                 .font(.system(size: 40))
                 .padding(.bottom, 4)
 
@@ -24,7 +23,7 @@ struct PomodoroRunningView: View {
                 .contentTransition(.numericText())
 
             // Phase label
-            Text(phaseLabel)
+            Text(timer.phaseLabel(languageManager.language))
                 .font(.caption)
                 .foregroundStyle(.secondary)
                 .padding(.top, 4)
@@ -85,54 +84,16 @@ struct PomodoroRunningView: View {
             .padding(.bottom, 24)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .overlay {
-            if timer.pendingSessionEnd != nil && (sessionEndMode == .menuBar || timer.pendingSessionEnd == .stopped) {
-                FormOverlay(onDismiss: {}) {
-                    PomodoroSessionEndHostView(onFinished: onFinished)
-                        .frame(width: 320)
-                        .frame(maxHeight: 400)
-                        .background(Color(nsColor: .windowBackgroundColor))
-                        .clipShape(.rect(cornerRadius: 10))
-                        .shadow(radius: 10)
-                }
-                .transition(.opacity)
+        .overlay(alignment: .topTrailing) {
+            Button(action: onCollapse) {
+                Image(systemName: "chevron.up")
+                    .font(.callout)
+                    .foregroundStyle(.secondary)
             }
-        }
-    }
-
-    private var sessionEndMode: SessionEndPresentation {
-        SessionEndPresentation(rawValue: sessionEndPresentation) ?? .window
-    }
-
-    private var phaseEmoji: String {
-        if timer.isFocusMateSession {
-            return "👥"
-        }
-        switch timer.currentPhase {
-        case .work, .sessionEnded: return "🍅"
-        case .shortBreak, .longBreak: return "☕"
-        case .idle: return "🔖"
-        }
-    }
-
-    private var phaseLabel: String {
-        let l = languageManager.language
-        switch timer.currentPhase {
-        case .idle: return ""
-        case .work:
-            if timer.isFocusMateSession {
-                if let endTime = timer.focusMateEndTime {
-                    return Strings.Pomodoro.focusMatePhaseLabel(l, time: endTime.formatted(date: .omitted, time: .shortened))
-                }
-                return Strings.Pomodoro.focusMateMode(l)
-            }
-            if timer.isOvertime {
-                return Strings.Pomodoro.overtimeSession(l, number: timer.currentSessionNumber)
-            }
-            return Strings.Pomodoro.focusTimeSession(l, number: timer.currentSessionNumber, total: timer.sessionTotalSessions)
-        case .shortBreak: return Strings.Pomodoro.shortBreak(l)
-        case .longBreak: return Strings.Pomodoro.longBreak(l)
-        case .sessionEnded: return Strings.Pomodoro.sessionEnded(l)
+            .buttonStyle(ToolbarButtonStyle())
+            .padding(8)
+            .help(Strings.Pomodoro.collapseToBanner(languageManager.language))
+            .accessibilityLabel(Strings.Pomodoro.collapseToBanner(languageManager.language))
         }
     }
 

@@ -56,6 +56,7 @@
 		A2C0BB75C7ED0551645F313F /* StringsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B61E0FC8ED8FA3607CA8E73 /* StringsTests.swift */; };
 		A4DB57D56F6945FE42C210FF /* BreadcrumbCommands.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDF418F050E4F08EE71C99E8 /* BreadcrumbCommands.swift */; };
 		A6FFEDB76C2BCB80A916020A /* BreakoutWindowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E9AB4FB8217059480EEA8FA /* BreakoutWindowView.swift */; };
+		AFE6DD5AB1A2E41DBC558230 /* TimerBanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85C1F39C9185FD331DE51B2F /* TimerBanner.swift */; };
 		B005E744F06D3ED2FA9DB897 /* WindowManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B73A74DE75279264943C5462 /* WindowManager.swift */; };
 		B57B25265EE67B1DEF64A0CC /* DocumentListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9BEAAE0D129FC67EB414904 /* DocumentListView.swift */; };
 		B949DE8B498359E91079E6D7 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E97F9AD204BAC7BB0A7E5D92 /* SettingsView.swift */; };
@@ -136,6 +137,7 @@
 		831984343AE49E818C7511B7 /* NotificationServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationServiceTests.swift; sourceTree = "<group>"; };
 		84E8BCCA2B83DAD9CF398B39 /* PomodoroSessionEndHostView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PomodoroSessionEndHostView.swift; sourceTree = "<group>"; };
 		85B023F7702442C9E73AD7FF /* LanguageManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LanguageManagerTests.swift; sourceTree = "<group>"; };
+		85C1F39C9185FD331DE51B2F /* TimerBanner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerBanner.swift; sourceTree = "<group>"; };
 		913C1D4F480359F1604A530C /* AIProviderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AIProviderTests.swift; sourceTree = "<group>"; };
 		9492B635806349A2C9556E20 /* AddURLFormView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddURLFormView.swift; sourceTree = "<group>"; };
 		94F7E31FC30CBABB8C95F10A /* LanguageManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LanguageManager.swift; sourceTree = "<group>"; };
@@ -219,6 +221,7 @@
 				75DE9B3987F1DA2381072E8E /* SoundPicker.swift */,
 				D73B1C28DFFA54E78F9CA4D7 /* StatsContentView.swift */,
 				A9BFECE00BAB70889C1C40B4 /* StatusEntryForm.swift */,
+				85C1F39C9185FD331DE51B2F /* TimerBanner.swift */,
 				FBC8EB9F931D9DE70D2806CE /* WelcomeView.swift */,
 				BA4D629744CD061E6F5D1B96 /* Settings */,
 			);
@@ -468,6 +471,7 @@
 				50B42669968E80BF62C3DEB4 /* StatusEntry.swift in Sources */,
 				750DDDBE8BEBB05A74A6681F /* StatusEntryForm.swift in Sources */,
 				BD2C646162A7B7A7AF1E68BB /* Strings.swift in Sources */,
+				AFE6DD5AB1A2E41DBC558230 /* TimerBanner.swift in Sources */,
 				26BE57BD5EF31441DDE3F3E9 /* WelcomeView.swift in Sources */,
 				B005E744F06D3ED2FA9DB897 /* WindowManager.swift in Sources */,
 			);

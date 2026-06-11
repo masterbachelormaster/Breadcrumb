@@ -6,6 +6,7 @@ struct ContentView: View {
     @Environment(\.openWindow) private var openWindow
     @State private var selectedProject: Project?
     @State private var screen: Screen = .projectList
+    @State private var showFullTimer = true
     @State private var showingPomodoroConfig = false
     @State private var pendingPomodoroProject: Project?
     @State private var configWorkMinutes: Int = 25
@@ -49,53 +50,26 @@ struct ContentView: View {
                         windowManager.openSessionEnd()
                     }
                     .transition(.opacity)
-                } else if pomodoroTimer.currentPhase != .idle {
-                    PomodoroRunningView(onFinished: {
-                        withAnimation(.easeInOut(duration: 0.2)) {
-                            screen = .projectList
-                            selectedProject = nil
-                        }
-                    })
-                    .transition(.opacity)
-                } else if let project = selectedProject {
-                    ProjectDetailView(
-                        project: project,
-                        onBack: {
-                            withAnimation(.easeInOut(duration: 0.2)) { selectedProject = nil }
+                } else if pomodoroTimer.currentPhase != .idle && showFullTimer {
+                    PomodoroRunningView(
+                        onCollapse: {
+                            withAnimation(.easeInOut(duration: 0.2)) { showFullTimer = false }
                         },
-                        onStartPomodoro: { startPomodoro(project: project) }
+                        onFinished: { finishTimer() }
                     )
                     .transition(.opacity)
                 } else {
-                    switch screen {
-                    case .projectList:
-                        ProjectListView(
-                            onSelectProject: { project in
-                                withAnimation(.easeInOut(duration: 0.2)) { selectedProject = project }
-                            },
-                            onNavigate: { newScreen in
-                                withAnimation(.easeInOut(duration: 0.2)) { screen = newScreen }
-                            },
-                            onStartStandalonePomodoro: {
-                                withAnimation(.easeInOut(duration: 0.2)) { screen = .projectPicker }
-                            }
-                        )
-                        .transition(.opacity)
-                    case .archivedProjects:
-                        ArchivedProjectsView(onBack: {
-                            withAnimation(.easeInOut(duration: 0.2)) { screen = .projectList }
-                        })
-                        .transition(.opacity)
-                    case .projectPicker:
-                        ProjectPickerView(
-                            onSelect: { project in
-                                startPomodoro(project: project)
-                            },
-                            onBack: {
-                                withAnimation(.easeInOut(duration: 0.2)) { screen = .projectList }
-                            }
-                        )
-                        .transition(.opacity)
+                    VStack(spacing: 0) {
+                        if showBanner {
+                            TimerBanner(
+                                onExpand: {
+                                    withAnimation(.easeInOut(duration: 0.2)) { showFullTimer = true }
+                                },
+                                onSkipBreak: { skipBreakFromBanner() }
+                            )
+                            .transition(.move(edge: .top).combined(with: .opacity))
+                        }
+                        routedContent
                     }
                 }
             }
@@ -118,10 +92,73 @@ struct ContentView: View {
                 }
                 .transition(.opacity)
             }
+
+            if pomodoroTimer.pendingSessionEnd != nil
+                && (sessionEndMode == .menuBar || pomodoroTimer.pendingSessionEnd == .stopped) {
+                FormOverlay(onDismiss: {}) {
+                    PomodoroSessionEndHostView(onFinished: { finishTimer() })
+                        .frame(width: 320)
+                        .frame(maxHeight: 400)
+                        .background(Color(nsColor: .windowBackgroundColor))
+                        .clipShape(.rect(cornerRadius: 10))
+                        .shadow(radius: 10)
+                }
+                .transition(.opacity)
+            }
         }
         .frame(width: 350, height: 450)
         .task {
             windowManager.setOpenWindowAction(openWindow)
+        }
+        .onChange(of: pomodoroTimer.currentPhase) { oldPhase, newPhase in
+            if oldPhase == .idle && newPhase != .idle {
+                showFullTimer = true
+            }
+        }
+    }
+
+    @ViewBuilder
+    private var routedContent: some View {
+        if let project = selectedProject {
+            ProjectDetailView(
+                project: project,
+                onBack: {
+                    withAnimation(.easeInOut(duration: 0.2)) { selectedProject = nil }
+                },
+                onStartPomodoro: { startPomodoro(project: project) }
+            )
+            .transition(.opacity)
+        } else {
+            switch screen {
+            case .projectList:
+                ProjectListView(
+                    onSelectProject: { project in
+                        withAnimation(.easeInOut(duration: 0.2)) { selectedProject = project }
+                    },
+                    onNavigate: { newScreen in
+                        withAnimation(.easeInOut(duration: 0.2)) { screen = newScreen }
+                    },
+                    onStartStandalonePomodoro: {
+                        withAnimation(.easeInOut(duration: 0.2)) { screen = .projectPicker }
+                    }
+                )
+                .transition(.opacity)
+            case .archivedProjects:
+                ArchivedProjectsView(onBack: {
+                    withAnimation(.easeInOut(duration: 0.2)) { screen = .projectList }
+                })
+                .transition(.opacity)
+            case .projectPicker:
+                ProjectPickerView(
+                    onSelect: { project in
+                        startPomodoro(project: project)
+                    },
+                    onBack: {
+                        withAnimation(.easeInOut(duration: 0.2)) { screen = .projectList }
+                    }
+                )
+                .transition(.opacity)
+            }
         }
     }
 
@@ -143,6 +180,28 @@ struct ContentView: View {
         return sessionEndMode == .window
     }
 
+    private var showBanner: Bool {
+        pomodoroTimer.currentPhase != .idle && !showFullTimer
+    }
+
+    private func finishTimer() {
+        withAnimation(.easeInOut(duration: 0.2)) {
+            screen = .projectList
+            selectedProject = nil
+            showFullTimer = true
+        }
+    }
+
+    private func skipBreakFromBanner() {
+        pomodoroTimer.clearPendingSessionEnd()
+        if pomodoroTimer.isCycleComplete {
+            pomodoroTimer.stop()
+            finishTimer()
+        } else {
+            pomodoroTimer.startNextWorkSession()
+        }
+    }
+
     private func startPomodoro(project: Project?) {
         if !focusMateEnabled { configTimerMode = .pomodoro }
         pendingPomodoroProject = project
@@ -156,6 +215,7 @@ struct ContentView: View {
     }
 
     private func confirmStartPomodoro() {
+        showFullTimer = true
         switch configTimerMode {
         case .pomodoro:
             pomodoroTimer.startWork(

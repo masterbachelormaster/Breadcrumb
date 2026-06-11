@@ -544,6 +544,43 @@ struct PomodoroTimerTests {
         #expect(timer.menuBarLabel(.english) == "🍅 Done!")
     }
 
+    @Test("Phase emoji reflects phase and FocusMate mode")
+    func phaseEmojiReflectsPhase() {
+        let timer = PomodoroTimer()
+        #expect(timer.phaseEmoji == "🔖")
+        timer.startWork(project: nil, durationMinutes: 25, shortBreakMinutes: 5, longBreakMinutes: 15, sessionsBeforeLong: 4, totalSessions: 4)
+        #expect(timer.phaseEmoji == "🍅")
+        timer.startBreak()
+        #expect(timer.phaseEmoji == "☕")
+
+        let focusMate = PomodoroTimer()
+        focusMate.startFocusMate(project: nil, durationMinutes: 25, endTime: Date.now.addingTimeInterval(25 * 60))
+        #expect(focusMate.phaseEmoji == "👥")
+    }
+
+    @Test("Phase label reflects phase and language")
+    func phaseLabelReflectsPhase() {
+        let timer = PomodoroTimer()
+        #expect(timer.phaseLabel(.english).isEmpty)
+        timer.startWork(project: nil, durationMinutes: 25, shortBreakMinutes: 5, longBreakMinutes: 15, sessionsBeforeLong: 4, totalSessions: 4)
+        #expect(timer.phaseLabel(.english) == Strings.Pomodoro.focusTimeSession(.english, number: 1, total: 4))
+        #expect(timer.phaseLabel(.german) == Strings.Pomodoro.focusTimeSession(.german, number: 1, total: 4))
+        timer.startBreak()
+        #expect(timer.phaseLabel(.english) == Strings.Pomodoro.shortBreak(.english))
+        timer.currentPhase = .sessionEnded
+        #expect(timer.phaseLabel(.english) == Strings.Pomodoro.sessionEnded(.english))
+    }
+
+    @Test("Phase label shows overtime variant during overtime")
+    func phaseLabelOvertime() {
+        let timer = PomodoroTimer()
+        timer.startWork(project: nil, durationMinutes: 25, shortBreakMinutes: 5, longBreakMinutes: 15, sessionsBeforeLong: 4, totalSessions: 4)
+        timer.phaseStartDate = Date.now.addingTimeInterval(-Double(25 * 60))
+        timer.tick()
+        #expect(timer.isOvertime == true)
+        #expect(timer.phaseLabel(.english) == Strings.Pomodoro.overtimeSession(.english, number: 1))
+    }
+
     @Test("Original duration is tracked")
     func originalDuration() {
         let timer = PomodoroTimer()

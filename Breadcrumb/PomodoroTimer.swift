@@ -117,6 +117,39 @@ final class PomodoroTimer {
         }
     }
 
+    // MARK: - Display
+
+    var phaseEmoji: String {
+        if isFocusMateSession {
+            return "👥"
+        }
+        switch currentPhase {
+        case .work, .sessionEnded: return "🍅"
+        case .shortBreak, .longBreak: return "☕"
+        case .idle: return "🔖"
+        }
+    }
+
+    func phaseLabel(_ l: AppLanguage) -> String {
+        switch currentPhase {
+        case .idle: return ""
+        case .work:
+            if isFocusMateSession {
+                if let endTime = focusMateEndTime {
+                    return Strings.Pomodoro.focusMatePhaseLabel(l, time: endTime.formatted(date: .omitted, time: .shortened))
+                }
+                return Strings.Pomodoro.focusMateMode(l)
+            }
+            if isOvertime {
+                return Strings.Pomodoro.overtimeSession(l, number: currentSessionNumber)
+            }
+            return Strings.Pomodoro.focusTimeSession(l, number: currentSessionNumber, total: sessionTotalSessions)
+        case .shortBreak: return Strings.Pomodoro.shortBreak(l)
+        case .longBreak: return Strings.Pomodoro.longBreak(l)
+        case .sessionEnded: return Strings.Pomodoro.sessionEnded(l)
+        }
+    }
+
     // MARK: - Methods
 
     func startWork(project: Project?, durationMinutes: Int, shortBreakMinutes: Int, longBreakMinutes: Int, sessionsBeforeLong: Int, totalSessions: Int) {

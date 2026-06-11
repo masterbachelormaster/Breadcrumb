@@ -34,6 +34,14 @@ struct StringsTests {
         #expect(Strings.Pomodoro.startSession(.english) == "Start Session")
     }
 
+    @Test("Timer banner and collapse strings exist for both languages")
+    func bannerStrings() {
+        #expect(Strings.Pomodoro.collapseToBanner(.german) == "Timer einklappen")
+        #expect(Strings.Pomodoro.collapseToBanner(.english) == "Collapse timer")
+        #expect(Strings.Pomodoro.showTimer(.german) == "Timer anzeigen")
+        #expect(Strings.Pomodoro.showTimer(.english) == "Show timer")
+    }
+
     @Test("Wrap-up buffer formats seconds as M:SS")
     func wrapUpBufferFormatsMinutesSeconds() {
         #expect(Strings.Pomodoro.wrapUpBuffer(.english, seconds: 90).contains("1:30"))
