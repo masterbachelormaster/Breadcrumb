@@ -5,7 +5,6 @@ struct ContentView: View {
     @Environment(WindowManager.self) private var windowManager
     @Environment(\.openWindow) private var openWindow
     @Environment(\.openSettings) private var openSettings
-    @Environment(\.appearsActive) private var appearsActive
     @State private var selectedProject: Project?
     @State private var screen: Screen = .projectList
     @State private var showFullTimer = true
@@ -121,11 +120,7 @@ struct ContentView: View {
                 finishTimer()
             }
         }
-        .onChange(of: appearsActive) { _, isActive in
-            if !isActive {
-                popoverLostFocus()
-            }
-        }
+        .background(PopoverVisibilityObserver(onHidden: { popoverLostFocus() }))
     }
 
     /// Resets transient popover state when the popover loses focus / closes.
