@@ -28,7 +28,7 @@ struct FooterView: View {
 
             Menu {
                 Button(Strings.General.settingsEllipsis(languageManager.language), systemImage: "gearshape") {
-                    windowManager.open(.settings)
+                    windowManager.openSettings()
                 }
                 Divider()
                 Button(Strings.General.quit(languageManager.language), systemImage: "power") {

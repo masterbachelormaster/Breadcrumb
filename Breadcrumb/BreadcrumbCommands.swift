@@ -12,7 +12,7 @@ struct BreadcrumbCommands: Commands {
         }
         CommandGroup(replacing: .appSettings) {
             Button(Strings.General.settingsEllipsis(languageManager.language)) {
-                windowManager.open(.settings)
+                windowManager.openSettings()
             }
             .keyboardShortcut(",", modifiers: .command)
         }

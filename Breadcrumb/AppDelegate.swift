@@ -113,7 +113,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     }
 
     @objc private func openSettings() {
-        windowManager?.open(.settings)
+        windowManager?.openSettings()
     }
 
     @objc private func openAbout() {

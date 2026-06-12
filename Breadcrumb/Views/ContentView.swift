@@ -4,6 +4,7 @@ struct ContentView: View {
     @Environment(PomodoroTimer.self) private var pomodoroTimer
     @Environment(WindowManager.self) private var windowManager
     @Environment(\.openWindow) private var openWindow
+    @Environment(\.openSettings) private var openSettings
     @State private var selectedProject: Project?
     @State private var screen: Screen = .projectList
     @State private var showFullTimer = true
@@ -109,6 +110,7 @@ struct ContentView: View {
         .frame(width: 350, height: 450)
         .task {
             windowManager.setOpenWindowAction(openWindow)
+            windowManager.setOpenSettingsAction(openSettings)
         }
         .onChange(of: pomodoroTimer.currentPhase) { oldPhase, newPhase in
             if oldPhase == .idle && newPhase != .idle {

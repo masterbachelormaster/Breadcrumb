@@ -2,6 +2,7 @@ import SwiftUI
 
 struct MenuBarLabelView: View {
     @Environment(\.openWindow) private var openWindow
+    @Environment(\.openSettings) private var openSettings
 
     let pomodoroTimer: PomodoroTimer
     let windowManager: WindowManager
@@ -22,6 +23,7 @@ struct MenuBarLabelView: View {
         }
         .task {
             windowManager.setOpenWindowAction(openWindow)
+            windowManager.setOpenSettingsAction(openSettings)
         }
         .onChange(of: pomodoroTimer.pendingSessionEnd) { oldValue, newValue in
             if oldValue == nil && newValue != nil {

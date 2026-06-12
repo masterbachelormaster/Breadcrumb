@@ -56,6 +56,14 @@ struct BreadcrumbApp: App {
             BreadcrumbCommands(windowManager: windowManager, languageManager: languageManager)
         }
 
+        Settings {
+            SettingsRootView()
+                .environment(windowManager)
+                .environment(aiService)
+                .environment(languageManager)
+        }
+        .windowResizability(.contentSize)
+
         Window("Session Complete", id: "session-end") {
             SessionEndWindowView()
                 .environment(pomodoroTimer)
