@@ -27,7 +27,7 @@ struct AISettingsTab: View {
                 } label: {
                     HStack(spacing: 6) {
                         Text(Strings.Settings.aiProvider(l))
-                        InfoButton(text: providerInfo(l))
+                        InfoButton(text: Strings.Settings.aiIntro(l))
                     }
                 }
 
@@ -44,6 +44,10 @@ struct AISettingsTab: View {
                 } label: {
                     Text(Strings.Settings.aiStatus(l))
                 }
+            } footer: {
+                Text(isOpenRouter
+                    ? Strings.Settings.aiProviderOpenRouterCaption(l)
+                    : Strings.Settings.aiProviderLocalCaption(l))
             }
 
             if isOpenRouter {
@@ -51,14 +55,7 @@ struct AISettingsTab: View {
             }
         }
         .formStyle(.grouped)
-        .frame(width: 500, height: isOpenRouter ? 460 : 200)
+        .frame(width: 500, height: isOpenRouter ? 500 : 240)
         .animation(.default, value: isOpenRouter)
-    }
-
-    private func providerInfo(_ l: AppLanguage) -> String {
-        let caption = isOpenRouter
-            ? Strings.Settings.aiProviderOpenRouterCaption(l)
-            : Strings.Settings.aiProviderLocalCaption(l)
-        return Strings.Settings.aiIntro(l) + "\n\n" + caption
     }
 }
