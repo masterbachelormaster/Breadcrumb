@@ -5,6 +5,7 @@ struct ContentView: View {
     @Environment(WindowManager.self) private var windowManager
     @Environment(\.openWindow) private var openWindow
     @Environment(\.openSettings) private var openSettings
+    @Environment(\.appearsActive) private var appearsActive
     @State private var selectedProject: Project?
     @State private var screen: Screen = .projectList
     @State private var showFullTimer = true
@@ -116,6 +117,27 @@ struct ContentView: View {
             if oldPhase == .idle && newPhase != .idle {
                 showFullTimer = true
             }
+            if oldPhase != .idle && newPhase == .idle {
+                finishTimer()
+            }
+        }
+        .onChange(of: appearsActive) { _, isActive in
+            if !isActive {
+                popoverLostFocus()
+            }
+        }
+    }
+
+    /// Resets transient popover state when the popover loses focus / closes.
+    /// The full timer view reappears on next open; navigation is kept while a
+    /// session runs (so collapsing returns to the same deep menu) and reset
+    /// to the project list when no session is active.
+    private func popoverLostFocus() {
+        showFullTimer = true
+        if pomodoroTimer.currentPhase == .idle {
+            screen = .projectList
+            selectedProject = nil
+            showingPomodoroConfig = false
         }
     }
 
