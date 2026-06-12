@@ -137,6 +137,16 @@ struct StringsTests {
         #expect(Strings.Settings.focusMateLink(.english).contains("focusmate.com"))
     }
 
+    @Test("Show intro again strings exist for both languages")
+    func showIntroAgainStrings() {
+        #expect(Strings.Settings.showIntroAgain(.german) == "Intro erneut anzeigen")
+        #expect(Strings.Settings.showIntroAgain(.english) == "Show Intro Again")
+        #expect(!Strings.Settings.showIntroAgainCaption(.german).isEmpty)
+        #expect(!Strings.Settings.showIntroAgainCaption(.english).isEmpty)
+        #expect(!Strings.Settings.introResetDone(.german).isEmpty)
+        #expect(!Strings.Settings.introResetDone(.english).isEmpty)
+    }
+
     @Test("Session end presentation strings")
     func sessionEndPresentationStrings() {
         #expect(Strings.Pomodoro.sessionEndedOpenPromptTitle(.english) == "Session ended")

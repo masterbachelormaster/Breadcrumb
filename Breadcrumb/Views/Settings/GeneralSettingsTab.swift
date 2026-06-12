@@ -5,6 +5,7 @@ struct GeneralSettingsTab: View {
     @Environment(LanguageManager.self) private var languageManager
     @State private var launchAtLogin = SMAppService.mainApp.status == .enabled
     @AppStorage("feature.dictationEnabled") private var dictationEnabled = false
+    @AppStorage("hasSeenWelcome") private var hasSeenWelcome = false
 
     var body: some View {
         @Bindable var languageManager = languageManager
@@ -40,8 +41,24 @@ struct GeneralSettingsTab: View {
                     }
                 }
             }
+
+            Section {
+                HStack {
+                    Button(Strings.Settings.showIntroAgain(l)) {
+                        hasSeenWelcome = false
+                    }
+                    .disabled(!hasSeenWelcome)
+                    InfoButton(text: Strings.Settings.showIntroAgainCaption(l))
+                    Spacer()
+                    if !hasSeenWelcome {
+                        Label(Strings.Settings.introResetDone(l), systemImage: "checkmark")
+                            .font(.caption)
+                            .foregroundStyle(.secondary)
+                    }
+                }
+            }
         }
         .formStyle(.grouped)
-        .frame(width: 500, height: 220)
+        .frame(width: 500, height: 280)
     }
 }

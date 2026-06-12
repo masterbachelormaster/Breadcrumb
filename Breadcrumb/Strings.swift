@@ -536,6 +536,17 @@ enum Strings {
         static func resetToDefault(_ l: AppLanguage) -> String {
             l == .german ? "Auf Standard zurücksetzen" : "Reset to Default"
         }
+        static func showIntroAgain(_ l: AppLanguage) -> String {
+            l == .german ? "Intro erneut anzeigen" : "Show Intro Again"
+        }
+        static func showIntroAgainCaption(_ l: AppLanguage) -> String {
+            l == .german
+                ? "Zeigt den Willkommensbildschirm erneut an, wenn du Breadcrumb das nächste Mal in der Menüleiste öffnest."
+                : "Shows the welcome screen again the next time you open Breadcrumb from the menu bar."
+        }
+        static func introResetDone(_ l: AppLanguage) -> String {
+            l == .german ? "Wird beim nächsten Öffnen angezeigt" : "Will show on next open"
+        }
         static func focusMateUser(_ l: AppLanguage) -> String {
             l == .german ? "FocusMate-Modus" : "FocusMate mode"
         }
