@@ -2,14 +2,13 @@ import SwiftUI
 import Observation
 
 enum BreakoutContent: Equatable {
-    case settings
     case about
     case history(Project)
     case stats(Project)
 
     static func == (lhs: BreakoutContent, rhs: BreakoutContent) -> Bool {
         switch (lhs, rhs) {
-        case (.settings, .settings), (.about, .about):
+        case (.about, .about):
             return true
         case let (.history(a), .history(b)):
             return a.id == b.id
@@ -22,7 +21,6 @@ enum BreakoutContent: Equatable {
 
     func windowTitle(for language: AppLanguage) -> String {
         switch self {
-        case .settings: return Strings.General.settings(language)
         case .about: return Strings.General.about(language)
         case .history: return Strings.Status.history(language)
         case .stats: return Strings.Pomodoro.pomodoroStatistics(language)

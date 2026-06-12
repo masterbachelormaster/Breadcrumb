@@ -31,9 +31,6 @@ struct BreakoutWindowView: View {
     private func contentView(for content: BreakoutContent) -> some View {
         let l = languageManager.language
         switch content {
-        case .settings:
-            SettingsView()
-                .navigationTitle(Strings.General.settings(l))
         case .about:
             AboutView()
                 .navigationTitle(Strings.General.about(l))
@@ -51,7 +48,6 @@ struct BreakoutWindowView: View {
             return CGSize(width: 350, height: 300)
         }
         switch content {
-        case .settings: return CGSize(width: 450, height: 450)
         case .about: return CGSize(width: 300, height: 250)
         case .history, .stats: return CGSize(width: 400, height: 300)
         }
@@ -62,7 +58,6 @@ struct BreakoutWindowView: View {
             return CGSize(width: 500, height: 400)
         }
         switch content {
-        case .settings: return CGSize(width: 500, height: 550)
         case .about: return CGSize(width: 350, height: 300)
         case .history, .stats: return CGSize(width: 600, height: 500)
         }

@@ -299,12 +299,6 @@ enum Strings {
                 ? "FocusMate-Sitzungen laufen bis zu einer festen Endzeit, z. B. für Video-Co-Working auf focusmate.com."
                 : "FocusMate sessions run to a fixed end time, e.g. for video co-working on focusmate.com."
         }
-        static func focusMateBufferMinutes(_ l: AppLanguage, minutes: Int) -> String {
-            l == .german ? "Minuten: \(minutes)" : "Minutes: \(minutes)"
-        }
-        static func focusMateBufferSeconds(_ l: AppLanguage, seconds: Int) -> String {
-            l == .german ? "Sekunden: \(seconds)" : "Seconds: \(seconds)"
-        }
         static func cycleSummary(_ l: AppLanguage, sessions: Int, workMinutes: Int, totalMinutes: Int) -> String {
             if sessions == 1 {
                 return l == .german
@@ -329,20 +323,6 @@ enum Strings {
                 parts.append("\(minutes) \(minutesUnit)")
             }
             return parts.joined(separator: " ")
-        }
-        static func sessionEndPrompt(_ l: AppLanguage) -> String {
-            l == .german ? "Sitzungsende-Dialog" : "Session end prompt"
-        }
-        static func sessionEndPromptWindow(_ l: AppLanguage) -> String {
-            l == .german ? "Separates Fenster" : "Separate window"
-        }
-        static func sessionEndPromptMenuBar(_ l: AppLanguage) -> String {
-            l == .german ? "Menüleiste" : "Menu bar"
-        }
-        static func sessionEndPromptCaption(_ l: AppLanguage) -> String {
-            l == .german
-                ? "Wenn eine Sitzung endet, fragt Breadcrumb, was du geschafft hast, und speichert es als Status. Wähle, ob diese Abfrage in einem eigenen Fenster oder im Menüleisten-Popover erscheint."
-                : "When a session ends, Breadcrumb asks what you got done and saves it as a status update. Choose whether this prompt appears in its own window or in the menu bar popover."
         }
         static func sessionEndAppears(_ l: AppLanguage) -> String {
             l == .german ? "Abfrage erscheint" : "Prompt appears"
