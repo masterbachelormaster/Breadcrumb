@@ -211,8 +211,8 @@ struct StringsTests {
 
     @Test("AI settings strings return correct translations")
     func aiSettingsStrings() {
-        #expect(Strings.Settings.aiProvider(.german) == "KI-Anbieter")
-        #expect(Strings.Settings.aiProvider(.english) == "AI Provider")
+        #expect(Strings.Settings.aiProvider(.german) == "Anbieter")
+        #expect(Strings.Settings.aiProvider(.english) == "Provider")
         #expect(Strings.Settings.aiProviderLocal(.german) == "Apple KI")
         #expect(Strings.Settings.aiProviderLocal(.english) == "Apple AI")
         #expect(Strings.Settings.aiProviderOpenRouter(.german) == "OpenRouter")
@@ -235,6 +235,45 @@ struct StringsTests {
         #expect(Strings.Settings.aiReady(.english) == "Ready")
         #expect(Strings.Settings.aiNotConfigured(.german) == "Nicht konfiguriert")
         #expect(Strings.Settings.aiNotConfigured(.english) == "Not configured")
+    }
+
+    @Test("Settings redesign strings return correct translations")
+    func settingsRedesignStrings() {
+        // Tab labels
+        #expect(Strings.Settings.timerTab(.german) == "Timer")
+        #expect(Strings.Settings.timerTab(.english) == "Timer")
+        #expect(Strings.Settings.notificationsTab(.german) == "Mitteilungen")
+        #expect(Strings.Settings.notificationsTab(.english) == "Notifications")
+
+        // Notification tab group headers
+        #expect(Strings.Settings.soundsGroup(.german) == "Töne")
+        #expect(Strings.Settings.soundsGroup(.english) == "Sounds")
+        #expect(Strings.Settings.bannerGroup(.german) == "Banner")
+        #expect(Strings.Settings.bannerGroup(.english) == "Banner")
+
+        // AI status row
+        #expect(Strings.Settings.aiStatus(.german) == "Status")
+        #expect(Strings.Settings.aiStatus(.english) == "Status")
+
+        // Session end wording
+        #expect(Strings.Pomodoro.sessionEndAppears(.german) == "Abfrage erscheint")
+        #expect(Strings.Pomodoro.sessionEndAppears(.english) == "Prompt appears")
+        #expect(Strings.Pomodoro.sessionEndModeWindow(.german) == "Automatisch im Fenster")
+        #expect(Strings.Pomodoro.sessionEndModeWindow(.english) == "Automatically in a window")
+        #expect(Strings.Pomodoro.sessionEndModeMenuBar(.german) == "In der Menüleiste")
+        #expect(Strings.Pomodoro.sessionEndModeMenuBar(.english) == "In the menu bar")
+        #expect(Strings.Pomodoro.sessionEndModeWindowCaption(.german)
+            == "Wenn die Sitzung endet, öffnet sich die Abfrage von selbst in einem eigenen Fenster.")
+        #expect(Strings.Pomodoro.sessionEndModeWindowCaption(.english)
+            == "When the session ends, the prompt opens by itself in its own window.")
+        #expect(Strings.Pomodoro.sessionEndModeMenuBarCaption(.german)
+            == "Kein Fenster öffnet sich — die Abfrage erscheint erst, wenn du das Menüleisten-Symbol anklickst.")
+        #expect(Strings.Pomodoro.sessionEndModeMenuBarCaption(.english)
+            == "No window opens — the prompt appears once you click the menu bar icon.")
+
+        // Combined FocusMate buffer value
+        #expect(Strings.Pomodoro.focusMateBufferValue(.german, minutes: 0, seconds: 40) == "0 Min. 40 Sek.")
+        #expect(Strings.Pomodoro.focusMateBufferValue(.english, minutes: 2, seconds: 10) == "2 min 10 sec")
     }
 
     @Test("AI error strings for new error cases")

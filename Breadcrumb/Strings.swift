@@ -344,6 +344,28 @@ enum Strings {
                 ? "Wenn eine Sitzung endet, fragt Breadcrumb, was du geschafft hast, und speichert es als Status. Wähle, ob diese Abfrage in einem eigenen Fenster oder im Menüleisten-Popover erscheint."
                 : "When a session ends, Breadcrumb asks what you got done and saves it as a status update. Choose whether this prompt appears in its own window or in the menu bar popover."
         }
+        static func sessionEndAppears(_ l: AppLanguage) -> String {
+            l == .german ? "Abfrage erscheint" : "Prompt appears"
+        }
+        static func sessionEndModeWindow(_ l: AppLanguage) -> String {
+            l == .german ? "Automatisch im Fenster" : "Automatically in a window"
+        }
+        static func sessionEndModeMenuBar(_ l: AppLanguage) -> String {
+            l == .german ? "In der Menüleiste" : "In the menu bar"
+        }
+        static func sessionEndModeWindowCaption(_ l: AppLanguage) -> String {
+            l == .german
+                ? "Wenn die Sitzung endet, öffnet sich die Abfrage von selbst in einem eigenen Fenster."
+                : "When the session ends, the prompt opens by itself in its own window."
+        }
+        static func sessionEndModeMenuBarCaption(_ l: AppLanguage) -> String {
+            l == .german
+                ? "Kein Fenster öffnet sich — die Abfrage erscheint erst, wenn du das Menüleisten-Symbol anklickst."
+                : "No window opens — the prompt appears once you click the menu bar icon."
+        }
+        static func focusMateBufferValue(_ l: AppLanguage, minutes: Int, seconds: Int) -> String {
+            l == .german ? "\(minutes) Min. \(seconds) Sek." : "\(minutes) min \(seconds) sec"
+        }
         static func sessionEndedOpenPromptTitle(_ l: AppLanguage) -> String {
             l == .german ? "Sitzung beendet" : "Session ended"
         }
@@ -488,7 +510,7 @@ enum Strings {
             l == .german ? "Kein Ton" : "None"
         }
         static func aiProvider(_ l: AppLanguage) -> String {
-            l == .german ? "KI-Anbieter" : "AI Provider"
+            l == .german ? "Anbieter" : "Provider"
         }
         static func aiProviderLocal(_ l: AppLanguage) -> String {
             l == .german ? "Apple KI" : "Apple AI"
@@ -544,6 +566,21 @@ enum Strings {
         }
         static func focusMateLink(_ l: AppLanguage) -> String {
             l == .german ? "focusmate.com besuchen" : "Visit focusmate.com"
+        }
+        static func timerTab(_ l: AppLanguage) -> String {
+            "Timer"
+        }
+        static func notificationsTab(_ l: AppLanguage) -> String {
+            l == .german ? "Mitteilungen" : "Notifications"
+        }
+        static func soundsGroup(_ l: AppLanguage) -> String {
+            l == .german ? "Töne" : "Sounds"
+        }
+        static func bannerGroup(_ l: AppLanguage) -> String {
+            "Banner"
+        }
+        static func aiStatus(_ l: AppLanguage) -> String {
+            "Status"
         }
     }
 
