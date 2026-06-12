@@ -51,12 +51,16 @@ struct PomodoroRunningView: View {
             HStack(spacing: 12) {
                 switch timer.currentPhase {
                 case .work:
-                    if timer.isPaused {
-                        Button(Strings.Pomodoro.resume(languageManager.language)) { timer.resume() }
-                            .buttonStyle(.borderedProminent)
-                    } else {
-                        Button(Strings.Pomodoro.pause(languageManager.language)) { timer.pause() }
-                            .buttonStyle(.bordered)
+                    // FocusMate sessions end at a fixed time — pausing would
+                    // desync the countdown, so only offer stop.
+                    if !timer.isFocusMateSession {
+                        if timer.isPaused {
+                            Button(Strings.Pomodoro.resume(languageManager.language)) { timer.resume() }
+                                .buttonStyle(.borderedProminent)
+                        } else {
+                            Button(Strings.Pomodoro.pause(languageManager.language)) { timer.pause() }
+                                .buttonStyle(.bordered)
+                        }
                     }
                     Button(Strings.Pomodoro.stop(languageManager.language)) { stopSession() }
                         .buttonStyle(.bordered)

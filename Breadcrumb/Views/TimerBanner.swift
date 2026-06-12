@@ -47,22 +47,26 @@ struct TimerBanner: View {
         let l = languageManager.language
         switch timer.currentPhase {
         case .work:
-            if timer.isPaused {
-                Button(action: { timer.resume() }) {
-                    Image(systemName: "play.fill")
-                        .font(.callout)
+            // FocusMate sessions end at a fixed time — pausing would
+            // desync the countdown, so only offer stop.
+            if !timer.isFocusMateSession {
+                if timer.isPaused {
+                    Button(action: { timer.resume() }) {
+                        Image(systemName: "play.fill")
+                            .font(.callout)
+                    }
+                    .buttonStyle(ToolbarButtonStyle())
+                    .help(Strings.Pomodoro.resume(l))
+                    .accessibilityLabel(Strings.Pomodoro.resume(l))
+                } else {
+                    Button(action: { timer.pause() }) {
+                        Image(systemName: "pause.fill")
+                            .font(.callout)
+                    }
+                    .buttonStyle(ToolbarButtonStyle())
+                    .help(Strings.Pomodoro.pause(l))
+                    .accessibilityLabel(Strings.Pomodoro.pause(l))
                 }
-                .buttonStyle(ToolbarButtonStyle())
-                .help(Strings.Pomodoro.resume(l))
-                .accessibilityLabel(Strings.Pomodoro.resume(l))
-            } else {
-                Button(action: { timer.pause() }) {
-                    Image(systemName: "pause.fill")
-                        .font(.callout)
-                }
-                .buttonStyle(ToolbarButtonStyle())
-                .help(Strings.Pomodoro.pause(l))
-                .accessibilityLabel(Strings.Pomodoro.pause(l))
             }
             Button(action: { timer.requestStop() }) {
                 Image(systemName: "stop.fill")
