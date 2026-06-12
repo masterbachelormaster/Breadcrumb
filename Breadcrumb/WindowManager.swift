@@ -73,9 +73,10 @@ final class WindowManager {
     }
 
     func openSettings() {
+        guard let openSettingsAction else { return }
         Task { @MainActor in
             await activateForWindowPresentation()
-            openSettingsAction?()
+            openSettingsAction()
 
             try? await Task.sleep(for: .milliseconds(200))
             if let window = settingsWindow {
@@ -88,9 +89,7 @@ final class WindowManager {
     func settingsWindowClosed() {
         Task {
             try? await Task.sleep(for: .milliseconds(50))
-            let identifier = self.settingsWindow?.identifier?.rawValue
-                ?? "com_apple_SwiftUI_Settings_window"
-            if !self.hasVisibleRegularWindow(excluding: identifier) {
+            if !self.hasVisibleRegularWindow(where: { $0.identifier?.rawValue.contains("Settings") != true }) {
                 NSApp.setActivationPolicy(.accessory)
             }
         }
@@ -157,8 +156,12 @@ final class WindowManager {
     }
 
     private func hasVisibleRegularWindow(excluding identifier: String) -> Bool {
+        hasVisibleRegularWindow(where: { $0.identifier?.rawValue != identifier })
+    }
+
+    private func hasVisibleRegularWindow(where isIncluded: (NSWindow) -> Bool) -> Bool {
         NSApp.windows.contains { window in
-            window.identifier?.rawValue != identifier
+            isIncluded(window)
                 && window.isVisible
                 && !window.isMiniaturized
                 && window.level == .normal
