@@ -3,7 +3,6 @@ import SwiftUI
 struct PomodoroRunningView: View {
     @Environment(PomodoroTimer.self) private var timer
     @Environment(LanguageManager.self) private var languageManager
-    @Environment(WindowManager.self) private var windowManager
     var onCollapse: () -> Void
     var onFinished: () -> Void
 
@@ -34,7 +33,7 @@ struct PomodoroRunningView: View {
                     .foregroundStyle(.tertiary)
             }
 
-            // Project name + history
+            // Project name
             if let project = timer.boundProject {
                 HStack(spacing: 4) {
                     Image(systemName: project.icon)
@@ -44,13 +43,6 @@ struct PomodoroRunningView: View {
                         .fontWeight(.medium)
                 }
                 .padding(.top, 8)
-
-                Button(Strings.Status.history(languageManager.language)) {
-                    windowManager.open(.history(project))
-                }
-                .buttonStyle(.bordered)
-                .controlSize(.small)
-                .padding(.top, 4)
             }
 
             Spacer()
