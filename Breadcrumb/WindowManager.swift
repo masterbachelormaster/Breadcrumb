@@ -43,10 +43,15 @@ final class WindowManager {
     private var openGeneration: Int = 0
 
     private var openWindowAction: OpenWindowAction?
+    private var openSettingsAction: OpenSettingsAction?
     private var isSessionEndAutoOpenSuppressed = false
 
     func setOpenWindowAction(_ action: OpenWindowAction) {
         openWindowAction = action
+    }
+
+    func setOpenSettingsAction(_ action: OpenSettingsAction) {
+        openSettingsAction = action
     }
 
     // MARK: - Public Methods
@@ -63,6 +68,30 @@ final class WindowManager {
             if let window = NSApp.windows.first(where: { $0.identifier?.rawValue == "main" }) {
                 window.makeKeyAndOrderFront(nil)
                 NSApp.activate(ignoringOtherApps: true)
+            }
+        }
+    }
+
+    func openSettings() {
+        Task { @MainActor in
+            await activateForWindowPresentation()
+            openSettingsAction?()
+
+            try? await Task.sleep(for: .milliseconds(200))
+            if let window = settingsWindow {
+                window.makeKeyAndOrderFront(nil)
+                NSApp.activate(ignoringOtherApps: true)
+            }
+        }
+    }
+
+    func settingsWindowClosed() {
+        Task {
+            try? await Task.sleep(for: .milliseconds(50))
+            let identifier = self.settingsWindow?.identifier?.rawValue
+                ?? "com_apple_SwiftUI_Settings_window"
+            if !self.hasVisibleRegularWindow(excluding: identifier) {
+                NSApp.setActivationPolicy(.accessory)
             }
         }
     }
@@ -134,5 +163,12 @@ final class WindowManager {
                 && !window.isMiniaturized
                 && window.level == .normal
         }
+    }
+
+    /// SwiftUI assigns the Settings scene window its own identifier
+    /// (observed as "com_apple_SwiftUI_Settings_window"); match loosely
+    /// so an OS rename doesn't break us.
+    private var settingsWindow: NSWindow? {
+        NSApp.windows.first { $0.identifier?.rawValue.contains("Settings") == true }
     }
 }
