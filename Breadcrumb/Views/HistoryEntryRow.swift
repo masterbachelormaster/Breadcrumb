@@ -12,24 +12,10 @@ struct HistoryEntryRow: View {
                     .font(.body)
 
                 if let lastAction = entry.lastAction, !lastAction.isEmpty {
-                    VStack(alignment: .leading, spacing: 2) {
-                        Text(Strings.Status.lastStep(languageManager.language))
-                            .font(.caption)
-                            .foregroundStyle(.secondary)
-                            .textCase(.uppercase)
-                        Text(lastAction)
-                            .font(.callout)
-                    }
+                    BulletDetailField(label: Strings.Status.lastStep(languageManager.language), value: lastAction)
                 }
                 if let nextStep = entry.nextStep, !nextStep.isEmpty {
-                    VStack(alignment: .leading, spacing: 2) {
-                        Text(Strings.Status.nextStep(languageManager.language))
-                            .font(.caption)
-                            .foregroundStyle(.secondary)
-                            .textCase(.uppercase)
-                        Text(nextStep)
-                            .font(.callout)
-                    }
+                    BulletDetailField(label: Strings.Status.nextStep(languageManager.language), value: nextStep)
                 }
             }
             .padding(.vertical, 4)
