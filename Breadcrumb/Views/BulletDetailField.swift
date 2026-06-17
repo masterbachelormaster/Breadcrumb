@@ -28,6 +28,7 @@ struct BulletDetailField: View {
                             Text("•")
                                 .font(.callout)
                                 .foregroundStyle(.secondary)
+                                .accessibilityHidden(true)
                             Text(item)
                                 .font(.callout)
                                 .fixedSize(horizontal: false, vertical: true)
