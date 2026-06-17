@@ -45,6 +45,15 @@ struct PomodoroRunningView: View {
                 .padding(.top, 8)
             }
 
+            // Latest saved status for the running project — read-only
+            // context while you work (shown for work and break phases).
+            if let entry = latestEntry,
+               !(entry.lastAction ?? "").isEmpty || !(entry.nextStep ?? "").isEmpty {
+                statusCard(entry)
+                    .padding(.top, 12)
+                    .padding(.horizontal, 24)
+            }
+
             Spacer()
 
             // Controls
@@ -91,6 +100,35 @@ struct PomodoroRunningView: View {
             .help(Strings.Pomodoro.collapseToBanner(languageManager.language))
             .accessibilityLabel(Strings.Pomodoro.collapseToBanner(languageManager.language))
         }
+    }
+
+    private var latestEntry: StatusEntry? {
+        timer.boundProject?.latestEntry
+    }
+
+    @ViewBuilder
+    private func statusCard(_ entry: StatusEntry) -> some View {
+        ViewThatFits(in: .vertical) {
+            statusFields(entry)                 // hugs content when short
+            ScrollView { statusFields(entry) }  // scrolls when tall
+        }
+        .frame(maxHeight: 140)
+        .padding(12)
+        .background(.quaternary, in: RoundedRectangle(cornerRadius: 8))
+    }
+
+    @ViewBuilder
+    private func statusFields(_ entry: StatusEntry) -> some View {
+        let l = languageManager.language
+        VStack(alignment: .leading, spacing: 10) {
+            if let lastAction = entry.lastAction, !lastAction.isEmpty {
+                BulletDetailField(label: Strings.Status.lastStep(l), value: lastAction)
+            }
+            if let nextStep = entry.nextStep, !nextStep.isEmpty {
+                BulletDetailField(label: Strings.Status.nextStep(l), value: nextStep)
+            }
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
     }
 
     private func stopSession() {
