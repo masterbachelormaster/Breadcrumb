@@ -48,8 +48,8 @@ struct StatusEntryForm: View {
 
             DisclosureGroup(Strings.Status.optionalFields(languageManager.language), isExpanded: $showOptionalFields) {
                 VStack(spacing: 12) {
-                    TextField(Strings.Status.lastStep(languageManager.language), text: $lastAction)
-                    TextField(Strings.Status.nextStep(languageManager.language), text: $nextStep)
+                    MultilineStatusField(placeholder: Strings.Status.lastStep(languageManager.language), text: $lastAction)
+                    MultilineStatusField(placeholder: Strings.Status.nextStep(languageManager.language), text: $nextStep)
                 }
                 .padding(.top, 8)
             }
