@@ -154,8 +154,8 @@ struct PomodoroSessionEndView: View {
 
         DisclosureGroup(Strings.Status.optionalFields(l), isExpanded: $showOptionalFields) {
             VStack(spacing: 8) {
-                TextField(Strings.Status.lastStep(l), text: $lastAction)
-                TextField(Strings.Status.nextStep(l), text: $nextStep)
+                MultilineStatusField(placeholder: Strings.Status.lastStep(l), text: $lastAction)
+                MultilineStatusField(placeholder: Strings.Status.nextStep(l), text: $nextStep)
             }
             .padding(.top, 4)
         }
