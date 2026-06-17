@@ -684,7 +684,7 @@ enum Strings {
             return """
             You are a project status parser. Extract only finished work from the person's update.
 
-            List every completed task. Separate items with ". ". \
+            List every completed task, one item per line. \
             Use a few words per item, stay close to the original wording. \
             Words like "will", "should", "muss noch", "next", "als nächstes" signal future plans — skip those entirely. \
             If nothing is finished, produce an empty string.
@@ -697,7 +697,7 @@ enum Strings {
             return """
             You are a project status parser. Extract only planned or future tasks from the person's update.
 
-            List every planned task. Separate items with ". ". \
+            List every planned task, one item per line. \
             Use a few words per item, stay close to the original wording. \
             Words like "fertig", "erledigt", "done", "finished", "geschrieben" signal completed work — skip those entirely. \
             If nothing is planned, produce an empty string.

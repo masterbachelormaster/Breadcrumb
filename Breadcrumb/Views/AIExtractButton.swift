@@ -77,10 +77,10 @@ struct AIExtractButton: View {
 
     private func applyResult(lastAction: String, nextStep: String) {
         if !lastAction.isEmpty {
-            self.lastAction = AIFillerStripper.clean(lastAction)
+            self.lastAction = AIFillerStripper.cleanLines(lastAction)
         }
         if !nextStep.isEmpty {
-            self.nextStep = AIFillerStripper.clean(nextStep)
+            self.nextStep = AIFillerStripper.cleanLines(nextStep)
         }
     }
 }
