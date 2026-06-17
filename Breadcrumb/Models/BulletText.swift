@@ -52,6 +52,34 @@ enum BulletText {
             .joined(separator: ". ")
     }
 
+    // MARK: - Sub-step markers
+
+    /// List-marker characters recognized at the start of a line.
+    private static let listMarkers: Set<Character> = ["-", "–", "—", "*", "•", "+"]
+
+    /// True when a line begins (after trimming) with a list marker followed by
+    /// whitespace — e.g. `"- foo"`, `"• foo"`, `"* foo"`. Such a line is treated
+    /// as an indented sub-step under the preceding top-level item. A bare marker
+    /// or a marker with no following space (e.g. `"-5"`) is NOT a sub-step.
+    static func isSubItem(_ line: String) -> Bool {
+        let trimmed = line.trimmingCharacters(in: .whitespaces)
+        guard let first = trimmed.first, listMarkers.contains(first) else { return false }
+        return trimmed.dropFirst().first?.isWhitespace ?? false
+    }
+
+    /// Strips leading list markers (and the whitespace after them) from a line,
+    /// repeatedly, so `"- foo"`, `"• - foo"`, and `"  -   foo"` all collapse to
+    /// `"foo"`. A line with no leading marker is returned trimmed but otherwise
+    /// unchanged. Use this to get the clean text of a sub-step for display.
+    static func stripLeadingMarkers(_ line: String) -> String {
+        var s = line.trimmingCharacters(in: .whitespaces)
+        while let first = s.first, listMarkers.contains(first),
+              (s.dropFirst().first?.isWhitespace ?? false) {
+            s = String(s.dropFirst()).trimmingCharacters(in: .whitespaces)
+        }
+        return s
+    }
+
     private static let trailingTerminators: Set<Character> = [".", "!", "?"]
 
     private static func stripTrailingTerminators(_ s: String) -> String {

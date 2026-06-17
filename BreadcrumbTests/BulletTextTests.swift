@@ -149,4 +149,61 @@ struct BulletTextTests {
         let reparsed = BulletText.parse(collapsed)
         #expect(reparsed == ["do A. do B"])
     }
+
+    // MARK: - isSubItem
+
+    @Test("isSubItem: dash followed by a space is a sub-step")
+    func isSubItemDash() {
+        #expect(BulletText.isSubItem("- put out the claim"))
+    }
+
+    @Test("isSubItem: bullet, asterisk and en-dash markers are sub-steps")
+    func isSubItemOtherMarkers() {
+        #expect(BulletText.isSubItem("• foo"))
+        #expect(BulletText.isSubItem("* foo"))
+        #expect(BulletText.isSubItem("– foo"))
+    }
+
+    @Test("isSubItem: leading whitespace before the marker still counts")
+    func isSubItemLeadingWhitespace() {
+        #expect(BulletText.isSubItem("   - foo"))
+    }
+
+    @Test("isSubItem: a line with no marker is a top-level item")
+    func isSubItemPlain() {
+        #expect(BulletText.isSubItem("rest of 6.2") == false)
+    }
+
+    @Test("isSubItem: a marker with no following space is not a sub-step")
+    func isSubItemNoSpace() {
+        #expect(BulletText.isSubItem("-5°C") == false)
+        #expect(BulletText.isSubItem("-") == false)
+    }
+
+    // MARK: - stripLeadingMarkers
+
+    @Test("stripLeadingMarkers: removes a single dash marker")
+    func stripSingleMarker() {
+        #expect(BulletText.stripLeadingMarkers("- put out the claim") == "put out the claim")
+    }
+
+    @Test("stripLeadingMarkers: collapses a doubled marker")
+    func stripDoubledMarker() {
+        #expect(BulletText.stripLeadingMarkers("• - put out the claim") == "put out the claim")
+    }
+
+    @Test("stripLeadingMarkers: trims surrounding whitespace around the marker")
+    func stripMarkerWhitespace() {
+        #expect(BulletText.stripLeadingMarkers("  -   foo  ") == "foo")
+    }
+
+    @Test("stripLeadingMarkers: leaves a plain line unchanged")
+    func stripPlainLine() {
+        #expect(BulletText.stripLeadingMarkers("rest of 6.2") == "rest of 6.2")
+    }
+
+    @Test("stripLeadingMarkers: does not strip a marker with no following space")
+    func stripNoSpace() {
+        #expect(BulletText.stripLeadingMarkers("-5") == "-5")
+    }
 }
