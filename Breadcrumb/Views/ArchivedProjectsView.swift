@@ -65,6 +65,7 @@ struct ArchivedProjectsView: View {
                         }
                     }
                 }
+                .scrollContentBackground(.hidden)
             }
         }
         .confirmationDialog(

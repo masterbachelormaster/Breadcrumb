@@ -4,81 +4,53 @@ import SQLite3
 
 @main
 struct BreadcrumbApp: App {
-    let sharedModelContainer: ModelContainer
-
     @NSApplicationDelegateAdaptor(AppDelegate.self) private var appDelegate
-    @State private var pomodoroTimer = PomodoroTimer()
-    @State private var windowManager = WindowManager()
-    @State private var aiService = AIService()
-    @State private var languageManager = LanguageManager()
-    @State private var notificationService = NotificationService()
-    @State private var speechRecognizer = SpeechRecognizer()
-
-    init() {
-        sharedModelContainer = Self.createModelContainer()
-    }
 
     var body: some Scene {
-        MenuBarExtra {
-            ContentView()
-                .onAppear {
-                    pomodoroTimer.notificationService = notificationService
-                    notificationService.requestAuthorization()
-                    appDelegate.windowManager = windowManager
-                    appDelegate.pomodoroTimer = pomodoroTimer
-                }
-                .environment(pomodoroTimer)
-                .environment(windowManager)
-                .environment(aiService)
-                .environment(languageManager)
-                .environment(speechRecognizer)
-        } label: {
-            MenuBarLabelView(
-                pomodoroTimer: pomodoroTimer,
-                windowManager: windowManager,
-                languageManager: languageManager
-            )
-        }
-        .menuBarExtraStyle(.window)
-        .modelContainer(sharedModelContainer)
+        // The menu bar item (status item + popover) is owned by AppDelegate /
+        // MenuBarController — see MenuBarController.swift for why MenuBarExtra
+        // can't be used on macOS 27. These scenes are the breakout windows; they
+        // open on demand via WindowManager, never at launch.
 
         Window("Breadcrumb", id: "main") {
             BreakoutWindowView()
-                .environment(pomodoroTimer)
-                .environment(windowManager)
-                .environment(aiService)
-                .environment(languageManager)
-                .environment(speechRecognizer)
+                .environment(appDelegate.pomodoroTimer)
+                .environment(appDelegate.windowManager)
+                .environment(appDelegate.aiService)
+                .environment(appDelegate.languageManager)
+                .environment(appDelegate.speechRecognizer)
         }
-        .modelContainer(sharedModelContainer)
+        .modelContainer(appDelegate.modelContainer)
         .defaultSize(width: 500, height: 400)
+        .defaultLaunchBehavior(.suppressed)
         .commands {
-            BreadcrumbCommands(windowManager: windowManager, languageManager: languageManager)
+            BreadcrumbCommands(windowManager: appDelegate.windowManager, languageManager: appDelegate.languageManager)
         }
 
         Settings {
             SettingsRootView()
-                .environment(windowManager)
-                .environment(aiService)
-                .environment(languageManager)
+                .environment(appDelegate.windowManager)
+                .environment(appDelegate.aiService)
+                .environment(appDelegate.languageManager)
         }
         .windowResizability(.contentSize)
 
         Window("Session Complete", id: "session-end") {
             SessionEndWindowView()
-                .environment(pomodoroTimer)
-                .environment(windowManager)
-                .environment(aiService)
-                .environment(languageManager)
-                .environment(speechRecognizer)
+                .environment(appDelegate.pomodoroTimer)
+                .environment(appDelegate.windowManager)
+                .environment(appDelegate.aiService)
+                .environment(appDelegate.languageManager)
+                .environment(appDelegate.speechRecognizer)
         }
-        .modelContainer(sharedModelContainer)
+        .modelContainer(appDelegate.modelContainer)
         .defaultSize(width: 360, height: 420)
+        .defaultLaunchBehavior(.suppressed)
     }
 
     // MARK: - Model Container
 
-    private static func createModelContainer() -> ModelContainer {
+    static func createModelContainer() -> ModelContainer {
         let storeURL = URL.applicationSupportDirectory
             .appending(path: "Breadcrumb")
             .appending(path: "Breadcrumb.store")

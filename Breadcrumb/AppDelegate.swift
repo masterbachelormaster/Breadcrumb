@@ -1,4 +1,5 @@
 import AppKit
+import SwiftData
 
 extension Notification.Name {
     static let openPopover = Notification.Name("Breadcrumb.openPopover")
@@ -7,58 +8,38 @@ extension Notification.Name {
     static let pomodoroNextSession = Notification.Name("Breadcrumb.pomodoroNextSession")
 }
 
+/// Owns the app's services, the SwiftData container, and the menu bar item.
+///
+/// Ownership lives here (not as `@State` on the `App`) because the menu bar
+/// status item is created in `applicationDidFinishLaunching` — before any scene
+/// appears — and needs the services ready at that point. The breakout window
+/// scenes read these same instances from the delegate.
 @MainActor
 final class AppDelegate: NSObject, NSApplicationDelegate {
-    private var eventMonitor: Any?
-    var windowManager: WindowManager?
-    var pomodoroTimer: PomodoroTimer?
+    let languageManager = LanguageManager()
+    let pomodoroTimer = PomodoroTimer()
+    let windowManager = WindowManager()
+    let aiService = AIService()
+    let speechRecognizer = SpeechRecognizer()
+    let notificationService = NotificationService()
+    let modelContainer = BreadcrumbApp.createModelContainer()
+
+    private var menuBarController: MenuBarController?
 
     func applicationDidFinishLaunching(_ notification: Notification) {
-        eventMonitor = NSEvent.addLocalMonitorForEvents(matching: .rightMouseDown) { event in
-            guard let window = event.window,
-                  window.level == .statusBar else {
-                return event
-            }
+        pomodoroTimer.notificationService = notificationService
+        notificationService.requestAuthorization()
 
-            MainActor.assumeIsolated {
-                let menu = NSMenu()
-
-                let stored = UserDefaults.standard.string(forKey: "app.language") ?? "de"
-                let language = AppLanguage(rawValue: stored) ?? .german
-
-                let settingsItem = NSMenuItem(
-                    title: Strings.General.settingsEllipsis(language),
-                    action: #selector(AppDelegate.openSettings),
-                    keyEquivalent: ","
-                )
-                settingsItem.target = NSApp.delegate
-                menu.addItem(settingsItem)
-
-                let aboutItem = NSMenuItem(
-                    title: Strings.General.about(language),
-                    action: #selector(AppDelegate.openAbout),
-                    keyEquivalent: ""
-                )
-                aboutItem.target = NSApp.delegate
-                aboutItem.image = NSImage(systemSymbolName: "info.circle", accessibilityDescription: nil)
-                menu.addItem(aboutItem)
-
-                menu.addItem(NSMenuItem.separator())
-
-                let quitItem = NSMenuItem(
-                    title: Strings.General.quit(language),
-                    action: #selector(NSApplication.terminate(_:)),
-                    keyEquivalent: "q"
-                )
-                menu.addItem(quitItem)
-
-                if let view = window.contentView {
-                    NSMenu.popUpContextMenu(menu, with: event, for: view)
-                }
-            }
-
-            return nil
-        }
+        let controller = MenuBarController(
+            pomodoroTimer: pomodoroTimer,
+            windowManager: windowManager,
+            aiService: aiService,
+            languageManager: languageManager,
+            speechRecognizer: speechRecognizer,
+            modelContainer: modelContainer
+        )
+        controller.install()
+        menuBarController = controller
 
         NotificationCenter.default.addObserver(
             forName: .openPopover,
@@ -66,7 +47,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
             queue: .main
         ) { [weak self] _ in
             MainActor.assumeIsolated {
-                self?.openMenuBarPopover()
+                self?.menuBarController?.showPopover()
             }
         }
 
@@ -86,7 +67,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
             queue: .main
         ) { [weak self] _ in
             MainActor.assumeIsolated {
-                self?.pomodoroTimer?.startBreak()
+                self?.pomodoroTimer.startBreak()
             }
         }
 
@@ -96,39 +77,13 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
             queue: .main
         ) { [weak self] _ in
             MainActor.assumeIsolated {
-                self?.pomodoroTimer?.startNextWorkSession()
+                self?.pomodoroTimer.startNextWorkSession()
             }
-        }
-
-    }
-
-    func applicationWillTerminate(_ notification: Notification) {
-        if let eventMonitor {
-            NSEvent.removeMonitor(eventMonitor)
         }
     }
 
     func applicationShouldTerminateAfterLastWindowClosed(_ sender: NSApplication) -> Bool {
         false
-    }
-
-    @objc private func openSettings() {
-        windowManager?.openSettings()
-    }
-
-    @objc private func openAbout() {
-        windowManager?.open(.about)
-    }
-
-    private func openMenuBarPopover() {
-        guard let button = NSApp.windows
-            .compactMap(\.contentView)
-            .compactMap({ $0.firstSubview(ofType: NSStatusBarButton.self) })
-            .first else {
-            return
-        }
-
-        button.performClick(nil)
     }
 
     private func openConfiguredSessionEndPrompt() {
@@ -137,29 +92,9 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
 
         switch presentation {
         case .window:
-            if let windowManager {
-                windowManager.openSessionEnd()
-            } else {
-                openMenuBarPopover()
-            }
+            windowManager.openSessionEnd()
         case .menuBar:
-            openMenuBarPopover()
+            menuBarController?.showPopover()
         }
-    }
-}
-
-private extension NSView {
-    func firstSubview<T: NSView>(ofType type: T.Type) -> T? {
-        if let view = self as? T {
-            return view
-        }
-
-        for subview in subviews {
-            if let match = subview.firstSubview(ofType: type) {
-                return match
-            }
-        }
-
-        return nil
     }
 }

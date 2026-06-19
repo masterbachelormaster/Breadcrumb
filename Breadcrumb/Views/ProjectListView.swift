@@ -62,6 +62,7 @@ struct ProjectListView: View {
                         }
                         .buttonStyle(ListRowButtonStyle())
                     }
+                    .scrollContentBackground(.hidden)
                 }
 
                 // Footer

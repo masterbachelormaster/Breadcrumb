@@ -56,6 +56,7 @@ struct ProjectPickerView: View {
                     .buttonStyle(ListRowButtonStyle())
                 }
             }
+            .scrollContentBackground(.hidden)
         }
     }
 }
