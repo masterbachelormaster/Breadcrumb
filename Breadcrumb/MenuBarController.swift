@@ -25,6 +25,11 @@ final class MenuBarController: NSObject {
     private var hostingView: NSHostingView<AnyView>?
     private var globalMonitor: Any?
 
+    /// Last observed value of `pomodoroTimer.pendingSessionEnd`, used to detect
+    /// transitions in `observeSessionEnd()` (withObservationTracking does not
+    /// supply the previous value the way SwiftUI's `onChange(of:)` did).
+    private var lastPendingSessionEnd: SessionEndReason?
+
     init(
         pomodoroTimer: PomodoroTimer,
         windowManager: WindowManager,
@@ -54,6 +59,8 @@ final class MenuBarController: NSObject {
         statusItem = item
         updateLabel()
         observeLabel()
+        lastPendingSessionEnd = pomodoroTimer.pendingSessionEnd
+        observeSessionEnd()
     }
 
     /// Programmatically show the popover (notification-driven flows). Revives the
@@ -93,6 +100,50 @@ final class MenuBarController: NSObject {
             button.image = image
             button.setAccessibilityLabel(label)
         }
+    }
+
+    // MARK: - Session end auto-open
+
+    /// Auto-opens the session-end window when a Pomodoro session finishes in
+    /// `.window` presentation mode. This logic previously lived in the now-deleted
+    /// `MenuBarLabelView`; it moved here because `MenuBarController` is the
+    /// always-present owner. Re-arms the observation each time, like `observeLabel`.
+    private func observeSessionEnd() {
+        withObservationTracking {
+            _ = pomodoroTimer.pendingSessionEnd
+        } onChange: { [weak self] in
+            // onChange fires BEFORE the new value is applied, so read it on the
+            // main actor in a follow-up Task (mirrors `observeLabel`).
+            Task { @MainActor in
+                self?.handleSessionEndChange()
+                self?.observeSessionEnd()
+            }
+        }
+    }
+
+    private func handleSessionEndChange() {
+        let oldValue = lastPendingSessionEnd
+        let newValue = pomodoroTimer.pendingSessionEnd
+        lastPendingSessionEnd = newValue
+
+        if oldValue == nil && newValue != nil {
+            windowManager.resetSessionEndWindowSuppression()
+        } else if newValue == nil {
+            windowManager.resetSessionEndWindowSuppression()
+        }
+        autoOpenSessionEndWindowIfNeeded()
+    }
+
+    private var sessionEndMode: SessionEndPresentation {
+        let stored = UserDefaults.standard.string(forKey: "pomodoro.sessionEndPresentation")
+        return stored.flatMap(SessionEndPresentation.init(rawValue:)) ?? .window
+    }
+
+    private func autoOpenSessionEndWindowIfNeeded() {
+        guard let reason = pomodoroTimer.pendingSessionEnd,
+              reason != .stopped,
+              sessionEndMode == .window else { return }
+        windowManager.autoOpenSessionEnd()
     }
 
     // MARK: - Click handling
