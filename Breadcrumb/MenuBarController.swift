@@ -163,8 +163,10 @@ final class MenuBarController: NSObject {
 
         let panel = MenuBarPanel()
 
-        let host = NSHostingView(rootView: contentRootView())
+        let host = TransparentHostingView(rootView: contentRootView())
         host.translatesAutoresizingMaskIntoConstraints = false
+        host.wantsLayer = true
+        host.layer?.backgroundColor = NSColor.clear.cgColor
 
         let backdrop = NSVisualEffectView()
         backdrop.material = .popover
@@ -289,4 +291,14 @@ private final class MenuBarPanel: NSPanel {
     override var canBecomeKey: Bool { true }
     override var canBecomeMain: Bool { false }
     override var acceptsFirstResponder: Bool { true }
+}
+
+/// NSHostingView reports itself opaque by default, which hides the panel's
+/// vibrancy material behind any popover screen that contains no scroll view
+/// (SwiftUI's List/ScrollView transparently punch through on their own, so
+/// screens with one looked correct while plain VStack screens — the
+/// session-end card, Welcome, FocusMate question — rendered flat gray).
+/// Forcing transparency lets the glass show through uniformly on every screen.
+private final class TransparentHostingView<Content: View>: NSHostingView<Content> {
+    override var isOpaque: Bool { false }
 }
