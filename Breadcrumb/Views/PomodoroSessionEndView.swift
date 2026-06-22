@@ -26,6 +26,10 @@ struct PomodoroSessionEndView: View {
     @State private var showOptionalFields = false
     @State private var selectedProject: Project?
 
+    @AppStorage("pomodoro.showBreakQuote") private var showBreakQuote = true
+    @AppStorage("pomodoro.lastBreakQuoteID") private var lastBreakQuoteID = -1
+    @State private var breakQuote: MotivationalQuote?
+
     @Query(filter: #Predicate<Project> { $0.isActive })
     private var activeProjects: [Project]
 
@@ -45,6 +49,11 @@ struct PomodoroSessionEndView: View {
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .onAppear {
             selectedProject = boundProject
+            if wasBreak && !isCycleComplete && showBreakQuote {
+                let quote = MotivationalQuotes.random(excluding: lastBreakQuoteID)
+                breakQuote = quote
+                lastBreakQuoteID = quote.id
+            }
         }
     }
 
@@ -62,6 +71,10 @@ struct PomodoroSessionEndView: View {
             Text(Strings.Pomodoro.readyForNext(l))
                 .font(.subheadline)
                 .foregroundStyle(.secondary)
+
+            if showBreakQuote, let breakQuote {
+                BreakQuoteCard(quote: breakQuote)
+            }
 
             HStack {
                 Button(Strings.Pomodoro.nextSession(l)) { onStartNextSession() }

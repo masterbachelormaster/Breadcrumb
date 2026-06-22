@@ -343,6 +343,14 @@ enum Strings {
                 ? "Kein Fenster öffnet sich — die Abfrage erscheint erst, wenn du das Menüleisten-Symbol anklickst."
                 : "No window opens — the prompt appears once you click the menu bar icon."
         }
+        static func breakQuoteToggle(_ l: AppLanguage) -> String {
+            l == .german ? "Motivationszitat nach der Pause zeigen" : "Show a motivational quote when a break ends"
+        }
+        static func breakQuoteCaption(_ l: AppLanguage) -> String {
+            l == .german
+                ? "Zeigt nach jeder Pause ein zufälliges Zitat. Wenn aus, wird der Bildschirm kompakt und ohne Leerraum dargestellt."
+                : "Shows a random quote after each break. When off, the screen is compact with no empty space."
+        }
         static func focusMateBufferValue(_ l: AppLanguage, minutes: Int, seconds: Int) -> String {
             l == .german ? "\(minutes) Min. \(seconds) Sek." : "\(minutes) min \(seconds) sec"
         }

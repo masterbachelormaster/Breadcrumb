@@ -10,6 +10,7 @@ struct TimerSettingsTab: View {
     @AppStorage("pomodoro.totalSessions") private var totalSessions = 4
     @AppStorage("pomodoro.sessionEndPresentation") private var sessionEndPresentation
         = SessionEndPresentation.window.rawValue
+    @AppStorage("pomodoro.showBreakQuote") private var showBreakQuote = true
     @AppStorage("pomodoro.focusMateEndEarlyMinutes") private var focusMateEndEarlyMinutes = 0
     @AppStorage("pomodoro.focusMateEndEarlySeconds") private var focusMateEndEarlySeconds = 0
     @AppStorage("feature.focusMateEnabled") private var focusMateEnabled = false
@@ -85,6 +86,13 @@ struct TimerSettingsTab: View {
                 Text(Strings.Pomodoro.sessionEndModeMenuBar(l)).tag(SessionEndPresentation.menuBar.rawValue)
             }
             .pickerStyle(.segmented)
+
+            Toggle(isOn: $showBreakQuote) {
+                HStack(spacing: 6) {
+                    Text(Strings.Pomodoro.breakQuoteToggle(l))
+                    InfoButton(text: Strings.Pomodoro.breakQuoteCaption(l))
+                }
+            }
         } header: {
             Text(Strings.Settings.sessionEndSection(l))
         } footer: {
