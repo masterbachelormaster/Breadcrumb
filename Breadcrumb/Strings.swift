@@ -241,6 +241,9 @@ enum Strings {
         static func sessionsBeforeLongBreak(_ l: AppLanguage, count: Int) -> String {
             l == .german ? "Lange Pause nach: \(count) Sitzungen" : "Long break after: \(count) sessions"
         }
+        static func longBreaksToggle(_ l: AppLanguage) -> String {
+            l == .german ? "Lange Pausen" : "Long breaks"
+        }
         static func overtimeSession(_ l: AppLanguage, number: Int) -> String {
             l == .german ? "Überstunden · Sitzung \(number)" : "Overtime · Session \(number)"
         }

@@ -22,10 +22,11 @@ struct PomodoroConfigView: View {
     var onDismiss: () -> Void
 
     @AppStorage("feature.focusMateEnabled") private var focusMateEnabled = false
+    @AppStorage("pomodoro.longBreaksEnabled") private var longBreaksEnabled = true
     @State private var availableBoundaries: [Date] = []
 
     private var hasBreaks: Bool { totalSessions > 1 }
-    private var hasLongBreak: Bool { totalSessions >= 3 }
+    private var hasLongBreak: Bool { totalSessions >= 3 && longBreaksEnabled }
 
     var body: some View {
         let l = languageManager.language
@@ -60,7 +61,7 @@ struct PomodoroConfigView: View {
                     Stepper(Strings.Pomodoro.shortBreakLabel(l, minutes: shortBreakMinutes), value: $shortBreakMinutes, in: 1...15)
                     if hasLongBreak {
                         Stepper(Strings.Pomodoro.sessionsBeforeLongBreak(l, count: sessionsBeforeLong), value: $sessionsBeforeLong, in: 2...(totalSessions - 1))
-                        Stepper(Strings.Pomodoro.longBreakLabel(l, minutes: longBreakMinutes), value: $longBreakMinutes, in: 5...30)
+                        Stepper(Strings.Pomodoro.longBreakLabel(l, minutes: longBreakMinutes), value: $longBreakMinutes, in: 1...30)
                     }
                 }
             } else {

@@ -186,6 +186,7 @@ struct ContentView: View {
     @AppStorage("pomodoro.longBreakMinutes") private var longBreakMinutes = 15
     @AppStorage("pomodoro.sessionsBeforeLongBreak") private var sessionsBeforeLong = 4
     @AppStorage("pomodoro.totalSessions") private var totalSessions = 4
+    @AppStorage("pomodoro.longBreaksEnabled") private var longBreaksEnabled = true
     @AppStorage("pomodoro.focusMateEndEarlyMinutes") private var focusMateEndEarlyMinutes = 0
     @AppStorage("pomodoro.focusMateEndEarlySeconds") private var focusMateEndEarlySeconds = 0
 
@@ -243,7 +244,8 @@ struct ContentView: View {
                 shortBreakMinutes: configShortBreakMinutes,
                 longBreakMinutes: configLongBreakMinutes,
                 sessionsBeforeLong: configSessionsBeforeLong,
-                totalSessions: configTotalSessions
+                totalSessions: configTotalSessions,
+                longBreaksEnabled: longBreaksEnabled
             )
         case .focusMate:
             let endTime = configFocusMateStartTime.addingTimeInterval(Double(configFocusMateMinutes) * 60)

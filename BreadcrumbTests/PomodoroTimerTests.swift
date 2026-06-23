@@ -381,6 +381,18 @@ struct PomodoroTimerTests {
         #expect(timer.remainingSeconds == 15 * 60)
     }
 
+    @Test("Disabling long breaks keeps every break short")
+    func disabledLongBreaksStayShort() {
+        let timer = PomodoroTimer()
+        // Session 3 would normally trigger a long break (sessionsBeforeLong: 3),
+        // but with long breaks disabled it must remain a short break.
+        timer.startWork(project: nil, durationMinutes: 25, shortBreakMinutes: 5, longBreakMinutes: 15, sessionsBeforeLong: 3, totalSessions: 6, longBreaksEnabled: false)
+        timer.currentSessionNumber = 3
+        timer.startBreak()
+        #expect(timer.currentPhase == .shortBreak)
+        #expect(timer.remainingSeconds == 5 * 60)
+    }
+
     @Test("Minimum work duration of 5 minutes works correctly")
     func minimumWorkDuration() {
         let timer = PomodoroTimer()

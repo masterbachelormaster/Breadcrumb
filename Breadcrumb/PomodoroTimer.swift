@@ -54,6 +54,7 @@ final class PomodoroTimer {
     var sessionLongBreakMinutes: Int = 15
     var sessionSessionsBeforeLong: Int = 4
     var sessionTotalSessions: Int = 4
+    var sessionLongBreaksEnabled: Bool = true
 
     var isCycleComplete: Bool { currentSessionNumber >= sessionTotalSessions }
 
@@ -152,7 +153,7 @@ final class PomodoroTimer {
 
     // MARK: - Methods
 
-    func startWork(project: Project?, durationMinutes: Int, shortBreakMinutes: Int, longBreakMinutes: Int, sessionsBeforeLong: Int, totalSessions: Int) {
+    func startWork(project: Project?, durationMinutes: Int, shortBreakMinutes: Int, longBreakMinutes: Int, sessionsBeforeLong: Int, totalSessions: Int, longBreaksEnabled: Bool = true) {
         pendingSessionEnd = nil
         boundProject = project
         boundProjectID = project?.persistentModelID
@@ -161,6 +162,7 @@ final class PomodoroTimer {
         sessionLongBreakMinutes = longBreakMinutes
         sessionSessionsBeforeLong = sessionsBeforeLong
         sessionTotalSessions = totalSessions
+        sessionLongBreaksEnabled = longBreaksEnabled
         originalDurationSeconds = durationMinutes * 60
         phaseDurationSeconds = durationMinutes * 60
         remainingSeconds = durationMinutes * 60
@@ -214,7 +216,7 @@ final class PomodoroTimer {
         didCrossZero = false
         elapsedBeforePause = 0
 
-        if currentSessionNumber % sessionSessionsBeforeLong == 0 {
+        if sessionLongBreaksEnabled && currentSessionNumber % sessionSessionsBeforeLong == 0 {
             currentPhase = .longBreak
             remainingSeconds = sessionLongBreakMinutes * 60
             phaseDurationSeconds = sessionLongBreakMinutes * 60
@@ -234,7 +236,7 @@ final class PomodoroTimer {
     func startNextWorkSession() {
         guard !isCycleComplete else { return }
         currentSessionNumber += 1
-        startWork(project: boundProject, durationMinutes: sessionWorkMinutes, shortBreakMinutes: sessionShortBreakMinutes, longBreakMinutes: sessionLongBreakMinutes, sessionsBeforeLong: sessionSessionsBeforeLong, totalSessions: sessionTotalSessions)
+        startWork(project: boundProject, durationMinutes: sessionWorkMinutes, shortBreakMinutes: sessionShortBreakMinutes, longBreakMinutes: sessionLongBreakMinutes, sessionsBeforeLong: sessionSessionsBeforeLong, totalSessions: sessionTotalSessions, longBreaksEnabled: sessionLongBreaksEnabled)
     }
 
     func enterOvertime() {
@@ -318,6 +320,7 @@ final class PomodoroTimer {
         sessionLongBreakMinutes = 15
         sessionSessionsBeforeLong = 4
         sessionTotalSessions = 4
+        sessionLongBreaksEnabled = true
     }
 
     func tick() {

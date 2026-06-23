@@ -8,6 +8,7 @@ struct TimerSettingsTab: View {
     @AppStorage("pomodoro.longBreakMinutes") private var longBreakMinutes = 15
     @AppStorage("pomodoro.sessionsBeforeLongBreak") private var sessionsBeforeLongBreak = 4
     @AppStorage("pomodoro.totalSessions") private var totalSessions = 4
+    @AppStorage("pomodoro.longBreaksEnabled") private var longBreaksEnabled = true
     @AppStorage("pomodoro.sessionEndPresentation") private var sessionEndPresentation
         = SessionEndPresentation.window.rawValue
     @AppStorage("pomodoro.showBreakQuote") private var showBreakQuote = true
@@ -16,7 +17,9 @@ struct TimerSettingsTab: View {
     @AppStorage("feature.focusMateEnabled") private var focusMateEnabled = false
 
     private var hasBreaks: Bool { totalSessions > 1 }
-    private var hasLongBreak: Bool { totalSessions >= 3 }
+    // Long breaks are only possible with 3+ sessions; the user can additionally turn them off.
+    private var longBreaksPossible: Bool { totalSessions >= 3 }
+    private var hasLongBreak: Bool { longBreaksPossible && longBreaksEnabled }
 
     /// Maximum early-end buffer: 10 minutes 50 seconds, in seconds.
     private static let maxBufferSeconds = 650
@@ -36,18 +39,9 @@ struct TimerSettingsTab: View {
     // breaks happen only BETWEEN sessions (none after the last)
     private var totalMinutes: Int {
         let breakCount = max(0, totalSessions - 1)
-        let longBreakCount: Int
-        let shortBreakCount: Int
-        if totalSessions >= 3 {
-            longBreakCount = breakCount / max(1, sessionsBeforeLongBreak)
-            shortBreakCount = breakCount - longBreakCount
-        } else if totalSessions == 2 {
-            longBreakCount = 0
-            shortBreakCount = 1
-        } else {
-            longBreakCount = 0
-            shortBreakCount = 0
-        }
+        // When long breaks are turned off (or impossible), every break is a short one.
+        let longBreakCount = hasLongBreak ? breakCount / max(1, sessionsBeforeLongBreak) : 0
+        let shortBreakCount = breakCount - longBreakCount
         return totalSessions * workMinutes
             + shortBreakCount * shortBreakMinutes
             + longBreakCount * longBreakMinutes
@@ -60,10 +54,14 @@ struct TimerSettingsTab: View {
             Stepper(Strings.Pomodoro.focusTimeLabel(l, minutes: workMinutes), value: $workMinutes, in: 5...60)
             if hasBreaks {
                 Stepper(Strings.Pomodoro.shortBreakLabel(l, minutes: shortBreakMinutes), value: $shortBreakMinutes, in: 1...15)
-                if hasLongBreak {
-                    Stepper(Strings.Pomodoro.sessionsBeforeLongBreak(l, count: sessionsBeforeLongBreak), value: $sessionsBeforeLongBreak, in: 2...(totalSessions - 1))
-                    Stepper(Strings.Pomodoro.longBreakLabel(l, minutes: longBreakMinutes), value: $longBreakMinutes, in: 5...30)
-                }
+            }
+            // The long-breaks switch is always visible here in Settings so it's
+            // easy to find; its detail controls only appear when long breaks can
+            // actually occur (3+ sessions and the switch on).
+            Toggle(Strings.Pomodoro.longBreaksToggle(l), isOn: $longBreaksEnabled)
+            if hasLongBreak {
+                Stepper(Strings.Pomodoro.sessionsBeforeLongBreak(l, count: sessionsBeforeLongBreak), value: $sessionsBeforeLongBreak, in: 2...(totalSessions - 1))
+                Stepper(Strings.Pomodoro.longBreakLabel(l, minutes: longBreakMinutes), value: $longBreakMinutes, in: 1...30)
             }
         } header: {
             Text(Strings.Pomodoro.pomodoro(l))
@@ -71,6 +69,7 @@ struct TimerSettingsTab: View {
             Text(Strings.Pomodoro.cycleSummary(l, sessions: totalSessions, workMinutes: workMinutes, totalMinutes: totalMinutes))
         }
         .animation(.default, value: totalSessions)
+        .animation(.default, value: longBreaksEnabled)
         .onChange(of: totalSessions) {
             if sessionsBeforeLongBreak >= totalSessions {
                 sessionsBeforeLongBreak = max(2, totalSessions - 1)
