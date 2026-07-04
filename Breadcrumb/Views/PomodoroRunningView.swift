@@ -48,7 +48,7 @@ struct PomodoroRunningView: View {
             // Latest saved status for the running project — read-only
             // context while you work (shown for work and break phases).
             if let entry = latestEntry,
-               !(entry.lastAction ?? "").isEmpty || !(entry.nextStep ?? "").isEmpty {
+               !(entry.lastAction ?? "").isEmpty || !(entry.nextStep ?? "").isEmpty || entry.aiExtractionState.showsInlineStatus {
                 statusCard(entry)
                     .padding(.top, 12)
                     .padding(.horizontal, 24)
@@ -127,6 +127,7 @@ struct PomodoroRunningView: View {
             if let nextStep = entry.nextStep, !nextStep.isEmpty {
                 BulletDetailField(label: Strings.Status.nextStep(l), value: nextStep)
             }
+            AIExtractionStatusView(entry: entry)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
     }

@@ -3,6 +3,7 @@ import SwiftData
 
 struct StatusEntryForm: View {
     @Environment(LanguageManager.self) private var languageManager
+    @Environment(AIExtractionCoordinator.self) private var aiExtractionCoordinator
 
     let project: Project
     var editingEntry: StatusEntry? = nil
@@ -14,6 +15,7 @@ struct StatusEntryForm: View {
     @Binding var nextStep: String
     var onDismiss: () -> Void = {}
     @State private var showOptionalFields = false
+    @State private var aiExtractionDraft = AIExtractionDraft()
 
     private var isEditing: Bool { editingEntry != nil }
     @State private var freeTextFocused = false
@@ -43,7 +45,8 @@ struct StatusEntryForm: View {
                 freeText: $freeText,
                 lastAction: $lastAction,
                 nextStep: $nextStep,
-                showOptionalFields: $showOptionalFields
+                showOptionalFields: $showOptionalFields,
+                draft: aiExtractionDraft
             )
 
             DisclosureGroup(Strings.Status.optionalFields(languageManager.language), isExpanded: $showOptionalFields) {
@@ -86,10 +89,12 @@ struct StatusEntryForm: View {
         let trimmed = freeText.trimmingCharacters(in: .whitespaces)
         guard !trimmed.isEmpty else { return }
 
+        let savedEntry: StatusEntry
         if let entry = editingEntry {
             entry.freeText = trimmed
             entry.lastAction = lastAction.isEmpty ? nil : lastAction
             entry.nextStep = nextStep.isEmpty ? nil : nextStep
+            savedEntry = entry
         } else {
             let entry = StatusEntry(
                 freeText: trimmed,
@@ -99,8 +104,17 @@ struct StatusEntryForm: View {
             entry.project = project
             project.entries.append(entry)
             modelContext.insert(entry)
+            savedEntry = entry
         }
         modelContext.saveWithLogging()
+
+        if aiExtractionDraft.hasStarted {
+            aiExtractionCoordinator.continueExtraction(
+                from: aiExtractionDraft,
+                for: savedEntry,
+                language: languageManager.language
+            )
+        }
 
         freeText = ""
         lastAction = ""

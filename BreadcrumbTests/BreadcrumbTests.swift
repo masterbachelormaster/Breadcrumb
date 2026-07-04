@@ -35,6 +35,69 @@ struct ModelTests {
         #expect(entry.nextStep == nil)
     }
 
+    @Test("StatusEntry AI extraction fields default to not requested")
+    func statusEntryAIExtractionDefaults() {
+        let entry = StatusEntry(freeText: "Quick note")
+        #expect(entry.aiExtractionState == .notRequested)
+        #expect(entry.aiExtractionAttemptCount == 0)
+        #expect(entry.aiExtractionNextRetryAt == nil)
+        #expect(entry.aiExtractionLastError == nil)
+        #expect(entry.aiExtractionSourceText == nil)
+        #expect(entry.aiExtractionLanguageRawValue == nil)
+    }
+
+    @Test("AI extraction fills only blank optional fields")
+    @MainActor
+    func aiExtractionFillsOnlyBlankFields() {
+        let entry = StatusEntry(
+            freeText: "Finished draft and need to edit references",
+            lastAction: "User typed work"
+        )
+
+        let didApply = AIExtractionCoordinator.applyResult(
+            ExtractedStatus(lastAction: "AI work", nextStep: "Edit references"),
+            to: entry,
+            sourceText: "Finished draft and need to edit references"
+        )
+
+        #expect(didApply == true)
+        #expect(entry.lastAction == "User typed work")
+        #expect(entry.nextStep == "Edit references")
+        #expect(entry.aiExtractionState == .completed)
+        #expect(entry.aiExtractionSourceText == nil)
+    }
+
+    @Test("AI extraction ignores stale source text")
+    @MainActor
+    func aiExtractionIgnoresStaleSourceText() {
+        let entry = StatusEntry(
+            freeText: "Edited status text",
+            aiExtractionState: .extracting,
+            aiExtractionAttemptCount: 1,
+            aiExtractionSourceText: "Original status text"
+        )
+
+        let didApply = AIExtractionCoordinator.applyResult(
+            ExtractedStatus(lastAction: "Old work", nextStep: "Old next step"),
+            to: entry,
+            sourceText: "Original status text"
+        )
+
+        #expect(didApply == false)
+        #expect(entry.lastAction == nil)
+        #expect(entry.nextStep == nil)
+        #expect(entry.aiExtractionState == .notRequested)
+        #expect(entry.aiExtractionAttemptCount == 0)
+    }
+
+    @Test("AI extraction retry policy fails after final attempt")
+    @MainActor
+    func aiExtractionRetryPolicy() {
+        #expect(AIExtractionCoordinator.stateAfterFailure(attemptCount: 1, maxAttempts: 6) == .retrying)
+        #expect(AIExtractionCoordinator.stateAfterFailure(attemptCount: 5, maxAttempts: 6) == .retrying)
+        #expect(AIExtractionCoordinator.stateAfterFailure(attemptCount: 6, maxAttempts: 6) == .failed)
+    }
+
     @Test("Project latestEntry returns most recent")
     func latestEntry() {
         let project = Project(name: "Test")

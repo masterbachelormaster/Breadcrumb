@@ -17,6 +17,7 @@ struct BreadcrumbApp: App {
                 .environment(appDelegate.pomodoroTimer)
                 .environment(appDelegate.windowManager)
                 .environment(appDelegate.aiService)
+                .environment(appDelegate.aiExtractionCoordinator)
                 .environment(appDelegate.languageManager)
                 .environment(appDelegate.speechRecognizer)
         }
@@ -40,6 +41,7 @@ struct BreadcrumbApp: App {
                 .environment(appDelegate.pomodoroTimer)
                 .environment(appDelegate.windowManager)
                 .environment(appDelegate.aiService)
+                .environment(appDelegate.aiExtractionCoordinator)
                 .environment(appDelegate.languageManager)
                 .environment(appDelegate.speechRecognizer)
         }

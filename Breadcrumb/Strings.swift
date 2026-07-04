@@ -670,6 +670,18 @@ enum Strings {
         static func extracting(_ l: AppLanguage) -> String {
             l == .german ? "Extrahiere…" : "Extracting…"
         }
+        static func extractionRunning(_ l: AppLanguage) -> String {
+            l == .german ? "KI-Extraktion läuft" : "AI extraction running"
+        }
+        static func extractionRetrying(_ l: AppLanguage) -> String {
+            l == .german ? "KI-Extraktion wird erneut versucht" : "AI extraction retrying"
+        }
+        static func extractionFailed(_ l: AppLanguage) -> String {
+            l == .german ? "KI-Extraktion fehlgeschlagen" : "AI extraction failed"
+        }
+        static func retryExtraction(_ l: AppLanguage) -> String {
+            l == .german ? "Erneut versuchen" : "Retry"
+        }
         static func instructions(_ l: AppLanguage) -> String {
             switch l {
             case .german:

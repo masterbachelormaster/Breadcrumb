@@ -16,6 +16,7 @@ final class MenuBarController: NSObject {
     private let pomodoroTimer: PomodoroTimer
     private let windowManager: WindowManager
     private let aiService: AIService
+    private let aiExtractionCoordinator: AIExtractionCoordinator
     private let languageManager: LanguageManager
     private let speechRecognizer: SpeechRecognizer
     private let modelContainer: ModelContainer
@@ -34,6 +35,7 @@ final class MenuBarController: NSObject {
         pomodoroTimer: PomodoroTimer,
         windowManager: WindowManager,
         aiService: AIService,
+        aiExtractionCoordinator: AIExtractionCoordinator,
         languageManager: LanguageManager,
         speechRecognizer: SpeechRecognizer,
         modelContainer: ModelContainer
@@ -41,6 +43,7 @@ final class MenuBarController: NSObject {
         self.pomodoroTimer = pomodoroTimer
         self.windowManager = windowManager
         self.aiService = aiService
+        self.aiExtractionCoordinator = aiExtractionCoordinator
         self.languageManager = languageManager
         self.speechRecognizer = speechRecognizer
         self.modelContainer = modelContainer
@@ -269,6 +272,7 @@ final class MenuBarController: NSObject {
                 .environment(pomodoroTimer)
                 .environment(windowManager)
                 .environment(aiService)
+                .environment(aiExtractionCoordinator)
                 .environment(languageManager)
                 .environment(speechRecognizer)
                 .modelContainer(modelContainer)

@@ -4,6 +4,7 @@ import SwiftData
 struct PomodoroSessionEndView: View {
     @Environment(PomodoroTimer.self) private var timer
     @Environment(LanguageManager.self) private var languageManager
+    @Environment(AIExtractionCoordinator.self) private var aiExtractionCoordinator
     @Environment(\.modelContext) private var modelContext
 
     let wasBreak: Bool
@@ -24,6 +25,7 @@ struct PomodoroSessionEndView: View {
     @State private var lastAction = ""
     @State private var nextStep = ""
     @State private var showOptionalFields = false
+    @State private var aiExtractionDraft = AIExtractionDraft()
     @State private var selectedProject: Project?
 
     @AppStorage("pomodoro.showBreakQuote") private var showBreakQuote = true
@@ -162,7 +164,8 @@ struct PomodoroSessionEndView: View {
             freeText: $freeText,
             lastAction: $lastAction,
             nextStep: $nextStep,
-            showOptionalFields: $showOptionalFields
+            showOptionalFields: $showOptionalFields,
+            draft: aiExtractionDraft
         )
 
         DisclosureGroup(Strings.Status.optionalFields(l), isExpanded: $showOptionalFields) {
@@ -195,6 +198,7 @@ struct PomodoroSessionEndView: View {
 
         // Create status entry if text provided
         let trimmed = freeText.trimmingCharacters(in: .whitespaces)
+        var savedEntry: StatusEntry?
         if !trimmed.isEmpty, let project {
             let entry = StatusEntry(
                 freeText: trimmed,
@@ -205,9 +209,18 @@ struct PomodoroSessionEndView: View {
             entry.pomodoroSession = session
             project.entries.append(entry)
             modelContext.insert(entry)
+            savedEntry = entry
         }
 
         onSaveWorkSession(session)
+
+        if let savedEntry, aiExtractionDraft.hasStarted {
+            aiExtractionCoordinator.continueExtraction(
+                from: aiExtractionDraft,
+                for: savedEntry,
+                language: languageManager.language
+            )
+        }
     }
 
     /// Whether saving the work session should end the cycle (stop the timer)
@@ -245,6 +258,7 @@ struct PomodoroSessionEndView: View {
         session.isFocusMate = true
 
         let trimmed = freeText.trimmingCharacters(in: .whitespaces)
+        var savedEntry: StatusEntry?
         if !trimmed.isEmpty, let project {
             let entry = StatusEntry(
                 freeText: trimmed,
@@ -255,10 +269,20 @@ struct PomodoroSessionEndView: View {
             entry.pomodoroSession = session
             project.entries.append(entry)
             modelContext.insert(entry)
+            savedEntry = entry
         }
 
         modelContext.insert(session)
         modelContext.saveWithLogging()
+
+        if let savedEntry, aiExtractionDraft.hasStarted {
+            aiExtractionCoordinator.continueExtraction(
+                from: aiExtractionDraft,
+                for: savedEntry,
+                language: languageManager.language
+            )
+        }
+
         onStopAfterSave()
     }
 }

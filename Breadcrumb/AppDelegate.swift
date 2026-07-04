@@ -23,6 +23,10 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     let speechRecognizer = SpeechRecognizer()
     let notificationService = NotificationService()
     let modelContainer = BreadcrumbApp.createModelContainer()
+    lazy var aiExtractionCoordinator = AIExtractionCoordinator(
+        aiService: aiService,
+        modelContainer: modelContainer
+    )
 
     private var menuBarController: MenuBarController?
 
@@ -34,12 +38,14 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
             pomodoroTimer: pomodoroTimer,
             windowManager: windowManager,
             aiService: aiService,
+            aiExtractionCoordinator: aiExtractionCoordinator,
             languageManager: languageManager,
             speechRecognizer: speechRecognizer,
             modelContainer: modelContainer
         )
         controller.install()
         menuBarController = controller
+        aiExtractionCoordinator.resumePendingExtractions(fallbackLanguage: languageManager.language)
 
         NotificationCenter.default.addObserver(
             forName: .openPopover,

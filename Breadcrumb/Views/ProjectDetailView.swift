@@ -251,6 +251,7 @@ struct ProjectDetailView: View {
             if let nextStep = entry.nextStep, !nextStep.isEmpty {
                 BulletDetailField(label: Strings.Status.nextStep(languageManager.language), value: nextStep)
             }
+            AIExtractionStatusView(entry: entry)
         }
     }
 
