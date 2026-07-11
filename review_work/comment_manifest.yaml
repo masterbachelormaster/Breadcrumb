@@ -1,0 +1,179 @@
+- comment_id: C001
+  section: 5 Findings
+  anchor_text: "The chapter proceeds as follows. Section 0 describes the sample characteristics. Section 0 reports construct reliability, descriptive statistics and bivariate correlations. Section 4.1.3 presents the regression analysis. Section 4.1.4 examines task application patterns. Section 4.1.5 identifies adoption barriers among non-users."
+  anchor_context: "Opening paragraph of Chapter 5, after the overview of the quantitative and qualitative phases."
+  dimension: flow
+  change_type: rewrite
+  comment_body: "Replace the roadmap from 'The chapter proceeds as follows' through 'adoption barriers among non-users' with the proposed wording. The current signposting points to Sections 0 and 4.1.x and promises a task-application subsection that does not appear, so it gives the reader an inaccurate map of the chapter. Using the actual heading topics rather than unstable section numbers will make the sequence clear even if numbering changes later. Proposed wording: The chapter proceeds in two parts. The quantitative findings report sample characteristics, construct reliability and descriptives, correlations, the regression analysis, and adoption barriers among non-users. The qualitative findings then examine professional knowledge as the basis for evaluating outputs, self-directed competence development, and task-by-task decisions about whether to use LLMs."
+  replacement_text: "The chapter proceeds in two parts. The quantitative findings report sample characteristics, construct reliability and descriptives, correlations, the regression analysis, and adoption barriers among non-users. The qualitative findings then examine professional knowledge as the basis for evaluating outputs, self-directed competence development, and task-by-task decisions about whether to use LLMs."
+  target_location: null
+
+- comment_id: C002
+  section: 5 Findings > Quantitative Findings > Sample Characteristics
+  anchor_text: "The final sample consisted of n=189 respondents. 34 responses were excluded either due to incomplete data or non-eligibility (people were asked whether they work in German public administrations or not), so that after data cleaning a final analytical sample of n=154 remained."
+  anchor_context: "First paragraph under 'Sample Characteristics'; followed by the sentence defining 'sample' as n=154."
+  dimension: flow
+  change_type: rewrite
+  comment_body: "Clarify the sample derivation at the start of this subsection. Calling n=189 the 'final sample' and then calling n=154 the final analytical sample forces the reader to reinterpret the first sentence; moreover, 189 minus 34 is 155, not 154. Verify the exclusion count in the analysis records. If n=154 is the correct analytical sample, replace the full paragraph with the proposed wording, which preserves the confirmed totals without repeating the unresolved exclusion figure. Proposed wording: The survey yielded 189 responses. After excluding incomplete or ineligible responses, the final analytical sample comprised n=154. Throughout the rest of this thesis, “sample” refers to this analytical sample unless otherwise noted."
+  replacement_text: "The survey yielded 189 responses. After excluding incomplete or ineligible responses, the final analytical sample comprised n=154. Throughout the rest of this thesis, “sample” refers to this analytical sample unless otherwise noted."
+  target_location: null
+
+- comment_id: C003
+  section: 5 Findings > Quantitative Findings > Sample Characteristics
+  anchor_text: "The age distribution in the sample showed the largest group 30-39 age group (31.17%, n=48), followed by 40 - 49 age group (17.53%, n=27), 50 - 59 age group (14.29%, n=22), over 60 age group (10.39%, n=16) and under 30 age group (10.39% , n=16). A portion of respondents (16.23%, n=25) did not disclose their age in the survey."
+  anchor_context: "Paragraph immediately after the age-distribution table."
+  dimension: redundancy
+  change_type: rewrite
+  comment_body: "Replace this whole paragraph with the proposed two-sentence version. The current prose repeats nearly every row of the table without adding interpretation, which slows the sample description. Retain only the largest group and the substantial nonresponse rate, then direct the reader to the table for the full distribution. Proposed wording: The largest age group was 30–39 years (31.17%, n=48); 16.23% (n=25) did not report age. The full distribution is shown in Table X."
+  replacement_text: "The largest age group was 30–39 years (31.17%, n=48); 16.23% (n=25) did not report age. The full distribution is shown in Table X."
+  target_location: null
+
+- comment_id: C004
+  section: 5 Findings > Quantitative Findings > Sample Characteristics
+  anchor_text: "Municipal administrations were being most represented (20.13%, n=31), followed by other public law institutions or respondents who did not specify their organizational affiliation (19.48%, n=30), state authorities (18.18%, n=28) and federal authorities (12.34%, n=19). Universities and research institutions accounted for 10.39%, n=16) of the sample, while the judiciary made up 1.3% (n=2)."
+  anchor_context: "Paragraph immediately after the agency-type table."
+  dimension: redundancy
+  change_type: rewrite
+  comment_body: "Replace this whole paragraph with the proposed wording. It reproduces most of the preceding table row by row, including values that the reader can scan more efficiently in the table. Preserve the two features that matter for interpreting the sample—the largest identified group and the high rate of unspecified affiliation—and leave the remaining detail in the table. Proposed wording: Municipal administrations were the largest identified group (20.13%, n=31), while 19.48% (n=30) did not specify an organizational affiliation. The remaining distribution is reported in Table X."
+  replacement_text: "Municipal administrations were the largest identified group (20.13%, n=31), while 19.48% (n=30) did not specify an organizational affiliation. The remaining distribution is reported in Table X."
+  target_location: null
+
+- comment_id: C005
+  section: 5 Findings > Quantitative Findings > Adoption Barriers Among Non-Users
+  anchor_text: "The most frequently named barrier was a lack of training or guidelines (Fehlende Schulung/Guidelines), reported by 42.1% (n=16) of non-users. This was followed closely by doubts about the added value or output quality of LLMs (Kein Mehrwert/Qualitätszweifel, 39.5%, n=15) and the absence of official clearance or access (Keine Freigabe/Zugang, 36.8%, n=14)."
+  anchor_context: "First prose paragraph after the non-user barriers table; the paragraph continues through the least frequently reported barriers."
+  dimension: redundancy
+  change_type: cut
+  comment_body: "Remove the entire paragraph beginning with this sentence and ending with 'Zeitmangel zur Einarbeitung, 13.2%, n=5).' It restates every row and percentage in the table, while the following paragraph already supplies the useful synthesis by distinguishing organizational barriers from doubts about the tool itself. Keeping the table plus that synthesis preserves the evidence and improves momentum."
+  replacement_text: null
+  target_location: null
+
+- comment_id: C006
+  section: 5 Findings > Quantitative Findings > Adoption Barriers Among Non-Users
+  anchor_text: "An item on how clearly organizations had communicated rules for LLM use was added during data collection and was therefore answered only by a subsample of 18 of the 116 users. Because it was introduced later, the following figures are reported as supplementary and descriptive."
+  anchor_context: "Final paragraph of the quantitative findings, currently placed under the non-user barriers heading."
+  dimension: flow
+  change_type: move
+  comment_body: "Move this entire paragraph out of 'Adoption Barriers Among Non-Users' and place it under a new same-level subsection titled 'Supplementary Organizational Communication Among Users' immediately before 'Qualitative Findings.' The paragraph concerns 18 users, not the non-user subsample, so its current placement blurs the population being discussed. Preserve the small-subsample caveat and all reported figures in the moved paragraph."
+  replacement_text: null
+  target_location: "Immediately before 'Qualitative Findings', under a new Heading 3 subsection titled 'Supplementary Organizational Communication Among Users'."
+
+- comment_id: C007
+  section: 5 Findings > Qualitative Findings > Professional Knowledge as the Basis for Evaluating LLM Output
+  anchor_text: "Users rely on their professional knowledge to find mistakes made by LLMs. Non-users describe the opposite case, worrying about the areas where they do not know enough to reliably check LLM outputs."
+  anchor_context: "Final two sentences of the subsection, immediately after a sentence that already contrasts users' knowledge with non-users' knowledge gap."
+  dimension: redundancy
+  change_type: cut
+  comment_body: "Cut these two sentences. The immediately preceding sentence already states the same user/non-user contrast in more integrated terms, so repeating it twice more weakens the close of the subsection. Ending on the preceding sentence retains the synthesis and gives the section a firmer conclusion."
+  replacement_text: null
+  target_location: null
+
+- comment_id: C008
+  section: 5 Findings > Qualitative Findings > Task-by-Task Decisions to Deploy or Withhold from Own Judgment
+  anchor_text: "The same own judgment also surfaces, more narrowly, when a user draws a boundary of their own. As a brief illustration, IP01 named personal data as an absolute red line they set themselves, “I would never enter personal data… for me that is an absolute red line.” (Interview IP01)"
+  anchor_context: "End of the paragraph comparing non-users' broad assessments with users' task-by-task decisions."
+  dimension: flow
+  change_type: move
+  comment_body: "Move these two sentences to the end of the preceding user-focused paragraph, immediately before the paragraph that begins 'By contrast, the non-users assessed suitability in broad terms.' The personal-data example is another form of a user's self-imposed task boundary; placing it after the non-user comparison has already concluded reverses the contrast and makes the paragraph change subjects at its end. Keep the quotation and citation unchanged."
+  replacement_text: null
+  target_location: "End of the preceding paragraph, after 'What the two accounts share is that the decision is made by the user from their own understanding of the task.' and before 'By contrast, the non-users assessed suitability in broad terms.'"
+
+- comment_id: C009
+  section: 6 Discussion > 6.1 Adoption ran through the individual and not the organization
+  anchor_text: "Usage frequency was not independently associated no independent association with the organizational conditions surrounding the tools and their users."
+  anchor_context: "Closing sentence of the opening paragraph of Section 6.1, after the definitions of Self-Efficacy and Performance Expectancy."
+  dimension: flow
+  change_type: rewrite
+  comment_body: "Replace this sentence with the proposed wording. The duplicated construction obscures the section's key contrast between significant individual-level predictors and non-significant organizational conditions. The revision states that inference directly and connects cleanly to the following qualification that organizational provision is not irrelevant. Proposed wording: Usage frequency showed no independent association with the organizational conditions surrounding the tools and their users."
+  replacement_text: "Usage frequency showed no independent association with the organizational conditions surrounding the tools and their users."
+  target_location: null
+
+- comment_id: C010
+  section: 6 Discussion > 6.1 Adoption ran through the individual and not the organization
+  anchor_text: "The rest of this discussion looks more closely at this pattern as well as the implications of individualized adoption for the affected organization. It first looks at the four functions employees performed to make LLM use possible in the workplace, which fall into two categories."
+  anchor_context: "Final paragraph of Section 6.1; it continues with a list of Sections 6.2.1–6.2.4 and a preview of Section 6.3."
+  dimension: redundancy
+  change_type: cut
+  comment_body: "Remove this entire paragraph, from the anchored sentence through the final sentence ending 'technology acceptance is understood in public administration.' The opening of the Discussion already provides the 6.1–6.3 roadmap, and the next paragraph at the start of Section 6.2 immediately reintroduces the resource and judgment functions. Cutting this second roadmap avoids three consecutive rounds of signposting while preserving the more useful local setup in Section 6.2."
+  replacement_text: null
+  target_location: null
+
+- comment_id: C011
+  section: 6 Discussion > 6.2 Employees supplied the resources for LLM use
+  anchor_text: "6.2 Employees supplied the resources for LLM use"
+  anchor_context: "Heading introducing Sections 6.2.1–6.2.4."
+  dimension: flow
+  change_type: rewrite
+  comment_body: "Replace the heading with the proposed wording. The section covers two resource functions (access and competence) and two judgment functions (verification and appropriate-use boundaries), so a heading that names only resources misstates the scope and makes Sections 6.2.3–6.2.4 feel like a topic shift. Naming both categories aligns the heading with the section's own organizing logic. Proposed wording: 6.2 Employees supplied the resources and judgment for LLM use"
+  replacement_text: "6.2 Employees supplied the resources and judgment for LLM use"
+  target_location: null
+
+- comment_id: C012
+  section: 6 Discussion > 6.2.1 Access to the tool was supplied by the individual
+  anchor_text: "Therefore, the tool used for administrative work was in most cases not provided through a formal organizational deployment. Employees brought the non-approved tool into their work themselves. In most cases, therefore, the tool used for work-related tasks was a publicly available one that employees accessed themselves rather than one provided by their organization."
+  anchor_context: "Final three sentences of the paragraph reporting 83.6% freely accessible tools and 13.8% organization-provided tools."
+  dimension: redundancy
+  change_type: rewrite
+  comment_body: "Replace these three sentences with the proposed single sentence. All three draw the same inference from the tool-distribution figures, so the repetition delays the explanation of why Facilitating Conditions did not predict frequency. One synthesis sentence preserves the finding and moves the reader directly to the mechanism. Proposed wording: Thus, in most cases, employees accessed a publicly available tool themselves rather than receiving one through formal organizational deployment."
+  replacement_text: "Thus, in most cases, employees accessed a publicly available tool themselves rather than receiving one through formal organizational deployment."
+  target_location: null
+
+- comment_id: C013
+  section: 6 Discussion > 6.2.1 Access to the tool was supplied by the individual
+  anchor_text: "The takeaway point is therefore not simply that many users preferred ChatGPT or other public tools. The more important point is that LLM access was decoupled from organizational provision."
+  anchor_context: "Opening of the paragraph immediately after the paragraph beginning 'This finding helps to understand why Facilitating Conditions did not predict usage frequency'."
+  dimension: redundancy
+  change_type: merge
+  comment_body: "Merge this paragraph into the preceding paragraph beginning 'This finding helps to understand why Facilitating Conditions did not predict usage frequency in the regression.' Retain the preceding paragraph's description of what the Facilitating Conditions items measured and this paragraph's theoretical point that public access weakened the construct's expected gatekeeping role. State the mechanism once: public tools removed employees' dependence on procurement and formal provision. Delete the repeated claims that support only exists after organizational introduction and that employees could access the tool without institutional clearance."
+  replacement_text: null
+  target_location: "The immediately preceding paragraph beginning 'This finding helps to understand why Facilitating Conditions did not predict usage frequency in the regression.'"
+
+- comment_id: C014
+  section: 6 Discussion > 6.2.2 The competence was built by the individual
+  anchor_text: "The second resource employees provided was the competence to use LLMs. When a new technology is introduced through an organizational deployment, the organization does not merely provide access to the tool."
+  anchor_context: "Opening paragraph of Section 6.2.2; the paragraph continues by restating that individuals performed the competence-building function."
+  dimension: redundancy
+  change_type: rewrite
+  comment_body: "Replace the entire opening paragraph of this subsection with the proposed wording. The current paragraph makes the same substitution claim several times before reaching the evidence. The shorter version preserves the contrast with formal deployment, states the analytical function of individual learning once, and lets the interview evidence begin sooner. Proposed wording: The second resource employees supplied was competence. Rather than receiving training and support through an organizational deployment, users developed the skills needed to use LLMs themselves; individual learning therefore substituted for a missing implementation function."
+  replacement_text: "The second resource employees supplied was competence. Rather than receiving training and support through an organizational deployment, users developed the skills needed to use LLMs themselves; individual learning therefore substituted for a missing implementation function."
+  target_location: null
+
+- comment_id: C015
+  section: 6 Discussion > 6.2.4 Appropriate use was decided task by task
+  anchor_text: "Indeed, the interviews revealed several distinct dimensions along which users exercised this task-level judgment. One was efficiency. Some users assessed whether using an LLM would actually save time or whether prompting, correcting and checking the output would take longer than doing the task themselves."
+  anchor_context: "First analytical paragraph after the supplementary survey evidence in Section 6.2.4; the paragraph continues to repeat the effort-versus-benefit comparison."
+  dimension: redundancy
+  change_type: rewrite
+  comment_body: "Replace this entire paragraph with the proposed two sentences. The current version repeats the same effort-versus-benefit point in five formulations. The revision keeps the analytical dimension and its implication—that users sometimes reject LLM support—without crowding out the next two distinct dimensions of work phase and data sensitivity. Proposed wording: One dimension was efficiency: users weighed any time saved against the effort required to prompt, check, and correct an output. They therefore rejected LLM support for tasks where that effort outweighed the benefit."
+  replacement_text: "One dimension was efficiency: users weighed any time saved against the effort required to prompt, check, and correct an output. They therefore rejected LLM support for tasks where that effort outweighed the benefit."
+  target_location: null
+
+- comment_id: C016
+  section: 6 Discussion > 6.2.4 Appropriate use was decided task by task
+  anchor_text: "Performance Expectancy is especially relevant in this context. The regression showed that Performance Expectancy was the second significant predictor of usage frequency."
+  anchor_context: "Penultimate analytical paragraph of Section 6.2.4, after the three dimensions of task-level judgment."
+  dimension: redundancy
+  change_type: rewrite
+  comment_body: "Replace this entire paragraph with the proposed wording. The paragraph repeats three times that perceived usefulness was task-specific rather than a general belief. The revision preserves the mixed-methods interpretation and its cautious phrasing while stating the quantitative link and qualitative mechanism once. Proposed wording: Performance Expectancy, the second significant predictor of usage frequency, can therefore be understood as task-specific rather than general perceived usefulness. The interviews suggest that users developed this perception by learning where LLMs saved time or improved drafts—and where they did not."
+  replacement_text: "Performance Expectancy, the second significant predictor of usage frequency, can therefore be understood as task-specific rather than general perceived usefulness. The interviews suggest that users developed this perception by learning where LLMs saved time or improved drafts—and where they did not."
+  target_location: null
+
+- comment_id: C017
+  section: 6 Discussion > 6.3 Implications
+  anchor_text: "The fact that the handling of LLM use is governed by the individual may have even further consequences."
+  anchor_context: "Opening sentence of the paragraph that introduces inconsistent handling of similar citizen cases after the data-protection paragraph."
+  dimension: flow
+  change_type: rewrite
+  comment_body: "Replace this topic sentence with the proposed wording. The paragraph introduces a new implication—variation in practice and potential unequal treatment—but the current phrase 'even further consequences' does not name that shift. An explicit topic sentence will separate this implication from accountability and data protection and prepare the caseworker example that follows. Proposed wording: Individualized adoption also creates a separate risk of inconsistent practice and unequal treatment."
+  replacement_text: "Individualized adoption also creates a separate risk of inconsistent practice and unequal treatment."
+  target_location: null
+
+- comment_id: C018
+  section: 6 Discussion > 6.3 Implications
+  anchor_text: "… (Bin nicht Fertig geworden. Hier braucht es noch 2-3 weitere Punkte)"
+  anchor_context: "Drafting note immediately after the paragraph on standardization, followed by repeated research questions and an 'Ideen für Implikationen' brainstorming list."
+  dimension: flow
+  change_type: cut
+  comment_body: "After developing the remaining implication paragraphs in the main prose, remove the full drafting block from this note through the final brainstorming sentence ending 'gov employees just prompting..' The repeated RQs and outline notes interrupt the reader-facing Discussion and duplicate ideas already being developed under accountability, data protection, consistency/equity, and public trust. Use the notes as an author checklist, then delete them rather than leaving them in the thesis body."
+  replacement_text: null
+  target_location: null

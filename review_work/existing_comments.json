@@ -1,0 +1,167 @@
+{
+  "file": "review_work/source.docx",
+  "comment_count": 7,
+  "comments": [
+    {
+      "id": "14",
+      "author": "B. Margraf",
+      "date": "2026-07-07T08:12:00Z",
+      "initials": "BM",
+      "resolved": false,
+      "text": "Hier fehlt mir noch eine kurze 3 Sätze Intro zum Diskussion Chapter, bevor du dann in die Subaspekte 6.1 und 6.2 gehst.",
+      "anchors": [
+        {
+          "part": "word/document.xml",
+          "paragraphs": [
+            {
+              "where": "start",
+              "text": "Discussion"
+            },
+            {
+              "where": "end",
+              "text": "Discussion"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "15",
+      "author": "B. Margraf",
+      "date": "2026-07-07T08:17:00Z",
+      "initials": "BM",
+      "resolved": false,
+      "text": "Falls das ein Akronym fuer facilitating conditions ist, dann ruhig einmal einfuehren",
+      "anchors": [
+        {
+          "part": "word/document.xml",
+          "paragraphs": [
+            {
+              "where": "start",
+              "text": "This does not mean that organizational provision is irrelevant. Rather, for most users in this sample, organizational provision was simply not the route through which LLM access was made possible. For"
+            },
+            {
+              "where": "end",
+              "text": "This does not mean that organizational provision is irrelevant. Rather, for most users in this sample, organizational provision was simply not the route through which LLM access was made possible. For"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "16",
+      "author": "B. Margraf",
+      "date": "2026-07-07T08:20:00Z",
+      "initials": "BM",
+      "resolved": false,
+      "text": "Paragraphstruktur überarbeiten, du diskutierst im selben Paragraphen die Antwort von einer Frage und führst parallel eine neue ein. Das ist mE verwirrend.",
+      "anchors": [
+        {
+          "part": "word/document.xml",
+          "paragraphs": [
+            {
+              "where": "start",
+              "text": "This is surprising, because everything about German public administration predicts the opposite. In a formal, rule-bound environment, the factors one would expect to drive professional use of a new te"
+            },
+            {
+              "where": "end",
+              "text": "Based on this finding the second RQ was formulated, which attempted to understand this puzzle: why did individual confidence and perceived usefulness drive usage more than anything the organization pr"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "17",
+      "author": "B. Margraf",
+      "date": "2026-07-07T08:35:00Z",
+      "initials": "BM",
+      "resolved": false,
+      "text": "Check sentence/ grammar",
+      "anchors": [
+        {
+          "part": "word/document.xml",
+          "paragraphs": [
+            {
+              "where": "start",
+              "text": "The rest of this discussion looks more closely at this pattern as well as the implications of individualized adoption for the affected organization. It first looks at the four functions employees perf"
+            },
+            {
+              "where": "end",
+              "text": "The rest of this discussion looks more closely at this pattern as well as the implications of individualized adoption for the affected organization. It first looks at the four functions employees perf"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "18",
+      "author": "B. Margraf",
+      "date": "2026-07-07T08:36:00Z",
+      "initials": "BM",
+      "resolved": false,
+      "text": "Du nennst das später im Text „two forms of judgement“ – vllt hier auch schon so einführen damit kohärent?",
+      "anchors": [
+        {
+          "part": "word/document.xml",
+          "paragraphs": [
+            {
+              "where": "start",
+              "text": "The rest of this discussion looks more closely at this pattern as well as the implications of individualized adoption for the affected organization. It first looks at the four functions employees perf"
+            },
+            {
+              "where": "end",
+              "text": "The rest of this discussion looks more closely at this pattern as well as the implications of individualized adoption for the affected organization. It first looks at the four functions employees perf"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "19",
+      "author": "B. Margraf",
+      "date": "2026-07-07T08:39:00Z",
+      "initials": "BM",
+      "resolved": false,
+      "text": "Revise wording",
+      "anchors": [
+        {
+          "part": "word/document.xml",
+          "paragraphs": [
+            {
+              "where": "start",
+              "text": "The previous section showed employees taking on four functions the organization would normally take care of. This raises the question of what that shift means in practice for public administrations. B"
+            },
+            {
+              "where": "end",
+              "text": "The previous section showed employees taking on four functions the organization would normally take care of. This raises the question of what that shift means in practice for public administrations. B"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "20",
+      "author": "B. Margraf",
+      "date": "2026-07-07T08:41:00Z",
+      "initials": "BM",
+      "resolved": false,
+      "text": "Das wäre eine neue Implikation für mich",
+      "anchors": [
+        {
+          "part": "word/document.xml",
+          "paragraphs": [
+            {
+              "where": "start",
+              "text": "The fact that the handling of LLM use is governed by the individual may have even further consequences. For instance, because each employee decides for themselves how carefully to check the tool's out"
+            },
+            {
+              "where": "end",
+              "text": "The fact that the handling of LLM use is governed by the individual may have even further consequences. For instance, because each employee decides for themselves how carefully to check the tool's out"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

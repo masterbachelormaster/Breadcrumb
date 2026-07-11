@@ -6,10 +6,10 @@ struct OpenRouterProvider: AIProvider {
     let customSystemPrompt: String?
 
     func extractStatus(from text: String, language: AppLanguage) async throws -> ExtractedStatus {
-        let instructions = customSystemPrompt.flatMap({ $0.isEmpty ? nil : $0 })
-            ?? Strings.AIExtraction.instructions(language)
-        let systemPrompt = instructions + "\n\n" + jsonInstructions(language)
-        let request = buildRequest(systemPrompt: systemPrompt, userMessage: text)
+        let request = buildRequest(
+            systemPrompt: systemPrompt(language: language),
+            userMessage: text
+        )
 
         let (data, response): (Data, URLResponse)
         do {
@@ -30,6 +30,12 @@ struct OpenRouterProvider: AIProvider {
     }
 
     // MARK: - Internal (visible for testing)
+
+    func systemPrompt(language: AppLanguage) -> String {
+        let instructions = customSystemPrompt.flatMap({ $0.isEmpty ? nil : $0 })
+            ?? Strings.AIExtraction.instructions(language)
+        return instructions + "\n\n" + jsonWrapperInstructions(language)
+    }
 
     func buildRequest(systemPrompt: String, userMessage: String) -> URLRequest {
         var request = URLRequest(url: URL(string: "https://openrouter.ai/api/v1/chat/completions")!)
@@ -85,6 +91,10 @@ struct OpenRouterProvider: AIProvider {
             throw AIServiceError.invalidResponse("No content in OpenRouter response")
         }
 
+        return try Self.parseExtractedStatusContent(content)
+    }
+
+    static func parseExtractedStatusContent(_ content: String) throws -> ExtractedStatus {
         let cleaned = Self.extractJSONObject(from: content)
 
         guard let contentData = cleaned.data(using: .utf8) else {
@@ -92,7 +102,8 @@ struct OpenRouterProvider: AIProvider {
         }
 
         do {
-            return try JSONDecoder().decode(ExtractedStatus.self, from: contentData)
+            let payload = try JSONDecoder().decode(OpenRouterExtractionPayload.self, from: contentData)
+            return ExtractedStatus(lastAction: payload.lastAction, nextStep: payload.nextAction)
         } catch {
             let snippet = String(content.prefix(200))
             throw AIServiceError.invalidResponse("Could not parse JSON. Got: \(snippet)")
@@ -129,20 +140,37 @@ struct OpenRouterProvider: AIProvider {
         return s
     }
 
-    private func jsonInstructions(_ language: AppLanguage) -> String {
+    private func jsonWrapperInstructions(_ language: AppLanguage) -> String {
         switch language {
         case .german:
             return """
-                Antworte ausschliesslich mit einem JSON-Objekt mit diesen Feldern:
-                {"lastAction": "erster punkt\\nzweiter punkt", "nextStep": "naechster schritt"}
-                Mehrere Punkte pro Feld mit Zeilenumbruch trennen. Lass Felder leer ("") wenn nichts zutrifft.
+                Technische Ausgabeanforderung: Gib das Ergebnis als JSON-Objekt mit den String-Feldern "lastAction" und "nextAction" zurück. Übernimm Inhalt, Bindestriche und Zeilenumbrüche aus den obigen Anweisungen unverändert in die jeweiligen JSON-Stringwerte. Gib keine zusätzlichen Felder oder Erklärungen aus.
                 """
         case .english:
             return """
-                Respond only with a JSON object with these fields:
-                {"lastAction": "first item\\nsecond item", "nextStep": "next step"}
-                Separate multiple items per field with newlines. Leave fields empty ("") if nothing applies.
+                Technical output requirement: Return the result as a JSON object with the string fields "lastAction" and "nextAction". Preserve the content, dashes, and line breaks requested above exactly inside the corresponding JSON string values. Do not add fields or explanations.
                 """
+        }
+    }
+
+    private struct OpenRouterExtractionPayload: Decodable {
+        let lastAction: String
+        let nextAction: String
+
+        private enum CodingKeys: String, CodingKey {
+            case lastAction
+            case nextAction
+            case nextStep
+        }
+
+        init(from decoder: any Decoder) throws {
+            let container = try decoder.container(keyedBy: CodingKeys.self)
+            lastAction = try container.decode(String.self, forKey: .lastAction)
+            if let nextAction = try container.decodeIfPresent(String.self, forKey: .nextAction) {
+                self.nextAction = nextAction
+            } else {
+                self.nextAction = try container.decode(String.self, forKey: .nextStep)
+            }
         }
     }
 }

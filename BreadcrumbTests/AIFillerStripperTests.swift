@@ -68,6 +68,17 @@ struct AIFillerStripperTests {
         #expect(AIFillerStripper.cleanLines("a\nb\nc") == "a\nb\nc")
     }
 
+    @Test("cleanLines: AI bullet markers are preserved")
+    func cleanLinesPreservesBullets() {
+        let input = "- emailed professor\n- created argument map\n- developed RQs"
+        #expect(AIFillerStripper.cleanLines(input) == input)
+    }
+
+    @Test("cleanLines: bullet-prefixed filler is removed")
+    func cleanLinesRemovesBulletFiller() {
+        #expect(AIFillerStripper.cleanLines("- nothing planned") == "")
+    }
+
     @Test("cleanLines: per-line whitespace is trimmed")
     func cleanLinesTrim() {
         #expect(AIFillerStripper.cleanLines("  a  \n  b  ") == "a\nb")

@@ -10,9 +10,9 @@ enum AIFillerStripper {
     /// input is filler, otherwise returns the trimmed real content.
     static func clean(_ text: String) -> String {
         let trimmed = text.trimmingCharacters(in: .whitespacesAndNewlines)
-            .trimmingCharacters(in: CharacterSet(charactersIn: ".-–—"))
-            .trimmingCharacters(in: .whitespacesAndNewlines)
-        let lowered = trimmed.lowercased()
+        let lowered = fillerComparisonText(from: trimmed).lowercased()
+
+        guard !lowered.isEmpty else { return "" }
 
         // Exact matches
         let fillerPhrases: Set<String> = [
@@ -166,6 +166,22 @@ enum AIFillerStripper {
         }
 
         return trimmed
+    }
+
+    private static func fillerComparisonText(from text: String) -> String {
+        var candidate = text
+        let listMarkers: Set<Character> = ["-", "–", "—", "*", "•", "+"]
+
+        while let first = candidate.first,
+              listMarkers.contains(first),
+              candidate.dropFirst().first?.isWhitespace ?? false {
+            candidate = String(candidate.dropFirst())
+                .trimmingCharacters(in: .whitespacesAndNewlines)
+        }
+
+        return candidate
+            .trimmingCharacters(in: CharacterSet(charactersIn: ".-–—"))
+            .trimmingCharacters(in: .whitespacesAndNewlines)
     }
 
     /// Multi-line variant: splits on newlines, runs `clean` on each line,

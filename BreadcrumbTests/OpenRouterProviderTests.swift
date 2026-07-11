@@ -5,6 +5,36 @@ import Foundation
 @Suite("OpenRouterProvider Tests")
 struct OpenRouterProviderTests {
 
+    @Test("Parses AI-controlled bullet formatting")
+    func parsesAIBulletFormatting() throws {
+        let content = """
+        {"lastAction":"- emailed prof that deadline is in the upcoming 4 weeks\\n- created an argument map\\n- developed the RQs","nextAction":"freeze the chapter outline"}
+        """
+
+        let status = try OpenRouterProvider.parseExtractedStatusContent(content)
+        let cleanedLastAction = AIFillerStripper.cleanLines(status.lastAction)
+
+        #expect(cleanedLastAction == "- emailed prof that deadline is in the upcoming 4 weeks\n- created an argument map\n- developed the RQs")
+        #expect(status.nextStep == "freeze the chapter outline")
+        #expect(BulletText.parse(cleanedLastAction).allSatisfy { BulletText.isSubItem($0) })
+    }
+
+    @Test("Parses one action without adding a bullet")
+    func parsesSingleActionWithoutBullet() throws {
+        let content = #"{"lastAction":"emailed professor","nextAction":"freeze outline"}"#
+        let status = try OpenRouterProvider.parseExtractedStatusContent(content)
+
+        #expect(AIFillerStripper.cleanLines(status.lastAction) == "emailed professor")
+    }
+
+    @Test("Accepts legacy nextStep field")
+    func acceptsLegacyNextStep() throws {
+        let content = #"{"lastAction":"created argument map","nextStep":"freeze outline"}"#
+        let status = try OpenRouterProvider.parseExtractedStatusContent(content)
+
+        #expect(status.nextStep == "freeze outline")
+    }
+
     @Test("Parses valid JSON response into ExtractedStatus")
     func parseValidJSON() throws {
         let json = """
@@ -115,6 +145,18 @@ struct OpenRouterProviderTests {
 
         let responseFormat = body["response_format"] as! [String: String]
         #expect(responseFormat["type"] == "json_object")
+    }
+
+    @Test("System prompt preserves custom formatting authority")
+    func systemPromptPreservesCustomFormattingAuthority() {
+        let customPrompt = "Use dashes only when a field contains multiple items."
+        let provider = OpenRouterProvider(apiKey: "sk-test", model: "test/model", customSystemPrompt: customPrompt)
+        let prompt = provider.systemPrompt(language: .english)
+
+        #expect(prompt.hasPrefix(customPrompt))
+        #expect(prompt.contains("Preserve the content, dashes, and line breaks"))
+        #expect(prompt.contains("nextAction"))
+        #expect(prompt.contains("first item") == false)
     }
 
     @Test("mapHTTPError maps 401 to authenticationFailed")

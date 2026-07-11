@@ -239,6 +239,8 @@ struct StringsTests {
         #expect(Strings.Settings.aiReady(.english) == "Ready")
         #expect(Strings.Settings.aiNotConfigured(.german) == "Nicht konfiguriert")
         #expect(Strings.Settings.aiNotConfigured(.english) == "Not configured")
+        #expect(Strings.Settings.systemPromptHelp(.german).contains("JSON-Hülle"))
+        #expect(Strings.Settings.systemPromptHelp(.english).contains("JSON wrapper"))
     }
 
     @Test("Settings redesign strings return correct translations")

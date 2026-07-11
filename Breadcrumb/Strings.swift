@@ -541,8 +541,8 @@ enum Strings {
         }
         static func systemPromptHelp(_ l: AppLanguage) -> String {
             l == .german
-                ? "Diese Anweisungen steuern, wie die KI deinen Text auswertet. Nur ändern, wenn du weißt, was du tust."
-                : "These instructions control how the AI interprets your text. Only change this if you know what you're doing."
+                ? "Diese Anweisungen steuern Auswertung und Formatierung. Breadcrumb ergänzt nur eine technische JSON-Hülle und erhält Bindestriche und Zeilenumbrüche."
+                : "These instructions control interpretation and formatting. Breadcrumb only adds a technical JSON wrapper and preserves dashes and line breaks."
         }
         static func resetToDefault(_ l: AppLanguage) -> String {
             l == .german ? "Auf Standard zurücksetzen" : "Reset to Default"

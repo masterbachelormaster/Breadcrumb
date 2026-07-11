@@ -1,0 +1,311 @@
+- comment_id: C001
+  section: 5 Findings
+  anchor_text: "The chapter proceeds as follows. Section 0 describes the sample characteristics. Section 0 reports construct reliability, descriptive statistics and bivariate correlations. Section 4.1.3 presents the regression analysis. Section 4.1.4 examines task application patterns. Section 4.1.5 identifies adoption barriers among non-users."
+  anchor_context: "Opening roadmap of Chapter 5."
+  dimension: flow
+  change_type: rewrite
+  comment_body: "[Merged Claude + Codex comment] The roadmap does not match the chapter: ‘Section 0’ appears twice, 4.1.3–4.1.5 use another chapter’s numbering, a task-application section is promised but does not exist, and the qualitative findings are missing from the map. Proposed wording: The chapter proceeds in two parts. The quantitative findings report sample characteristics, construct reliability and descriptives, correlations, the regression analysis, and adoption barriers among non-users. The qualitative findings then examine professional knowledge as the basis for evaluating outputs, self-directed competence development, and task-by-task decisions about whether to use LLMs."
+  replacement_text: "The chapter proceeds in two parts. The quantitative findings report sample characteristics, construct reliability and descriptives, correlations, the regression analysis, and adoption barriers among non-users. The qualitative findings then examine professional knowledge as the basis for evaluating outputs, self-directed competence development, and task-by-task decisions about whether to use LLMs."
+  target_location: null
+  author: "Integrated Review (Claude + Codex)"
+  initials: "IR"
+
+- comment_id: C002
+  section: 5 Findings > Quantitative Findings > Sample Characteristics
+  anchor_text: "The final sample consisted of n=189 respondents. 34 responses were excluded either due to incomplete data or non-eligibility (people were asked whether they work in German public administrations or not), so that after data cleaning a final analytical sample of n=154 remained."
+  anchor_context: "First paragraph under Sample Characteristics."
+  dimension: flow
+  change_type: rewrite
+  comment_body: "Clarify the sample derivation. Calling n=189 the ‘final sample’ and then calling n=154 the final analytical sample forces the reader to reinterpret the first sentence; moreover, 189 minus 34 is 155, not 154. Verify the exclusion count. If n=154 is correct, proposed wording: The survey yielded 189 responses. After excluding incomplete or ineligible responses, the final analytical sample comprised n=154. Throughout the rest of this thesis, “sample” refers to this analytical sample unless otherwise noted."
+  replacement_text: "The survey yielded 189 responses. After excluding incomplete or ineligible responses, the final analytical sample comprised n=154. Throughout the rest of this thesis, “sample” refers to this analytical sample unless otherwise noted."
+  target_location: null
+  author: "Codex Academic Editor"
+  initials: "CAE"
+
+- comment_id: C003
+  section: 5 Findings > Quantitative Findings > Sample Characteristics
+  anchor_text: "The age distribution in the sample showed the largest group 30-39 age group (31.17%, n=48), followed by 40 - 49 age group (17.53%, n=27), 50 - 59 age group (14.29%, n=22), over 60 age group (10.39%, n=16) and under 30 age group (10.39% , n=16). A portion of respondents (16.23%, n=25) did not disclose their age in the survey."
+  anchor_context: "Paragraph immediately after the age table."
+  dimension: redundancy
+  change_type: rewrite
+  comment_body: "This repeats nearly every row of the table without adding interpretation. Retain the largest group and the substantial nonresponse rate, then leave the full distribution in the table. Proposed wording: The largest age group was 30–39 years (31.17%, n=48); 16.23% (n=25) did not report age. The full distribution is shown in Table X."
+  replacement_text: "The largest age group was 30–39 years (31.17%, n=48); 16.23% (n=25) did not report age. The full distribution is shown in Table X."
+  target_location: null
+  author: "Codex Academic Editor"
+  initials: "CAE"
+
+- comment_id: C004
+  section: 5 Findings > Quantitative Findings > Sample Characteristics
+  anchor_text: "Municipal administrations were being most represented (20.13%, n=31), followed by other public law institutions or respondents who did not specify their organizational affiliation (19.48%, n=30), state authorities (18.18%, n=28) and federal authorities (12.34%, n=19). Universities and research institutions accounted for 10.39%, n=16) of the sample, while the judiciary made up 1.3% (n=2)."
+  anchor_context: "Paragraph immediately after the agency table."
+  dimension: redundancy
+  change_type: rewrite
+  comment_body: "This reproduces most of the agency table row by row. Preserve the two features that matter most for interpreting the sample and leave the remaining detail in the table. Proposed wording: Municipal administrations were the largest identified group (20.13%, n=31), while 19.48% (n=30) did not specify an organizational affiliation. The remaining distribution is reported in Table X."
+  replacement_text: "Municipal administrations were the largest identified group (20.13%, n=31), while 19.48% (n=30) did not specify an organizational affiliation. The remaining distribution is reported in Table X."
+  target_location: null
+  author: "Codex Academic Editor"
+  initials: "CAE"
+
+- comment_id: C005
+  section: 5 Findings > Quantitative Findings > Construct Reliability, Descriptives and Correlations
+  anchor_text: "Only the four active usage categories are included here."
+  anchor_context: "The tracked deletion immediately after this sentence removes a third statement of the n=116 restriction."
+  dimension: redundancy
+  change_type: cut
+  comment_body: "[Claude comment; tracked deletion copied] Third statement of the subsample restriction: the sample section already says ‘All of the following construct analyses are based on the user subsample (n=116)’, and this paragraph opens with ‘for the LLM user group (n=116)’. Accept the tracked deletion."
+  replacement_text: null
+  target_location: null
+  author: "Claude"
+  initials: "C"
+
+- comment_id: C006
+  section: 5 Findings > Quantitative Findings > Adoption Barriers Among Non-Users
+  anchor_text: "The most frequently named barrier was a lack of training or guidelines (Fehlende Schulung/Guidelines), reported by 42.1% (n=16) of non-users. This was followed closely by doubts about the added value or output quality of LLMs (Kein Mehrwert/Qualitätszweifel, 39.5%, n=15) and the absence of official clearance or access (Keine Freigabe/Zugang, 36.8%, n=14). Information-security concerns (Informationssicherheitsbedenken) ranked fourth at 34.2% (n=13). An unclear legal or data-protection situation (Unklare Rechts-/Datenschutzlage) and a lack of integration into existing workflows (Fehlende Integration) were each named by 28.9% (n=11). The remaining barriers were reported less often: a prohibition through a service agreement (Verbot durch Dienstvereinbarung, 18.4%, n=7), other reasons (Sonstiges, 15.8%, n=6) and a lack of time to become familiar with the tool (Zeitmangel zur Einarbeitung, 13.2%, n=5)."
+  anchor_context: "First prose paragraph after the non-user barriers table."
+  dimension: redundancy
+  change_type: cut
+  comment_body: "Remove the entire paragraph through ‘Zeitmangel zur Einarbeitung, 13.2%, n=5).’ It restates every row and percentage in the table, while the following paragraph already provides the useful synthesis between organizational barriers and doubts about the tool itself."
+  replacement_text: null
+  target_location: null
+  author: "Codex Academic Editor"
+  initials: "CAE"
+
+- comment_id: C007
+  section: 5 Findings > Quantitative Findings > Adoption Barriers Among Non-Users
+  anchor_text: "An item on how clearly organizations had communicated rules for LLM use was added during data collection and was therefore answered only by a subsample of 18 of the 116 users. Because it was introduced later, the following figures are reported as supplementary and descriptive."
+  anchor_context: "Final paragraph of the quantitative findings, currently under the non-user heading."
+  dimension: flow
+  change_type: move
+  comment_body: "[Merged Claude + Codex comment] This paragraph switches from non-users to 18 users without signaling the population change. Preferred fix: move it under a new same-level subsection titled ‘Supplementary Organizational Communication Among Users’ immediately before Qualitative Findings. If it must remain here because Section 6.2.4 relies on it later, add this bridge instead: ‘The barriers above concern non-users, but a supplementary item suggests that users faced similarly thin organizational conditions.’ Do not leave the subsample switch unmarked."
+  replacement_text: null
+  target_location: "Immediately before Qualitative Findings, under a new Heading 3 subsection titled Supplementary Organizational Communication Among Users."
+  author: "Integrated Review (Claude + Codex)"
+  initials: "IR"
+
+- comment_id: C008
+  section: 5 Findings > Qualitative Findings
+  anchor_text: "This chapter examines how employees came to use LLMs largely on their own and what that use depends on. It should be noted that the majority of the organizations did not provide tools or training."
+  anchor_context: "Opening paragraph of Qualitative Findings."
+  dimension: flow
+  change_type: rewrite
+  comment_body: "[Claude comment] ‘Chapter’ should be ‘section’, and the second sentence is an orphan claim with no connection to its surroundings. Proposed wording: This section examines how employees came to use LLMs largely on their own and what that use depends on. The interviews indicate that most organizations provided neither tools nor training; the three themes below show how employees made LLM use work under those conditions."
+  replacement_text: "This section examines how employees came to use LLMs largely on their own and what that use depends on. The interviews indicate that most organizations provided neither tools nor training; the three themes below show how employees made LLM use work under those conditions."
+  target_location: null
+  author: "Claude"
+  initials: "C"
+
+- comment_id: C009
+  section: 5 Findings > Qualitative Findings > Professional Knowledge as the Basis for Evaluating LLM Output
+  anchor_text: "Where users draw on their professional knowledge to verify outputs, these non-users name the gap in that same knowledge as where the risk of relying on the output lies."
+  anchor_context: "The tracked deletion immediately after this sentence removes two repeated summary sentences."
+  dimension: redundancy
+  change_type: cut
+  comment_body: "[Merged Claude + Codex comment; tracked deletion copied] This sentence already states the users/non-users contrast. Accept the tracked deletion of the next two sentences, which repeat the same point a second and third time. This sentence is the stronger subsection close."
+  replacement_text: null
+  target_location: null
+  author: "Integrated Review (Claude + Codex)"
+  initials: "IR"
+
+- comment_id: C010
+  section: 5 Findings > Qualitative Findings > Task-by-Task Decisions to Deploy or Withhold from Own Judgment
+  anchor_text: "The same own judgment also surfaces, more narrowly, when a user draws a boundary of their own. As a brief illustration, IP01 named personal data as an absolute red line they set themselves, “I would never enter personal data… for me that is an absolute red line.” (Interview IP01)"
+  anchor_context: "Closing sentences of the non-user paragraph."
+  dimension: flow
+  change_type: move
+  comment_body: "[Merged Claude + Codex comment] Move these two sentences to the end of the preceding user-focused paragraph, immediately after ‘…from their own understanding of the task.’ They concern a user and provide a third kind of user boundary; leaving them after the non-user comparison makes the paragraph change subjects at its end. Do not cut them because Section 6.2.4’s data-sensitivity dimension relies on this illustration."
+  replacement_text: null
+  target_location: "End of the preceding user-focused paragraph, before ‘By contrast, the non-users assessed suitability in broad terms.’"
+  author: "Integrated Review (Claude + Codex)"
+  initials: "IR"
+
+- comment_id: C011
+  section: 6 Discussion
+  anchor_text: "This chapter discusses the findings of both the quantitative and qualitative finding of this thesis. The overarching finding is that LLM adoption in German public administrations did not happen according to the expected organizational route."
+  anchor_context: "Opening of the Discussion immediately after the heading."
+  dimension: flow
+  change_type: rewrite
+  comment_body: "Hier fehlt mir noch eine kurze 3 Sätze Intro zum Diskussion Chapter, bevor du dann in die Subaspekte 6.1 und 6.2 gehst."
+  replacement_text: null
+  target_location: null
+  author: "B. Margraf"
+  initials: "BM"
+
+- comment_id: C012
+  section: 6 Discussion > 6.1 Adoption ran through the individual and not the organization
+  anchor_text: "Usage frequency was not independently associated no independent association with the organizational conditions surrounding the tools and their users."
+  anchor_context: "Closing sentence of the first paragraph in Section 6.1."
+  dimension: flow
+  change_type: rewrite
+  comment_body: "The duplicated construction obscures the key contrast between significant individual-level predictors and non-significant organizational conditions. Proposed wording: Usage frequency showed no independent association with the organizational conditions surrounding the tools and their users."
+  replacement_text: "Usage frequency showed no independent association with the organizational conditions surrounding the tools and their users."
+  target_location: null
+  author: "Codex Academic Editor"
+  initials: "CAE"
+
+- comment_id: C013
+  section: 6 Discussion > 6.1 Adoption ran through the individual and not the organization
+  anchor_text: "FC (Facilitating Conditions) gaps were the most frequently cited barriers"
+  anchor_context: "Second paragraph of Section 6.1, in the sentence about barriers among non-users."
+  dimension: flow
+  change_type: rewrite
+  comment_body: "Falls das ein Akronym fuer facilitating conditions ist, dann ruhig einmal einfuehren"
+  replacement_text: null
+  target_location: null
+  author: "B. Margraf"
+  initials: "BM"
+
+- comment_id: C014
+  section: 6 Discussion > 6.1 Adoption ran through the individual and not the organization
+  anchor_text: "This is surprising, because everything about German public administration predicts the opposite. In a formal, rule-bound environment, the factors one would expect to drive professional use of a new technology are organizational, such as official support, technical infrastructure, training, workflow integration or designated points of help."
+  anchor_context: "Paragraph currently following the non-user qualification."
+  dimension: flow
+  change_type: move
+  comment_body: "[Merged B. Margraf + Claude comment] Move this paragraph directly after the opening regression paragraph and before ‘This does not mean that organizational provision is irrelevant.’ ‘This is surprising’ then refers immediately to the regression finding instead of appearing after a paragraph where Facilitating Conditions do matter for non-users. Also begin a new paragraph with ‘Based on this finding the second RQ was formulated…’ so the discussion of the first question and introduction of the second do not occupy the same argumentative block."
+  replacement_text: null
+  target_location: "Immediately after the opening regression paragraph of Section 6.1 and before the non-user qualification beginning ‘This does not mean that organizational provision is irrelevant.’"
+  author: "Integrated Review (B. Margraf + Claude)"
+  initials: "IR"
+
+- comment_id: C015
+  section: 6 Discussion > 6.1 Adoption ran through the individual and not the organization
+  anchor_text: "The rest of this discussion looks more closely at this pattern as well as the implications of individualized adoption for the affected organization. It first looks at the four functions employees performed to make LLM use possible in the workplace, which fall into two categories."
+  anchor_context: "Final roadmap paragraph of Section 6.1; overlaps the local roadmap at the start of 6.2."
+  dimension: redundancy
+  change_type: rewrite
+  comment_body: "[Merged B. Margraf + Claude + Codex comment] Coordinate this paragraph with the opening of Section 6.2 so the same four-part map is not given twice. Keep this as the detailed roadmap, repair the malformed sentence as: ‘The other two are judgment functions: developing LLM-output verification practices (6.2.3) and deciding task by task where LLM use is appropriate (6.2.4).’ Shorten the final sentence to: ‘Section 6.3 then turns to the implications of individualized adoption.’ Then slim the 6.2 opening to: ‘Sections 6.2.1 and 6.2.2 take up the resources; Sections 6.2.3 and 6.2.4 turn to the judgment functions, which matter because LLM outputs can appear plausible even when wrong and the tool has no built-in boundary for appropriate use.’ This retains local signposting without three near-identical roadmaps."
+  replacement_text: null
+  target_location: null
+  author: "Integrated Review (B. Margraf + Claude + Codex)"
+  initials: "IR"
+
+- comment_id: C016
+  section: 6 Discussion > 6.2 Employees supplied the resources for LLM use
+  anchor_text: "6.2 Employees supplied the resources for LLM use"
+  anchor_context: "Heading for Sections 6.2.1–6.2.4."
+  dimension: flow
+  change_type: rewrite
+  comment_body: "[Merged Claude + Codex comment] The heading promises only resources, but 6.2.3–6.2.4 are judgment functions, so the heading misstates the section’s scope. Proposed wording: 6.2 Employees supplied the resources and judgment for LLM use. An alternative that also fits is: 6.2 The four functions employees performed."
+  replacement_text: "6.2 Employees supplied the resources and judgment for LLM use"
+  target_location: null
+  author: "Integrated Review (Claude + Codex)"
+  initials: "IR"
+
+- comment_id: C017
+  section: 6 Discussion > 6.2.1 Access to the tool was supplied by the individual
+  anchor_text: "Therefore, the tool used for administrative work was in most cases not provided through a formal organizational deployment. Employees brought the non-approved tool into their work themselves."
+  anchor_context: "The tracked deletion immediately after these sentences removes a third formulation of the same point."
+  dimension: redundancy
+  change_type: rewrite
+  comment_body: "[Merged Claude + Codex comment; tracked deletion copied] Accept Claude’s tracked deletion of the final repeated sentence. For a tighter result, also combine these two remaining inferential sentences into one: ‘Thus, in most cases, employees accessed a publicly available tool themselves rather than receiving one through formal organizational deployment.’"
+  replacement_text: "Thus, in most cases, employees accessed a publicly available tool themselves rather than receiving one through formal organizational deployment."
+  target_location: null
+  author: "Integrated Review (Claude + Codex)"
+  initials: "IR"
+
+- comment_id: C018
+  section: 6 Discussion > 6.2.1 Access to the tool was supplied by the individual
+  anchor_text: "This finding helps to understand why Facilitating Conditions did not predict usage frequency in the regression. The Facilitating Conditions items measured organizational support for LLM use, including training or support offerings, workflow integration and contact persons for technical difficulties."
+  anchor_context: "Paragraph before ‘The takeaway point is therefore not simply…’; its final two sentences are tracked for deletion."
+  dimension: redundancy
+  change_type: merge
+  comment_body: "[Merged Claude + Codex comment; tracked deletion copied] Accept the tracked deletion of the final two sentences, which pre-empt the next paragraphs’ conclusion. Then merge the surviving explanation into the following paragraph beginning ‘The takeaway point is therefore not simply…’. Retain this paragraph’s description of what the Facilitating Conditions items measured and the following paragraph’s theoretical point that public access weakened the construct’s gatekeeping role. State the mechanism once: publicly accessible tools removed employees’ dependence on procurement and formal provision."
+  replacement_text: null
+  target_location: "The following paragraph beginning ‘The takeaway point is therefore not simply that many users preferred ChatGPT or other public tools.’"
+  author: "Integrated Review (Claude + Codex)"
+  initials: "IR"
+
+- comment_id: C019
+  section: 6 Discussion > 6.2.2 The competence was built by the individual
+  anchor_text: "The second resource employees provided was the competence to use LLMs. When a new technology is introduced through an organizational deployment, the organization does not merely provide access to the tool. Rather, it also creates the conditions under which employees can become competent users through training, introduction and the support that surrounds a new system. In this sample, this competence-building function was largely performed by the individual. Therefore, LLM use became possible because some employees developed the necessary competence themselves. Individual learning was not just part of the adoption process. It actually substituted the organizational implementation function that would have been otherwise not present."
+  anchor_context: "Opening paragraph of Section 6.2.2."
+  dimension: redundancy
+  change_type: rewrite
+  comment_body: "The opening repeats the competence-substitution claim several times before reaching the evidence. Proposed wording: The second resource employees supplied was competence. Rather than receiving training and support through an organizational deployment, users developed the skills needed to use LLMs themselves; individual learning therefore substituted for a missing implementation function."
+  replacement_text: "The second resource employees supplied was competence. Rather than receiving training and support through an organizational deployment, users developed the skills needed to use LLMs themselves; individual learning therefore substituted for a missing implementation function."
+  target_location: null
+  author: "Codex Academic Editor"
+  initials: "CAE"
+
+- comment_id: C020
+  section: 6 Discussion > 6.2.2 The competence was built by the individual
+  anchor_text: "Over time, they learned what kinds of prompts worked, when more specific instructions were needed and how to improve unsatisfactory outputs through repeated interaction."
+  anchor_context: "The tracked deletion immediately after this sentence removes an immediate restatement."
+  dimension: redundancy
+  change_type: cut
+  comment_body: "[Claude comment; tracked deletion copied] The deleted sentence immediately restates this more specific sentence. Accept the tracked deletion."
+  replacement_text: null
+  target_location: null
+  author: "Claude"
+  initials: "C"
+
+- comment_id: C021
+  section: 6 Discussion > 6.2.4 Appropriate use was decided task by task
+  anchor_text: "Indeed, the interviews revealed several distinct dimensions along which users exercised this task-level judgment. One was efficiency. Some users assessed whether using an LLM would actually save time or whether prompting, correcting and checking the output would take longer than doing the task themselves."
+  anchor_context: "Efficiency paragraph; two middle sentences are tracked for deletion."
+  dimension: redundancy
+  change_type: rewrite
+  comment_body: "[Merged Claude + Codex comment; tracked deletion copied] Accept the tracked deletion of the two middle sentences, which repeat the cost–benefit idea. The paragraph can be tightened further to: ‘One dimension was efficiency: users weighed any time saved against the effort required to prompt, check, and correct an output. They therefore rejected LLM support for tasks where that effort outweighed the benefit.’"
+  replacement_text: "One dimension was efficiency: users weighed any time saved against the effort required to prompt, check, and correct an output. They therefore rejected LLM support for tasks where that effort outweighed the benefit."
+  target_location: null
+  author: "Integrated Review (Claude + Codex)"
+  initials: "IR"
+
+- comment_id: C022
+  section: 6 Discussion > 6.2.4 Appropriate use was decided task by task
+  anchor_text: "Performance Expectancy is especially relevant in this context. The regression showed that Performance Expectancy was the second significant predictor of usage frequency."
+  anchor_context: "Penultimate analytical paragraph of Section 6.2.4; its final conclusion is tracked for deletion."
+  dimension: redundancy
+  change_type: rewrite
+  comment_body: "[Merged Claude + Codex comment; tracked deletion copied] Accept the tracked deletion of the final repeated conclusion. To remove the remaining repetition while preserving the mixed-methods link, replace the paragraph with: ‘Performance Expectancy, the second significant predictor of usage frequency, can therefore be understood as task-specific rather than general perceived usefulness. The interviews suggest that users developed this perception by learning where LLMs saved time or improved drafts—and where they did not.’"
+  replacement_text: "Performance Expectancy, the second significant predictor of usage frequency, can therefore be understood as task-specific rather than general perceived usefulness. The interviews suggest that users developed this perception by learning where LLMs saved time or improved drafts—and where they did not."
+  target_location: null
+  author: "Integrated Review (Claude + Codex)"
+  initials: "IR"
+
+- comment_id: C023
+  section: 6 Discussion > 6.3 Implications
+  anchor_text: "The previous section showed employees taking on four functions the organization would normally take care of. This raises the question of what that shift means in practice for public administrations. Because the sample consisted mostly of frequent users and was not representative, the points below are possibilities the findings point to."
+  anchor_context: "Final sentence of the opening paragraph of Section 6.3."
+  dimension: flow
+  change_type: rewrite
+  comment_body: "Revise wording"
+  replacement_text: null
+  target_location: null
+  author: "B. Margraf"
+  initials: "BM"
+
+- comment_id: C024
+  section: 6 Discussion > 6.3 Implications
+  anchor_text: "This loss of sight is most problematic in data protection. Because most users ran on free consumer tools, the data-protection checks that normally come with official procurement were skipped."
+  anchor_context: "Opening of the data-protection implication paragraph."
+  dimension: redundancy
+  change_type: rewrite
+  comment_body: "[Claude comment] This is the fourth pass at the no-rules point, but it carries weight because the data-protection implication rests on it. Compress to a back-reference rather than cutting: ‘As Section 6.2.4 showed, the only limits users mentioned were self-set, such as IP01 treating personal data as an absolute red line.’"
+  replacement_text: "As Section 6.2.4 showed, the only limits users mentioned were self-set, such as IP01 treating personal data as an absolute red line."
+  target_location: null
+  author: "Claude"
+  initials: "C"
+
+- comment_id: C025
+  section: 6 Discussion > 6.3 Implications
+  anchor_text: "The fact that the handling of LLM use is governed by the individual may have even further consequences."
+  anchor_context: "Opening of the paragraph about variation in citizen-case handling."
+  dimension: flow
+  change_type: rewrite
+  comment_body: "[Merged B. Margraf + Codex comment] This introduces a new implication—variation in practice and potential unequal treatment—so name the shift explicitly rather than calling it ‘even further consequences.’ Proposed wording: Individualized adoption also creates a separate risk of inconsistent practice and unequal treatment."
+  replacement_text: "Individualized adoption also creates a separate risk of inconsistent practice and unequal treatment."
+  target_location: null
+  author: "Integrated Review (B. Margraf + Codex)"
+  initials: "IR"
+
+- comment_id: C026
+  section: 6 Discussion > 6.3 Implications
+  anchor_text: "… (Bin nicht Fertig geworden. Hier braucht es noch 2-3 weitere Punkte)"
+  anchor_context: "Drafting note followed by repeated RQs and brainstorming bullets."
+  dimension: flow
+  change_type: cut
+  comment_body: "After developing the remaining implication paragraphs in the main prose, remove the full drafting block from this note through the final brainstorming sentence ending ‘gov employees just prompting..’. The repeated RQs and outline notes interrupt the reader-facing Discussion and duplicate ideas already being developed under accountability, data protection, consistency/equity and public trust."
+  replacement_text: null
+  target_location: null
+  author: "Codex Academic Editor"
+  initials: "CAE"

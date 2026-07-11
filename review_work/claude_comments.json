@@ -1,0 +1,535 @@
+{
+  "file": "review_work/claude_review.docx",
+  "comment_count": 23,
+  "comments": [
+    {
+      "id": "14",
+      "author": "B. Margraf",
+      "date": "2026-07-07T08:12:00Z",
+      "initials": "BM",
+      "resolved": false,
+      "text": "Hier fehlt mir noch eine kurze 3 Sätze Intro zum Diskussion Chapter, bevor du dann in die Subaspekte 6.1 und 6.2 gehst.",
+      "anchors": [
+        {
+          "part": "word/document.xml",
+          "paragraphs": [
+            {
+              "where": "start",
+              "text": "Discussion"
+            },
+            {
+              "where": "end",
+              "text": "Discussion"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "15",
+      "author": "B. Margraf",
+      "date": "2026-07-07T08:17:00Z",
+      "initials": "BM",
+      "resolved": false,
+      "text": "Falls das ein Akronym fuer facilitating conditions ist, dann ruhig einmal einfuehren",
+      "anchors": [
+        {
+          "part": "word/document.xml",
+          "paragraphs": [
+            {
+              "where": "start",
+              "text": "This does not mean that organizational provision is irrelevant. Rather, for most users in this sample, organizational provision was simply not the route through which LLM access was made possible. For"
+            },
+            {
+              "where": "end",
+              "text": "This does not mean that organizational provision is irrelevant. Rather, for most users in this sample, organizational provision was simply not the route through which LLM access was made possible. For"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "16",
+      "author": "B. Margraf",
+      "date": "2026-07-07T08:20:00Z",
+      "initials": "BM",
+      "resolved": false,
+      "text": "Paragraphstruktur überarbeiten, du diskutierst im selben Paragraphen die Antwort von einer Frage und führst parallel eine neue ein. Das ist mE verwirrend.",
+      "anchors": [
+        {
+          "part": "word/document.xml",
+          "paragraphs": [
+            {
+              "where": "start",
+              "text": "This is surprising, because everything about German public administration predicts the opposite. In a formal, rule-bound environment, the factors one would expect to drive professional use of a new te"
+            },
+            {
+              "where": "end",
+              "text": "Based on this finding the second RQ was formulated, which attempted to understand this puzzle: why did individual confidence and perceived usefulness drive usage more than anything the organization pr"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "17",
+      "author": "B. Margraf",
+      "date": "2026-07-07T08:35:00Z",
+      "initials": "BM",
+      "resolved": false,
+      "text": "Check sentence/ grammar",
+      "anchors": [
+        {
+          "part": "word/document.xml",
+          "paragraphs": [
+            {
+              "where": "start",
+              "text": "The rest of this discussion looks more closely at this pattern as well as the implications of individualized adoption for the affected organization. It first looks at the four functions employees perf"
+            },
+            {
+              "where": "end",
+              "text": "The rest of this discussion looks more closely at this pattern as well as the implications of individualized adoption for the affected organization. It first looks at the four functions employees perf"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "18",
+      "author": "B. Margraf",
+      "date": "2026-07-07T08:36:00Z",
+      "initials": "BM",
+      "resolved": false,
+      "text": "Du nennst das später im Text „two forms of judgement“ – vllt hier auch schon so einführen damit kohärent?",
+      "anchors": [
+        {
+          "part": "word/document.xml",
+          "paragraphs": [
+            {
+              "where": "start",
+              "text": "The rest of this discussion looks more closely at this pattern as well as the implications of individualized adoption for the affected organization. It first looks at the four functions employees perf"
+            },
+            {
+              "where": "end",
+              "text": "The rest of this discussion looks more closely at this pattern as well as the implications of individualized adoption for the affected organization. It first looks at the four functions employees perf"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "19",
+      "author": "B. Margraf",
+      "date": "2026-07-07T08:39:00Z",
+      "initials": "BM",
+      "resolved": false,
+      "text": "Revise wording",
+      "anchors": [
+        {
+          "part": "word/document.xml",
+          "paragraphs": [
+            {
+              "where": "start",
+              "text": "The previous section showed employees taking on four functions the organization would normally take care of. This raises the question of what that shift means in practice for public administrations. B"
+            },
+            {
+              "where": "end",
+              "text": "The previous section showed employees taking on four functions the organization would normally take care of. This raises the question of what that shift means in practice for public administrations. B"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "20",
+      "author": "B. Margraf",
+      "date": "2026-07-07T08:41:00Z",
+      "initials": "BM",
+      "resolved": false,
+      "text": "Das wäre eine neue Implikation für mich",
+      "anchors": [
+        {
+          "part": "word/document.xml",
+          "paragraphs": [
+            {
+              "where": "start",
+              "text": "The fact that the handling of LLM use is governed by the individual may have even further consequences. For instance, because each employee decides for themselves how carefully to check the tool's out"
+            },
+            {
+              "where": "end",
+              "text": "The fact that the handling of LLM use is governed by the individual may have even further consequences. For instance, because each employee decides for themselves how carefully to check the tool's out"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "100",
+      "author": "Claude",
+      "date": "2026-07-10T10:20:37Z",
+      "initials": "C",
+      "resolved": false,
+      "text": "[Flow – signposting | rewrite] The roadmap doesn’t match the chapter: ‘Section 0’ appears twice (broken cross-references), 4.1.3–4.1.5 use another chapter’s numbering, a ‘task application patterns’ section is promised but doesn’t exist, and the qualitative findings — half the chapter — are missing from the map. Suggested rewrite: ‘The chapter proceeds as follows. Section 5.1 reports the quantitative findings: sample characteristics (5.1.1); construct reliability, descriptives and correlations (5.1.2); the regression analysis (5.1.3); and adoption barriers among non-users (5.1.4). Section 5.2 then presents the qualitative findings in three themes.’",
+      "anchors": [
+        {
+          "part": "word/document.xml",
+          "paragraphs": [
+            {
+              "where": "start",
+              "text": "In this chapter the findings from both phases, quantitative survey and qualitative interviews, are presented. The quantitative survey results establishes how the UTAUT constructs and Self-Efficacy rel"
+            },
+            {
+              "where": "end",
+              "text": "In this chapter the findings from both phases, quantitative survey and qualitative interviews, are presented. The quantitative survey results establishes how the UTAUT constructs and Self-Efficacy rel"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "101",
+      "author": "Claude",
+      "date": "2026-07-10T10:20:37Z",
+      "initials": "C",
+      "resolved": false,
+      "text": "[Redundancy | cut, proposed as tracked deletion] Third statement of the subsample restriction: the sample section already says ‘All of the following construct analyses are based on the user subsample (n=116)’, and this paragraph opens with ‘for the LLM user group (n=116)’. Cut.",
+      "anchors": [
+        {
+          "part": "word/document.xml",
+          "paragraphs": [
+            {
+              "where": "start",
+              "text": "For each construct, a composite score was calculated as the mean of the respective items for the LLM user group (n=116). As already indicated in 4.2.2, the items were measured on 5-point scale, which "
+            },
+            {
+              "where": "end",
+              "text": "For each construct, a composite score was calculated as the mean of the respective items for the LLM user group (n=116). As already indicated in 4.2.2, the items were measured on 5-point scale, which "
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "102",
+      "author": "Claude",
+      "date": "2026-07-10T10:20:37Z",
+      "initials": "C",
+      "resolved": false,
+      "text": "[Flow – placement | rewrite] This paragraph is about users (18 of 116), but it sits under ‘Adoption Barriers Among Non-Users’ with no bridge, so the reader stumbles on the subsample switch. Keep it here (6.2.4 leans on it later) but open with a bridge such as: ‘The barriers above concern non-users, but a supplementary item suggests that users faced similarly thin organizational conditions.’",
+      "anchors": [
+        {
+          "part": "word/document.xml",
+          "paragraphs": [
+            {
+              "where": "start",
+              "text": "An item on how clearly organizations had communicated rules for LLM use was added during data collection and was therefore answered only by a subsample of 18 of the 116 users. Because it was introduce"
+            },
+            {
+              "where": "end",
+              "text": "An item on how clearly organizations had communicated rules for LLM use was added during data collection and was therefore answered only by a subsample of 18 of the 116 users. Because it was introduce"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "103",
+      "author": "Claude",
+      "date": "2026-07-10T10:20:37Z",
+      "initials": "C",
+      "resolved": false,
+      "text": "[Flow – coherence | rewrite] ‘Chapter’ should be ‘section’ (this sits inside the Findings chapter — same slip as ‘The rest of the chapter’ below), and the second sentence is an orphan claim with no connection to its surroundings. Suggested rewrite: ‘This section examines how employees came to use LLMs largely on their own and what that use depends on. The interviews indicate that most organizations provided neither tools nor training; the three themes below show how employees made LLM use work under those conditions.’",
+      "anchors": [
+        {
+          "part": "word/document.xml",
+          "paragraphs": [
+            {
+              "where": "start",
+              "text": "This chapter examines how employees came to use LLMs largely on their own and what that use depends on. It should be noted that the majority of the organizations did not provide tools or training."
+            },
+            {
+              "where": "end",
+              "text": "This chapter examines how employees came to use LLMs largely on their own and what that use depends on. It should be noted that the majority of the organizations did not provide tools or training."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "104",
+      "author": "Claude",
+      "date": "2026-07-10T10:20:37Z",
+      "initials": "C",
+      "resolved": false,
+      "text": "[Redundancy | cut, proposed as tracked deletion] The preceding sentence (‘Where users draw on their professional knowledge…’) already states the users/non-users contrast; these two sentences repeat it a second and third time. The first summary sentence is the keeper.",
+      "anchors": [
+        {
+          "part": "word/document.xml",
+          "paragraphs": [
+            {
+              "where": "start",
+              "text": "By contrast, the non-user accounts confirm the important role of professional knowledge from the opposite direction. They name that not having the relevant checkable knowledge is a risk, when using LL"
+            },
+            {
+              "where": "end",
+              "text": "By contrast, the non-user accounts confirm the important role of professional knowledge from the opposite direction. They name that not having the relevant checkable knowledge is a risk, when using LL"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "105",
+      "author": "Claude",
+      "date": "2026-07-10T10:20:37Z",
+      "initials": "C",
+      "resolved": false,
+      "text": "[Flow – placement | move] These two closing sentences are about a user (IP01), but they’re tacked onto the non-user paragraph after its natural close. Move them to the end of the previous paragraph (after ‘…from their own understanding of the task.’), where the red line reads as a third kind of user boundary. Don’t cut: Section 6.2.4’s ‘third dimension’ (data sensitivity) builds on this illustration.",
+      "anchors": [
+        {
+          "part": "word/document.xml",
+          "paragraphs": [
+            {
+              "where": "start",
+              "text": "By contrast, the non-users assessed suitability in broad terms rather than task by task, although their reasons for this varied. NU02 made a blanket assessment that LLMs do not make them faster at all"
+            },
+            {
+              "where": "end",
+              "text": "By contrast, the non-users assessed suitability in broad terms rather than task by task, although their reasons for this varied. NU02 made a blanket assessment that LLMs do not make them faster at all"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "106",
+      "author": "Claude",
+      "date": "2026-07-10T10:20:37Z",
+      "initials": "C",
+      "resolved": false,
+      "text": "[Flow – ordering | move] ‘This is surprising’ refers to the regression finding two paragraphs up, but the intervening non-user paragraph says Facilitating Conditions DO matter there — the reader momentarily takes the non-user pattern as the surprise. Swap this paragraph with the previous one: finding, then why it’s surprising, then the non-user qualification. ‘This does not mean that organizational provision is irrelevant’ reads even better once the puzzle is on the table.",
+      "anchors": [
+        {
+          "part": "word/document.xml",
+          "paragraphs": [
+            {
+              "where": "start",
+              "text": "This is surprising, because everything about German public administration predicts the opposite. In a formal, rule-bound environment, the factors one would expect to drive professional use of a new te"
+            },
+            {
+              "where": "end",
+              "text": "This is surprising, because everything about German public administration predicts the opposite. In a formal, rule-bound environment, the factors one would expect to drive professional use of a new te"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "107",
+      "author": "Claude",
+      "date": "2026-07-10T10:20:37Z",
+      "initials": "C",
+      "resolved": false,
+      "text": "[Redundancy, flow tradeoff | rewrite] Near-duplicate of the 6.3 preview in the chapter intro, and the two lists differ (this one adds ‘what administrations might do in response’). Both promise 6.3 content the draft doesn’t yet contain — align them when 6.3 is finished. Keep this paragraph as the detailed roadmap and shorten just this sentence to: ‘Section 6.3 then turns to the implications of individualized adoption.’",
+      "anchors": [
+        {
+          "part": "word/document.xml",
+          "paragraphs": [
+            {
+              "where": "start",
+              "text": "The rest of this discussion looks more closely at this pattern as well as the implications of individualized adoption for the affected organization. It first looks at the four functions employees perf"
+            },
+            {
+              "where": "end",
+              "text": "The rest of this discussion looks more closely at this pattern as well as the implications of individualized adoption for the affected organization. It first looks at the four functions employees perf"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "108",
+      "author": "Claude",
+      "date": "2026-07-10T10:20:37Z",
+      "initials": "C",
+      "resolved": false,
+      "text": "[Flow – signposting | rewrite] The heading promises resources, but 6.2.3–6.2.4 are judgment functions — a reader scanning headings gets the wrong map, and the section’s own intro immediately contradicts it. Rename to cover both, e.g. ‘6.2 Employees supplied the resources and judgment for LLM use’ or ‘6.2 The four functions employees performed’.",
+      "anchors": [
+        {
+          "part": "word/document.xml",
+          "paragraphs": [
+            {
+              "where": "start",
+              "text": "6.2 Employees supplied the resources for LLM use"
+            },
+            {
+              "where": "end",
+              "text": "6.2 Employees supplied the resources for LLM use"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "109",
+      "author": "Claude",
+      "date": "2026-07-10T10:20:37Z",
+      "initials": "C",
+      "resolved": false,
+      "text": "[Redundancy – close call | rewrite] Repeats the enumeration of 6.2.1–6.2.4 given half a page earlier at the end of 6.1 — the identical map twice in quick succession. Keep the 6.1 version and slim this to: ‘Sections 6.2.1 and 6.2.2 take up the resources; Sections 6.2.3 and 6.2.4 turn to the judgment functions, which matter because LLM outputs can appear plausible even when wrong and the tool has no built-in boundary for appropriate use.’ Tradeoff: readers who jump straight to 6.2 lose some local signposting — hence a slim pointer rather than a cut.",
+      "anchors": [
+        {
+          "part": "word/document.xml",
+          "paragraphs": [
+            {
+              "where": "start",
+              "text": "In an ordinary organizational technology deployment, the organization would normally provide both the resources needed to use a tool and the rules for using it. In this sample, both kinds of function "
+            },
+            {
+              "where": "end",
+              "text": "In an ordinary organizational technology deployment, the organization would normally provide both the resources needed to use a tool and the rules for using it. In this sample, both kinds of function "
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "110",
+      "author": "Claude",
+      "date": "2026-07-10T10:20:37Z",
+      "initials": "C",
+      "resolved": false,
+      "text": "[Redundancy | cut, proposed as tracked deletion] Restates the two sentences immediately before it (‘Therefore, the tool used for administrative work was in most cases not provided…’ / ‘Employees brought the non-approved tool into their work themselves.’). Nothing is lost.",
+      "anchors": [
+        {
+          "part": "word/document.xml",
+          "paragraphs": [
+            {
+              "where": "start",
+              "text": "This pattern is visible in the survey. Among respondents who had used LLMs for work, 83.6% reported using freely accessible tools such as ChatGPT, Perplexity or Claude, while only 13.8% reported using"
+            },
+            {
+              "where": "end",
+              "text": "This pattern is visible in the survey. Among respondents who had used LLMs for work, 83.6% reported using freely accessible tools such as ChatGPT, Perplexity or Claude, while only 13.8% reported using"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "111",
+      "author": "Claude",
+      "date": "2026-07-10T10:20:37Z",
+      "initials": "C",
+      "resolved": false,
+      "text": "[Redundancy | cut, proposed as tracked deletion] These closing sentences pre-empt the next paragraph’s conclusion (‘…precisely why Facilitating Conditions had no predictive relevance in the regression’) and the opening of the paragraph after that (‘The absence of organizational provision did not prevent access…’) — the same conclusion three paragraphs running. Cut both; the next paragraph’s ‘as already indicated above’ can then go too.",
+      "anchors": [
+        {
+          "part": "word/document.xml",
+          "paragraphs": [
+            {
+              "where": "start",
+              "text": "This finding helps to understand why Facilitating Conditions did not predict usage frequency in the regression. The Facilitating Conditions items measured organizational support for LLM use, including"
+            },
+            {
+              "where": "end",
+              "text": "This finding helps to understand why Facilitating Conditions did not predict usage frequency in the regression. The Facilitating Conditions items measured organizational support for LLM use, including"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "112",
+      "author": "Claude",
+      "date": "2026-07-10T10:20:37Z",
+      "initials": "C",
+      "resolved": false,
+      "text": "[Redundancy | cut, proposed as tracked deletion] Immediate restatement of the preceding sentence (‘Over time, they learned what kinds of prompts worked…’). Keep the more specific earlier version.",
+      "anchors": [
+        {
+          "part": "word/document.xml",
+          "paragraphs": [
+            {
+              "where": "start",
+              "text": "The interviews showed that this competence was not something users already had from the outset. Rather, it was built through the use itself. Users first approached LLMs experimentally and often did no"
+            },
+            {
+              "where": "end",
+              "text": "The interviews showed that this competence was not something users already had from the outset. Rather, it was built through the use itself. Users first approached LLMs experimentally and often did no"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "113",
+      "author": "Claude",
+      "date": "2026-07-10T10:20:37Z",
+      "initials": "C",
+      "resolved": false,
+      "text": "[Redundancy | cut, proposed as tracked deletion] The paragraph states the cost–benefit idea four times. Keeping the concrete opening, the ‘not suitable for every task’ point and the closing example says it all; these two middle sentences add nothing.",
+      "anchors": [
+        {
+          "part": "word/document.xml",
+          "paragraphs": [
+            {
+              "where": "start",
+              "text": "Indeed, the interviews revealed several distinct dimensions along which users exercised this task-level judgment. One was efficiency. Some users assessed whether using an LLM would actually save time "
+            },
+            {
+              "where": "end",
+              "text": "Indeed, the interviews revealed several distinct dimensions along which users exercised this task-level judgment. One was efficiency. Some users assessed whether using an LLM would actually save time "
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "114",
+      "author": "Claude",
+      "date": "2026-07-10T10:20:37Z",
+      "initials": "C",
+      "resolved": false,
+      "text": "[Redundancy | cut, proposed as tracked deletion] The paragraph’s second and third sentences already make exactly this point, and the ‘In sum’ paragraph right after makes it again — three times in two paragraphs. With this cut, the summary paragraph carries it once as a legitimate closing reminder.",
+      "anchors": [
+        {
+          "part": "word/document.xml",
+          "paragraphs": [
+            {
+              "where": "start",
+              "text": "Performance Expectancy is especially relevant in this context. The regression showed that Performance Expectancy was the second significant predictor of usage frequency. The qualitative findings sugge"
+            },
+            {
+              "where": "end",
+              "text": "Performance Expectancy is especially relevant in this context. The regression showed that Performance Expectancy was the second significant predictor of usage frequency. The qualitative findings sugge"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "115",
+      "author": "Claude",
+      "date": "2026-07-10T10:20:37Z",
+      "initials": "C",
+      "resolved": false,
+      "text": "[Redundancy – close call | rewrite] Fourth pass at the no-rules point (findings 5.2.3, then 6.2.4, here again). It carries weight — the data-protection implication rests on it — so compress to a back-reference rather than cutting: ‘As Section 6.2.4 showed, the only limits users mentioned were self-set, such as IP01 treating personal data as an absolute red line.’",
+      "anchors": [
+        {
+          "part": "word/document.xml",
+          "paragraphs": [
+            {
+              "where": "start",
+              "text": "This loss of sight is most problematic in data protection. Because most users ran on free consumer tools, the data-protection checks that normally come with official procurement were skipped. No user "
+            },
+            {
+              "where": "end",
+              "text": "This loss of sight is most problematic in data protection. Because most users ran on free consumer tools, the data-protection checks that normally come with official procurement were skipped. No user "
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
