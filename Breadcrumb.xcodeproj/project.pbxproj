@@ -27,6 +27,7 @@
 		3063417A9901446E2F9C06CA /* BulletTextTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC0E444CDB40131D5BC3F8F0 /* BulletTextTests.swift */; };
 		332BF2812B86C21141AF9D88 /* AppLanguage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70969E1971A3847B517389ED /* AppLanguage.swift */; };
 		370A4A9D4C47387CB9F2FB1A /* AIFillerStripperTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22EB604EBEE6E40B6A21FFD2 /* AIFillerStripperTests.swift */; };
+		384B18E6E9161DD89935CD71 /* StoreRecoveryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A7BA80F0FF490C035DB80E8 /* StoreRecoveryTests.swift */; };
 		3B8E91E329DF6960817BF4E7 /* PomodoroConfigView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3F1C79AA5792B6763AB7DF4 /* PomodoroConfigView.swift */; };
 		3FC429C8BCD0C4E519FD958A /* AIProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = A55DF7A5ABF092B51EB54D8E /* AIProvider.swift */; };
 		3FCED5650F54A93C7D58D4F4 /* AboutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B5EF89CD286DC72F7290682 /* AboutView.swift */; };
@@ -132,6 +133,7 @@
 		47078C1986E00D73E6A06727 /* ProjectListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectListView.swift; sourceTree = "<group>"; };
 		47DF5F532D7705CA6E56446A /* ProjectRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectRowView.swift; sourceTree = "<group>"; };
 		4996D796E28BEF485ED0F8D0 /* PomodoroSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PomodoroSession.swift; sourceTree = "<group>"; };
+		4A7BA80F0FF490C035DB80E8 /* StoreRecoveryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreRecoveryTests.swift; sourceTree = "<group>"; };
 		4C6CE12769F9856FAC17C75D /* AIService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AIService.swift; sourceTree = "<group>"; };
 		4F5D21B8446DBC5F11312384 /* PomodoroSessionEndView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PomodoroSessionEndView.swift; sourceTree = "<group>"; };
 		54423F165AE132713BA19F8B /* LocalAIProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalAIProvider.swift; sourceTree = "<group>"; };
@@ -270,6 +272,7 @@
 				F02E4F9B768BF31589ED8D8C /* PomodoroTimerTests.swift */,
 				F49D61D1877C7BF5C4F92E66 /* SessionDurationTests.swift */,
 				FDAA39C819F06A5E9B6A6918 /* SpeechRecognizerTests.swift */,
+				4A7BA80F0FF490C035DB80E8 /* StoreRecoveryTests.swift */,
 				5B61E0FC8ED8FA3607CA8E73 /* StringsTests.swift */,
 			);
 			path = BreadcrumbTests;
@@ -538,6 +541,7 @@
 				E81E8CD4BE3E29931E40C14D /* PomodoroTimerTests.swift in Sources */,
 				C1DD81AE19623D581BBA2884 /* SessionDurationTests.swift in Sources */,
 				90CE6923808FD08E80D66C07 /* SpeechRecognizerTests.swift in Sources */,
+				384B18E6E9161DD89935CD71 /* StoreRecoveryTests.swift in Sources */,
 				A2C0BB75C7ED0551645F313F /* StringsTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

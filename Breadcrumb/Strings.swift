@@ -786,6 +786,14 @@ enum Strings {
         static func startupFailedTitle(_ l: AppLanguage) -> String {
             l == .german ? "Breadcrumb konnte nicht gestartet werden" : "Breadcrumb could not start"
         }
+        static func storeResetTitle(_ l: AppLanguage) -> String {
+            l == .german ? "Datenbank wurde zurückgesetzt" : "Database was reset"
+        }
+        static func storeResetBody(_ l: AppLanguage, backupName: String) -> String {
+            l == .german
+                ? "Die vorhandene Datenbank stammt von einer inkompatiblen Version und konnte nicht geöffnet werden. Breadcrumb startet mit einer leeren Datenbank.\n\nDie alte Datenbank wurde nicht gelöscht, sondern gesichert als:\n\(backupName)"
+                : "The existing database was created by an incompatible version and could not be opened. Breadcrumb is starting with an empty database.\n\nThe old database was not deleted — it was saved as:\n\(backupName)"
+        }
         static func startupFailedBody(_ l: AppLanguage, message: String) -> String {
             l == .german
                 ? "Die Datenbank konnte nicht geöffnet werden. Bitte starte den Mac neu und versuche es erneut.\n\nDetails: \(message)"

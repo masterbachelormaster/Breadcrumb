@@ -77,18 +77,74 @@ struct BreadcrumbApp: App {
                 configurations: config
             )
         } catch {
+            // The store exists but can't be opened — e.g. it was written by an
+            // unreleased dev build whose schema no released version recognizes
+            // ("Cannot use staged migration with an unknown model version").
+            // Never delete data: move the store aside and retry with a fresh one.
+            if let backupName = moveIncompatibleStoreAside(at: storeURL),
+               let container = try? ModelContainer(
+                   for: schema,
+                   migrationPlan: BreadcrumbMigrationPlan.self,
+                   configurations: config
+               ) {
+                showAlert(
+                    style: .warning,
+                    title: Strings.Errors.storeResetTitle(alertLanguage),
+                    body: Strings.Errors.storeResetBody(alertLanguage, backupName: backupName)
+                )
+                return container
+            }
+
             // A silent fatalError here means the app dies with no visible UI at
             // all (it has no dock icon). Show the reason before exiting so a
             // startup failure is diagnosable on someone else's machine.
-            let stored = UserDefaults.standard.string(forKey: "app.language") ?? "de"
-            let l = AppLanguage(rawValue: stored) ?? .german
-            let alert = NSAlert()
-            alert.alertStyle = .critical
-            alert.messageText = Strings.Errors.startupFailedTitle(l)
-            alert.informativeText = Strings.Errors.startupFailedBody(l, message: String(describing: error))
-            alert.runModal()
+            showAlert(
+                style: .critical,
+                title: Strings.Errors.startupFailedTitle(alertLanguage),
+                body: Strings.Errors.startupFailedBody(alertLanguage, message: String(describing: error))
+            )
             exit(1)
         }
+    }
+
+    /// Moves an unopenable store (plus its -wal/-shm sidecars) to a timestamped
+    /// backup name in the same directory. Returns the backup base name, or nil
+    /// if nothing could be moved. Internal (not private) for test access.
+    static func moveIncompatibleStoreAside(at storeURL: URL) -> String? {
+        let fileManager = FileManager.default
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyyMMdd-HHmmss"
+        let backupBase = "Breadcrumb.store.backup-\(formatter.string(from: .now))"
+        let directory = storeURL.deletingLastPathComponent()
+
+        var movedAny = false
+        for suffix in ["", "-wal", "-shm"] {
+            let source = directory.appending(path: "Breadcrumb.store\(suffix)")
+            guard fileManager.fileExists(atPath: source.path(percentEncoded: false)) else { continue }
+            do {
+                try fileManager.moveItem(
+                    at: source,
+                    to: directory.appending(path: "\(backupBase)\(suffix)")
+                )
+                movedAny = true
+            } catch {
+                print("[Breadcrumb] Failed to move incompatible store file '\(source.lastPathComponent)': \(error)")
+            }
+        }
+        return movedAny ? backupBase : nil
+    }
+
+    private static var alertLanguage: AppLanguage {
+        let stored = UserDefaults.standard.string(forKey: "app.language") ?? "de"
+        return AppLanguage(rawValue: stored) ?? .german
+    }
+
+    private static func showAlert(style: NSAlert.Style, title: String, body: String) {
+        let alert = NSAlert()
+        alert.alertStyle = style
+        alert.messageText = title
+        alert.informativeText = body
+        alert.runModal()
     }
 
     private static func migrateStoreIfNeeded(to newURL: URL) {
