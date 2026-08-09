@@ -621,6 +621,10 @@
 					"@executable_path/../Frameworks",
 				);
 				MARKETING_VERSION = 1.4.1;
+				OTHER_LDFLAGS = (
+					"-weak_framework",
+					FoundationModels,
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.roger.breadcrumb;
 				SDKROOT = macosx;
 			};
@@ -655,6 +659,10 @@
 					"@executable_path/../Frameworks",
 				);
 				MARKETING_VERSION = 1.4.1;
+				OTHER_LDFLAGS = (
+					"-weak_framework",
+					FoundationModels,
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.roger.breadcrumb;
 				SDKROOT = macosx;
 			};

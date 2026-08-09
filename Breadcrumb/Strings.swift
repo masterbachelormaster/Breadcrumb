@@ -783,6 +783,14 @@ enum Strings {
         static func invalidResponse(_ l: AppLanguage, detail: String) -> String {
             l == .german ? "Ungültige Antwort vom Modell: \(detail)" : "Invalid response from model: \(detail)"
         }
+        static func startupFailedTitle(_ l: AppLanguage) -> String {
+            l == .german ? "Breadcrumb konnte nicht gestartet werden" : "Breadcrumb could not start"
+        }
+        static func startupFailedBody(_ l: AppLanguage, message: String) -> String {
+            l == .german
+                ? "Die Datenbank konnte nicht geöffnet werden. Bitte starte den Mac neu und versuche es erneut.\n\nDetails: \(message)"
+                : "The database could not be opened. Please restart your Mac and try again.\n\nDetails: \(message)"
+        }
     }
 
     // MARK: - Confirmation Dialogs

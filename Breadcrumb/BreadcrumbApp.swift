@@ -1,3 +1,4 @@
+import AppKit
 import SwiftUI
 import SwiftData
 import SQLite3
@@ -76,7 +77,17 @@ struct BreadcrumbApp: App {
                 configurations: config
             )
         } catch {
-            fatalError("Failed to create ModelContainer: \(error)")
+            // A silent fatalError here means the app dies with no visible UI at
+            // all (it has no dock icon). Show the reason before exiting so a
+            // startup failure is diagnosable on someone else's machine.
+            let stored = UserDefaults.standard.string(forKey: "app.language") ?? "de"
+            let l = AppLanguage(rawValue: stored) ?? .german
+            let alert = NSAlert()
+            alert.alertStyle = .critical
+            alert.messageText = Strings.Errors.startupFailedTitle(l)
+            alert.informativeText = Strings.Errors.startupFailedBody(l, message: String(describing: error))
+            alert.runModal()
+            exit(1)
         }
     }
 
